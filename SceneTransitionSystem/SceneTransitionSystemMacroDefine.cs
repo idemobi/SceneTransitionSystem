@@ -5,31 +5,46 @@ using UnityEngine;
 
 #if UNITY_EDITOR
 using UnityEditor;
+using UnityEditor.Build;
+
 [InitializeOnLoad]
-public class SceneTransitionSystemMacroDefine
+public class SceneTransitionSystemMacroDefine :  IActiveBuildTargetChanged
 {
 	const string kMacro = "SCENE_TRANSITION_SYSTEM";
+	static SceneTransitionSystemMacroDefine kSharedInstance;
+
 	static SceneTransitionSystemMacroDefine ()
 	{
-		OnChangedPlatform ();
-		EditorUserBuildSettings.activeBuildTargetChanged += OnChangedPlatform;
+		if (kSharedInstance == null) {
+			kSharedInstance = new SceneTransitionSystemMacroDefine ();
+			kSharedInstance.OnChangedPlatform ();
+		}
 	}
-	static void OnChangedPlatform() {
+
+	public int callbackOrder { get { return 0; } }
+
+	public void OnActiveBuildTargetChanged (BuildTarget previousTarget, BuildTarget newTarget)
+	{
+		OnChangedPlatform ();
+	}
+
+	public  void OnChangedPlatform ()
+	{
 		InstallMacro (EditorUserBuildSettings.selectedBuildTargetGroup);
 	}
-	static void InstallMacro (BuildTargetGroup sBuildTarget)
+
+	public void InstallMacro (BuildTargetGroup sBuildTarget)
 	{
-		if (PlayerSettings.GetScriptingDefineSymbolsForGroup (sBuildTarget).Contains (kMacro) == false) 
-		{
+		if (PlayerSettings.GetScriptingDefineSymbolsForGroup (sBuildTarget).Contains (kMacro) == false) {
 			Debug.Log ("Install macro " + kMacro + " in " + sBuildTarget + " player settings");
 			PlayerSettings.SetScriptingDefineSymbolsForGroup (sBuildTarget, PlayerSettings.GetScriptingDefineSymbolsForGroup (sBuildTarget) + ";" + kMacro);
-			if (PlayerSettings.GetScriptingDefineSymbolsForGroup (sBuildTarget).Contains (kMacro) == false) 
-			{
+			if (PlayerSettings.GetScriptingDefineSymbolsForGroup (sBuildTarget).Contains (kMacro) == false) {
 				Debug.LogError ("Fail to install macro " + kMacro + " in " + sBuildTarget + " player settings!");
 			}
 		}
 	}
-	static void InstallMacroAll ()
+
+	public void InstallMacroAll ()
 	{
 		Array BuildTargetGroupsArray = Enum.GetValues (typeof(BuildTargetGroup));
 		foreach (BuildTargetGroup tBuildTarget in BuildTargetGroupsArray) {
