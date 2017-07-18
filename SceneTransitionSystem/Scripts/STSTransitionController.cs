@@ -125,7 +125,7 @@ namespace SceneTransitionSystem
 				// I need to create singleton
 				GameObject tObjToSpawn;
 				//spawn object
-				tObjToSpawn = new GameObject ("TransitionControllerObject");
+				tObjToSpawn = new GameObject ("STSTransitionControllerObject");
 				//Add Components
 				tObjToSpawn.AddComponent<STSTransitionController> ();
 				// keep k_Singleton
