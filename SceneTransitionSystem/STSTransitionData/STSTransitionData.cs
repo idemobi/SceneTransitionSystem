@@ -1,4 +1,11 @@
-﻿using System.Collections.Generic;
+﻿//=====================================================================================================================
+//
+// ideMobi copyright 2017 
+// All rights reserved by ideMobi
+//
+//=====================================================================================================================
+
+using System.Collections.Generic;
 
 namespace SceneTransitionSystem
 {
