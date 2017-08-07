@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4583166921216416}
   - component: {fileID: 114783452144278894}
   m_Layer: 0
-  m_Name: TransitionParametersObject
+  m_Name: STSTransitionParametersObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

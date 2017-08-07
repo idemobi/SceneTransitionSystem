@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 114783452144278894}
   - component: {fileID: 114399049396549938}
   m_Layer: 0
-  m_Name: TransitionIntermediateObject
+  m_Name: STSTransitionIntermediateObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
