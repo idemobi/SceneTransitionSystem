@@ -45,7 +45,7 @@ namespace SceneTransitionSystem
 			this.DictionaryAsPayload = sDictionaryAsPayload;
 			}
 
-		public void addObjectForKeyInPayload (object sObject, string sKey)
+		public void AddObjectForKeyInPayload (string sKey, object sObject)
 		{
 			if (DictionaryAsPayload == null) {
 				DictionaryAsPayload = new Dictionary<string, object> ();
@@ -53,7 +53,7 @@ namespace SceneTransitionSystem
 			DictionaryAsPayload.Add (sKey, sObject);
 		}
 
-		public void addObjectInPayload (object sObject)
+		public void AddObjectInPayload (object sObject)
 		{
 			if (ListAsPayload == null) {
 				ListAsPayload = new List<object> ();
