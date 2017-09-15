@@ -33,6 +33,7 @@ namespace SceneTransitionSystem
 		[Header ("Type of transition")]
 		// the Transition In Style
 		public STSAnimationStyle Style = STSAnimationStyle.FadeIn;
+		public STSTransitionAnimation AnimationObject;
 		[Header ("Parameters for transition")]
 		// the Transition In color
 		public Color Color = Color.black;
@@ -41,6 +42,8 @@ namespace SceneTransitionSystem
 		// the Transition In speed
 		[Range (0.05f, 10.0f)]
 		public float Seconds = 1.0f;
+		[Range (0.05f, 10.0f)]
+		public float ColorChangeSeconds = 0.5f;
 		// the Transition In call back
 		[Header ("Callbacks for transition events")]
 		public STSTransitionEventEstimatedSeconds Start;
@@ -54,33 +57,9 @@ namespace SceneTransitionSystem
 	
 		//[Header ("Animation In (enter this scene ) ")]
 		public STSAnimationParameters AnimationIn = new STSAnimationParameters();
-//		// the Transition In Style
-//		public AnimationStyle AnimationInStyle = AnimationStyle.FadeIn;
-//		// the Transition In color
-//		public Color AnimationInColor = Color.black;
-//		// the Transition In texture
-//		public Texture2D AnimationInTexture = null;
-//		// the Transition In speed
-//		[Range (0.05f, 10.0f)]
-//		public float AnimationInSeconds = 1.0f;
-//		// the Transition In call back
-//		public TransitionEventEstimatedSecondsScript AnimationInStart;
-//		public TransitionEventScript AnimationInFinish;
-
 		//[Header ("Animation Out (exit this scene ) ")]
 		public STSAnimationParameters AnimationOut = new STSAnimationParameters();
-//		// the Transition Out Style
-//		public AnimationStyle AnimationOutStyle = AnimationStyle.FadeOut;
-//		// the Transition Out color
-//		public Color AnimationOutColor = Color.black;
-//		// the Transition Out texture
-//		public Texture2D AnimationOutTexture = null;
-//		// the Transition Out speed
-//		[Range (0.05f, 10.0f)]
-//		public float AnimationOutSeconds = 1.0f;
-//		// the Transition Out call back
-//		public TransitionEventEstimatedSecondsScript AnimationOutStart;
-//		public TransitionEventScript AnimationOutFinish;
+
 
 		[Header ("This Scene state call back")]
 		public STSTransitionEvent ThisSceneLoaded;
@@ -115,6 +94,7 @@ namespace SceneTransitionSystem
 			sDestination.AnimationIn.Color = this.AnimationIn.Color;
 			sDestination.AnimationIn.Texture = this.AnimationIn.Texture;
 			sDestination.AnimationIn.Seconds = this.AnimationIn.Seconds;
+			sDestination.AnimationIn.ColorChangeSeconds = this.AnimationIn.ColorChangeSeconds;
 			sDestination.AnimationIn.Start = this.AnimationIn.Start;
 			sDestination.AnimationIn.Finish = this.AnimationIn.Finish;
 
