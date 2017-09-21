@@ -67,15 +67,15 @@ namespace SceneTransitionSystem
 
 		void Update ()
 		{
-			Debug.Log ("Update m_AnimationCounter = "+ m_AnimationCounter.ToString());
+			//Debug.Log ("Update m_AnimationCounter = "+ m_AnimationCounter.ToString());
 		}
 		void FixedUpdate ()
 		{
-			Debug.Log ("FixedUpdate m_AnimationCounter = "+ m_AnimationCounter.ToString());
+			//Debug.Log ("FixedUpdate m_AnimationCounter = "+ m_AnimationCounter.ToString());
 		}
 		void OnGUI ()
 		{
-			Debug.Log ("OnGUI m_AnimationCounter = "+ m_AnimationCounter.ToString());
+			//Debug.Log ("OnGUI m_AnimationCounter = "+ m_AnimationCounter.ToString());
 
 				switch (m_AnimationStyle) {
 				case STSAnimationStyle.FadeIn:
