@@ -30,10 +30,14 @@ namespace SceneTransitionSystem
 		}
 		//-------------------------------------------------------------------------------------------------------------
 		/// <summary>
-		/// Idemobis the net worked data info show.
+		/// Idemobis the editor info show.
 		/// </summary>
-		[MenuItem (STSConstants.K_MENU_IDEMOBI,false, 0)]
-		public static void IdemobiNetWorkedDataInfoShow()
+#if UNITY_MENU_IDEMOBI
+		[MenuItem (STSConstants.K_MENU_IDEMOBI,false, 300)]
+#else
+		[MenuItem (STSConstants.K_MENU_IDEMOBI,false, 100)]
+#endif
+		public static void IdemobiInfoShow()
 		{
 			if (EditorUtility.DisplayDialog (STSConstants.K_ALERT_IDEMOBI_TITLE,
 				STSConstants.K_ALERT_IDEMOBI_MESSAGE,

@@ -16,13 +16,13 @@ using UnityEditor;
 using UnityEditor.Build;
 
 //=====================================================================================================================
-namespace BasicToolBox
+namespace SceneTransitionSystem
 {
 	[InitializeOnLoad]
 	/// <summary>
 	/// Net worked data macro define.
 	/// </summary>
-	public class SceneTransitionSystemMacroDefine :  IActiveBuildTargetChanged
+	public class STSMacroDefine :  IActiveBuildTargetChanged
 	{
 		//-------------------------------------------------------------------------------------------------------------
 		/// <summary>
@@ -33,16 +33,16 @@ namespace BasicToolBox
 		/// <summary>
 		/// The shared instance used for this class.
 		/// </summary>
-		static SceneTransitionSystemMacroDefine kSharedInstance;
+		static STSMacroDefine kSharedInstance;
 		//-------------------------------------------------------------------------------------------------------------
 		/// <summary>
 		/// Initializes the <see cref="NetWorkedData.SceneTransitionSystemMacroDefine"/> class. 
 		/// Instance kSharedInstance to use it when method OnActiveBuildTargetChanged must be invoked
 		/// </summary>
-		static SceneTransitionSystemMacroDefine ()
+		static STSMacroDefine ()
 		{
 			if (kSharedInstance == null) {
-				kSharedInstance = new SceneTransitionSystemMacroDefine ();
+				kSharedInstance = new STSMacroDefine ();
 				kSharedInstance.OnChangedPlatform ();
 			}
 		}

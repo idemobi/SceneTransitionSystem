@@ -11,11 +11,22 @@ using System.Text.RegularExpressions;
 
 using UnityEngine;
 
+#if UNITY_MENU_IDEMOBI
+using UnityMenuIdemobi;
+#endif
+
 //=====================================================================================================================
 namespace SceneTransitionSystem
 {
 	public partial class STSConstants
-	{
+	{//-------------------------------------------------------------------------------------------------------------
+		// Menu Strings
+		#if UNITY_MENU_IDEMOBI
+		public const string K_MENU_BASE = UMIConstants.K_MENU_IDEMOBI;
+		#else
+		public const string K_MENU_BASE = "Window";
+		#endif
+		public const string K_MENU_IDEMOBI = 						K_MENU_BASE+"/Scene Transition System by ideMobi";
 		//-------------------------------------------------------------------------------------------------------------
 		// Idemobi alert Strings
 		public const string K_ALERT_IDEMOBI_TITLE = 				"SceneTransitionSystem";
@@ -23,11 +34,6 @@ namespace SceneTransitionSystem
 		public const string K_ALERT_IDEMOBI_OK = 					"Thanks!";
 		public const string K_ALERT_IDEMOBI_SEE_DOC = 				"See online docs";
 		public const string K_ALERT_IDEMOBI_DOC_HTTP = 				"http://www.idemobi.com/scenetransitionsystem";
-		//		public const string K_ALERT_IDEMOBI_DOC_HTTP = 				"http://idemobi.com/scenetransitionsystem/";
-		//-------------------------------------------------------------------------------------------------------------
-		// Menu Strings
-		public const string K_MENU_BASE = 							"Window/";
-		public const string K_MENU_IDEMOBI = 						K_MENU_BASE+"Scene Transition System by ideMobi";
 
 		//-------------------------------------------------------------------------------------------------------------
 	}
