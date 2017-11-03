@@ -33,7 +33,7 @@ namespace SceneTransitionSystem
 		/// Idemobis the editor info show.
 		/// </summary>
 #if UNITY_MENU_IDEMOBI
-		[MenuItem (STSConstants.K_MENU_IDEMOBI,false, 300)]
+		[MenuItem (STSConstants.K_MENU_IDEMOBI,false, 10000)]
 #else
 		[MenuItem (STSConstants.K_MENU_IDEMOBI,false, 100)]
 #endif

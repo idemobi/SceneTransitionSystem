@@ -26,7 +26,7 @@ namespace SceneTransitionSystem
 		#else
 		public const string K_MENU_BASE = "Window";
 		#endif
-		public const string K_MENU_IDEMOBI = 						K_MENU_BASE+"/Scene Transition System by ideMobi";
+		public const string K_MENU_IDEMOBI = 						K_MENU_BASE+"/Scene Transition System";
 		//-------------------------------------------------------------------------------------------------------------
 		// Idemobi alert Strings
 		public const string K_ALERT_IDEMOBI_TITLE = 				"SceneTransitionSystem";
