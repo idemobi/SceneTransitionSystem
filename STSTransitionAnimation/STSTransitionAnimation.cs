@@ -15,8 +15,8 @@ namespace SceneTransitionSystem
 {
 	public class STSTransitionAnimation : MonoBehaviour
 	{
-		private STSTransitionParameters PreviewParams;
-		private STSTransitionParameters NextParams;
+		//private STSTransitionParameters PreviewParams;
+		//private STSTransitionParameters NextParams;
 
 		private void InitInstance ()
 		{
@@ -38,7 +38,7 @@ namespace SceneTransitionSystem
 
 		// Fade effect method
 		private STSAnimationStyle m_AnimationStyle = STSAnimationStyle.None;
-		private Texture2D m_AnimationTexture;
+        private Texture2D m_AnimationTexture = null;
 		public Color m_AnimationColor = Color.yellow;
 		public Color m_AnimationPreviewColor = Color.yellow;
 		private float m_AnimationSpeed = 0.8f;
@@ -188,10 +188,10 @@ namespace SceneTransitionSystem
 			float tX = (1 - m_AnimationCounter) * sXDirection;
 			float tY = (1 - m_AnimationCounter) * sYDirection;
 
-			if (sYDirection == 0) {
+			if (sYDirection == 0.0F) {
 				tY = 0;
 			}
-			if (sXDirection == 0) {
+			if (sXDirection == 0.0F) {
 				tX = 0;
 			}
 			Debug.Log ("tX = " + tX.ToString () + "  tY = " + tY.ToString ());
