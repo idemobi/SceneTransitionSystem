@@ -53,6 +53,16 @@ namespace SceneTransitionSystem
 			DictionaryAsPayload.Add (sKey, sObject);
 		}
 
+        public object GetObjectForKeyInPayload(string sKey)
+        {
+            object rObject = null;
+            if (DictionaryAsPayload != null)
+            {
+                rObject = DictionaryAsPayload[sKey];
+            }
+           return rObject;
+        }
+
 		public void AddObjectInPayload (object sObject)
 		{
 			if (ListAsPayload == null) {
