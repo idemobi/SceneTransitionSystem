@@ -1,0 +1,8 @@
+{
+    "name": "SceneTransitionSystem",
+    "references": [
+        "UnityMenuIdemobi"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": []
+}
