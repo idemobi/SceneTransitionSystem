@@ -5,10 +5,6 @@
 //
 //=====================================================================================================================
 
-using System;
-using System.IO;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 #if UNITY_EDITOR
@@ -23,20 +19,9 @@ namespace SceneTransitionSystem
 	{
 		//-------------------------------------------------------------------------------------------------------------
 		/// <summary>
-		/// Initializes a new instance of the <see cref="SceneTransitionSystem.STSEditorMenu"/> class.
-		/// </summary>
-		public STSEditorMenu ()
-		{
-		}
-		//-------------------------------------------------------------------------------------------------------------
-		/// <summary>
 		/// Idemobis the editor info show.
 		/// </summary>
-#if UNITY_MENU_IDEMOBI
-		[MenuItem (STSConstants.K_MENU_IDEMOBI,false, 10000)]
-#else
 		[MenuItem (STSConstants.K_MENU_IDEMOBI,false, 100)]
-#endif
 		public static void IdemobiInfoShow()
 		{
 			if (EditorUtility.DisplayDialog (STSConstants.K_ALERT_IDEMOBI_TITLE,
