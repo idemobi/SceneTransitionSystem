@@ -5,6 +5,7 @@
 //
 //=====================================================================================================================
 
+using System;
 using System.Collections.Generic;
 
 namespace SceneTransitionSystem
@@ -53,27 +54,43 @@ namespace SceneTransitionSystem
 			DictionaryAsPayload.Add (sKey, sObject);
 		}
 
-        public object GetObjectForKeyInPayload(string sKey)
+        public void AddObjectInPayload(object sObject)
         {
-            object rObject = null;
-            if (DictionaryAsPayload != null)
+            if (ListAsPayload == null)
             {
-                rObject = DictionaryAsPayload[sKey];
+                ListAsPayload = new List<object>();
             }
-           return rObject;
+            ListAsPayload.Add(sObject);
         }
 
-		public void AddObjectInPayload (object sObject)
-		{
-			if (ListAsPayload == null) {
-				ListAsPayload = new List<object> ();
-			}
-			ListAsPayload.Add(sObject);
-		}
+        public object GetObject(string sKey)
+        {
+            object value;
+            if( DictionaryAsPayload.TryGetValue(sKey, out value) )
+            {
+                return value;
+            }
+            return null;
+        }
 
-		private void intialization ()
-		{
-			
-		}
+        public bool GetBool(string sKey, bool sDefault = false)
+        {
+            object value;
+            if( DictionaryAsPayload.TryGetValue(sKey, out value) )
+            {
+                return Convert.ToBoolean(value);
+            }
+            return sDefault;
+        }
+
+        public string GetString(string sKey)
+        {
+            object value;
+            if( DictionaryAsPayload.TryGetValue(sKey, out value) )
+            {
+                return Convert.ToString(value);
+            }
+            return "";
+        }
 	}
 }

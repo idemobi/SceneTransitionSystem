@@ -49,9 +49,7 @@ namespace SceneTransitionSystem
 
 		// Scene load mode
 		private LoadSceneMode m_LoadSceneMode;
-
 		private Scene m_SceneToUnload;
-		private STSTransitionParameters m_SceneToUnloadParams;
 
 		// Class method
 		public static void LoadScene (string sNextSceneName,
