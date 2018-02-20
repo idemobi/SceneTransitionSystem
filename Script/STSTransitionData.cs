@@ -8,44 +8,51 @@
 using System;
 using System.Collections.Generic;
 
+//=====================================================================================================================
 namespace SceneTransitionSystem
 {
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    /// <summary>
+    /// Transition scene system
+    /// </summary>
+    //-----------------------------------------------------------------------------------------------------------------
 	public class STSTransitionData
 	{
+        //-------------------------------------------------------------------------------------------------------------
 		public string InternalName;
 		public string Title;
 		public string Subtitle;
 		public string Level;
 		public List<object> ListAsPayload;
 		public Dictionary<string, object> DictionaryAsPayload;
-
+        //-------------------------------------------------------------------------------------------------------------
 		public STSTransitionData ()
 		{
 		}
-
+        //-------------------------------------------------------------------------------------------------------------
 		public STSTransitionData (string sInternalName)
 		{
-			this.InternalName = sInternalName;
+			InternalName = sInternalName;
 		}
-
+        //-------------------------------------------------------------------------------------------------------------
 		public STSTransitionData (string sInternalName, string sTitle, string sSubtitle, string sLevel)
 		{
-			this.InternalName = sInternalName;
-			this.Title = sTitle;
-			this.Subtitle = sSubtitle;
-			this.Level = sLevel;
+			InternalName = sInternalName;
+			Title = sTitle;
+			Subtitle = sSubtitle;
+			Level = sLevel;
 		}
-
+        //-------------------------------------------------------------------------------------------------------------
 		public STSTransitionData (string sInternalName, string sTitle, string sSubtitle, string sLevel, List<object> sListAsPayload, Dictionary<string, object> sDictionaryAsPayload)
 		{
-			this.InternalName = sInternalName;
-			this.Title = sTitle;
-			this.Subtitle = sSubtitle;
-			this.Level = sLevel;
-			this.ListAsPayload = sListAsPayload;
-			this.DictionaryAsPayload = sDictionaryAsPayload;
-			}
-
+			InternalName = sInternalName;
+			Title = sTitle;
+			Subtitle = sSubtitle;
+			Level = sLevel;
+			ListAsPayload = sListAsPayload;
+			DictionaryAsPayload = sDictionaryAsPayload;
+		}
+        //-------------------------------------------------------------------------------------------------------------
 		public void AddObjectForKeyInPayload (string sKey, object sObject)
 		{
 			if (DictionaryAsPayload == null) {
@@ -53,7 +60,7 @@ namespace SceneTransitionSystem
 			}
 			DictionaryAsPayload.Add (sKey, sObject);
 		}
-
+        //-------------------------------------------------------------------------------------------------------------
         public void AddObjectInPayload(object sObject)
         {
             if (ListAsPayload == null)
@@ -62,7 +69,7 @@ namespace SceneTransitionSystem
             }
             ListAsPayload.Add(sObject);
         }
-
+        //-------------------------------------------------------------------------------------------------------------
         public object GetObject(string sKey)
         {
             object value;
@@ -72,7 +79,7 @@ namespace SceneTransitionSystem
             }
             return null;
         }
-
+        //-------------------------------------------------------------------------------------------------------------
         public bool GetBool(string sKey, bool sDefault = false)
         {
             object value;
@@ -82,7 +89,7 @@ namespace SceneTransitionSystem
             }
             return sDefault;
         }
-
+        //-------------------------------------------------------------------------------------------------------------
         public string GetString(string sKey)
         {
             object value;
@@ -92,5 +99,8 @@ namespace SceneTransitionSystem
             }
             return "";
         }
-	}
+        //-------------------------------------------------------------------------------------------------------------
+    }
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 }
+//=====================================================================================================================
