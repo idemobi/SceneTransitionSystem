@@ -4,10 +4,13 @@ using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using UnityEngine;
 
+//=====================================================================================================================
 namespace SceneTransitionSystem
 {
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     public class STSTransitionController : MonoBehaviour
-	{
+    {
+        //-------------------------------------------------------------------------------------------------------------
 		private static STSTransitionController k_Singleton = null;
 
 		// initialized or not?
@@ -21,6 +24,8 @@ namespace SceneTransitionSystem
 
 		// Data to transmit to the other scenes
 		private STSTransitionData m_TransitionData;
+
+        // Old secene params
 		private STSTransitionParameters m_OldSceneParams;
 		private STSTransitionStandBy m_OldStandByParams;
 
@@ -62,6 +67,7 @@ namespace SceneTransitionSystem
 //		private TransitionLoadingScript m_NextSceneLoadingFinish;
 //		private TransitionEventScript m_StandByFinish;
 
+        //-------------------------------------------------------------------------------------------------------------
 		// Class method
 		public static void LoadScene(string sNextSceneName,
             LoadSceneMode sLoadSceneMode = LoadSceneMode.Single,
@@ -70,8 +76,8 @@ namespace SceneTransitionSystem
 		{
 			Singleton();
 			k_Singleton.LoadSceneByNameMethod (sNextSceneName, sLoadSceneMode, sIntermediateSceneName, sPayload);
-		}
-
+        }
+        //-------------------------------------------------------------------------------------------------------------
         public static void LoadPreviousScene()
         {
             Dictionary<string, object> tParams = _previousScene[_previousScene.Count - 1];
@@ -91,19 +97,19 @@ namespace SceneTransitionSystem
 
             _previousScene.RemoveAt(_previousScene.Count - 1);
         }
-
+        //-------------------------------------------------------------------------------------------------------------
 		public static void UnloadScene (string sSceneName, string sNextSceneName, string sIntermediateSceneName = null)
 		{
 			Singleton();
 			k_Singleton.UnloadSceneByNameMethod (sSceneName, sIntermediateSceneName, sNextSceneName);
-		}
-
+        }
+        //-------------------------------------------------------------------------------------------------------------
 		public static void UnloadSceneNotActive (string sSceneNotActiveName)
 		{
 			Singleton();
 			k_Singleton.UnloadSceneNotActiveByNameMethod (sSceneNotActiveName);
-		}
-		
+        }
+        //-------------------------------------------------------------------------------------------------------------
 //		public TransitionControllerScript () 
 //		{
 //			Debug.Log ("TransitionControllerScript Constructor");
@@ -115,12 +121,12 @@ namespace SceneTransitionSystem
 //					this = k_Singleton;
 //				}
 //			}
-//		}
-
+        //		}
+        //-------------------------------------------------------------------------------------------------------------
 		// Singleton
 		public static STSTransitionController Singleton ()
 		{
-			//Debug.Log ("TransitionControllerScript Singleton");
+            Debug.Log ("STSTransitionController Singleton()");
 			if (k_Singleton == null) {
 				// I need to create singleton
 				GameObject tObjToSpawn;
@@ -140,18 +146,18 @@ namespace SceneTransitionSystem
 
 			}
 			return k_Singleton;
-		}
-
+        }
+        //-------------------------------------------------------------------------------------------------------------
 		// Memory managment
 		private void InitInstance ()
-		{
-			//Debug.Log ("TransitionControllerScript InitInstance");
-		}
-
+        {
+            Debug.Log("STSTransitionController InitInstance()");
+        }
+        //-------------------------------------------------------------------------------------------------------------
 		//Awake is always called before any Start functions
 		private void Awake ()
-		{
-			//Debug.Log ("TransitionControllerScript Awake");
+        {
+            Debug.Log("STSTransitionController Awake()");
 			//Check if instance already exists
 			if (k_Singleton == null) {
 				//if not, set instance to this
@@ -170,16 +176,17 @@ namespace SceneTransitionSystem
 			//Sets this to not be destroyed when reloading scene
 			DontDestroyOnLoad (gameObject);
 			//Call the InitGame function to initialize the first level 
-		}
-
+        }
+        //-------------------------------------------------------------------------------------------------------------
 		private void OnDestroy ()
-		{
-			//Debug.Log ("TransitionControllerScript OnDestroy");
-		}
-
+        {
+            Debug.Log("STSTransitionController OnDestroy()");
+        }
+        //-------------------------------------------------------------------------------------------------------------
 		// Instance method
 		private void UnloadSceneByNameMethod (string sSceneName, string sIntermediateSceneName, string sNextSceneName)
-		{
+        {
+            Debug.Log("STSTransitionController UnloadSceneByNameMethod()");
 			if (m_TransitionInProgress == false) 
 			{
 				m_TransitionInProgress = true;
@@ -222,10 +229,11 @@ namespace SceneTransitionSystem
 				/*WARNING*/
 				Debug.Log ("Transition allready in progress …");
 			}
-		}
-
+        }
+        //-------------------------------------------------------------------------------------------------------------
 		private void UnloadSceneNotActiveByNameMethod (string sSceneName)
-		{
+        {
+            Debug.Log("STSTransitionController UnloadSceneNotActiveByNameMethod()");
 			if (m_TransitionInProgress == false)
 			{
 				m_TransitionInProgress = true;
@@ -255,10 +263,11 @@ namespace SceneTransitionSystem
 				/*WARNING*/
 				Debug.Log ("Transition allready in progress …");
 			}
-		}
-
+        }
+        //-------------------------------------------------------------------------------------------------------------
 		private void LoadSceneByNameMethod (string sNextSceneName, LoadSceneMode sLoadSceneMode, string sIntermediateSceneName, STSTransitionData sPayload)
-		{
+        {
+            Debug.Log("STSTransitionController LoadSceneByNameMethod()");
 			if (SceneManager.GetActiveScene ().name != sNextSceneName)
 			{
 			    if (m_TransitionInProgress == false)
@@ -295,11 +304,12 @@ namespace SceneTransitionSystem
 				/*WARNING*/
 				Debug.Log ("Transition not necessary : active Scene is the Request Scene");
 			}
-		}
-			
+        }
+        //-------------------------------------------------------------------------------------------------------------	
 		// Async method
 		private IEnumerator UnloadSceneAsync ()
-		{
+        {
+            Debug.Log("STSTransitionController UnloadSceneAsync()");
 			STSTransitionParameters tTransitionParametersScript = GetTransitionsParams (m_SceneToUnload, true);
 			// disable the user interactions
 			EventSystemEnable (m_SceneToUnload, false);
@@ -321,10 +331,11 @@ namespace SceneTransitionSystem
 			}
 			// enable the user interactions
 			EventSystemEnable (SceneManager.GetActiveScene (), true);
-		}
-
+        }
+        //-------------------------------------------------------------------------------------------------------------
 		private IEnumerator LoadSceneByNameAsync ()
-		{
+        {
+            Debug.Log("STSTransitionController LoadSceneByNameAsync()");
 			// prepare future old params
 			m_OldSceneParams = this.GetComponent<STSTransitionParameters> ();
 			m_OldStandByParams = this.GetComponent<STSTransitionStandBy> ();
@@ -342,11 +353,16 @@ namespace SceneTransitionSystem
 				m_PreviewSceneParams.ThisSceneDisable.Invoke (m_TransitionData);
 			}
 			// Transition Out will Start
-			if (m_PreviewSceneParams.AnimationOut.Start != null)
-			{
-				// calcul estimated second
-				m_PreviewSceneParams.AnimationOut.Start.Invoke (m_TransitionData, m_PreviewSceneParams.AnimationOut.Seconds);
-			}
+			//if (m_PreviewSceneParams.AnimationOut.Start != null)
+			//{
+			//	// calcul estimated second
+			//	m_PreviewSceneParams.AnimationOut.Start.Invoke (m_TransitionData, m_PreviewSceneParams.AnimationOut.Seconds);
+			//}
+            if (m_PreviewSceneParams.OnExitStart != null)
+            {
+                // calcul estimated second
+                m_PreviewSceneParams.OnExitStart.Invoke(m_TransitionData);
+            }
 			// Transition Out GO!
 			AnimationTransitionOut (m_PreviewSceneParams);
 			while (AnimationFinished () == false)
@@ -355,10 +371,14 @@ namespace SceneTransitionSystem
 			}
 
 			// Transition Out Finish
-			if (m_PreviewSceneParams.AnimationOut.Finish != null) 
-			{
-				m_PreviewSceneParams.AnimationOut.Finish.Invoke (m_TransitionData);
-			}
+			//if (m_PreviewSceneParams.AnimationOut.Finish != null) 
+			//{
+				//m_PreviewSceneParams.AnimationOut.Finish.Invoke (m_TransitionData);
+            //}
+            if (m_PreviewSceneParams.OnExitFinish != null)
+            {
+                m_PreviewSceneParams.OnExitFinish.Invoke(m_TransitionData);
+            }
 			// Transition setp 1 is finished this scene can be replace by the next or intermediate Scene
 			//-------------------------------
 			// PREVIEW SCENE IS OUT
@@ -426,18 +446,26 @@ namespace SceneTransitionSystem
 					m_IntermediateSceneParams.ThisSceneLoaded.Invoke (m_TransitionData);
 				}
 				// animation in
-				if (m_IntermediateSceneParams.AnimationIn.Start != null) {
-					m_IntermediateSceneParams.AnimationIn.Start.Invoke (m_TransitionData, m_IntermediateSceneParams.AnimationIn.Seconds);
-				}
+				//if (m_IntermediateSceneParams.AnimationIn.Start != null) {
+					//m_IntermediateSceneParams.AnimationIn.Start.Invoke (m_TransitionData, m_IntermediateSceneParams.AnimationIn.Seconds);
+                //}
+                if (m_IntermediateSceneParams.OnEnterStart != null)
+                {
+                    m_IntermediateSceneParams.OnEnterStart.Invoke(m_TransitionData);
+                }
 				// animation in Go!
 				AnimationTransitionIn (m_IntermediateSceneParams);
 				while (AnimationFinished () == false) {
 					yield return null;
 				}
 				// animation in Finish
-				if (m_IntermediateSceneParams.AnimationIn.Finish != null) {
-					m_IntermediateSceneParams.AnimationIn.Finish.Invoke (m_TransitionData);
-				}
+				//if (m_IntermediateSceneParams.AnimationIn.Finish != null) {
+					//m_IntermediateSceneParams.AnimationIn.Finish.Invoke (m_TransitionData);
+                //}
+                if (m_IntermediateSceneParams.OnEnterFinish != null)
+                {
+                    m_IntermediateSceneParams.OnEnterFinish.Invoke(m_TransitionData);
+                }
 				// enable the user interactions 
 				EventSystemEnable (m_IntermediateScene, true);
 				// enable the user interactions 
@@ -551,10 +579,14 @@ namespace SceneTransitionSystem
 						m_IntermediateSceneParams.ThisSceneDisable.Invoke (m_TransitionData);
 					}
 					// intermediate scene Transition Out start 
-					if (m_IntermediateSceneParams.AnimationOut.Start != null) 
-					{
-						m_IntermediateSceneParams.AnimationOut.Start.Invoke (m_TransitionData, m_IntermediateSceneParams.AnimationOut.Seconds);
-					}
+					//if (m_IntermediateSceneParams.AnimationOut.Start != null) 
+					//{
+						//m_IntermediateSceneParams.AnimationOut.Start.Invoke (m_TransitionData, m_IntermediateSceneParams.AnimationOut.Seconds);
+                    //}
+                    if (m_IntermediateSceneParams.OnExitStart != null)
+                    {
+                        m_IntermediateSceneParams.OnExitStart.Invoke(m_TransitionData);
+                    }
 					// intermediate scene Transition Out GO! 
 					AnimationTransitionOut (m_IntermediateSceneParams);
 					while (AnimationFinished () == false) 
@@ -562,10 +594,14 @@ namespace SceneTransitionSystem
 						yield return null;
 					}
 					// intermediate scene Transition Out finished! 
-					if (m_IntermediateSceneParams.AnimationOut.Finish != null) 
-					{
-						m_IntermediateSceneParams.AnimationOut.Finish.Invoke (m_TransitionData);
-					}
+					//if (m_IntermediateSceneParams.AnimationOut.Finish != null) 
+					//{
+						//m_IntermediateSceneParams.AnimationOut.Finish.Invoke (m_TransitionData);
+                    //}
+                    if (m_IntermediateSceneParams.OnExitFinish != null)
+                    {
+                        m_IntermediateSceneParams.OnExitFinish.Invoke(m_TransitionData);
+                    }
 					// fadeout is finish
 					// will unloaded the intermediate scene
 					if (m_IntermediateSceneParams.ThisSceneWillUnloaded != null) 
@@ -621,18 +657,26 @@ namespace SceneTransitionSystem
 					}
 					// Transition scene disappear by fadeout 
 					AnimationTransitionOut (m_IntermediateSceneParams);
-					if (m_IntermediateSceneParams.AnimationOut.Start != null) 
-					{
-						m_IntermediateSceneParams.AnimationOut.Start.Invoke (m_TransitionData, m_IntermediateSceneParams.AnimationOut.Seconds);
-					}
+					//if (m_IntermediateSceneParams.AnimationOut.Start != null) 
+					//{
+						//m_IntermediateSceneParams.AnimationOut.Start.Invoke (m_TransitionData, m_IntermediateSceneParams.AnimationOut.Seconds);
+                    //}
+                    if (m_IntermediateSceneParams.OnExitStart != null)
+                    {
+                        m_IntermediateSceneParams.OnExitStart.Invoke(m_TransitionData);
+                    }
 					while (AnimationFinished () == false) 
 					{
 						yield return null;
 					}
-					if (m_IntermediateSceneParams.AnimationOut.Finish != null) 
-					{
-						m_IntermediateSceneParams.AnimationOut.Finish.Invoke (m_TransitionData);
-					}
+					//if (m_IntermediateSceneParams.AnimationOut.Finish != null) 
+					//{
+						//m_IntermediateSceneParams.AnimationOut.Finish.Invoke (m_TransitionData);
+                    //}
+                    if (m_IntermediateSceneParams.OnExitFinish != null)
+                    {
+                        m_IntermediateSceneParams.OnExitFinish.Invoke(m_TransitionData);
+                    }
 					// fadeout is finish
 					// unloaded the transition scene
 					if (m_IntermediateSceneParams.ThisSceneWillUnloaded != null) 
@@ -697,15 +741,23 @@ namespace SceneTransitionSystem
 			}
 			// Next scene appear by fade in 
 			AnimationTransitionIn (m_NextSceneParams);
-			if (m_NextSceneParams.AnimationIn.Start != null) {
-				m_NextSceneParams.AnimationIn.Start.Invoke (m_TransitionData, m_NextSceneParams.AnimationIn.Seconds);
-			}
+			//if (m_NextSceneParams.AnimationIn.Start != null) {
+				//m_NextSceneParams.AnimationIn.Start.Invoke (m_TransitionData, m_NextSceneParams.AnimationIn.Seconds);
+            //}
+            if (m_NextSceneParams.OnEnterStart != null)
+            {
+                m_NextSceneParams.OnEnterStart.Invoke(m_TransitionData);
+            }
 			while (AnimationFinished () == false) {
 				yield return null;
 			}
-			if (m_NextSceneParams.AnimationIn.Finish != null) {
-				m_NextSceneParams.AnimationIn.Finish.Invoke (m_TransitionData);
-			}
+			//if (m_NextSceneParams.AnimationIn.Finish != null) {
+				//m_NextSceneParams.AnimationIn.Finish.Invoke (m_TransitionData);
+            //}
+            if (m_NextSceneParams.OnEnterFinish != null)
+            {
+                m_NextSceneParams.OnEnterFinish.Invoke(m_TransitionData);
+            }
 			// fadein is finish
 			// next scene user interaction enable
 			EventSystemPrevent (true);
@@ -718,12 +770,13 @@ namespace SceneTransitionSystem
 
 			// My transition is finish. I can do an another transition
 			m_TransitionInProgress = false;
-		}
-
+        }
+        //-------------------------------------------------------------------------------------------------------------
 		// toolbox method
 
 		private void AudioListenerPrevent ()
-		{
+        {
+            Debug.Log("STSTransitionController AudioListenerPrevent()");
 			for (int i = 0; i < SceneManager.sceneCount; i++) {
 				Scene tScene = SceneManager.GetSceneAt (i);
 				if (tScene.isLoaded) {
@@ -731,10 +784,11 @@ namespace SceneTransitionSystem
 				}
 			}
 			AudioListenerEnable (SceneManager.GetActiveScene (), true);
-		}
-
+        }
+        //-------------------------------------------------------------------------------------------------------------
 		private void AudioListenerEnable (Scene sScene, bool sEnable)
-		{
+        {
+            Debug.Log("STSTransitionController AudioListenerEnable()");
 			if (sScene.isLoaded) {
 				AudioListener tAudioListener = null;
 				GameObject[] tAllRootObjects = sScene.GetRootGameObjects ();
@@ -749,10 +803,11 @@ namespace SceneTransitionSystem
 					//Debug.Log ("No <AudioListener> type component found in the root Objects. Becarefull!");
 				}
 			}
-		}
-
+        }
+        //-------------------------------------------------------------------------------------------------------------
 		private void EventSystemPrevent (bool sEnable)
-		{
+        {
+            Debug.Log("STSTransitionController EventSystemPrevent()");
 			for (int i = 0; i < SceneManager.sceneCount; i++) {
 				Scene tScene = SceneManager.GetSceneAt (i);
 				if (tScene.isLoaded) {
@@ -760,11 +815,11 @@ namespace SceneTransitionSystem
 				}
 			}
 			EventSystemEnable (SceneManager.GetActiveScene(), sEnable);
-		}
-
+        }
+        //-------------------------------------------------------------------------------------------------------------
 		private void EventSystemEnable (Scene sScene, bool sEnable)
-		{
-
+        {
+            Debug.Log("STSTransitionController EventSystemEnable()");
 			if (m_PreventUserInteractions == true) 
 			{
 				EventSystem tEventSystem = null;
@@ -785,10 +840,11 @@ namespace SceneTransitionSystem
 					//Debug.Log ("No <EventSystem> type component found in the root Objects. Becarefull!");
 				}
 			}
-		}
-
+        }
+        //-------------------------------------------------------------------------------------------------------------
 		private STSTransitionParameters GetTransitionsParams (Scene sScene, bool sStartTransition)
-		{
+        {
+            Debug.Log("STSTransitionController GetTransitionsParams()");
 //			if (sStartTransition == false) 
 //			{
 ////			m_FadeInPreviewColor = m_FadeInColor;
@@ -812,14 +868,16 @@ namespace SceneTransitionSystem
 				GameObject tObjToSpawn = new GameObject ("TransitionControllerObject");
 				tObjToSpawn.AddComponent<STSTransitionParameters> ();
 				tTransitionParametersScript = (STSTransitionParameters)tObjToSpawn.GetComponent<STSTransitionParameters> ();
-				tTransitionParametersScript.AnimationIn.Style = STSAnimationStyle.FadeIn;
-				tTransitionParametersScript.AnimationOut.Style = STSAnimationStyle.FadeOut;
-				tTransitionParametersScript.AnimationIn.Color = Color.black;
-				tTransitionParametersScript.AnimationOut.Color = Color.black;
-				tTransitionParametersScript.AnimationIn.Texture = null;
-				tTransitionParametersScript.AnimationOut.Texture = null;
-				tTransitionParametersScript.AnimationIn.Seconds = 0.8f;
-				tTransitionParametersScript.AnimationOut.Seconds = 0.8f;
+                tTransitionParametersScript.EffectOnEnter = STSEffectType.Default.Dupplicate();
+                tTransitionParametersScript.EffectOnExit = STSEffectType.Default.Dupplicate();
+				//tTransitionParametersScript.AnimationIn.Style = STSAnimationStyle.FadeIn;
+				//tTransitionParametersScript.AnimationOut.Style = STSAnimationStyle.FadeOut;
+				//tTransitionParametersScript.AnimationIn.Color = Color.black;
+				//tTransitionParametersScript.AnimationOut.Color = Color.black;
+				//tTransitionParametersScript.AnimationIn.Texture = null;
+				//tTransitionParametersScript.AnimationOut.Texture = null;
+				//tTransitionParametersScript.AnimationIn.Seconds = 0.8f;
+				//tTransitionParametersScript.AnimationOut.Seconds = 0.8f;
 			} 
 //			else 
 //			{
@@ -868,12 +926,11 @@ namespace SceneTransitionSystem
 //			}
 
 			return tTransitionParametersScript;
-		}
-
-
-
+        }
+        //-------------------------------------------------------------------------------------------------------------
 		private STSTransitionStandBy GetStandByParams (Scene sScene)
-		{
+        {
+            Debug.Log("STSTransitionController GetStandByParams()");
             //			TransitionStandByScript tTransitionStandByScript = GameObject.FindObjectOfType<TransitionStandByScript> ();
             STSTransitionStandBy tTransitionStandByScript = null;
 			GameObject[] tAllRootObjects = sScene.GetRootGameObjects ();
@@ -894,37 +951,31 @@ namespace SceneTransitionSystem
 			}
 
 			return tTransitionStandByScript;
-		}
+        }
+        //-------------------------------------------------------------------------------------------------------------
 
 
-
-
-
-
-
-
-
-
+        private STSEffect EffectType;
 
 
 		// Fade effect method
-		private STSAnimationStyle m_AnimationStyle = STSAnimationStyle.None;
-		private Texture2D m_AnimationTexture;
+		//private STSAnimationStyle m_AnimationStyle = STSAnimationStyle.None;
+		//private Texture2D m_AnimationTexture;
 //		private Texture2D m_FadeInTexture;
 //		private Texture2D m_FadeOutTexture;
 
-		public Color m_AnimationColor = Color.yellow;
+		//public Color m_AnimationColor = Color.yellow;
 //		private Color m_FadeInColor = Color.red;
 //		private Color m_FadeOutColor = Color.red;
 
-		public Color m_AnimationPreviewColor = Color.yellow;
+		//public Color m_AnimationPreviewColor = Color.yellow;
 //		private Color m_FadeOutPreviewColor = Color.red;
 
 //		private float m_FadeInSeconds = 1.0f;
 		// the fadding speed
 //		private float m_FadeOutSeconds = 1.0f;
 		// the fadding speed
-		private float m_AnimationSpeed = 0.8f;
+		//private float m_AnimationSpeed = 0.8f;
 		// the fadding speed
 
 		private int m_DrawDepth = -1000;
@@ -933,66 +984,94 @@ namespace SceneTransitionSystem
 		//the textur's alpha value between 0 and 1
 
 		// Animation counter
-		private float m_AnimationCounter = 0.0f;
-		private int m_AnimationDirection = -1;
+		//private float m_AnimationCounter = 0.0f;
+		//private int m_AnimationDirection = -1;
 		// the direction to fade : in = -1 or out = 1
 
-		private bool m_AnimationFinish = false;
-		private bool m_AnimationInProgress = false;
+		//private bool m_AnimationFinish = false;
+		//private bool m_AnimationInProgress = false;
 
-
+        //-------------------------------------------------------------------------------------------------------------
 		private bool AnimationProgress ()
-		{
-			return m_AnimationInProgress;
-		}
-
+        {
+            Debug.Log("STSTransitionController AnimationProgress()");
+            //return m_AnimationInProgress;
+            return EffectType.AnimIsPlaying;
+        }
+        //-------------------------------------------------------------------------------------------------------------
 		private bool AnimationFinished ()
-		{
-			return m_AnimationFinish;
-		}
-
+        {
+            //Debug.Log("STSTransitionController AnimationFinished()");
+            //return m_AnimationFinish;
+            return EffectType.AnimIsFinished;
+        }
+        //-------------------------------------------------------------------------------------------------------------
 		private void AnimationTransitionIn (STSTransitionParameters sThisSceneParameters)
-		{
-			m_AnimationCounter = 1.0f;
-			m_AnimationStyle = sThisSceneParameters.AnimationIn.Style;
-			m_AnimationTexture = sThisSceneParameters.AnimationIn.Texture;
-			m_AnimationColor = sThisSceneParameters.AnimationIn.Color;
-			m_AnimationSpeed = 0.50f / sThisSceneParameters.AnimationIn.Seconds; // m_AlphaValue += m_FadeDirection * m_FadeSpeed * Time.deltaTime;
-			//Debug.Log ("m_OldSceneParams = " + m_OldSceneParams);
-			if (m_OldSceneParams != null) 
-				{
-				m_AnimationPreviewColor = m_OldSceneParams.AnimationOut.Color;
-				} 
-				else 
-				{
-				//Debug.Log ("m_OldSceneParams is null ?!");
-				m_AnimationPreviewColor = sThisSceneParameters.AnimationOut.Color;
-				}
-				m_AnimationDirection = -1;
-				m_AnimationInProgress = true;
-				m_AnimationFinish = false;
-		}
-
+        {
+            Debug.Log("STSTransitionController AnimationTransitionIn()");
+            Color tOldColor = Color.black;
+            float tInterlude = 0;
+            if (EffectType != null)
+            {
+                // I get the old value of 
+                tOldColor = EffectType.TintPrimary;
+                tInterlude = sThisSceneParameters.InterEffectDuration;
+            }
+            EffectType = sThisSceneParameters.EffectOnEnter.GetEffect();
+            if (EffectType == null)
+            {
+                EffectType = new STSEffectFade();
+            }
+            EffectType.StartEffectEnter(new Rect(0, 0, Screen.width, Screen.height), tOldColor, tInterlude);
+			//m_AnimationCounter = 1.0f;
+			//m_AnimationStyle = sThisSceneParameters.AnimationIn.Style;
+			//m_AnimationTexture = sThisSceneParameters.AnimationIn.Texture;
+			//m_AnimationColor = sThisSceneParameters.AnimationIn.Color;
+			//m_AnimationSpeed = 0.50f / sThisSceneParameters.AnimationIn.Seconds; // m_AlphaValue += m_FadeDirection * m_FadeSpeed * Time.deltaTime;
+			////Debug.Log ("m_OldSceneParams = " + m_OldSceneParams);
+			//if (m_OldSceneParams != null) 
+				//{
+				//m_AnimationPreviewColor = m_OldSceneParams.AnimationOut.Color;
+				//} 
+				//else 
+				//{
+				////Debug.Log ("m_OldSceneParams is null ?!");
+				//m_AnimationPreviewColor = sThisSceneParameters.AnimationOut.Color;
+				//}
+				//m_AnimationDirection = -1;
+				//m_AnimationInProgress = true;
+				//m_AnimationFinish = false;
+        }
+        //-------------------------------------------------------------------------------------------------------------
 		private void AnimationTransitionOut (STSTransitionParameters sThisSceneParameters)
-		{
-			m_AnimationCounter = 0.0f;
-			m_AnimationStyle = sThisSceneParameters.AnimationOut.Style;
-			m_AnimationTexture = sThisSceneParameters.AnimationOut.Texture;
-			m_AnimationColor = sThisSceneParameters.AnimationOut.Color;
-			m_AnimationSpeed = 0.50f / sThisSceneParameters.AnimationOut.Seconds; // m_AlphaValue += m_FadeDirection * m_FadeSpeed * Time.deltaTime;
-			if (m_OldSceneParams != null) 
-			{
-				m_AnimationPreviewColor = m_OldSceneParams.AnimationOut.Color;
-			} 
-			else 
-			{
-				m_AnimationPreviewColor = sThisSceneParameters.AnimationOut.Color;
-			}
-			m_AnimationDirection = 1;
-			m_AnimationInProgress = true;
-			m_AnimationFinish = false;
-		}
+        {
+            Debug.Log("STSTransitionController AnimationTransitionOut()");
 
+            EffectType = sThisSceneParameters.EffectOnExit.GetEffect();
+            if (EffectType == null)
+            {
+                EffectType = new STSEffectFade();
+            }
+            EffectType.StartEffectExit(new Rect(0, 0, Screen.width, Screen.height));
+
+			//m_AnimationCounter = 0.0f;
+			//m_AnimationStyle = sThisSceneParameters.AnimationOut.Style;
+			//m_AnimationTexture = sThisSceneParameters.AnimationOut.Texture;
+			//m_AnimationColor = sThisSceneParameters.AnimationOut.Color;
+			//m_AnimationSpeed = 0.50f / sThisSceneParameters.AnimationOut.Seconds; // m_AlphaValue += m_FadeDirection * m_FadeSpeed * Time.deltaTime;
+			//if (m_OldSceneParams != null) 
+			//{
+			//	m_AnimationPreviewColor = m_OldSceneParams.AnimationOut.Color;
+			//} 
+			//else 
+			//{
+			//	m_AnimationPreviewColor = sThisSceneParameters.AnimationOut.Color;
+			//}
+			//m_AnimationDirection = 1;
+			//m_AnimationInProgress = true;
+			//m_AnimationFinish = false;
+        }
+        //-------------------------------------------------------------------------------------------------------------
 //		private float BeginFade (int sDirection)
 //		{
 //			m_AnimationDirection = sDirection;
@@ -1023,39 +1102,43 @@ namespace SceneTransitionSystem
 //		private bool m_AutoLoadNextScene = true;
 		private float m_StandByTimer;
 		private bool m_LauchNextScene = false;
-		private bool m_StandByInProgress = false;
-
+        private bool m_StandByInProgress = false;
+        //-------------------------------------------------------------------------------------------------------------
 		private void StandBy ()
-		{
+        {
+            Debug.Log("STSTransitionController StandBy()");
 			m_StandByTimer = 0.0f;
 			m_StandByInProgress = true;
 			m_LauchNextScene = false;
-		}
-
+        }
+        //-------------------------------------------------------------------------------------------------------------
 		private bool StandByIsProgressing ()
-		{
+        {
+            Debug.Log("STSTransitionController StandByIsProgressing()");
 			return m_StandByInProgress;
-		}
-
+        }
+        //-------------------------------------------------------------------------------------------------------------
 		private bool StandByIsFinished ()
-		{
+        {
+            Debug.Log("STSTransitionController StandByIsFinished()");
 			return m_LauchNextScene;
-		}
-
+        }
+        //-------------------------------------------------------------------------------------------------------------
 		private bool WaitingToLauchNextScene ()
-		{
+        {
+            Debug.Log("STSTransitionController WaitingToLauchNextScene()");
 			return !m_LauchNextScene;
-		}
-
+        }
+        //-------------------------------------------------------------------------------------------------------------
 		public static void FinishStandBy ()
-		{
+        {
+            Debug.Log("STSTransitionController FinishStandBy()");
             STSTransitionController.Singleton();
 			k_Singleton.EventSystemEnable (k_Singleton.m_IntermediateScene, false);
 			k_Singleton.m_LauchNextScene = true;
 			k_Singleton.m_StandByInProgress = true;
-		}
-
-
+        }
+        //-------------------------------------------------------------------------------------------------------------
 
 	// animations
 
@@ -1064,76 +1147,80 @@ namespace SceneTransitionSystem
 		// override method
 
 		void OnGUI ()
-		{
-
+        {
+            //Debug.Log("STSTransitionController OnGUI()");
+            if (EffectType != null)
+            {
+                EffectType.DrawMaster(new Rect(0, 0, Screen.width, Screen.height));
+            }
 			// waiting StandBy
-			if (m_IntermediateStandByParams != null) 
-			{
-				if (m_StandByInProgress == true) 
-				{
-					m_StandByTimer += Time.deltaTime;
-					if (m_StandByTimer >= m_IntermediateStandByParams.StandBySeconds) 
-					{
-						m_StandByInProgress = false;
-						if (m_IntermediateStandByParams.AutoLoadNextScene == true) 
-						{
-							m_LauchNextScene = true;
-						}
-					}
-				}
-			}
-			switch (m_AnimationStyle) {
-			case STSAnimationStyle.FadeIn:
-				{
-					Animation_FadeIn ();
-				}
-				break;
-			case STSAnimationStyle.FadeOut:
-				{
-					Animation_FadeOut ();
-				}
-				break;
-			case STSAnimationStyle.ShutterBottomIn:
-				{
-					Animation_ShutterCutting (1, 1, 10, 1, 0, 1);
-				}
-				break;
-			case STSAnimationStyle.ShutterTopIn:
-				{
-					Animation_ShutterCutting (1, 1, 10, 1, 0, -1);
-				}
-				break;
-			case STSAnimationStyle.ShutterRightIn:
-				{
-					Animation_ShutterCutting (1, 1, 1, 10, 1, 0);
-				}
-				break;
-			case STSAnimationStyle.ShutterLeftIn:
-				{
-					Animation_ShutterCutting (1, 1, 1, 10, -1, 0);
-				}
-				break;
-			case STSAnimationStyle.ShutterBottomOut:
-				{
-					Animation_ShutterCutting (1, 1, 10, 1, 0, 1);
-				}
-				break;
-			case STSAnimationStyle.ShutterTopOut:
-				{
-					Animation_ShutterCutting (1, 1, 10, 1, 0, -1);
-				}
-				break;
-			case STSAnimationStyle.ShutterRightOut:
-				{
-					Animation_ShutterCutting (1, 1, 1, 10, 1, 0);
-				}
-				break;
-			case STSAnimationStyle.ShutterLeftOut:
-				{
-					Animation_ShutterCutting (1, 1, 1, 10, -1, 0);
-				}
-				break;
-			}
+			//if (m_IntermediateStandByParams != null) 
+			//{
+			//	if (m_StandByInProgress == true) 
+			//	{
+			//		m_StandByTimer += Time.deltaTime;
+			//		if (m_StandByTimer >= m_IntermediateStandByParams.StandBySeconds) 
+			//		{
+			//			m_StandByInProgress = false;
+			//			if (m_IntermediateStandByParams.AutoLoadNextScene == true) 
+			//			{
+			//				m_LauchNextScene = true;
+			//			}
+			//		}
+			//	}
+			//}
+			//switch (m_AnimationStyle) {
+			//case STSAnimationStyle.FadeIn:
+			//	{
+			//		Animation_FadeIn ();
+			//	}
+			//	break;
+			//case STSAnimationStyle.FadeOut:
+			//	{
+			//		Animation_FadeOut ();
+			//	}
+			//	break;
+			//case STSAnimationStyle.ShutterBottomIn:
+			//	{
+			//		Animation_ShutterCutting (1, 1, 10, 1, 0, 1);
+			//	}
+			//	break;
+			//case STSAnimationStyle.ShutterTopIn:
+			//	{
+			//		Animation_ShutterCutting (1, 1, 10, 1, 0, -1);
+			//	}
+			//	break;
+			//case STSAnimationStyle.ShutterRightIn:
+			//	{
+			//		Animation_ShutterCutting (1, 1, 1, 10, 1, 0);
+			//	}
+			//	break;
+			//case STSAnimationStyle.ShutterLeftIn:
+			//	{
+			//		Animation_ShutterCutting (1, 1, 1, 10, -1, 0);
+			//	}
+			//	break;
+			//case STSAnimationStyle.ShutterBottomOut:
+			//	{
+			//		Animation_ShutterCutting (1, 1, 10, 1, 0, 1);
+			//	}
+			//	break;
+			//case STSAnimationStyle.ShutterTopOut:
+			//	{
+			//		Animation_ShutterCutting (1, 1, 10, 1, 0, -1);
+			//	}
+			//	break;
+			//case STSAnimationStyle.ShutterRightOut:
+			//	{
+			//		Animation_ShutterCutting (1, 1, 1, 10, 1, 0);
+			//	}
+			//	break;
+			//case STSAnimationStyle.ShutterLeftOut:
+			//	{
+			//		Animation_ShutterCutting (1, 1, 1, 10, -1, 0);
+			//	}
+			//	break;
+			//}
 
 			//			if (m_AnimationStyle == TransitionParametersScript.AnimationStyle.FadeIn) 
 			//			{
@@ -1145,143 +1232,150 @@ namespace SceneTransitionSystem
 			//				Animation_FadeOut ();
 			//
 			//			}
-		}
+        }
+        //-------------------------------------------------------------------------------------------------------------
+ //       void Animation_Next() {
+ //           Debug.Log("STSTransitionController Animation_Next()");
+	//		//Debug.Log ("Animation_Next m_AnimationInProgress =" + m_AnimationInProgress);
+	//	if (m_AnimationInProgress == true) 
+	//		{
+	//			m_AnimationCounter +=  m_AnimationDirection * m_AnimationSpeed * Time.deltaTime;
+	//			m_AnimationCounter = Mathf.Clamp01 (m_AnimationCounter);
+	//			if (m_AnimationCounter == 0 && m_AnimationDirection == -1) 
+	//			{
+	//				m_AnimationFinish = true;
+	//				m_AnimationInProgress = false;
+	//			}
+	//			else if (m_AnimationCounter == 1 && m_AnimationDirection == 1) 
+	//			{
+	//				m_AnimationFinish = true;
+	//				m_AnimationInProgress = false;
+	//			}
+	//		}
+ //       }
+ //       //-------------------------------------------------------------------------------------------------------------
+	//private void Animation_FadeIn() 
+ //       {
+ //           Debug.Log("STSTransitionController Animation_FadeIn()");
+	//	Animation_Fade(-1);
+ //       }
+ //       //-------------------------------------------------------------------------------------------------------------
+	//private void Animation_FadeOut() 
+  //      {
+  //          Debug.Log("STSTransitionController Animation_FadeOut()");
+		//Animation_Fade(1);
+        //}
+        //-------------------------------------------------------------------------------------------------------------
+//	private void Animation_Fade(float sDirection) 
+//        {
+//            Debug.Log("STSTransitionController Animation_Fade()");
+//			float tAlpha = m_AnimationCounter;
+////			if (sDirection < 0) {
+////				tAlpha = 1 - tAlpha;
+////			}
+		//	//Debug.Log ("Animation_Fade direction = " + sDirection.ToString() + " alpha value = " + tAlpha.ToString() + " m_AnimationCounter = " + m_AnimationCounter.ToString());
+		//// Draw the animation
+		//	Color tfadeColor = Color.Lerp (m_AnimationColor, m_AnimationPreviewColor, m_AnimationCounter*2.0f);
+		////Color tfadeColor = m_AnimationColor;
+		//	Color tfadeColorAlpha = new Color (tfadeColor.r, tfadeColor.g, tfadeColor.b, tAlpha);
+		//if (m_AnimationTexture == null) 
+		//{
+		//	DrawQuad (new Rect (0, 0, Screen.width, Screen.height), tfadeColorAlpha);
+		//} 
+		//else 
+		//{
+		//	GUI.color = tfadeColorAlpha;	// set the alpha value
+		//	GUI.depth = m_DrawDepth; 	// make the black texture render on top (draw last)
+		//	GUI.DrawTexture (new Rect (0, 0, Screen.width, Screen.height), m_AnimationTexture); // draw the texture to fit the entire screen area
+		//}
+
+		//	// calculate the next animation
+		//	Animation_Next();
+		//}
+
+		//void Animation_Shutter (float sWidth, float sHeight, float sWidthCutting, float sHeightCutting, float sXDirection, float sYDirection)
+  //      {
+  //          Debug.Log("STSTransitionController Animation_Shutter()");
+		//	Color tfadeColor = Color.Lerp (m_AnimationColor, m_AnimationPreviewColor, m_AnimationCounter*2.0f);
+		//	float tX = (1-m_AnimationCounter)*sXDirection;
+		//	float tY = (1-m_AnimationCounter)*sYDirection;
+
+		//	if (sYDirection == 0) {
+		//		tY = 0;
+		//	}
+		//	if (sXDirection == 0) {
+		//		tX = 0;
+		//	}
+		//	Debug.Log ("tX = " + tX.ToString() + "  tY = " + tY.ToString());
+		//	Rect tRect = new Rect (Screen.width*tX, Screen.height*tY, Screen.width, Screen.height);
+		//	if (m_AnimationTexture == null) 
+		//	{
+		//		DrawQuad (tRect, tfadeColor);
+		//	} 
+		//	else 
+		//	{
+		//		GUI.color = tfadeColor;	// set the alpha value
+		//		GUI.depth = m_DrawDepth; 	// make the black texture render on top (draw last)
+		//		GUI.DrawTexture (tRect, m_AnimationTexture); // draw the texture to fit the entire screen area
+		//	}
+		//	// animation 
+		//	Animation_Next();
+  //      }
+  //      //-------------------------------------------------------------------------------------------------------------
+		//void Animation_ShutterCutting (float sWidth, float sHeight, float sWidthCutting, float sHeightCutting, float sXDirection, float sYDirection)
+  //      {
+  //          Debug.Log("STSTransitionController Animation_ShutterCutting()");
+		//	Color tfadeColor = Color.Lerp (m_AnimationColor, m_AnimationPreviewColor, m_AnimationCounter*2.0f);
+		//	float tX = (1-m_AnimationCounter)*sXDirection;
+		//	float tY = (1-m_AnimationCounter)*sYDirection;
+
+		//	if (sYDirection == 0) {
+		//		tY = 0;
+		//	}
+		//	if (sXDirection == 0) {
+		//		tX = 0;
+		//	}
+		//	float tIncrX = Screen.width / sWidthCutting;
+		//	for (int i = 0; i < sWidthCutting; i++) 
+		//	{
+		//		float Tyy = Screen.height * tY - i * tIncrX;
+
+		//		//Debug.Log ("tX = " + tX.ToString () + "  tY = " + tY.ToString ());
+		//		Rect tRect = new Rect (Screen.width * tX +tIncrX*i, Tyy, tIncrX, Screen.height);
+		//		if (m_AnimationTexture == null) {
+		//			DrawQuad (tRect, tfadeColor);
+		//		} else {
+		//			GUI.color = tfadeColor;	// set the alpha value
+		//			GUI.depth = m_DrawDepth; 	// make the black texture render on top (draw last)
+		//			GUI.DrawTexture (tRect, m_AnimationTexture); // draw the texture to fit the entire screen area
+		//		}
+		//	}
+		//	// animation 
+		//	Animation_Next();
+  //      }
+  //      //-------------------------------------------------------------------------------------------------------------
 
 
 
-	void Animation_Next() {
-			//Debug.Log ("Animation_Next m_AnimationInProgress =" + m_AnimationInProgress);
-		if (m_AnimationInProgress == true) 
-			{
-				m_AnimationCounter +=  m_AnimationDirection * m_AnimationSpeed * Time.deltaTime;
-				m_AnimationCounter = Mathf.Clamp01 (m_AnimationCounter);
-				if (m_AnimationCounter == 0 && m_AnimationDirection == -1) 
-				{
-					m_AnimationFinish = true;
-					m_AnimationInProgress = false;
-				}
-				else if (m_AnimationCounter == 1 && m_AnimationDirection == 1) 
-				{
-					m_AnimationFinish = true;
-					m_AnimationInProgress = false;
-				}
-			}
-		}
 
-	private void Animation_FadeIn() 
-	{
-		Animation_Fade(-1);
-	}
-	private void Animation_FadeOut() 
-	{
-		Animation_Fade(1);
-	}
-	private void Animation_Fade(float sDirection) 
-	{
-			float tAlpha = m_AnimationCounter;
-//			if (sDirection < 0) {
-//				tAlpha = 1 - tAlpha;
-//			}
-			//Debug.Log ("Animation_Fade direction = " + sDirection.ToString() + " alpha value = " + tAlpha.ToString() + " m_AnimationCounter = " + m_AnimationCounter.ToString());
-		// Draw the animation
-			Color tfadeColor = Color.Lerp (m_AnimationColor, m_AnimationPreviewColor, m_AnimationCounter*2.0f);
-		//Color tfadeColor = m_AnimationColor;
-			Color tfadeColorAlpha = new Color (tfadeColor.r, tfadeColor.g, tfadeColor.b, tAlpha);
-		if (m_AnimationTexture == null) 
-		{
-			DrawQuad (new Rect (0, 0, Screen.width, Screen.height), tfadeColorAlpha);
-		} 
-		else 
-		{
-			GUI.color = tfadeColorAlpha;	// set the alpha value
-			GUI.depth = m_DrawDepth; 	// make the black texture render on top (draw last)
-			GUI.DrawTexture (new Rect (0, 0, Screen.width, Screen.height), m_AnimationTexture); // draw the texture to fit the entire screen area
-		}
+		//// graphic tool box
 
-			// calculate the next animation
-			Animation_Next();
-		}
-
-		void Animation_Shutter (float sWidth, float sHeight, float sWidthCutting, float sHeightCutting, float sXDirection, float sYDirection)
-		{
-			Color tfadeColor = Color.Lerp (m_AnimationColor, m_AnimationPreviewColor, m_AnimationCounter*2.0f);
-			float tX = (1-m_AnimationCounter)*sXDirection;
-			float tY = (1-m_AnimationCounter)*sYDirection;
-
-			if (sYDirection == 0) {
-				tY = 0;
-			}
-			if (sXDirection == 0) {
-				tX = 0;
-			}
-			Debug.Log ("tX = " + tX.ToString() + "  tY = " + tY.ToString());
-			Rect tRect = new Rect (Screen.width*tX, Screen.height*tY, Screen.width, Screen.height);
-			if (m_AnimationTexture == null) 
-			{
-				DrawQuad (tRect, tfadeColor);
-			} 
-			else 
-			{
-				GUI.color = tfadeColor;	// set the alpha value
-				GUI.depth = m_DrawDepth; 	// make the black texture render on top (draw last)
-				GUI.DrawTexture (tRect, m_AnimationTexture); // draw the texture to fit the entire screen area
-			}
-			// animation 
-			Animation_Next();
-		}
-
-
-		void Animation_ShutterCutting (float sWidth, float sHeight, float sWidthCutting, float sHeightCutting, float sXDirection, float sYDirection)
-		{
-			Color tfadeColor = Color.Lerp (m_AnimationColor, m_AnimationPreviewColor, m_AnimationCounter*2.0f);
-			float tX = (1-m_AnimationCounter)*sXDirection;
-			float tY = (1-m_AnimationCounter)*sYDirection;
-
-			if (sYDirection == 0) {
-				tY = 0;
-			}
-			if (sXDirection == 0) {
-				tX = 0;
-			}
-			float tIncrX = Screen.width / sWidthCutting;
-			for (int i = 0; i < sWidthCutting; i++) 
-			{
-				float Tyy = Screen.height * tY - i * tIncrX;
-
-				//Debug.Log ("tX = " + tX.ToString () + "  tY = " + tY.ToString ());
-				Rect tRect = new Rect (Screen.width * tX +tIncrX*i, Tyy, tIncrX, Screen.height);
-				if (m_AnimationTexture == null) {
-					DrawQuad (tRect, tfadeColor);
-				} else {
-					GUI.color = tfadeColor;	// set the alpha value
-					GUI.depth = m_DrawDepth; 	// make the black texture render on top (draw last)
-					GUI.DrawTexture (tRect, m_AnimationTexture); // draw the texture to fit the entire screen area
-				}
-			}
-			// animation 
-			Animation_Next();
-		}
-
-
-
-
-
-
-
-		// graphic tool box
-
-		void DrawQuad (Rect position, Color color)
-		{
-			Texture2D tTexture = new Texture2D (1, 1);
-			tTexture.SetPixel (0, 0, color);
-			tTexture.Apply ();
-			GUI.depth = m_DrawDepth; 
-			GUI.skin.box.normal.background = tTexture;
-			GUI.Box (position, GUIContent.none);
-		}
+		//void DrawQuad (Rect position, Color color)
+   //     {
+   //         Debug.Log("STSTransitionController DrawQuad()");
+			//Texture2D tTexture = new Texture2D (1, 1);
+			//tTexture.SetPixel (0, 0, color);
+			//tTexture.Apply ();
+			//GUI.depth = m_DrawDepth; 
+			//GUI.skin.box.normal.background = tTexture;
+			//GUI.Box (position, GUIContent.none);
+        //}
+        //-------------------------------------------------------------------------------------------------------------
 
 		// end class
-	}
+    }
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	// end namespace
 }
+//=====================================================================================================================

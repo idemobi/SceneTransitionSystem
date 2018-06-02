@@ -7,16 +7,19 @@ using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
 
+//=====================================================================================================================
 namespace SceneTransitionSystem
 {
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	public class SceneTransitionSystemFindPackage : ScriptableObject
-	{
+    {
+        //-------------------------------------------------------------------------------------------------------------
 		public string ScriptFilePath;
 		public string ScriptFolder;
-		public string ScriptFolderFromAssets;
-
-		private static SceneTransitionSystemFindPackage kShareInstance;
-
+        public string ScriptFolderFromAssets;
+        //-------------------------------------------------------------------------------------------------------------
+        private static SceneTransitionSystemFindPackage kShareInstance;
+        //-------------------------------------------------------------------------------------------------------------
 		public static SceneTransitionSystemFindPackage ShareInstance ()
 		{
 			if (kShareInstance == null) {
@@ -24,8 +27,8 @@ namespace SceneTransitionSystem
 				kShareInstance.ReadPath ();
 			}
 			return kShareInstance; 
-		}
-
+        }
+        //-------------------------------------------------------------------------------------------------------------
 		public void ReadPath ()
 		{
 			MonoScript tMonoScript = MonoScript.FromScriptableObject (this);
@@ -34,12 +37,15 @@ namespace SceneTransitionSystem
 			ScriptFolder = tFileInfo.Directory.ToString ();
 			ScriptFolder = ScriptFolder.Replace ("\\", "/");
 			ScriptFolderFromAssets = "Assets"+ScriptFolder.Replace (Application.dataPath, "");
-		}
-
+        }
+        //-------------------------------------------------------------------------------------------------------------
 		public static string PackagePath (string sAddPath)
 		{
 			return ShareInstance ().ScriptFolderFromAssets + sAddPath;
-		}
-	}
+        }
+        //-------------------------------------------------------------------------------------------------------------
+    }
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 }
+//=====================================================================================================================
 #endif

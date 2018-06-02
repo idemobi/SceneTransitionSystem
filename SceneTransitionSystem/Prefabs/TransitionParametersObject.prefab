@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4583166921216416}
-  - component: {fileID: 114783452144278894}
+  - component: {fileID: 114255756779058156}
   m_Layer: 0
   m_Name: TransitionParametersObject
   m_TagString: Untagged
@@ -34,13 +34,13 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1562278732091664}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 375.5, y: 391, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114783452144278894
+--- !u!114 &114255756779058156
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -48,61 +48,65 @@ MonoBehaviour:
   m_GameObject: {fileID: 1562278732091664}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99938230d23924f0ea7df5bc987f6599, type: 3}
+  m_Script: {fileID: 11500000, guid: 113eedc581b5342c6b8180f0667893f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AnimationIn:
-    Style: 0
-    Color:
-      r: 0
-      g: 0
-      b: 0
-      a: 1
-    Texture: {fileID: 0}
-    Seconds: 0.5
-    Start:
-      m_PersistentCalls:
-        m_Calls: []
-      m_TypeName: SceneTransitionSystem.STSTransitionEventEstimatedSeconds, Assembly-CSharp,
-        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    Finish:
-      m_PersistentCalls:
-        m_Calls: []
-      m_TypeName: SceneTransitionSystem.STSTransitionEvent, Assembly-CSharp, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-  AnimationOut:
-    Style: 1
-    Color:
-      r: 0
-      g: 0
-      b: 0
-      a: 1
-    Texture: {fileID: 0}
-    Seconds: 0.5
-    Start:
-      m_PersistentCalls:
-        m_Calls: []
-      m_TypeName: SceneTransitionSystem.STSTransitionEventEstimatedSeconds, Assembly-CSharp,
-        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    Finish:
-      m_PersistentCalls:
-        m_Calls: []
-      m_TypeName: SceneTransitionSystem.STSTransitionEvent, Assembly-CSharp, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
+  EffectOnEnter:
+    EffectName: Fade
+    TintPrimary: {r: 0, g: 0, b: 0, a: 1}
+    TintSecondary: {r: 0, g: 0, b: 0, a: 1}
+    TexturePrimary: {fileID: 0}
+    TextureSecondary: {fileID: 0}
+    Offset: {x: 0.88, y: 1.11}
+    ParameterOne: -67
+    ParameterTwo: -83
+    ParameterThree: 188
+    Duration: 10
+    Purcent: 0
+    Direction: 0
+    AnimPurcent: 0
+    AnimIsPlaying: 0
+    AnimIsFinished: 0
+  InterEffectDuration: 0.5
+  EffectOnExit:
+    EffectName: Fade
+    TintPrimary: {r: 0, g: 0, b: 0, a: 1}
+    TintSecondary: {r: 0, g: 0, b: 0, a: 1}
+    TexturePrimary: {fileID: 0}
+    TextureSecondary: {fileID: 0}
+    Offset: {x: 0.43, y: 1.57}
+    ParameterOne: 0
+    ParameterTwo: 0
+    ParameterThree: 0
+    Duration: 10
+    Purcent: 0
+    Direction: 0
+    AnimPurcent: 0
+    AnimIsPlaying: 0
+    AnimIsFinished: 0
+  OnEnterStart:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SceneTransitionSystem.STSTransitionEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  OnEnterFinish:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SceneTransitionSystem.STSTransitionEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  OnExitStart:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SceneTransitionSystem.STSTransitionEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  OnExitFinish:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SceneTransitionSystem.STSTransitionEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   ThisSceneLoaded:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: LoadIntermediateScene
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: SceneTransitionSystem.STSTransitionEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   ThisSceneEnable:
