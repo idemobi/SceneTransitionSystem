@@ -239,6 +239,11 @@ namespace SceneTransitionSystem
             kEffectTypeList.Insert(0, typeof(STSEffectFade));
             kEffectContentList.Insert(0, new GUIContent("Default"));
         }
+
+        public static explicit operator STSEffectType(UnityEngine.Object v)
+        {
+            throw new NotImplementedException();
+        }
         //-------------------------------------------------------------------------------------------------------------
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

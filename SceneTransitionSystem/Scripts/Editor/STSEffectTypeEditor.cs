@@ -122,6 +122,8 @@ namespace SceneTransitionSystem
             return tH;
         }
         //-------------------------------------------------------------------------------------------------------------
+        float LocalPurcent = 0.0F;
+        //-------------------------------------------------------------------------------------------------------------
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             float tY = position.y;
@@ -149,42 +151,22 @@ namespace SceneTransitionSystem
             }
             tY += tPopupFieldStyle.fixedHeight + kMarge;
 
-            //Debug.Log("tIndexNew = " + tIndexNew);
-            //foreach (Type tType in STSEffectType.kEffectTypeList)
-            //{
-            //    Debug.Log("tType = " + tType.Name);
-            //}
+            STSEffect rReturn = null;
+            string tName = tEffectName.stringValue;
+            int tIndexDD = STSEffectType.kEffectNameList.IndexOf(tName);
+            if (tIndexDD < 0 || tIndexDD >= STSEffectType.kEffectNameList.Count())
+            {
+                rReturn = new STSEffectFade();
+            }
+            else
+            {
+                Type tEffectTypeDD = STSEffectType.kEffectTypeList[tIndexDD];
+                rReturn = (STSEffect)Activator.CreateInstance(tEffectTypeDD);
+            }
+
             Type tEffectType = STSEffectType.kEffectTypeList[tIndexNew];
 
-
             EditorGUI.indentLevel++;
-
-            // Primary Tint
-            //EditorGUI.BeginChangeCheck();
-            //Rect tRectTintPrimary = new Rect(position.x, tY, position.width, tColorFieldStyle.fixedHeight);
-            //SerializedProperty tTintPrimary = property.FindPropertyRelative("TintPrimary");
-            //Color tOldTintPrimary = tTintPrimary.colorValue;
-            //Color tNewTintPrimary = EditorGUI.ColorField(tRectTintPrimary, new GUIContent("Tint Primary"),  tOldTintPrimary);
-            //if (EditorGUI.EndChangeCheck() == true)
-            //{
-            //    tTintPrimary.colorValue = tNewTintPrimary;
-            //    tTintPrimary.serializedObject.ApplyModifiedProperties();
-            //}
-            //tY += tColorFieldStyle.fixedHeight + kMarge;
-
-
-            //// Secondary Tint
-            //EditorGUI.BeginChangeCheck();
-            //Rect tRectTintSecondary = new Rect(position.x, tY, position.width, tColorFieldStyle.fixedHeight);
-            //SerializedProperty tTintSecondary = property.FindPropertyRelative("TintSecondary");
-            //Color tOldTintSecondary = tTintSecondary.colorValue;
-            //Color tNewTintSecondary = EditorGUI.ColorField(tRectTintSecondary, new GUIContent("Tint Secondary"), tOldTintSecondary);
-            //if (EditorGUI.EndChangeCheck() == true)
-            //{
-            //    tTintSecondary.colorValue = tNewTintSecondary;
-            //    tTintSecondary.serializedObject.ApplyModifiedProperties();
-            //}
-            //tY += tColorFieldStyle.fixedHeight + kMarge;
 
             // Primary Tint
             if (tEffectType.GetCustomAttributes(typeof(STSNoTintPrimaryAttribute), true).Length == 0)
@@ -193,6 +175,7 @@ namespace SceneTransitionSystem
                 SerializedProperty tTintPrimary = property.FindPropertyRelative("TintPrimary");
                 EditorGUI.PropertyField(tRectTintPrimary, tTintPrimary, false);
                 tY += tColorFieldStyle.fixedHeight + kMarge;
+                rReturn.TintPrimary = tTintPrimary.colorValue;
             }
 
             // Secondary Tint
@@ -202,6 +185,7 @@ namespace SceneTransitionSystem
                 SerializedProperty tTintSecondary = property.FindPropertyRelative("TintSecondary");
                 EditorGUI.PropertyField(tRectTintSecondary, tTintSecondary, false);
                 tY += tColorFieldStyle.fixedHeight + kMarge;
+                rReturn.TintSecondary = tTintSecondary.colorValue;
             }
 
             // Primary Texture
@@ -211,6 +195,7 @@ namespace SceneTransitionSystem
                 SerializedProperty tTexturePrimary = property.FindPropertyRelative("TexturePrimary");
                 EditorGUI.PropertyField(tRectTexturePrimary, tTexturePrimary, false);
                 tY += tObjectFieldStyle.fixedHeight + kMarge;
+                rReturn.TexturePrimary = (Texture2D)tTexturePrimary.objectReferenceValue;
             }
 
             // Secondary Texture
@@ -220,8 +205,8 @@ namespace SceneTransitionSystem
                 SerializedProperty tTextureSecondary = property.FindPropertyRelative("TextureSecondary");
                 EditorGUI.PropertyField(tRectTextureSecondary, tTextureSecondary, false);
                 tY += tObjectFieldStyle.fixedHeight + kMarge;
+                rReturn.TextureSecondary = (Texture2D)tTextureSecondary.objectReferenceValue;
             }
-
 
             // Parameter One
             if (tEffectType.GetCustomAttributes(typeof(STSNoParameterOneAttribute), true).Length == 0)
@@ -230,6 +215,7 @@ namespace SceneTransitionSystem
                 SerializedProperty tParameterOne = property.FindPropertyRelative("ParameterOne");
                 EditorGUI.PropertyField(tRectParameterOne, tParameterOne, false);
                 tY += tNumberFieldStyle.fixedHeight + kMarge;
+                rReturn.ParameterOne = tParameterOne.intValue;
             }
 
             // Parameter Two
@@ -239,6 +225,7 @@ namespace SceneTransitionSystem
                 SerializedProperty tParameterTwo = property.FindPropertyRelative("ParameterTwo");
                 EditorGUI.PropertyField(tRectParameterTwo, tParameterTwo, false);
                 tY += tNumberFieldStyle.fixedHeight + kMarge;
+                rReturn.ParameterTwo = tParameterTwo.intValue;
             }
             
             // Parameter Three
@@ -248,6 +235,7 @@ namespace SceneTransitionSystem
                 SerializedProperty tParameterThree = property.FindPropertyRelative("ParameterThree");
                 EditorGUI.PropertyField(tRectParameterThree, tParameterThree, false);
                 tY += tNumberFieldStyle.fixedHeight + kMarge;
+                rReturn.ParameterThree = tParameterThree.intValue;
             }
 
             // Offset
@@ -257,6 +245,7 @@ namespace SceneTransitionSystem
                 SerializedProperty tOffset = property.FindPropertyRelative("Offset");
                 EditorGUI.PropertyField(tRectOffset, tOffset, false);
                 tY += tNumberFieldStyle.fixedHeight + kMarge;
+                rReturn.Offset = tOffset.vector2Value;
             }
 
             // Duration
@@ -274,6 +263,18 @@ namespace SceneTransitionSystem
 
             EditorGUI.indentLevel--;
             EditorGUI.EndProperty();
+
+            //Draw local render
+            rReturn.Purcent = LocalPurcent;
+            rReturn.Purcent = tPurcent.floatValue;
+            rReturn.Draw(new Rect(position.x, tY, position.width, 80.0F));
+
+            // test auto animation
+            LocalPurcent += Time.deltaTime;
+            if (LocalPurcent>1.0F)
+            {
+                LocalPurcent = 0.0F;
+            }
         }
         //-------------------------------------------------------------------------------------------------------------
     }
