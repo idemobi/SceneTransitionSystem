@@ -1550,7 +1550,7 @@ Prefab:
     - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
         type: 2}
       propertyPath: EffectOnEnter.Duration
-      value: 2.8
+      value: 6.1
       objectReference: {fileID: 0}
     - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
         type: 2}
@@ -1605,7 +1605,7 @@ Prefab:
     - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
         type: 2}
       propertyPath: EffectOnEnter.EffectName
-      value: Fade Gradient
+      value: Octo Random
       objectReference: {fileID: 0}
     - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
         type: 2}
@@ -1640,7 +1640,7 @@ Prefab:
     - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
         type: 2}
       propertyPath: EffectOnEnter.Purcent
-      value: 1
+      value: 0.28
       objectReference: {fileID: 0}
     - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
         type: 2}
