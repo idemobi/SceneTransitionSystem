@@ -318,7 +318,8 @@ namespace SceneTransitionSystem
             //rReturn.Purcent = LocalPurcent;
             rReturn.Purcent = tPurcent.floatValue;
             // draw white rect
-            STSTransitionDrawing.DrawQuad(tPreviewRect, Color.white);
+            STSTransitionDrawing.DrawRect(tPreviewRect, Color.white);
+            STSTransitionDrawing.DrawCircle(tPreviewRect.center, tPreviewRect.height / 2.0F, 32, Color.red);
             // 
             // TODO : Add image in background
             // draw preview

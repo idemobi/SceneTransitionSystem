@@ -43,7 +43,7 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         public override void Draw(Rect sRect)
         {
-            STSBenchmark.Start();
+            //STSBenchmark.Start();
             if (Purcent > 0)
             {
                 Color tColorLerp = Color.Lerp(TintSecondary, TintPrimary, Purcent);
@@ -52,37 +52,37 @@ namespace SceneTransitionSystem
                 {
                     case STSNineCross.BottomLeft:
                         {
-                            STSTransitionDrawing.DrawQuad(new Rect(sRect.x, sRect.y + sRect.height, sRect.width * Purcent, -sRect.height * Purcent), tColorLerp);
+                            STSTransitionDrawing.DrawRect(new Rect(sRect.x, sRect.y + sRect.height, sRect.width * Purcent, -sRect.height * Purcent), tColorLerp);
                         }
                         break;
                     case STSNineCross.BottomRight:
                         {
-                            STSTransitionDrawing.DrawQuad(new Rect(sRect.x + sRect.width, sRect.y + sRect.height, -sRect.width * Purcent, -sRect.height * Purcent), tColorLerp);
+                            STSTransitionDrawing.DrawRect(new Rect(sRect.x + sRect.width, sRect.y + sRect.height, -sRect.width * Purcent, -sRect.height * Purcent), tColorLerp);
                         }
                         break;
                     case STSNineCross.TopLeft:
                         {
-                            STSTransitionDrawing.DrawQuad(new Rect(sRect.x, sRect.y, sRect.width * Purcent, sRect.height * Purcent), tColorLerp);
+                            STSTransitionDrawing.DrawRect(new Rect(sRect.x, sRect.y, sRect.width * Purcent, sRect.height * Purcent), tColorLerp);
                         }
                         break;
                     case STSNineCross.TopRight:
                         {
-                            STSTransitionDrawing.DrawQuad(new Rect(sRect.x + sRect.width, sRect.y, -sRect.width * Purcent, sRect.height * Purcent), tColorLerp);
+                            STSTransitionDrawing.DrawRect(new Rect(sRect.x + sRect.width, sRect.y, -sRect.width * Purcent, sRect.height * Purcent), tColorLerp);
                         }
                         break;
                     case STSNineCross.Right:
                         {
-                            STSTransitionDrawing.DrawQuad(new Rect(sRect.x + sRect.width, sRect.y, -sRect.width * Purcent, sRect.height), tColorLerp);
+                            STSTransitionDrawing.DrawRect(new Rect(sRect.x + sRect.width, sRect.y, -sRect.width * Purcent, sRect.height), tColorLerp);
                         }
                         break;
                     case STSNineCross.Bottom:
                         {
-                            STSTransitionDrawing.DrawQuad(new Rect(sRect.x, sRect.y + sRect.height, sRect.width, -sRect.height * Purcent), tColorLerp);
+                            STSTransitionDrawing.DrawRect(new Rect(sRect.x, sRect.y + sRect.height, sRect.width, -sRect.height * Purcent), tColorLerp);
                         }
                         break;
                     case STSNineCross.Top:
                         {
-                            STSTransitionDrawing.DrawQuad(new Rect(sRect.x, sRect.y, sRect.width, sRect.height * Purcent), tColorLerp);
+                            STSTransitionDrawing.DrawRect(new Rect(sRect.x, sRect.y, sRect.width, sRect.height * Purcent), tColorLerp);
                         }
                         break;
                     case STSNineCross.Center:
@@ -91,18 +91,18 @@ namespace SceneTransitionSystem
                             float tHeight = sRect.height * Purcent;
                             float tX = sRect.position.x + (sRect.width - tWidth) / 2.0F;
                             float tY = sRect.position.y + (sRect.height - tHeight) / 2.0F;
-                            STSTransitionDrawing.DrawQuad(new Rect(tX, tY, tWidth, tHeight), tColorLerp);
+                            STSTransitionDrawing.DrawRect(new Rect(tX, tY, tWidth, tHeight), tColorLerp);
                         }
                         break;
                     default:
                     case STSNineCross.Left:
                         {
-                            STSTransitionDrawing.DrawQuad(new Rect(sRect.x, sRect.y, sRect.width * Purcent, sRect.height), tColorLerp);
+                            STSTransitionDrawing.DrawRect(new Rect(sRect.x, sRect.y, sRect.width * Purcent, sRect.height), tColorLerp);
                         }
                         break;
                 }
             }
-            STSBenchmark.Finish();
+            //STSBenchmark.Finish();
         }
         //-------------------------------------------------------------------------------------------------------------
     }

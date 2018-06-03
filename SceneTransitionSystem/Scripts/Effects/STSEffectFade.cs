@@ -43,14 +43,14 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         public override void Draw(Rect sRect)
         {
-            STSBenchmark.Start();
+            //STSBenchmark.Start();
             if (Purcent > 0)
             {
                 // Do drawing with purcent
-                Color tFadeColorAlpha = new Color(TintPrimary.r, TintPrimary.g, TintPrimary.b, Purcent);
-                STSTransitionDrawing.DrawQuad(sRect, tFadeColorAlpha);
+                Color tFadeColorAlpha = new Color(TintPrimary.r, TintPrimary.g, TintPrimary.b, Purcent* TintPrimary.a);
+                STSTransitionDrawing.DrawRect(sRect, tFadeColorAlpha);
             }
-            STSBenchmark.Finish();
+            //STSBenchmark.Finish();
         }
         //-------------------------------------------------------------------------------------------------------------
     }

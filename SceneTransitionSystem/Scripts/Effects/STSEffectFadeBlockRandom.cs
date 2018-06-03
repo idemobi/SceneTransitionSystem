@@ -63,7 +63,7 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         public override void Draw(Rect sRect)
         {
-            STSBenchmark.Start();
+            //STSBenchmark.Start();
             if (Purcent > 0)
             {
                 //Color tColorLerp = Color.Lerp(TintSecondary, TintPrimary, Purcent);
@@ -73,7 +73,7 @@ namespace SceneTransitionSystem
                 for (int i = 0; i < tIndex; i++)
                 {
                     STSTransitionTile tTile = Matrix.TilesList[i];
-                    STSTransitionDrawing.DrawQuad(tTile.Rectangle, TintPrimary);
+                    STSTransitionDrawing.DrawRect(tTile.Rectangle, TintPrimary);
                 }
                 // Draw Alpha tile
                 if (tIndex < Matrix.TileCount)
@@ -81,11 +81,11 @@ namespace SceneTransitionSystem
                     STSTransitionTile tTileAlpha = Matrix.TilesList[tIndex];
                     float tAlpha = (Purcent * Matrix.TileCount) - (float)tIndex;
                     Color tColorLerp = Color.Lerp(TintSecondary, TintPrimary, tAlpha);
-                    Color tFadeColorAlpha = new Color(TintPrimary.r, TintPrimary.g, TintPrimary.b, tAlpha);
-                    STSTransitionDrawing.DrawQuad(tTileAlpha.Rectangle, tFadeColorAlpha);
+                    Color tFadeColorAlpha = new Color(TintPrimary.r, TintPrimary.g, TintPrimary.b, tAlpha*TintPrimary.a);
+                    STSTransitionDrawing.DrawRect(tTileAlpha.Rectangle, tFadeColorAlpha);
                 }
             }
-            STSBenchmark.Finish();
+            //STSBenchmark.Finish();
         }
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

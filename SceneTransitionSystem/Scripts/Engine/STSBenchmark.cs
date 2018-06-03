@@ -164,7 +164,7 @@ namespace SceneTransitionSystem
                     if (tCounter == 1)
                     {
                         UnityEngine.Debug.Log("benchmark : '" + sKey +"'"+tTag+ " execute " + tCounter + " operation in <color=" + tMaxColor + ">" +
-                                              rDelta.ToString("F3") + " seconds </color>");
+                                              rDelta.ToString("F4") + " seconds </color>");
                     }
                     else if (tCounter > 1)
                     {
@@ -174,12 +174,12 @@ namespace SceneTransitionSystem
                         {
                             tMaxGranuleColor = "red";
                         }
-                        UnityEngine.Debug.Log("benchmark : '" + sKey + "'"+tTag+ " execute " + tCounter + " operations in <color=" + tMaxColor + ">" + rDelta.ToString("F3") +
+                        UnityEngine.Debug.Log("benchmark : '" + sKey + "'"+tTag+ " execute " + tCounter + " operations in <color=" + tMaxColor + ">" + rDelta.ToString("F4") +
                                               " seconds </color>(<color="+tMaxGranuleColor+">" + tGranule.ToString("F5") + " seconds per operation</color>)");
                     }
                     else
                     {
-                        UnityEngine.Debug.Log("benchmark : '" + sKey + "'"+tTag+ " execute in <color="+tMaxColor+">" + rDelta.ToString("F3") + " seconds </color>");
+                        UnityEngine.Debug.Log("benchmark : '" + sKey + "'"+tTag+ " execute in <color="+tMaxColor+">" + rDelta.ToString("F4") + " seconds </color>");
                     }
                 }
             }
