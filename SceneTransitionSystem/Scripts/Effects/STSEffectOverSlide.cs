@@ -43,62 +43,66 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         public override void Draw(Rect sRect)
         {
-
-            //Color tColorLerp = Color.Lerp(TintSecondary, TintPrimary, Purcent);
-            // Do drawing with purcent
-            switch (NineCross)
+            STSBenchmark.Start();
+            if (Purcent > 0)
             {
-                case STSNineCross.BottomLeft:
-                    {
-                        STSTransitionDrawing.DrawQuad(new Rect(sRect.x , sRect.y + sRect.height, sRect.width * Purcent, -sRect.height * Purcent), TintPrimary);
-                    }
-                    break;
-                case STSNineCross.BottomRight:
-                    {
-                        STSTransitionDrawing.DrawQuad(new Rect(sRect.x + sRect.width, sRect.y + sRect.height,-sRect.width * Purcent, -sRect.height * Purcent), TintPrimary);
-                    }
-                    break;
-                case STSNineCross.TopLeft:
-                    {
-                        STSTransitionDrawing.DrawQuad(new Rect(sRect.x, sRect.y, sRect.width * Purcent, sRect.height * Purcent), TintPrimary);
-                    }
-                    break;
-                case STSNineCross.TopRight:
-                    {
-                        STSTransitionDrawing.DrawQuad(new Rect(sRect.x + sRect.width, sRect.y ,-sRect.width * Purcent, sRect.height * Purcent), TintPrimary);
-                    }
-                    break;
-                case STSNineCross.Right:
-                    {
-                        STSTransitionDrawing.DrawQuad(new Rect(sRect.x + sRect.width, sRect.y, -sRect.width * Purcent, sRect.height), TintPrimary);
-                    }
-                    break;
-                case STSNineCross.Bottom:
-                    {
-                        STSTransitionDrawing.DrawQuad(new Rect(sRect.x, sRect.y + sRect.height, sRect.width, -sRect.height * Purcent), TintPrimary);
-                    }
-                    break;
-                case STSNineCross.Top:
-                    {
-                        STSTransitionDrawing.DrawQuad(new Rect(sRect.x, sRect.y, sRect.width, sRect.height * Purcent), TintPrimary);
-                    }
-                    break;
-                case STSNineCross.Center:
-                    {
-                        float tWidth = sRect.width * Purcent;
-                        float tHeight = sRect.height * Purcent;
-                        float tX = sRect.position.x + (sRect.width - tWidth) / 2.0F;
-                        float tY = sRect.position.y + (sRect.height - tHeight) / 2.0F;
-                        STSTransitionDrawing.DrawQuad(new Rect(tX, tY, tWidth, tHeight), TintPrimary);
-                    }
-                    break;
-                default:
-                case STSNineCross.Left:
-                    {
-                        STSTransitionDrawing.DrawQuad(new Rect(sRect.x, sRect.y, sRect.width * Purcent, sRect.height), TintPrimary);
-                    }
-                    break;
+                //Color tColorLerp = Color.Lerp(TintSecondary, TintPrimary, Purcent);
+                // Do drawing with purcent
+                switch (NineCross)
+                {
+                    case STSNineCross.BottomLeft:
+                        {
+                            STSTransitionDrawing.DrawQuad(new Rect(sRect.x, sRect.y + sRect.height, sRect.width * Purcent, -sRect.height * Purcent), TintPrimary);
+                        }
+                        break;
+                    case STSNineCross.BottomRight:
+                        {
+                            STSTransitionDrawing.DrawQuad(new Rect(sRect.x + sRect.width, sRect.y + sRect.height, -sRect.width * Purcent, -sRect.height * Purcent), TintPrimary);
+                        }
+                        break;
+                    case STSNineCross.TopLeft:
+                        {
+                            STSTransitionDrawing.DrawQuad(new Rect(sRect.x, sRect.y, sRect.width * Purcent, sRect.height * Purcent), TintPrimary);
+                        }
+                        break;
+                    case STSNineCross.TopRight:
+                        {
+                            STSTransitionDrawing.DrawQuad(new Rect(sRect.x + sRect.width, sRect.y, -sRect.width * Purcent, sRect.height * Purcent), TintPrimary);
+                        }
+                        break;
+                    case STSNineCross.Right:
+                        {
+                            STSTransitionDrawing.DrawQuad(new Rect(sRect.x + sRect.width, sRect.y, -sRect.width * Purcent, sRect.height), TintPrimary);
+                        }
+                        break;
+                    case STSNineCross.Bottom:
+                        {
+                            STSTransitionDrawing.DrawQuad(new Rect(sRect.x, sRect.y + sRect.height, sRect.width, -sRect.height * Purcent), TintPrimary);
+                        }
+                        break;
+                    case STSNineCross.Top:
+                        {
+                            STSTransitionDrawing.DrawQuad(new Rect(sRect.x, sRect.y, sRect.width, sRect.height * Purcent), TintPrimary);
+                        }
+                        break;
+                    case STSNineCross.Center:
+                        {
+                            float tWidth = sRect.width * Purcent;
+                            float tHeight = sRect.height * Purcent;
+                            float tX = sRect.position.x + (sRect.width - tWidth) / 2.0F;
+                            float tY = sRect.position.y + (sRect.height - tHeight) / 2.0F;
+                            STSTransitionDrawing.DrawQuad(new Rect(tX, tY, tWidth, tHeight), TintPrimary);
+                        }
+                        break;
+                    default:
+                    case STSNineCross.Left:
+                        {
+                            STSTransitionDrawing.DrawQuad(new Rect(sRect.x, sRect.y, sRect.width * Purcent, sRect.height), TintPrimary);
+                        }
+                        break;
+                }
             }
+            STSBenchmark.Finish();
         }
         //-------------------------------------------------------------------------------------------------------------
     }

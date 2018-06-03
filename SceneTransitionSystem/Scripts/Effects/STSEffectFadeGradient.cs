@@ -26,10 +26,15 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         public override void Draw(Rect sRect)
         {
-            // Do drawing with purcent
-            Color tColorLerp = Color.Lerp(TintSecondary, TintPrimary, Purcent);
-            Color tFadeColorAlpha = new Color(tColorLerp.r, tColorLerp.g, tColorLerp.b, Purcent);
-            STSTransitionDrawing.DrawQuad(sRect, tFadeColorAlpha);
+            STSBenchmark.Start();
+            if (Purcent > 0)
+            {
+                // Do drawing with purcent
+                Color tColorLerp = Color.Lerp(TintSecondary, TintPrimary, Purcent);
+                Color tFadeColorAlpha = new Color(tColorLerp.r, tColorLerp.g, tColorLerp.b, Purcent);
+                STSTransitionDrawing.DrawQuad(sRect, tFadeColorAlpha);
+            }
+            STSBenchmark.Finish();
         }
         //-------------------------------------------------------------------------------------------------------------
     }

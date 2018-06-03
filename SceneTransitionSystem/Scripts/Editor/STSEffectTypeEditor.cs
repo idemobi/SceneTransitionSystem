@@ -127,14 +127,14 @@ namespace SceneTransitionSystem
             // Purcent
             tH += tNumberFieldStyle.fixedHeight + kMarge;
 
-
             // Purcent
             tH += 80.0F + kMarge;
 
             return tH;
         }
         //-------------------------------------------------------------------------------------------------------------
-        float LocalPurcent = 0.0F;
+        //float LocalPurcent = 0.0F;
+        STSEffect rReturn = null;
         //-------------------------------------------------------------------------------------------------------------
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
@@ -159,26 +159,33 @@ namespace SceneTransitionSystem
                     tValue = STSEffectType.kEffectNameList[tIndexNew];
                     tEffectName.stringValue = tValue;
                     tEffectName.serializedObject.ApplyModifiedProperties();
+                    rReturn = null;
                 }
             }
             tY += tPopupFieldStyle.fixedHeight + kMarge;
-
-            STSEffect rReturn = null;
-            string tName = tEffectName.stringValue;
-            int tIndexDD = STSEffectType.kEffectNameList.IndexOf(tName);
-            if (tIndexDD < 0 || tIndexDD >= STSEffectType.kEffectNameList.Count())
+            bool tNewReturn = false;
+            if (rReturn == null)
             {
-                rReturn = new STSEffectFade();
+                string tName = tEffectName.stringValue;
+                int tIndexDD = STSEffectType.kEffectNameList.IndexOf(tName);
+                if (tIndexDD < 0 || tIndexDD >= STSEffectType.kEffectNameList.Count())
+                {
+                    rReturn = new STSEffectFade();
+                }
+                else
+                {
+                    Type tEffectTypeDD = STSEffectType.kEffectTypeList[tIndexDD];
+                    rReturn = (STSEffect)Activator.CreateInstance(tEffectTypeDD);
+                }
+                tNewReturn = true;
             }
-            else
-            {
-                Type tEffectTypeDD = STSEffectType.kEffectTypeList[tIndexDD];
-                rReturn = (STSEffect)Activator.CreateInstance(tEffectTypeDD);
-            }
-
             Type tEffectType = STSEffectType.kEffectTypeList[tIndexNew];
 
             EditorGUI.indentLevel++;
+
+
+
+            EditorGUI.BeginChangeCheck();
 
             // Primary Tint
             if (tEffectType.GetCustomAttributes(typeof(STSNoTintPrimaryAttribute), true).Length == 0)
@@ -239,7 +246,7 @@ namespace SceneTransitionSystem
                 tY += tNumberFieldStyle.fixedHeight + kMarge;
                 rReturn.ParameterTwo = tParameterTwo.intValue;
             }
-            
+
             // Parameter Three
             if (tEffectType.GetCustomAttributes(typeof(STSNoParameterThreeAttribute), true).Length == 0)
             {
@@ -278,6 +285,12 @@ namespace SceneTransitionSystem
                 rReturn.NineCross = (STSNineCross)tNineCross.intValue;
             }
 
+            if (EditorGUI.EndChangeCheck() == true)
+            {
+                tNewReturn = true;
+            }
+
+
             // Duration
             Rect tRectDuration = new Rect(position.x, tY, position.width, tNumberFieldStyle.fixedHeight);
             SerializedProperty tDuration = property.FindPropertyRelative("Duration");
@@ -295,16 +308,28 @@ namespace SceneTransitionSystem
             EditorGUI.EndProperty();
 
             //Draw local render
-            rReturn.Purcent = LocalPurcent;
-            rReturn.Purcent = tPurcent.floatValue;
-            rReturn.Draw(new Rect(position.x, tY, position.width, 80.0F));
 
-            // test auto animation
-            LocalPurcent += Time.deltaTime;
-            if (LocalPurcent>1.0F)
+            Rect tPreviewRect = new Rect(position.x, tY, position.width, 80.0F);
+            if (tNewReturn == true)
             {
-                LocalPurcent = 0.0F;
+                Debug.Log("MUST PREPARE THE EFFECT EXIT");
+                rReturn.PrepareEffectExit(tPreviewRect);
             }
+            //rReturn.Purcent = LocalPurcent;
+            rReturn.Purcent = tPurcent.floatValue;
+            // draw white rect
+            STSTransitionDrawing.DrawQuad(tPreviewRect, Color.white);
+            // 
+            // TODO : Add image in background
+            // draw preview
+            rReturn.Draw(tPreviewRect);
+
+            //// test auto animation
+            //LocalPurcent += Time.deltaTime;
+            //if (LocalPurcent > 1.0F)
+            //{
+            //    LocalPurcent = 0.0F;
+            //}
         }
         //-------------------------------------------------------------------------------------------------------------
     }
