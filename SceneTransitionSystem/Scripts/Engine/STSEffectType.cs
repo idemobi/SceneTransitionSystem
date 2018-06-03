@@ -59,6 +59,10 @@ namespace SceneTransitionSystem
     {
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    public class STSNoNineCrossAttribute : Attribute
+    {
+    }
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     public enum STSFiveCross :int 
     {
         Top,
@@ -141,6 +145,7 @@ namespace SceneTransitionSystem
         public Vector2 Offset;
 
         public STSFiveCross FiveCross;
+        public STSNineCross NineCross;
 
         public int ParameterOne;
         public int ParameterTwo;

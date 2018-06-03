@@ -115,6 +115,12 @@ namespace SceneTransitionSystem
                 tH += tPopupFieldStyle.fixedHeight + kMarge;
             }
 
+            // FiveCross
+            if (tEffectType.GetCustomAttributes(typeof(STSNoNineCrossAttribute), true).Length == 0)
+            {
+                tH += tPopupFieldStyle.fixedHeight + kMarge;
+            }
+
             // Duration
             tH += tNumberFieldStyle.fixedHeight + kMarge;
 
@@ -261,6 +267,15 @@ namespace SceneTransitionSystem
                 EditorGUI.PropertyField(tRectFiveCross, tFiveCross, false);
                 tY += tPopupFieldStyle.fixedHeight + kMarge;
                 rReturn.FiveCross = (STSFiveCross)tFiveCross.intValue;
+            }
+            // NineCross
+            if (tEffectType.GetCustomAttributes(typeof(STSNoNineCrossAttribute), true).Length == 0)
+            {
+                Rect tRectNineCross = new Rect(position.x, tY, position.width, tPopupFieldStyle.fixedHeight);
+                SerializedProperty tNineCross = property.FindPropertyRelative("NineCross");
+                EditorGUI.PropertyField(tRectNineCross, tNineCross, false);
+                tY += tPopupFieldStyle.fixedHeight + kMarge;
+                rReturn.NineCross = (STSNineCross)tNineCross.intValue;
             }
 
             // Duration

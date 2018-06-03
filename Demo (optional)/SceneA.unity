@@ -1550,7 +1550,7 @@ Prefab:
     - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
         type: 2}
       propertyPath: EffectOnEnter.Duration
-      value: 3.69
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
         type: 2}
@@ -1590,7 +1590,7 @@ Prefab:
     - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
         type: 2}
       propertyPath: EffectOnExit.EffectName
-      value: Fade Gradient
+      value: Fade
       objectReference: {fileID: 0}
     - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
         type: 2}
@@ -1605,7 +1605,7 @@ Prefab:
     - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
         type: 2}
       propertyPath: EffectOnEnter.EffectName
-      value: Checkout
+      value: Over Slide Gradient
       objectReference: {fileID: 0}
     - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
         type: 2}
@@ -1640,12 +1640,27 @@ Prefab:
     - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
         type: 2}
       propertyPath: EffectOnEnter.Purcent
-      value: 0.797
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
         type: 2}
       propertyPath: EffectOnExit.Purcent
-      value: 1
+      value: 0.238
+      objectReference: {fileID: 0}
+    - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
+        type: 2}
+      propertyPath: EffectOnEnter.Localisation
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
+        type: 2}
+      propertyPath: EffectOnEnter.FiveCross
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
+        type: 2}
+      propertyPath: EffectOnEnter.NineCross
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0e83aeb60f9fa48839bc951fe2a921aa, type: 2}
