@@ -55,6 +55,32 @@ namespace SceneTransitionSystem
     {
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    public class STSNoFiveCrossAttribute : Attribute
+    {
+    }
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    public enum STSFiveCross :int 
+    {
+        Top,
+        Bottom,
+        Right,
+        Left,
+        Center,
+    }
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    public enum STSNineCross : int
+    {
+        Top,
+        Bottom,
+        Right,
+        Left,
+        Center,
+        TopLeft,
+        TopRight,
+        BottomLeft,
+        BottomRight,
+    }
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     public class STSParameterOneEntitleAttribute : Attribute
     {
         //-------------------------------------------------------------------------------------------------------------
@@ -113,6 +139,8 @@ namespace SceneTransitionSystem
         public Texture2D TexturePrimary = null;
         public Texture2D TextureSecondary = null;
         public Vector2 Offset;
+
+        public STSFiveCross FiveCross;
 
         public int ParameterOne;
         public int ParameterTwo;

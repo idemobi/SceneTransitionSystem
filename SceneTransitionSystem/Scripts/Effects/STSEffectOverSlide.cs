@@ -11,7 +11,7 @@ using UnityEngine;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    [STSEffectName("Fade")]
+    [STSEffectName("Over Slide")]
     // *** Remove some parameters in inspector
     [STSNoTintSecondary]
     [STSNoTexturePrimary]
@@ -20,9 +20,8 @@ namespace SceneTransitionSystem
     [STSNoParameterTwo]
     [STSNoParameterThree]
     [STSNoOffset]
-    [STSNoFiveCross]
     // ***
-    public class STSEffectFade : STSEffect
+    public class STSEffectOverSlide : STSEffect
     {
         //-------------------------------------------------------------------------------------------------------------
         public void Prepare(Rect sRect)
@@ -44,8 +43,39 @@ namespace SceneTransitionSystem
         public override void Draw(Rect sRect)
         {
             // Do drawing with purcent
-            Color tFadeColorAlpha = new Color(TintPrimary.r, TintPrimary.g, TintPrimary.b, Purcent);
-            STSTransitionDrawing.DrawQuad(sRect, tFadeColorAlpha);
+            switch (FiveCross)
+            {
+                case STSFiveCross.Right:
+                    {
+                        STSTransitionDrawing.DrawQuad(new Rect(sRect.x + sRect.width, sRect.y, -sRect.width * Purcent, sRect.height), TintPrimary);
+                    }
+                    break;
+                case STSFiveCross.Bottom:
+                    {
+                        STSTransitionDrawing.DrawQuad(new Rect(sRect.x, sRect.y + sRect.height, sRect.width, -sRect.height * Purcent), TintPrimary);
+                    }
+                    break;
+                case STSFiveCross.Top:
+                    {
+                        STSTransitionDrawing.DrawQuad(new Rect(sRect.x, sRect.y, sRect.width, sRect.height * Purcent), TintPrimary);
+                    }
+                    break;
+                case STSFiveCross.Center:
+                    {
+                        float tWidth = sRect.width * Purcent;
+                        float tHeight = sRect.height * Purcent;
+                        float tX = sRect.position.x + (sRect.width - tWidth) / 2.0F;
+                        float tY = sRect.position.y + (sRect.height - tHeight) / 2.0F;
+                        STSTransitionDrawing.DrawQuad(new Rect(tX, tY, tWidth, tHeight), TintPrimary);
+                    }
+                    break;
+                default:
+                case STSFiveCross.Left:
+                    {
+                        STSTransitionDrawing.DrawQuad(new Rect(sRect.x, sRect.y, sRect.width * Purcent, sRect.height), TintPrimary);
+                    }
+                    break;
+            }
         }
         //-------------------------------------------------------------------------------------------------------------
     }

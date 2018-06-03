@@ -109,6 +109,12 @@ namespace SceneTransitionSystem
                 tH += tNumberFieldStyle.fixedHeight + kMarge;
             }
 
+            // FiveCross
+            if (tEffectType.GetCustomAttributes(typeof(STSNoFiveCrossAttribute), true).Length == 0)
+            {
+                tH += tPopupFieldStyle.fixedHeight + kMarge;
+            }
+
             // Duration
             tH += tNumberFieldStyle.fixedHeight + kMarge;
 
@@ -246,6 +252,15 @@ namespace SceneTransitionSystem
                 EditorGUI.PropertyField(tRectOffset, tOffset, false);
                 tY += tNumberFieldStyle.fixedHeight + kMarge;
                 rReturn.Offset = tOffset.vector2Value;
+            }
+            // FiveCross
+            if (tEffectType.GetCustomAttributes(typeof(STSNoFiveCrossAttribute), true).Length == 0)
+            {
+                Rect tRectFiveCross = new Rect(position.x, tY, position.width, tPopupFieldStyle.fixedHeight);
+                SerializedProperty tFiveCross = property.FindPropertyRelative("FiveCross");
+                EditorGUI.PropertyField(tRectFiveCross, tFiveCross, false);
+                tY += tPopupFieldStyle.fixedHeight + kMarge;
+                rReturn.FiveCross = (STSFiveCross)tFiveCross.intValue;
             }
 
             // Duration

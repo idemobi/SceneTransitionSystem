@@ -19,6 +19,7 @@ namespace SceneTransitionSystem
     [STSNoParameterTwo]
     [STSNoParameterThree]
     [STSNoOffset]
+    [STSNoFiveCross]
     // ***
     public class STSEffectFadeGradient : STSEffect
     {
