@@ -39,11 +39,16 @@ namespace SceneTransitionSystem
         public override void Draw(Rect sRect)
         {
             // Do drawing with purcent
-            float tWidth = sRect.width * Purcent;
-            float tHeight = sRect.height * Purcent;
-            float tX = sRect.position.x + (sRect.width - tWidth) / 2.0F;
-            float tY = sRect.position.y + (sRect.height - tHeight) / 2.0F;
-            STSTransitionDrawing.DrawQuad(new Rect(tX, tY, tWidth, tHeight), TintPrimary);
+            //STSBenchmark.Start();
+            if (Purcent > 0)
+            {
+                float tWidth = sRect.width * Purcent;
+                float tHeight = sRect.height * Purcent;
+                float tX = sRect.position.x + (sRect.width - tWidth) / 2.0F;
+                float tY = sRect.position.y + (sRect.height - tHeight) / 2.0F;
+                STSTransitionDrawing.DrawRect(new Rect(tX, tY, tWidth, tHeight), TintPrimary);
+            }
+            //STSBenchmark.Finish();
         }
         //-------------------------------------------------------------------------------------------------------------
     }

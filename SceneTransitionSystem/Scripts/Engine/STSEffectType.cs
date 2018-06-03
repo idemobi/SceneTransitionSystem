@@ -55,6 +55,36 @@ namespace SceneTransitionSystem
     {
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    public class STSNoFiveCrossAttribute : Attribute
+    {
+    }
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    public class STSNoNineCrossAttribute : Attribute
+    {
+    }
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    public enum STSFiveCross :int 
+    {
+        Top,
+        Bottom,
+        Right,
+        Left,
+        Center,
+    }
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    public enum STSNineCross : int
+    {
+        Top,
+        Bottom,
+        Right,
+        Left,
+        Center,
+        TopLeft,
+        TopRight,
+        BottomLeft,
+        BottomRight,
+    }
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     public class STSParameterOneEntitleAttribute : Attribute
     {
         //-------------------------------------------------------------------------------------------------------------
@@ -113,6 +143,9 @@ namespace SceneTransitionSystem
         public Texture2D TexturePrimary = null;
         public Texture2D TextureSecondary = null;
         public Vector2 Offset;
+
+        public STSFiveCross FiveCross;
+        public STSNineCross NineCross;
 
         public int ParameterOne;
         public int ParameterTwo;
@@ -343,27 +376,30 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         public void DrawMaster(Rect sRect)
         {
-            // Do drawing
-            if (ColorIsFinished == false)
-            {
-                ColorPurcent+= (Time.deltaTime) / ColorDuration;
-                Color tColor = Color.Lerp(OldColor,TintPrimary,ColorPurcent);
-                STSTransitionDrawing.DrawQuad(sRect,tColor);
-                if (ColorPurcent >= 1)
+            //if (Event.current.type.Equals(EventType.Repaint))
+            //{
+                // Do drawing
+                if (ColorIsFinished == false)
                 {
-                    ColorIsPlaying = false;
-                    ColorIsFinished = true;
+                    ColorPurcent += (Time.deltaTime) / ColorDuration;
+                    Color tColor = Color.Lerp(OldColor, TintPrimary, ColorPurcent);
+                    STSTransitionDrawing.DrawRect(sRect, tColor);
+                    if (ColorPurcent >= 1)
+                    {
+                        ColorIsPlaying = false;
+                        ColorIsFinished = true;
+                    }
                 }
-            }
-            else
-            {
-                if (AnimIsPlaying == true) // play animation
+                else
                 {
-                    // estimate purcent
-                    EstimatePurcent();
-                    Draw(sRect);
+                    if (AnimIsPlaying == true) // play animation
+                    {
+                        // estimate purcent
+                        EstimatePurcent();
+                        Draw(sRect);
+                    }
                 }
-            }
+            //}
         }
         //-------------------------------------------------------------------------------------------------------------
         public virtual void PrepareEffectEnter(Rect sRect)

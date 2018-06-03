@@ -1550,7 +1550,7 @@ Prefab:
     - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
         type: 2}
       propertyPath: EffectOnEnter.Duration
-      value: 3.69
+      value: 6.1
       objectReference: {fileID: 0}
     - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
         type: 2}
@@ -1575,42 +1575,42 @@ Prefab:
     - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
         type: 2}
       propertyPath: EffectOnExit.TintPrimary.r
-      value: 0.83823526
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
         type: 2}
       propertyPath: EffectOnExit.TintPrimary.g
-      value: 0.10477941
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
         type: 2}
       propertyPath: EffectOnExit.TintPrimary.b
-      value: 0.10477941
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
         type: 2}
       propertyPath: EffectOnExit.EffectName
-      value: Fade Gradient
+      value: Over Slide Gradient
       objectReference: {fileID: 0}
     - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
         type: 2}
       propertyPath: EffectOnExit.ParameterOne
-      value: 11
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
         type: 2}
       propertyPath: InterEffectDuration
-      value: 0.37
+      value: 0.89
       objectReference: {fileID: 0}
     - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
         type: 2}
       propertyPath: EffectOnEnter.EffectName
-      value: Checkout
+      value: Octo Random
       objectReference: {fileID: 0}
     - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
         type: 2}
       propertyPath: EffectOnEnter.TintSecondary.r
-      value: 0.19658744
+      value: 0.197
       objectReference: {fileID: 0}
     - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
         type: 2}
@@ -1640,12 +1640,62 @@ Prefab:
     - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
         type: 2}
       propertyPath: EffectOnEnter.Purcent
-      value: 0.797
+      value: 0.28
       objectReference: {fileID: 0}
     - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
         type: 2}
       propertyPath: EffectOnExit.Purcent
+      value: 0.63
+      objectReference: {fileID: 0}
+    - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
+        type: 2}
+      propertyPath: EffectOnEnter.Localisation
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
+        type: 2}
+      propertyPath: EffectOnEnter.FiveCross
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
+        type: 2}
+      propertyPath: EffectOnEnter.NineCross
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
+        type: 2}
+      propertyPath: EffectOnEnter.ParameterOne
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
+        type: 2}
+      propertyPath: EffectOnEnter.TintSecondary.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
+        type: 2}
+      propertyPath: EffectOnEnter.ParameterTwo
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
+        type: 2}
+      propertyPath: EffectOnExit.FiveCross
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
+        type: 2}
+      propertyPath: EffectOnExit.ParameterTwo
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
+        type: 2}
+      propertyPath: EffectOnEnter.TintPrimary.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
+        type: 2}
+      propertyPath: EffectOnExit.NineCross
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0e83aeb60f9fa48839bc951fe2a921aa, type: 2}

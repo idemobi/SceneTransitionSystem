@@ -109,12 +109,23 @@ namespace SceneTransitionSystem
                 tH += tNumberFieldStyle.fixedHeight + kMarge;
             }
 
+            // FiveCross
+            if (tEffectType.GetCustomAttributes(typeof(STSNoFiveCrossAttribute), true).Length == 0)
+            {
+                tH += tPopupFieldStyle.fixedHeight + kMarge;
+            }
+
+            // FiveCross
+            if (tEffectType.GetCustomAttributes(typeof(STSNoNineCrossAttribute), true).Length == 0)
+            {
+                tH += tPopupFieldStyle.fixedHeight + kMarge;
+            }
+
             // Duration
             tH += tNumberFieldStyle.fixedHeight + kMarge;
 
             // Purcent
             tH += tNumberFieldStyle.fixedHeight + kMarge;
-
 
             // Purcent
             tH += 80.0F + kMarge;
@@ -122,7 +133,8 @@ namespace SceneTransitionSystem
             return tH;
         }
         //-------------------------------------------------------------------------------------------------------------
-        float LocalPurcent = 0.0F;
+        //float LocalPurcent = 0.0F;
+        STSEffect rReturn = null;
         //-------------------------------------------------------------------------------------------------------------
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
@@ -147,26 +159,33 @@ namespace SceneTransitionSystem
                     tValue = STSEffectType.kEffectNameList[tIndexNew];
                     tEffectName.stringValue = tValue;
                     tEffectName.serializedObject.ApplyModifiedProperties();
+                    rReturn = null;
                 }
             }
             tY += tPopupFieldStyle.fixedHeight + kMarge;
-
-            STSEffect rReturn = null;
-            string tName = tEffectName.stringValue;
-            int tIndexDD = STSEffectType.kEffectNameList.IndexOf(tName);
-            if (tIndexDD < 0 || tIndexDD >= STSEffectType.kEffectNameList.Count())
+            bool tNewReturn = false;
+            if (rReturn == null)
             {
-                rReturn = new STSEffectFade();
+                string tName = tEffectName.stringValue;
+                int tIndexDD = STSEffectType.kEffectNameList.IndexOf(tName);
+                if (tIndexDD < 0 || tIndexDD >= STSEffectType.kEffectNameList.Count())
+                {
+                    rReturn = new STSEffectFade();
+                }
+                else
+                {
+                    Type tEffectTypeDD = STSEffectType.kEffectTypeList[tIndexDD];
+                    rReturn = (STSEffect)Activator.CreateInstance(tEffectTypeDD);
+                }
+                tNewReturn = true;
             }
-            else
-            {
-                Type tEffectTypeDD = STSEffectType.kEffectTypeList[tIndexDD];
-                rReturn = (STSEffect)Activator.CreateInstance(tEffectTypeDD);
-            }
-
             Type tEffectType = STSEffectType.kEffectTypeList[tIndexNew];
 
             EditorGUI.indentLevel++;
+
+
+
+            EditorGUI.BeginChangeCheck();
 
             // Primary Tint
             if (tEffectType.GetCustomAttributes(typeof(STSNoTintPrimaryAttribute), true).Length == 0)
@@ -227,7 +246,7 @@ namespace SceneTransitionSystem
                 tY += tNumberFieldStyle.fixedHeight + kMarge;
                 rReturn.ParameterTwo = tParameterTwo.intValue;
             }
-            
+
             // Parameter Three
             if (tEffectType.GetCustomAttributes(typeof(STSNoParameterThreeAttribute), true).Length == 0)
             {
@@ -247,6 +266,30 @@ namespace SceneTransitionSystem
                 tY += tNumberFieldStyle.fixedHeight + kMarge;
                 rReturn.Offset = tOffset.vector2Value;
             }
+            // FiveCross
+            if (tEffectType.GetCustomAttributes(typeof(STSNoFiveCrossAttribute), true).Length == 0)
+            {
+                Rect tRectFiveCross = new Rect(position.x, tY, position.width, tPopupFieldStyle.fixedHeight);
+                SerializedProperty tFiveCross = property.FindPropertyRelative("FiveCross");
+                EditorGUI.PropertyField(tRectFiveCross, tFiveCross, false);
+                tY += tPopupFieldStyle.fixedHeight + kMarge;
+                rReturn.FiveCross = (STSFiveCross)tFiveCross.intValue;
+            }
+            // NineCross
+            if (tEffectType.GetCustomAttributes(typeof(STSNoNineCrossAttribute), true).Length == 0)
+            {
+                Rect tRectNineCross = new Rect(position.x, tY, position.width, tPopupFieldStyle.fixedHeight);
+                SerializedProperty tNineCross = property.FindPropertyRelative("NineCross");
+                EditorGUI.PropertyField(tRectNineCross, tNineCross, false);
+                tY += tPopupFieldStyle.fixedHeight + kMarge;
+                rReturn.NineCross = (STSNineCross)tNineCross.intValue;
+            }
+
+            if (EditorGUI.EndChangeCheck() == true)
+            {
+                tNewReturn = true;
+            }
+
 
             // Duration
             Rect tRectDuration = new Rect(position.x, tY, position.width, tNumberFieldStyle.fixedHeight);
@@ -265,16 +308,29 @@ namespace SceneTransitionSystem
             EditorGUI.EndProperty();
 
             //Draw local render
-            rReturn.Purcent = LocalPurcent;
-            rReturn.Purcent = tPurcent.floatValue;
-            rReturn.Draw(new Rect(position.x, tY, position.width, 80.0F));
 
-            // test auto animation
-            LocalPurcent += Time.deltaTime;
-            if (LocalPurcent>1.0F)
+            Rect tPreviewRect = new Rect(position.x, tY, position.width, 80.0F);
+            if (tNewReturn == true)
             {
-                LocalPurcent = 0.0F;
+                Debug.Log("MUST PREPARE THE EFFECT EXIT");
+                rReturn.PrepareEffectExit(tPreviewRect);
             }
+            //rReturn.Purcent = LocalPurcent;
+            rReturn.Purcent = tPurcent.floatValue;
+            // draw white rect
+            STSTransitionDrawing.DrawRect(tPreviewRect, Color.white);
+            STSTransitionDrawing.DrawCircle(tPreviewRect.center, tPreviewRect.height / 2.0F, 32, Color.red);
+            // 
+            // TODO : Add image in background
+            // draw preview
+            rReturn.Draw(tPreviewRect);
+
+            //// test auto animation
+            //LocalPurcent += Time.deltaTime;
+            //if (LocalPurcent > 1.0F)
+            //{
+            //    LocalPurcent = 0.0F;
+            //}
         }
         //-------------------------------------------------------------------------------------------------------------
     }

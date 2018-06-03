@@ -4,6 +4,9 @@ using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using UnityEngine;
 using System.Reflection;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 //=====================================================================================================================
 namespace SceneTransitionSystem
@@ -18,13 +21,218 @@ namespace SceneTransitionSystem
         private static Material blendMaterial = null;
         private static Rect lineRect = new Rect(0, 0, 1, 1);
         //-------------------------------------------------------------------------------------------------------------
-        public static void DrawQuad(Rect position, Color color)
+        static Texture2D kTexture;
+        static Material tMat;
+        static string ShaderName = "UI/Default";
+        //-------------------------------------------------------------------------------------------------------------
+        static STSTransitionDrawing()
         {
-            Texture2D tTexture = new Texture2D(1, 1);
-            tTexture.SetPixel(0, 0, color);
-            tTexture.Apply();
-            GUI.DrawTexture(position, tTexture);
+            Initialize();
+            tMat = new Material(Shader.Find(ShaderName));
+            if (kTexture == null)
+            {
+                kTexture = new Texture2D(1, 1);
+            }
         }
+        //-------------------------------------------------------------------------------------------------------------
+        public static void DrawCircle(Vector2 sCenter, float sRadius, uint sSegmentPerQuarter, Color sColor)
+        {
+            if (sSegmentPerQuarter < 1)
+            {
+                sSegmentPerQuarter = 1;
+            }
+            uint tTriangles = (sSegmentPerQuarter+1) * 4 * 3;
+            Vector2[] tList = new Vector2[tTriangles];
+            // Create Circle points triangles around this center
+            // Put in DrawTriangles methods
+            int tCounter = 0;
+            float tRadIncrement = Mathf.PI / (2.0F * (float)sSegmentPerQuarter);
+            //Debug.Log("tRadIncrement " + tRadIncrement);
+            //Debug.Log("cos " + Mathf.Cos(tRadIncrement));
+            //Debug.Log("sin " + Mathf.Sin(tRadIncrement));
+            // Add First Segment
+            tList[tCounter++] = sCenter;
+            tList[tCounter++] = new Vector2(sCenter.x +sRadius, sCenter.y );
+            Vector2 tOriginalPoint= new Vector2(sCenter.x + Mathf.Cos(tRadIncrement) * sRadius, sCenter.y - Mathf.Sin(tRadIncrement) * sRadius);
+            Vector2 tNextPoint = tOriginalPoint;
+            tList[tCounter++] = tNextPoint;
+            uint tSeg = (sSegmentPerQuarter * 4)-1;
+            for (int i = 1; i <= tSeg; i++)
+            {
+                float tR = tRadIncrement * i;
+                //Debug.Log("tRadIncrement <" +i+">"+ tR.ToString());
+                //Debug.Log("cos " + Mathf.Cos(tR));
+                //Debug.Log("sin " + Mathf.Sin(tR));
+                // Add next Segment
+                tList[tCounter++] = sCenter;
+                tList[tCounter++] = tNextPoint;
+                tNextPoint = new Vector2(sCenter.x + Mathf.Cos(tR) * sRadius, sCenter.y - Mathf.Sin(tR) * sRadius);
+                tList[tCounter++] = tNextPoint;
+            }
+            tList[tCounter++] = sCenter;
+            tList[tCounter++] = tNextPoint;
+            tList[tCounter++] = new Vector2(sCenter.x + sRadius, sCenter.y);
+            DrawTriangles(tList, sColor);
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public static void DrawTriangles(Vector2[] sPoints, Color sColor)
+        {
+            if (Event.current.type.Equals(EventType.Repaint))
+            {
+                if (tMat == null)
+                {
+                    tMat = new Material(Shader.Find(ShaderName));
+                }
+                GL.PushMatrix();
+                tMat.SetPass(0);
+                GL.LoadPixelMatrix();
+                GL.Begin(GL.TRIANGLES);
+                GL.Color(sColor);
+                foreach (Vector2 tV in sPoints)
+                {
+                    GL.Vertex3(tV.x, tV.y, 0);
+                }
+                GL.End();
+                GL.PopMatrix();
+            }
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public static void DrawTriangle(Vector2 sA, Vector2 sB, Vector2 sC, Color sColor)
+        {
+            if (Event.current.type.Equals(EventType.Repaint))
+            {
+                if (tMat == null)
+                {
+                    tMat = new Material(Shader.Find(ShaderName));
+                }
+                GL.PushMatrix();
+                tMat.SetPass(0);
+                GL.LoadPixelMatrix();
+                GL.Begin(GL.TRIANGLES);
+                GL.Color(sColor);
+                GL.Vertex3(sA.x, sA.y, 0);
+                GL.Vertex3(sB.x, sB.y, 0);
+                GL.Vertex3(sC.x, sC.y, 0);
+                GL.End();
+                GL.PopMatrix();
+            }
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public static void DrawQuad(Vector2 sA, Vector2 sB, Vector2 sC, Vector2 sD, Color sColor)
+        {
+            if (Event.current.type.Equals(EventType.Repaint))
+            {
+                if (tMat == null)
+                {
+                    tMat = new Material(Shader.Find(ShaderName));
+                }
+                GL.PushMatrix();
+                tMat.SetPass(0);
+                GL.LoadPixelMatrix();
+                GL.Begin(GL.QUADS);
+                GL.Color(sColor);
+                GL.Vertex3(sA.x, sA.y, 0);
+                GL.Vertex3(sB.x, sB.y, 0);
+                GL.Vertex3(sC.x, sC.y, 0);
+                GL.Vertex3(sD.x, sD.y, 0);
+                GL.End();
+                GL.PopMatrix();
+            }
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public static void DrawRect(Rect sRect, Color sColor)
+        {
+
+            //DrawQuad(new Vector2(sRect.x, sRect.y),
+            //new Vector2(sRect.x, sRect.y + sRect.height),
+            //new Vector2(sRect.x + sRect.width, sRect.y + sRect.height),
+            //new Vector2(sRect.x + sRect.width, sRect.y), sColor);
+            if (Event.current.type.Equals(EventType.Repaint))
+            {
+                if (tMat == null)
+                {
+                    tMat = new Material(Shader.Find(ShaderName));
+                }
+                GL.PushMatrix();
+                tMat.SetPass(0);
+                GL.LoadPixelMatrix();
+                // TRIANGLES Method
+                //GL.Begin(GL.TRIANGLES);
+                //GL.Color(sColor);
+                ///*A*/
+                //GL.Vertex3(sRect.x, sRect.y, 0);
+                ///*B*/
+                //GL.Vertex3(sRect.x, sRect.y + sRect.height, 0);
+                ///*C*/
+                //GL.Vertex3(sRect.x + sRect.width, sRect.y + sRect.height, 0);
+                ///*D*/
+                //GL.Vertex3(sRect.x + sRect.width, sRect.y, 0);
+                ///*C*/
+                //GL.Vertex3(sRect.x + sRect.width, sRect.y + sRect.height, 0);
+                ///*A*/
+                //GL.Vertex3(sRect.x, sRect.y, 0);
+                // QUADS Method
+                GL.Begin(GL.QUADS);
+                GL.Color(sColor);
+                /*A*/
+                GL.Vertex3(sRect.x, sRect.y, 0);
+                /*B*/
+                GL.Vertex3(sRect.x, sRect.y + sRect.height, 0);
+                /*C*/
+                GL.Vertex3(sRect.x + sRect.width, sRect.y + sRect.height, 0);
+                /*D*/
+                GL.Vertex3(sRect.x + sRect.width, sRect.y, 0);
+                GL.End();
+                GL.PopMatrix();
+            }
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        //public static void DrawRect(Rect sRect, Color sColor)
+        //{
+        //#if UNITY_EDITOR
+        //            //EditorGUI.DrawRect(position, color); // replace by Graphics.DrawTexture
+        //#endif
+        //if (kTexture == null)
+        //{
+        //    kTexture = new Texture2D(1, 1);
+        //}
+        //if (tMat == null)
+        //{
+        //    tMat = new Material(Shader.Find(ShaderName));
+        //}
+        ////Texture2D tTexture = new Texture2D(1, 1);
+        //kTexture.SetPixel(0, 0, color);
+        //kTexture.Apply();
+        ////GUI.DrawTexture(position, kTexture);
+        //if (Event.current.type.Equals(EventType.Repaint)) /// move in draw master
+        //{
+        //    //Graphics.DrawTexture(position, kTexture);
+
+        //    //GL.PushMatrix();
+        //    //tMat.SetPass(0);
+        //    //GL.LoadPixelMatrix();
+        //    //GL.Begin(GL.QUADS);
+        //    //GL.Color(color);
+        //    //GL.Vertex3(position.x, position.y, 0);
+        //    //GL.Vertex3(position.x, position.y + position.height, 0);
+        //    //GL.Vertex3(position.x + position.width, position.y + position.height, 0);
+        //    //GL.Vertex3(position.x + position.width, position.y, 0);
+        //    //GL.End();
+        //    //GL.PopMatrix();
+
+        //    GL.PushMatrix();
+        //    tMat.SetPass(0);
+        //    GL.LoadPixelMatrix();
+        //    GL.Begin(GL.TRIANGLES);
+        //    GL.Color(color);
+        //    GL.Vertex3(position.x, position.y, 0);
+        //    GL.Vertex3(position.x, position.y + position.height, 0);
+        //    GL.Vertex3(position.x + position.width, position.y + position.height, 0);
+        //    //GL.Vertex3(position.x + position.width, position.y, 0);
+        //    GL.End();
+        //    GL.PopMatrix();
+        //}
+        //}
         //-------------------------------------------------------------------------------------------------------------
         public static void DrawLine(Vector2 pointA, Vector2 pointB, Color color, float width, bool antiAlias)
         {
@@ -143,10 +351,6 @@ namespace SceneTransitionSystem
 
         // This static initializer works for runtime, but apparently isn't called when
         // Editor play mode stops, so DrawLine will re-initialize if needed.
-        static STSTransitionDrawing()
-        {
-            Initialize();
-        }
 
         private static void Initialize()
         {
