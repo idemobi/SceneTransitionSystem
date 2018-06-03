@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 //=====================================================================================================================
 namespace SceneTransitionSystem
@@ -41,7 +42,7 @@ namespace SceneTransitionSystem
 			this.DictionaryAsPayload = sDictionaryAsPayload;
         }
         //-------------------------------------------------------------------------------------------------------------
-		public void addObjectForKeyInPayload (object sObject, string sKey)
+		public void AddObjectForKeyInPayload (object sObject, string sKey)
 		{
 			if (DictionaryAsPayload == null) {
 				DictionaryAsPayload = new Dictionary<string, object> ();
@@ -49,17 +50,58 @@ namespace SceneTransitionSystem
 			DictionaryAsPayload.Add (sKey, sObject);
         }
         //-------------------------------------------------------------------------------------------------------------
-		public void addObjectInPayload (object sObject)
-		{
-			if (ListAsPayload == null) {
-				ListAsPayload = new List<object> ();
-			}
-			ListAsPayload.Add(sObject);
+        public object GetObjectForKeyInPayload(string sKey)
+        {
+            object rObject = null;
+            if (DictionaryAsPayload != null)
+            {
+                rObject = DictionaryAsPayload[sKey];
+            }
+            return rObject;
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public object GetObject(string sKey)
+        {
+            object value;
+            if (DictionaryAsPayload.TryGetValue(sKey, out value))
+            {
+                return value;
+            }
+            return null;
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public bool GetBool(string sKey, bool sDefault = false)
+        {
+            object value;
+            if (DictionaryAsPayload.TryGetValue(sKey, out value))
+            {
+                return Convert.ToBoolean(value);
+            }
+            return sDefault;
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public string GetString(string sKey)
+        {
+            object value;
+            if (DictionaryAsPayload.TryGetValue(sKey, out value))
+            {
+                return Convert.ToString(value);
+            }
+            return "";
         }
         //-------------------------------------------------------------------------------------------------------------
 		private void intialization ()
 		{
 			
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public void AddObjectInPayload(object sObject)
+        {
+            if (ListAsPayload == null)
+            {
+                ListAsPayload = new List<object>();
+            }
+            ListAsPayload.Add(sObject);
         }
         //-------------------------------------------------------------------------------------------------------------
     }
