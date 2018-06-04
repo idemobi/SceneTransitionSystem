@@ -12,15 +12,10 @@ namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     [STSEffectName("Over Slide")]
-    // *** Remove some parameters in inspector
-    [STSNoTintSecondary]
-    [STSNoTexturePrimary]
-    [STSNoTextureSecondary]
-    [STSNoParameterOne]
-    [STSNoParameterTwo]
-    [STSNoParameterThree]
-    [STSNoOffset]
-    [STSNoFiveCross]
+    // *** Active some parameters in inspector
+    [STSTintPrimary()]
+    //[STSTintSecondary()]
+    [STSNineCross("From side")]
     // ***
     public class STSEffectOverSlide : STSEffect
     {

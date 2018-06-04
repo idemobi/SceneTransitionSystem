@@ -62,66 +62,67 @@ namespace SceneTransitionSystem
             tH += tPopupFieldStyle.fixedHeight + kMarge;
 
             // Tint Primary
-            if (tEffectType.GetCustomAttributes(typeof(STSNoTintPrimaryAttribute), true).Length == 0)
+            if (tEffectType.GetCustomAttributes(typeof(STSTintPrimaryAttribute), true).Length > 0)
             {
                 tH += tColorFieldStyle.fixedHeight + kMarge;
             }
 
             // Tint Secondary
-            if (tEffectType.GetCustomAttributes(typeof(STSNoTintSecondaryAttribute), true).Length == 0)
+            if (tEffectType.GetCustomAttributes(typeof(STSTintSecondaryAttribute), true).Length > 0)
             {
                 tH += tColorFieldStyle.fixedHeight + kMarge;
             }
 
             // Texture Primary
-            if (tEffectType.GetCustomAttributes(typeof(STSNoTexturePrimaryAttribute), true).Length == 0)
+            if (tEffectType.GetCustomAttributes(typeof(STSTexturePrimaryAttribute), true).Length > 0)
             {
                 tH += tObjectFieldStyle.fixedHeight + kMarge;
             }
 
             // Texture Secondary
-            if (tEffectType.GetCustomAttributes(typeof(STSNoTextureSecondaryAttribute), true).Length == 0)
+            if (tEffectType.GetCustomAttributes(typeof(STSTextureSecondaryAttribute), true).Length > 0)
             {
                 tH += tObjectFieldStyle.fixedHeight + kMarge;
             }
 
             // Parameter One
-            if (tEffectType.GetCustomAttributes(typeof(STSNoParameterOneAttribute), true).Length == 0)
+            if (tEffectType.GetCustomAttributes(typeof(STSParameterOneAttribute), true).Length > 0)
             {
                 tH += tNumberFieldStyle.fixedHeight + kMarge;
             }
 
             // Parameter Two
-            if (tEffectType.GetCustomAttributes(typeof(STSNoParameterTwoAttribute), true).Length == 0)
+            if (tEffectType.GetCustomAttributes(typeof(STSParameterTwoAttribute), true).Length > 0)
             {
                 tH += tNumberFieldStyle.fixedHeight + kMarge;
             }
 
             // Parameter Three
-            if (tEffectType.GetCustomAttributes(typeof(STSNoParameterThreeAttribute), true).Length == 0)
+            if (tEffectType.GetCustomAttributes(typeof(STSParameterThreeAttribute), true).Length > 0)
             {
                 tH += tNumberFieldStyle.fixedHeight + kMarge;
             }
 
             // Offset
-            if (tEffectType.GetCustomAttributes(typeof(STSNoOffsetAttribute), true).Length == 0)
+            if (tEffectType.GetCustomAttributes(typeof(STSOffsetAttribute), true).Length > 0)
             {
                 tH += tNumberFieldStyle.fixedHeight + kMarge;
             }
 
             // FourCross
-            if (tEffectType.GetCustomAttributes(typeof(STSNoFourCrossAttribute), true).Length == 0)
+            if (tEffectType.GetCustomAttributes(typeof(STSFourCrossAttribute), true).Length > 0)
             {
                 tH += tPopupFieldStyle.fixedHeight + kMarge;
             }
 
             // FiveCross
-            if (tEffectType.GetCustomAttributes(typeof(STSNoFiveCrossAttribute), true).Length == 0)
+            if (tEffectType.GetCustomAttributes(typeof(STSFiveCrossAttribute), true).Length > 0)
             {
                 tH += tPopupFieldStyle.fixedHeight + kMarge;
             }
+
             // NineCross
-            if (tEffectType.GetCustomAttributes(typeof(STSNoNineCrossAttribute), true).Length == 0)
+            if (tEffectType.GetCustomAttributes(typeof(STSNineCrossAttribute), true).Length > 0)
             {
                 tH += tPopupFieldStyle.fixedHeight + kMarge;
             }
@@ -193,111 +194,241 @@ namespace SceneTransitionSystem
             EditorGUI.BeginChangeCheck();
 
             // Primary Tint
-            if (tEffectType.GetCustomAttributes(typeof(STSNoTintPrimaryAttribute), true).Length == 0)
+            if (tEffectType.GetCustomAttributes(typeof(STSTintPrimaryAttribute), true).Length > 0)
             {
+                GUIContent tEntitlement = null;
+                foreach (STSTintPrimaryAttribute tAtt in tEffectType.GetCustomAttributes(typeof(STSTintPrimaryAttribute), true))
+                {
+                    tEntitlement = new GUIContent (tAtt.Entitlement);
+                }
                 Rect tRectTintPrimary = new Rect(position.x, tY, position.width, tColorFieldStyle.fixedHeight);
                 SerializedProperty tTintPrimary = property.FindPropertyRelative("TintPrimary");
-                EditorGUI.PropertyField(tRectTintPrimary, tTintPrimary, false);
+                EditorGUI.PropertyField(tRectTintPrimary, tTintPrimary,tEntitlement, false);
                 tY += tColorFieldStyle.fixedHeight + kMarge;
                 rReturn.TintPrimary = tTintPrimary.colorValue;
             }
 
             // Secondary Tint
-            if (tEffectType.GetCustomAttributes(typeof(STSNoTintSecondaryAttribute), true).Length == 0)
+            if (tEffectType.GetCustomAttributes(typeof(STSTintSecondaryAttribute), true).Length > 0)
             {
+                GUIContent tEntitlement = null;
+                foreach (STSTintSecondaryAttribute tAtt in tEffectType.GetCustomAttributes(typeof(STSTintSecondaryAttribute), true))
+                {
+                    tEntitlement = new GUIContent(tAtt.Entitlement);
+                }
                 Rect tRectTintSecondary = new Rect(position.x, tY, position.width, tColorFieldStyle.fixedHeight);
                 SerializedProperty tTintSecondary = property.FindPropertyRelative("TintSecondary");
-                EditorGUI.PropertyField(tRectTintSecondary, tTintSecondary, false);
+                EditorGUI.PropertyField(tRectTintSecondary, tTintSecondary,tEntitlement, false);
                 tY += tColorFieldStyle.fixedHeight + kMarge;
                 rReturn.TintSecondary = tTintSecondary.colorValue;
             }
 
             // Primary Texture
-            if (tEffectType.GetCustomAttributes(typeof(STSNoTextureSecondaryAttribute), true).Length == 0)
+            if (tEffectType.GetCustomAttributes(typeof(STSTexturePrimaryAttribute), true).Length > 0)
             {
+                GUIContent tEntitlement = null;
+                foreach (STSTexturePrimaryAttribute tAtt in tEffectType.GetCustomAttributes(typeof(STSTexturePrimaryAttribute), true))
+                {
+                    tEntitlement = new GUIContent(tAtt.Entitlement);
+                }
                 Rect tRectTexturePrimary = new Rect(position.x, tY, position.width, tObjectFieldStyle.fixedHeight);
                 SerializedProperty tTexturePrimary = property.FindPropertyRelative("TexturePrimary");
-                EditorGUI.PropertyField(tRectTexturePrimary, tTexturePrimary, false);
+                EditorGUI.PropertyField(tRectTexturePrimary, tTexturePrimary,tEntitlement, false);
                 tY += tObjectFieldStyle.fixedHeight + kMarge;
                 rReturn.TexturePrimary = (Texture2D)tTexturePrimary.objectReferenceValue;
             }
 
             // Secondary Texture
-            if (tEffectType.GetCustomAttributes(typeof(STSNoTextureSecondaryAttribute), true).Length == 0)
+            if (tEffectType.GetCustomAttributes(typeof(STSTextureSecondaryAttribute), true).Length > 0)
             {
+                GUIContent tEntitlement = null;
+                foreach (STSTextureSecondaryAttribute tAtt in tEffectType.GetCustomAttributes(typeof(STSTextureSecondaryAttribute), true))
+                {
+                    tEntitlement = new GUIContent(tAtt.Entitlement);
+                }
                 Rect tRectTextureSecondary = new Rect(position.x, tY, position.width, tObjectFieldStyle.fixedHeight);
                 SerializedProperty tTextureSecondary = property.FindPropertyRelative("TextureSecondary");
-                EditorGUI.PropertyField(tRectTextureSecondary, tTextureSecondary, false);
+                EditorGUI.PropertyField(tRectTextureSecondary, tTextureSecondary,tEntitlement, false);
                 tY += tObjectFieldStyle.fixedHeight + kMarge;
                 rReturn.TextureSecondary = (Texture2D)tTextureSecondary.objectReferenceValue;
             }
 
             // Parameter One
-            if (tEffectType.GetCustomAttributes(typeof(STSNoParameterOneAttribute), true).Length == 0)
+            if (tEffectType.GetCustomAttributes(typeof(STSParameterOneAttribute), true).Length > 0)
             {
-                Rect tRectParameterOne = new Rect(position.x, tY, position.width, tNumberFieldStyle.fixedHeight);
-                SerializedProperty tParameterOne = property.FindPropertyRelative("ParameterOne");
-                EditorGUI.PropertyField(tRectParameterOne, tParameterOne, false);
-                tY += tNumberFieldStyle.fixedHeight + kMarge;
-                rReturn.ParameterOne = tParameterOne.intValue;
+                GUIContent tEntitlement = null;
+                bool tSlider = false;
+                int tSliderMin = 0;
+                int tSliderMax = 0;
+                foreach (STSParameterOneAttribute tAtt in tEffectType.GetCustomAttributes(typeof(STSParameterOneAttribute), true))
+                {
+                    tEntitlement = new GUIContent(tAtt.Entitlement);
+                    tSlider = tAtt.Slider;
+                    tSliderMin = tAtt.Min;
+                    tSliderMax = tAtt.Max;
+                }
+                if (tSlider == true)
+                {
+                    Rect tRectParameterOne = new Rect(position.x, tY, position.width, tPopupFieldStyle.fixedHeight);
+                    SerializedProperty tParameterOne = property.FindPropertyRelative("ParameterOne");
+                    if (tParameterOne.intValue > tSliderMax)
+                    {
+                        tParameterOne.intValue = tSliderMax;
+                    }
+                    if (tParameterOne.intValue < tSliderMin)
+                    {
+                        tParameterOne.intValue = tSliderMin;
+                    }
+                    EditorGUI.IntSlider(tRectParameterOne, tParameterOne, tSliderMin, tSliderMax, tEntitlement);
+                    tY += tPopupFieldStyle.fixedHeight + kMarge;
+                    rReturn.ParameterOne = tParameterOne.intValue;
+                }
+                else
+                {
+                    Rect tRectParameterOne = new Rect(position.x, tY, position.width, tNumberFieldStyle.fixedHeight);
+                    SerializedProperty tParameterOne = property.FindPropertyRelative("ParameterOne");
+                    EditorGUI.PropertyField(tRectParameterOne, tParameterOne, tEntitlement, false);
+                    tY += tNumberFieldStyle.fixedHeight + kMarge;
+                    rReturn.ParameterOne = tParameterOne.intValue;
+                }
             }
 
             // Parameter Two
-            if (tEffectType.GetCustomAttributes(typeof(STSNoParameterTwoAttribute), true).Length == 0)
+            if (tEffectType.GetCustomAttributes(typeof(STSParameterTwoAttribute), true).Length > 0)
             {
-                Rect tRectParameterTwo = new Rect(position.x, tY, position.width, tNumberFieldStyle.fixedHeight);
-                SerializedProperty tParameterTwo = property.FindPropertyRelative("ParameterTwo");
-                EditorGUI.PropertyField(tRectParameterTwo, tParameterTwo, false);
-                tY += tNumberFieldStyle.fixedHeight + kMarge;
-                rReturn.ParameterTwo = tParameterTwo.intValue;
+                GUIContent tEntitlement = null;
+                bool tSlider = false;
+                int tSliderMin = 0;
+                int tSliderMax = 0;
+                foreach (STSParameterTwoAttribute tAtt in tEffectType.GetCustomAttributes(typeof(STSParameterTwoAttribute), true))
+                {
+                    tEntitlement = new GUIContent(tAtt.Entitlement);
+                    tSlider = tAtt.Slider;
+                    tSliderMin = tAtt.Min;
+                    tSliderMax = tAtt.Max;
+                }
+                if (tSlider == true)
+                {
+                    Rect tRectParameterTwo = new Rect(position.x, tY, position.width, tPopupFieldStyle.fixedHeight);
+                    SerializedProperty tParameterTwo = property.FindPropertyRelative("ParameterTwo");
+                    if (tParameterTwo.intValue > tSliderMax)
+                    {
+                        tParameterTwo.intValue = tSliderMax;
+                    }
+                    if (tParameterTwo.intValue < tSliderMin)
+                    {
+                        tParameterTwo.intValue = tSliderMin;
+                    }
+                    EditorGUI.IntSlider(tRectParameterTwo, tParameterTwo, tSliderMin, tSliderMax, tEntitlement);
+                    tY += tPopupFieldStyle.fixedHeight + kMarge;
+                    rReturn.ParameterTwo = tParameterTwo.intValue;
+                }
+                else
+                {
+                    Rect tRectParameterTwo = new Rect(position.x, tY, position.width, tNumberFieldStyle.fixedHeight);
+                    SerializedProperty tParameterTwo = property.FindPropertyRelative("ParameterTwo");
+                    EditorGUI.PropertyField(tRectParameterTwo, tParameterTwo, tEntitlement, false);
+                    tY += tNumberFieldStyle.fixedHeight + kMarge;
+                    rReturn.ParameterTwo = tParameterTwo.intValue;
+                }
             }
 
             // Parameter Three
-            if (tEffectType.GetCustomAttributes(typeof(STSNoParameterThreeAttribute), true).Length == 0)
+            if (tEffectType.GetCustomAttributes(typeof(STSParameterThreeAttribute), true).Length > 0)
             {
-                Rect tRectParameterThree = new Rect(position.x, tY, position.width, tNumberFieldStyle.fixedHeight);
-                SerializedProperty tParameterThree = property.FindPropertyRelative("ParameterThree");
-                EditorGUI.PropertyField(tRectParameterThree, tParameterThree, false);
-                tY += tNumberFieldStyle.fixedHeight + kMarge;
-                rReturn.ParameterThree = tParameterThree.intValue;
+                GUIContent tEntitlement = null;
+                bool tSlider = false;
+                int tSliderMin = 0;
+                int tSliderMax = 0;
+                foreach (STSParameterThreeAttribute tAtt in tEffectType.GetCustomAttributes(typeof(STSParameterThreeAttribute), true))
+                {
+                    tEntitlement = new GUIContent(tAtt.Entitlement);
+                    tSlider = tAtt.Slider;
+                    tSliderMin = tAtt.Min;
+                    tSliderMax = tAtt.Max;
+                }
+                if (tSlider == true)
+                {
+                    Rect tRectParameterThree = new Rect(position.x, tY, position.width, tPopupFieldStyle.fixedHeight);
+                    SerializedProperty tParameterThree = property.FindPropertyRelative("ParameterThree");
+                    if (tParameterThree.intValue > tSliderMax)
+                    {
+                        tParameterThree.intValue = tSliderMax;
+                    }
+                    if (tParameterThree.intValue < tSliderMin)
+                    {
+                        tParameterThree.intValue = tSliderMin;
+                    }
+                    EditorGUI.IntSlider(tRectParameterThree, tParameterThree, tSliderMin, tSliderMax, tEntitlement);
+                    tY += tPopupFieldStyle.fixedHeight + kMarge;
+                    rReturn.ParameterThree = tParameterThree.intValue;
+                }
+                else
+                {
+                    Rect tRectParameterThree = new Rect(position.x, tY, position.width, tNumberFieldStyle.fixedHeight);
+                    SerializedProperty tParameterThree = property.FindPropertyRelative("ParameterThree");
+                    EditorGUI.PropertyField(tRectParameterThree, tParameterThree, tEntitlement, false);
+                    tY += tNumberFieldStyle.fixedHeight + kMarge;
+                    rReturn.ParameterThree = tParameterThree.intValue;
+                }
             }
 
             // Offset
-            if (tEffectType.GetCustomAttributes(typeof(STSNoOffsetAttribute), true).Length == 0)
+            if (tEffectType.GetCustomAttributes(typeof(STSOffsetAttribute), true).Length > 0)
             {
+                GUIContent tEntitlement = null;
+                foreach (STSOffsetAttribute tAtt in tEffectType.GetCustomAttributes(typeof(STSOffsetAttribute), true))
+                {
+                    tEntitlement = new GUIContent(tAtt.Entitlement);
+                }
                 Rect tRectOffset = new Rect(position.x, tY, position.width, tNumberFieldStyle.fixedHeight);
                 SerializedProperty tOffset = property.FindPropertyRelative("Offset");
-                EditorGUI.PropertyField(tRectOffset, tOffset, false);
+                EditorGUI.PropertyField(tRectOffset, tOffset,tEntitlement, false);
                 tY += tNumberFieldStyle.fixedHeight + kMarge;
                 rReturn.Offset = tOffset.vector2Value;
             }
 
             // FourCross
-            if (tEffectType.GetCustomAttributes(typeof(STSNoFourCrossAttribute), true).Length == 0)
+            if (tEffectType.GetCustomAttributes(typeof(STSFourCrossAttribute), true).Length > 0)
             {
+                GUIContent tEntitlement = null;
+                foreach (STSFourCrossAttribute tAtt in tEffectType.GetCustomAttributes(typeof(STSFourCrossAttribute), true))
+                {
+                    tEntitlement = new GUIContent(tAtt.Entitlement);
+                }
                 Rect tRectFourCross = new Rect(position.x, tY, position.width, tPopupFieldStyle.fixedHeight);
                 SerializedProperty tFourCross = property.FindPropertyRelative("FourCross");
-                EditorGUI.PropertyField(tRectFourCross, tFourCross, false);
+                EditorGUI.PropertyField(tRectFourCross, tFourCross,tEntitlement, false);
                 tY += tPopupFieldStyle.fixedHeight + kMarge;
                 rReturn.FourCross = (STSFourCross)tFourCross.intValue;
             }
 
             // FiveCross
-            if (tEffectType.GetCustomAttributes(typeof(STSNoFiveCrossAttribute), true).Length == 0)
+            if (tEffectType.GetCustomAttributes(typeof(STSFiveCrossAttribute), true).Length > 0)
             {
+                GUIContent tEntitlement = null;
+                foreach (STSFiveCrossAttribute tAtt in tEffectType.GetCustomAttributes(typeof(STSFiveCrossAttribute), true))
+                {
+                    tEntitlement = new GUIContent(tAtt.Entitlement);
+                }
                 Rect tRectFiveCross = new Rect(position.x, tY, position.width, tPopupFieldStyle.fixedHeight);
                 SerializedProperty tFiveCross = property.FindPropertyRelative("FiveCross");
-                EditorGUI.PropertyField(tRectFiveCross, tFiveCross, false);
+                EditorGUI.PropertyField(tRectFiveCross, tFiveCross,tEntitlement, false);
                 tY += tPopupFieldStyle.fixedHeight + kMarge;
                 rReturn.FiveCross = (STSFiveCross)tFiveCross.intValue;
             }
 
             // NineCross
-            if (tEffectType.GetCustomAttributes(typeof(STSNoNineCrossAttribute), true).Length == 0)
+            if (tEffectType.GetCustomAttributes(typeof(STSNineCrossAttribute), true).Length > 0)
             {
+                GUIContent tEntitlement = null;
+                foreach (STSNineCrossAttribute tAtt in tEffectType.GetCustomAttributes(typeof(STSNineCrossAttribute), true))
+                {
+                    tEntitlement = new GUIContent(tAtt.Entitlement);
+                }
                 Rect tRectNineCross = new Rect(position.x, tY, position.width, tPopupFieldStyle.fixedHeight);
                 SerializedProperty tNineCross = property.FindPropertyRelative("NineCross");
-                EditorGUI.PropertyField(tRectNineCross, tNineCross, false);
+                EditorGUI.PropertyField(tRectNineCross, tNineCross,tEntitlement, false);
                 tY += tPopupFieldStyle.fixedHeight + kMarge;
                 rReturn.NineCross = (STSNineCross)tNineCross.intValue;
             }
@@ -306,7 +437,6 @@ namespace SceneTransitionSystem
             {
                 tNewReturn = true;
             }
-
 
             // Duration
             Rect tRectDuration = new Rect(position.x, tY, position.width, tNumberFieldStyle.fixedHeight);

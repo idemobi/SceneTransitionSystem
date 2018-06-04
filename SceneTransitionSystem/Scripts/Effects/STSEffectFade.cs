@@ -12,15 +12,8 @@ namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     [STSEffectName("Fade")]
-    // *** Remove some parameters in inspector
-    [STSNoTintSecondary]
-    [STSNoTexturePrimary]
-    [STSNoTextureSecondary]
-    [STSNoParameterOne]
-    [STSNoParameterTwo]
-    [STSNoParameterThree]
-    [STSNoOffset]
-    [STSNoFiveCross]
+    // *** Active some parameters in inspector
+    [STSTintPrimary("Tint")]
     // ***
     public class STSEffectFade : STSEffect
     {

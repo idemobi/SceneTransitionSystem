@@ -12,14 +12,9 @@ namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     [STSEffectName("Fade Gradient")]
-    // *** Remove some parameters in inspector
-    [STSNoTexturePrimary]
-    [STSNoTextureSecondary]
-    [STSNoParameterOne]
-    [STSNoParameterTwo]
-    [STSNoParameterThree]
-    [STSNoOffset]
-    [STSNoFiveCross]
+    // *** Active some parameters in inspector
+    [STSTintPrimary()]
+    [STSTintSecondary()]
     // ***
     public class STSEffectFadeGradient : STSEffect
     {

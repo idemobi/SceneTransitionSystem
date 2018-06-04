@@ -14,57 +14,225 @@ namespace SceneTransitionSystem
     public class STSEffectNameAttribute : Attribute
     {
         //-------------------------------------------------------------------------------------------------------------
-        public string ClassName;
+        public string EffectName;
         //-------------------------------------------------------------------------------------------------------------
-        public STSEffectNameAttribute(string sClassName)
+        public STSEffectNameAttribute(string sEffectName)
         {
-            this.ClassName = sClassName;
+            this.EffectName = sEffectName;
         }
         //-------------------------------------------------------------------------------------------------------------
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public class STSNoTintPrimaryAttribute : Attribute
+    public class STSTintPrimaryAttribute : Attribute
     {
+        //-------------------------------------------------------------------------------------------------------------
+        public string Entitlement="Tint Primary";
+        //-------------------------------------------------------------------------------------------------------------
+        public STSTintPrimaryAttribute()
+        {
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public STSTintPrimaryAttribute(string sEntitlement)
+        {
+            this.Entitlement = sEntitlement;
+        }
+        //-------------------------------------------------------------------------------------------------------------
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public class STSNoTintSecondaryAttribute : Attribute
+    public class STSTintSecondaryAttribute : Attribute
     {
+        //-------------------------------------------------------------------------------------------------------------
+        public string Entitlement= "Tint Secondary";
+        //-------------------------------------------------------------------------------------------------------------
+        public STSTintSecondaryAttribute()
+        {
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public STSTintSecondaryAttribute(string sEntitlement)
+        {
+            this.Entitlement = sEntitlement;
+        }
+        //-------------------------------------------------------------------------------------------------------------
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public class STSNoTexturePrimaryAttribute : Attribute
+    public class STSTexturePrimaryAttribute : Attribute
     {
+        //-------------------------------------------------------------------------------------------------------------
+        public string Entitlement= "Texture Primary";
+        //-------------------------------------------------------------------------------------------------------------
+        public STSTexturePrimaryAttribute()
+        {
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public STSTexturePrimaryAttribute(string sEntitlement)
+        {
+            this.Entitlement = sEntitlement;
+        }
+        //-------------------------------------------------------------------------------------------------------------
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public class STSNoTextureSecondaryAttribute : Attribute
+    public class STSTextureSecondaryAttribute : Attribute
     {
+        //-------------------------------------------------------------------------------------------------------------
+        public string Entitlement= "Texture Secondary";
+        //-------------------------------------------------------------------------------------------------------------
+        public STSTextureSecondaryAttribute()
+        {
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public STSTextureSecondaryAttribute(string sEntitlement)
+        {
+            this.Entitlement = sEntitlement;
+        }
+        //-------------------------------------------------------------------------------------------------------------
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public class STSNoParameterOneAttribute : Attribute
+    public class STSParameterOneAttribute : Attribute
     {
+        //-------------------------------------------------------------------------------------------------------------
+        public string Entitlement = "Parameter One";
+        public bool Slider = false;
+        public int Min;
+        public int Max;
+        //-------------------------------------------------------------------------------------------------------------
+        public STSParameterOneAttribute()
+        {
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public STSParameterOneAttribute(string sEntitlement, int sMin, int sMax)
+        {
+            this.Slider = true;
+            this.Entitlement = sEntitlement;
+            this.Min = sMin;
+            this.Max = sMax;
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public STSParameterOneAttribute(string sEntitlement)
+        {
+            this.Slider = false;
+            this.Entitlement = sEntitlement;
+        }
+        //-------------------------------------------------------------------------------------------------------------
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public class STSNoParameterTwoAttribute : Attribute
+    public class STSParameterTwoAttribute : Attribute
     {
+        //-------------------------------------------------------------------------------------------------------------
+        public string Entitlement = "Parameter Two";
+        public bool Slider = false;
+        public int Min;
+        public int Max;
+        //-------------------------------------------------------------------------------------------------------------
+        public STSParameterTwoAttribute()
+        {
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public STSParameterTwoAttribute(string sEntitlement, int sMin, int sMax)
+        {
+            this.Slider = true;
+            this.Entitlement = sEntitlement;
+            this.Min = sMin;
+            this.Max = sMax;
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public STSParameterTwoAttribute(string sEntitlement)
+        {
+            this.Slider = false;
+            this.Entitlement = sEntitlement;
+        }
+        //-------------------------------------------------------------------------------------------------------------
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public class STSNoParameterThreeAttribute : Attribute
+    public class STSParameterThreeAttribute : Attribute
     {
+        //-------------------------------------------------------------------------------------------------------------
+        public string Entitlement = "Parameter Three";
+        public bool Slider = false;
+        public int Min;
+        public int Max;
+        //-------------------------------------------------------------------------------------------------------------
+        public STSParameterThreeAttribute()
+        {
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public STSParameterThreeAttribute(string sEntitlement, int sMin, int sMax)
+        {
+            this.Slider = true;
+            this.Entitlement = sEntitlement;
+            this.Min = sMin;
+            this.Max = sMax;
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public STSParameterThreeAttribute(string sEntitlement)
+        {
+            this.Slider = false;
+            this.Entitlement = sEntitlement;
+        }
+        //-------------------------------------------------------------------------------------------------------------
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public class STSNoOffsetAttribute : Attribute
+    public class STSOffsetAttribute : Attribute
     {
+        //-------------------------------------------------------------------------------------------------------------
+        public string Entitlement = "Offset";
+        //-------------------------------------------------------------------------------------------------------------
+        public STSOffsetAttribute()
+        {
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public STSOffsetAttribute(string sEntitlement)
+        {
+            this.Entitlement = sEntitlement;
+        }
+        //-------------------------------------------------------------------------------------------------------------
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public class STSNoFourCrossAttribute : Attribute
+    public class STSFourCrossAttribute : Attribute
     {
+        //-------------------------------------------------------------------------------------------------------------
+        public string Entitlement = "Four cross";
+        //-------------------------------------------------------------------------------------------------------------
+        public STSFourCrossAttribute()
+        {
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public STSFourCrossAttribute(string sEntitlement)
+        {
+            this.Entitlement = sEntitlement;
+        }
+        //-------------------------------------------------------------------------------------------------------------
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public class STSNoFiveCrossAttribute : Attribute
+    public class STSFiveCrossAttribute : Attribute
     {
+        //-------------------------------------------------------------------------------------------------------------
+        public string Entitlement = "Five cross";
+        //-------------------------------------------------------------------------------------------------------------
+        public STSFiveCrossAttribute()
+        {
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public STSFiveCrossAttribute(string sEntitlement)
+        {
+            this.Entitlement = sEntitlement;
+        }
+        //-------------------------------------------------------------------------------------------------------------
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public class STSNoNineCrossAttribute : Attribute
+    public class STSNineCrossAttribute : Attribute
     {
+        //-------------------------------------------------------------------------------------------------------------
+        public string Entitlement = "Nine cross";
+        //-------------------------------------------------------------------------------------------------------------
+        public STSNineCrossAttribute()
+        {
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public STSNineCrossAttribute(string sEntitlement)
+        {
+            this.Entitlement = sEntitlement;
+        }
+        //-------------------------------------------------------------------------------------------------------------
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     public enum STSFourCross : int
@@ -75,7 +243,7 @@ namespace SceneTransitionSystem
         Left,
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public enum STSFiveCross :int 
+    public enum STSFiveCross : int
     {
         Top,
         Bottom,
@@ -95,54 +263,6 @@ namespace SceneTransitionSystem
         TopRight,
         BottomLeft,
         BottomRight,
-    }
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public class STSParameterOneEntitleAttribute : Attribute
-    {
-        //-------------------------------------------------------------------------------------------------------------
-        public string Name;
-        public int Min;
-        public int Max;
-        //-------------------------------------------------------------------------------------------------------------
-        public STSParameterOneEntitleAttribute(string sName, int sMin, int sMax)
-        {
-            this.Name = sName;
-            this.Min = sMin;
-            this.Max = sMax;
-        }
-        //-------------------------------------------------------------------------------------------------------------
-    }
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public class STSParameterTwoEntitleAttribute : Attribute
-    {
-        //-------------------------------------------------------------------------------------------------------------
-        public string Name;
-        public int Min;
-        public int Max;
-        //-------------------------------------------------------------------------------------------------------------
-        public STSParameterTwoEntitleAttribute(string sName, int sMin, int sMax)
-        {
-            this.Name = sName;
-            this.Min = sMin;
-            this.Max = sMax;
-        }
-        //-------------------------------------------------------------------------------------------------------------
-    }
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public class STSParameterThreeEntitleAttribute : Attribute
-    {
-        //-------------------------------------------------------------------------------------------------------------
-        public string Name;
-        public int Min;
-        public int Max;
-        //-------------------------------------------------------------------------------------------------------------
-        public STSParameterThreeEntitleAttribute(string sName, int sMin, int sMax)
-        {
-            this.Name = sName;
-            this.Min = sMin;
-            this.Max = sMax;
-        }
-        //-------------------------------------------------------------------------------------------------------------
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     [Serializable]
@@ -180,7 +300,6 @@ namespace SceneTransitionSystem
         public bool ColorIsPlaying = false;
         public bool ColorIsFinished = false;
     }
-
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     [Serializable]
     public class STSEffectType : STSEffectBase
@@ -264,26 +383,26 @@ namespace SceneTransitionSystem
             // reccord all the effect type
             foreach (Type tType in tAllNWDTypes)
             {
-                string tClassName = tType.Name;
+                string tEntitlement = tType.Name;
                 if (tType.GetCustomAttributes(typeof(STSEffectNameAttribute), true).Length > 0)
                 {
                     foreach (STSEffectNameAttribute tReference in tType.GetCustomAttributes(typeof(STSEffectNameAttribute), true))
                     {
-                        tClassName = tReference.ClassName;
+                        tEntitlement = tReference.EffectName;
                     }
                 }
-                if (string.IsNullOrEmpty(tClassName))
+                if (string.IsNullOrEmpty(tEntitlement))
                 {
-                    tClassName = tType.Name;
+                    tEntitlement = tType.Name;
                 }
                 //MethodInfo tMethodInfo = tType.GetMethod("EffectName", BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
                 //if (tMethodInfo != null)
                 //{
-                //    tClassName = tMethodInfo.Invoke(null, null) as string;
+                //    tEntitlement = tMethodInfo.Invoke(null, null) as string;
                 //}
-                kEffectContentList.Add(new GUIContent(tClassName));
+                kEffectContentList.Add(new GUIContent(tEntitlement));
                 kEffectTypeList.Add(tType);
-                kEffectNameList.Add(tClassName);
+                kEffectNameList.Add(tEntitlement);
             }
             // Add Default
             kEffectNameList.Insert(0, "");

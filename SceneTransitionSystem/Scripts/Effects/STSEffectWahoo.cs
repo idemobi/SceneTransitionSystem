@@ -13,9 +13,10 @@ namespace SceneTransitionSystem
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     [STSEffectNameAttribute("Whaoo")]
     // *** Remove some parameters in inspector
-    [STSNoParameterOneAttribute]
-    [STSNoParameterTwoAttribute]
-    [STSNoParameterThreeAttribute]
+    // *** Active some parameters in inspector
+    //[STSTintPrimary()]
+    //[STSTintSecondary()]
+    //[STSNineCross("From side")]
     // ***
     public class STSEffectWhaoo : STSEffect
     {

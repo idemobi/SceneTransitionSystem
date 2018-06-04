@@ -17712,6 +17712,98 @@ Prefab:
 Transform:
   m_PrefabParentObject: {fileID: 418008, guid: 0d72575f7deedd54d86c7b6b4ae232b7, type: 2}
   m_PrefabInternal: {fileID: 590483310}
+--- !u!1001 &590933934
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4583166921216416, guid: 0e83aeb60f9fa48839bc951fe2a921aa, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 375.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4583166921216416, guid: 0e83aeb60f9fa48839bc951fe2a921aa, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 391
+      objectReference: {fileID: 0}
+    - target: {fileID: 4583166921216416, guid: 0e83aeb60f9fa48839bc951fe2a921aa, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4583166921216416, guid: 0e83aeb60f9fa48839bc951fe2a921aa, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4583166921216416, guid: 0e83aeb60f9fa48839bc951fe2a921aa, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4583166921216416, guid: 0e83aeb60f9fa48839bc951fe2a921aa, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4583166921216416, guid: 0e83aeb60f9fa48839bc951fe2a921aa, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4583166921216416, guid: 0e83aeb60f9fa48839bc951fe2a921aa, type: 2}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
+        type: 2}
+      propertyPath: EffectOnEnter.EffectName
+      value: Over Slide
+      objectReference: {fileID: 0}
+    - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
+        type: 2}
+      propertyPath: EffectOnEnter.Purcent
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
+        type: 2}
+      propertyPath: EffectOnExit.EffectName
+      value: Fade Line
+      objectReference: {fileID: 0}
+    - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
+        type: 2}
+      propertyPath: EffectOnExit.ParameterOne
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
+        type: 2}
+      propertyPath: EffectOnExit.ParameterTwo
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
+        type: 2}
+      propertyPath: EffectOnExit.Purcent
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
+        type: 2}
+      propertyPath: EffectOnEnter.FourCross
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
+        type: 2}
+      propertyPath: EffectOnEnter.NineCross
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
+        type: 2}
+      propertyPath: EffectOnEnter.Duration
+      value: 2.54
+      objectReference: {fileID: 0}
+    - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
+        type: 2}
+      propertyPath: EffectOnExit.Duration
+      value: 1.6
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 0e83aeb60f9fa48839bc951fe2a921aa, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1001 &591008226
 Prefab:
   m_ObjectHideFlags: 0

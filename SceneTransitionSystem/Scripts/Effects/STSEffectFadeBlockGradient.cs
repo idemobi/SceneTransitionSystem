@@ -12,19 +12,11 @@ namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     [STSEffectName("Fade Block Gradient")]
-    // *** Remove some parameters in inspector
-    //[STSNoTintSecondary]
-    [STSNoTexturePrimary]
-    [STSNoTextureSecondary]
-    //[STSNoParameterOne]
-    //[STSNoParameterTwo]
-    [STSNoParameterThree]
-    [STSNoOffset]
-    //[STSNoFiveCross]
-    [STSNoNineCross]
-    // ***
-    [STSParameterOneEntitle("Line Number", 0, 10)]
-    [STSParameterTwoEntitle("Column Number", 0, 10)]
+    // *** Active some parameters in inspector
+    [STSTintPrimary()]
+    [STSTintSecondary()]
+    [STSParameterOne("Line Number", 1, 30)]
+    [STSParameterTwo("Column Number", 1, 30)]
     // ***
     public class STSEffectFadeBlockGradient : STSEffect
     {
