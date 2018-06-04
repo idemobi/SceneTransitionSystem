@@ -23,12 +23,13 @@ namespace SceneTransitionSystem
 		public string Title;
 		public string Subtitle;
 		public string Level;
-		public List<object> ListAsPayload;
-		public Dictionary<string, object> DictionaryAsPayload;
+        public List<object> ListAsPayload = new List<object>();
+        public Dictionary<string, object> DictionaryAsPayload = new Dictionary<string, object>();
         //-------------------------------------------------------------------------------------------------------------
 		public STSTransitionData ()
 		{
-		}
+            // Empty!
+	    }
         //-------------------------------------------------------------------------------------------------------------
 		public STSTransitionData (string sInternalName)
 		{
@@ -53,9 +54,15 @@ namespace SceneTransitionSystem
 			DictionaryAsPayload = sDictionaryAsPayload;
 		}
         //-------------------------------------------------------------------------------------------------------------
+        public void ClearPayLoad()
+        {
+            DictionaryAsPayload.Clear();
+        }
+        //-------------------------------------------------------------------------------------------------------------
 		public void AddObjectForKeyInPayload (string sKey, object sObject)
 		{
-			if (DictionaryAsPayload == null) {
+			if (DictionaryAsPayload == null)
+            {
 				DictionaryAsPayload = new Dictionary<string, object> ();
 			}
 			DictionaryAsPayload.Add (sKey, sObject);
@@ -73,7 +80,7 @@ namespace SceneTransitionSystem
         public object GetObject(string sKey)
         {
             object value;
-            if( DictionaryAsPayload.TryGetValue(sKey, out value) )
+            if (DictionaryAsPayload.TryGetValue(sKey, out value))
             {
                 return value;
             }
@@ -83,7 +90,7 @@ namespace SceneTransitionSystem
         public bool GetBool(string sKey, bool sDefault = false)
         {
             object value;
-            if( DictionaryAsPayload.TryGetValue(sKey, out value) )
+            if (DictionaryAsPayload.TryGetValue(sKey, out value))
             {
                 return Convert.ToBoolean(value);
             }
@@ -93,7 +100,7 @@ namespace SceneTransitionSystem
         public string GetString(string sKey)
         {
             object value;
-            if( DictionaryAsPayload.TryGetValue(sKey, out value) )
+            if (DictionaryAsPayload.TryGetValue(sKey, out value))
             {
                 return Convert.ToString(value);
             }
