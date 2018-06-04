@@ -11,19 +11,19 @@ using UnityEditor;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	public class SceneTransitionSystemFindPackage : ScriptableObject
+	public class STSFindPackage : ScriptableObject
     {
         //-------------------------------------------------------------------------------------------------------------
 		public string ScriptFilePath;
 		public string ScriptFolder;
         public string ScriptFolderFromAssets;
         //-------------------------------------------------------------------------------------------------------------
-        private static SceneTransitionSystemFindPackage kShareInstance;
+        private static STSFindPackage kShareInstance;
         //-------------------------------------------------------------------------------------------------------------
-		public static SceneTransitionSystemFindPackage ShareInstance ()
+		public static STSFindPackage ShareInstance ()
 		{
 			if (kShareInstance == null) {
-				kShareInstance = ScriptableObject.CreateInstance ("SceneTransitionSystemFindPackage") as SceneTransitionSystemFindPackage;
+                kShareInstance = ScriptableObject.CreateInstance ("STSFindPackage") as STSFindPackage;
 				kShareInstance.ReadPath ();
 			}
 			return kShareInstance; 

@@ -1,6 +1,6 @@
 ﻿//=====================================================================================================================
 //
-// ideMobi copyright 2017 
+// ideMobi copyright 2018 
 // All rights reserved by ideMobi
 //
 //=====================================================================================================================
@@ -12,18 +12,6 @@ namespace SceneTransitionSystem
 {
 	public class STSDateHelper
 	{
-        //-------------------------------------------------------------------------------------------------------------
-        ///// <summary>
-        ///// Convert a DateTime to an Unix Timestamp (since 1 january 1970)
-        ///// </summary>
-        ///// <param name="sDate">A DateTime</param>
-        ///// <returns>A converted DateTime to Unix Timestamp.</returns>
-        //public static double ConvertToUnixTimestamp(DateTime sDate)
-        //{
-        //    DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-        //    TimeSpan diff = sDate.ToUniversalTime() - origin;
-        //    return Math.Floor(diff.TotalSeconds);
-        //}
         //-------------------------------------------------------------------------------------------------------------
         /// <summary>
         /// Convert a DateTime to an Unix Timestamp (since 1 january 1970)

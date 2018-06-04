@@ -1,53 +1,53 @@
-﻿using UnityEngine;
+﻿//=====================================================================================================================
+//
+// ideMobi copyright 2018 
+// All rights reserved by ideMobi
+//
+//=====================================================================================================================
+
+using UnityEngine;
 
 //=====================================================================================================================
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	public class STSTransitionStandBy : MonoBehaviour
+    public class STSTransitionStandBy : MonoBehaviour
     {
         //-------------------------------------------------------------------------------------------------------------
-		[Header ("Intermediate Scene Parameters")]
+        [Header ("Intermediate Scene Parameters")]
         [Tooltip("Minimum stand by on transition scene in seconds")]
-		public float StandBySeconds = 3.0f;
+        public float StandBySeconds = 0.0f;
         [Tooltip("The next scene must be active automatically?")]
-		public bool AutoLoadNextScene = true;
-        [Header("Next scene process callbacks")]
-		public STSTransitionLoading LoadNextSceneStart;
-		public STSTransitionLoading LoadingNextScenePercent;
+        public bool AutoLoadNextScene = true;
+        [Tooltip("The gauge to use in canvas")]
+        public STSScreenGauge SceneLoadingGauge;
+        [Header("Next scene loading progress callbacks")]
+        public STSTransitionLoading LoadNextSceneStart;
+        public STSTransitionLoading LoadingNextScenePercent;
         public STSTransitionLoading LoadNextSceneFinish;
         [Header("Stand by callbacks")]
-        public STSTransitionEvent StandByStart;
-        public STSTransitionEvent StandByFinish;
+        public STSStandByEvent StandByStart;
+        public STSStandByEvent StandByFinish;
         //-------------------------------------------------------------------------------------------------------------
-		// Use this for initialization
-		void Awake ()
-		{
-			// test if Transition controller exist
-			STSTransitionController.Singleton ();
-		}
+        public void CopyFrom(STSTransitionStandBy sDestination)
+        {
+            sDestination.CopyIn(this);
+        }
         //-------------------------------------------------------------------------------------------------------------
-		// Use this for initialization
-		void Start ()
-		{
-		
-		}
+        public void CopyIn (STSTransitionStandBy sDestination)
+        {
+            sDestination.StandBySeconds = this.StandBySeconds;
+            sDestination.AutoLoadNextScene = this.AutoLoadNextScene;
+            sDestination.LoadNextSceneStart = this.LoadNextSceneStart;
+            sDestination.LoadingNextScenePercent = this.LoadingNextScenePercent;
+            sDestination.LoadNextSceneFinish = this.LoadNextSceneFinish;
+            sDestination.StandByStart = this.StandByStart;
+            sDestination.StandByFinish = this.StandByFinish;
+        }
         //-------------------------------------------------------------------------------------------------------------
-		// Update is called once per frame
-		void Update ()
-		{
-		
-		}
-        //-------------------------------------------------------------------------------------------------------------
-		public void CopyIn (STSTransitionStandBy sDestination)
-		{
-			sDestination.StandBySeconds = this.StandBySeconds;
-			sDestination.AutoLoadNextScene = this.AutoLoadNextScene;
-			sDestination.LoadNextSceneStart = this.LoadNextSceneStart;
-			sDestination.LoadingNextScenePercent = this.LoadingNextScenePercent;
-			sDestination.LoadNextSceneFinish = this.LoadNextSceneFinish;
-			sDestination.StandByStart = this.StandByStart;
-			sDestination.StandByFinish = this.StandByFinish;
+        public void FinishStandByAction()
+        {
+            STSTransitionController.Singleton().FinishStandBy();
         }
         //-------------------------------------------------------------------------------------------------------------
     }

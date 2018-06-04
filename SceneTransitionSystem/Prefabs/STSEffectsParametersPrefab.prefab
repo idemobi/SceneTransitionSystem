@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4583166921216416}
   - component: {fileID: 114255756779058156}
   m_Layer: 0
-  m_Name: TransitionParametersObject
+  m_Name: STSEffectsParametersPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58,6 +58,9 @@ MonoBehaviour:
     TexturePrimary: {fileID: 0}
     TextureSecondary: {fileID: 0}
     Offset: {x: 0.88, y: 1.11}
+    FourCross: 0
+    FiveCross: 0
+    NineCross: 0
     ParameterOne: -67
     ParameterTwo: -83
     ParameterThree: 188
@@ -67,6 +70,11 @@ MonoBehaviour:
     AnimPurcent: 0
     AnimIsPlaying: 0
     AnimIsFinished: 0
+    OldColor: {r: 0, g: 0, b: 0, a: 0}
+    ColorDuration: 0
+    ColorPurcent: 0
+    ColorIsPlaying: 0
+    ColorIsFinished: 0
   InterEffectDuration: 0.5
   EffectOnExit:
     EffectName: Fade
@@ -75,6 +83,9 @@ MonoBehaviour:
     TexturePrimary: {fileID: 0}
     TextureSecondary: {fileID: 0}
     Offset: {x: 0.43, y: 1.57}
+    FourCross: 0
+    FiveCross: 0
+    NineCross: 0
     ParameterOne: 0
     ParameterTwo: 0
     ParameterThree: 0
@@ -84,6 +95,11 @@ MonoBehaviour:
     AnimPurcent: 0
     AnimIsPlaying: 0
     AnimIsFinished: 0
+    OldColor: {r: 0, g: 0, b: 0, a: 0}
+    ColorDuration: 0
+    ColorPurcent: 0
+    ColorIsPlaying: 0
+    ColorIsFinished: 0
   OnEnterStart:
     m_PersistentCalls:
       m_Calls: []

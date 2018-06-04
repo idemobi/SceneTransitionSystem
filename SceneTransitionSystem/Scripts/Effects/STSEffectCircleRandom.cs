@@ -29,7 +29,7 @@ namespace SceneTransitionSystem
     public class STSEffectCircleRandom : STSEffect
     {
         //-------------------------------------------------------------------------------------------------------------
-        private STSTransitionMatrix Matrix;
+        private STSMatrix Matrix;
         //-------------------------------------------------------------------------------------------------------------
         public void Prepare(Rect sRect)
         {
@@ -42,7 +42,7 @@ namespace SceneTransitionSystem
             {
                 ParameterTwo = 1;
             }
-            Matrix = new STSTransitionMatrix();
+            Matrix = new STSMatrix();
             Matrix.CreateMatrix(ParameterOne, ParameterTwo, sRect);
             Matrix.ShuffleList();
         }
@@ -72,14 +72,14 @@ namespace SceneTransitionSystem
                 // draw all fill tiles
                 for (int i = 0; i < tIndex; i++)
                 {
-                    STSTransitionTile tTile = Matrix.TilesList[i];
+                    STSTile tTile = Matrix.TilesList[i];
                     //STSTransitionDrawing.DrawRect(tTile.Rectangle, TintPrimary);
                     STSDrawing.DrawCircle(tTile.Rectangle.center, tTile.Rectangle.width, 32, TintPrimary);
                 }
                 // Draw Alpha tile
                 if (tIndex < Matrix.TileCount)
                 {
-                    STSTransitionTile tTileAlpha = Matrix.TilesList[tIndex];
+                    STSTile tTileAlpha = Matrix.TilesList[tIndex];
                     float tAlpha = (Purcent * Matrix.TileCount) - (float)tIndex;
                     //Color tColorLerp = Color.Lerp(TintSecondary, TintPrimary, tAlpha);
                     //Color tFadeColorAlpha = new Color(TintPrimary.r, TintPrimary.g, TintPrimary.b, tAlpha*TintPrimary.a);

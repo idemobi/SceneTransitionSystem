@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using SceneTransitionSystem;
 
-public class SceneControllerScript : MonoBehaviour {
+public class SceneController : MonoBehaviour {
 
 	public string m_ThisSceneTitle = "Scene …";
 	public string m_NextSceneName = "";

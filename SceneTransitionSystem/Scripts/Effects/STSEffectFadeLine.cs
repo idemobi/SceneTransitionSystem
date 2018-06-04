@@ -28,7 +28,7 @@ namespace SceneTransitionSystem
     public class STSEffectFadeLine : STSEffect
     {
         //-------------------------------------------------------------------------------------------------------------
-        private STSTransitionMatrix Matrix;
+        private STSMatrix Matrix;
         //-------------------------------------------------------------------------------------------------------------
         public void Prepare(Rect sRect)
         {
@@ -37,7 +37,7 @@ namespace SceneTransitionSystem
             {
                 ParameterOne = 1;
             }
-            Matrix = new STSTransitionMatrix();
+            Matrix = new STSMatrix();
             switch (FiveCross)
             {
                 case STSFiveCross.Top:
@@ -87,7 +87,7 @@ namespace SceneTransitionSystem
                 //Debug.Log("tIndex = " + tIndex);
                 for (int i = 0; i < tIndex - 1; i++)
                 {
-                    STSTransitionTile tTile = null;
+                    STSTile tTile = null;
                     switch (FiveCross)
                     {
                         case STSFiveCross.Top:
@@ -116,7 +116,7 @@ namespace SceneTransitionSystem
                 }
                 if (tIndex <= ParameterOne && tIndex >= 0)
                 {
-                    STSTransitionTile tTileAlpha = null;
+                    STSTile tTileAlpha = null;
                     switch (FiveCross)
                     {
                         case STSFiveCross.Top:

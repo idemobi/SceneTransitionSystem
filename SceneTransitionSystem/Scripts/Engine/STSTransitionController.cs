@@ -1,4 +1,11 @@
-﻿using System.Collections;
+﻿//=====================================================================================================================
+//
+// ideMobi copyright 2018 
+// All rights reserved by ideMobi
+//
+//=====================================================================================================================
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
@@ -11,62 +18,52 @@ namespace SceneTransitionSystem
     public class STSTransitionController : MonoBehaviour
     {
         //-------------------------------------------------------------------------------------------------------------
-		private static STSTransitionController k_Singleton = null;
+        private static STSTransitionController kSingleton = null;
 
-		// initialized or not?
-		private bool m_Initialized = false;
+        // initialized or not?
+        private bool Initialized = false;
 
 		// prevent multi transition
-		private bool m_TransitionInProgress = false;
+        private bool TransitionInProgress = false;
 
 		// prevent user actions during the transition
-		private bool m_PreventUserInteractions = true;
+        private bool PreventUserInteractions = true;
 
 		// Data to transmit to the other scenes
-		private STSTransitionData m_TransitionData;
+        private STSTransitionData TransitionData;
 
-        // Old secene params
-		private STSTransitionParameters m_OldSceneParams;
-		private STSTransitionStandBy m_OldStandByParams;
+        // Old scene params
+        private STSTransitionParameters OldSceneParams;
+        private STSTransitionStandBy OldStandByParams;
 
         // Previous scene
-        private static List<Dictionary<string, object>> _previousScene = new List<Dictionary<string, object>>();
+        private static List<Dictionary<string, object>> PreviousScene = new List<Dictionary<string, object>>();
 
         // Scenes controlled
-        private Scene m_PreviewScene;
-		private STSTransitionParameters m_PreviewSceneParams;
+        private Scene PreviewScene;
+        private STSTransitionParameters PreviewSceneParams;
 
-		private Scene m_IntermediateScene;
-		private string m_IntermediateSceneName;
-		private STSTransitionParameters m_IntermediateSceneParams;
-		private STSTransitionStandBy m_IntermediateStandByParams;
+        private Scene IntermediateScene;
+        private string IntermediateSceneName;
+        private STSTransitionParameters IntermediateSceneParams;
+        private STSTransitionStandBy IntermediateSceneStandBy;
         
-        private Scene m_NextScene;
-		private string m_NextSceneName;
-		private STSTransitionParameters m_NextSceneParams;
+        private Scene NextScene;
+        private string NextSceneName;
+        private STSTransitionParameters NextSceneParams;
 
 		// Scene load mode
-		private LoadSceneMode m_LoadSceneMode;
+        private LoadSceneMode LoadSceneModeSelected;
 
-		private Scene m_SceneToUnload;
-		private STSTransitionParameters m_SceneToUnloadParams;
+        private Scene SceneToUnload;
+		//private STSTransitionParameters m_SceneToUnloadParams;
 
-		// temporary property from the TransitionParametersScript of active Scene
-//		private TransitionEventScript m_ThisSceneLoaded;
-//		private TransitionEventEstimatedSecondsScript m_FadeInStart;
-//		private TransitionEventScript m_FadeInFinish;
-//		private TransitionEventScript m_ThisSceneEnable;
-//
-//		private TransitionEventScript m_ThisSceneDisable;
-//		private TransitionEventEstimatedSecondsScript m_FadeOutStart;
-//		private TransitionEventScript m_FadeOutFinish;
-//		private TransitionEventScript m_ThisSceneWillUnloaded;
-//
-//		private TransitionLoadingScript m_NextSceneLoadingStart;
-//		private TransitionLoadingScript m_NextSceneLoadingPercent;
-//		private TransitionLoadingScript m_NextSceneLoadingFinish;
-//		private TransitionEventScript m_StandByFinish;
-
+        //-------------------------------------------------------------------------------------------------------------
+        private STSEffect EffectType;
+        //-------------------------------------------------------------------------------------------------------------
+        private float StandByTimer;
+        private bool LauchNextScene = false;
+        private bool StandByInProgress = false;
         //-------------------------------------------------------------------------------------------------------------
 		// Class method
 		public static void LoadScene(string sNextSceneName,
@@ -75,101 +72,83 @@ namespace SceneTransitionSystem
             STSTransitionData sPayload = null)
 		{
 			Singleton();
-			k_Singleton.LoadSceneByNameMethod (sNextSceneName, sLoadSceneMode, sIntermediateSceneName, sPayload);
+			kSingleton.LoadSceneByNameMethod (sNextSceneName, sLoadSceneMode, sIntermediateSceneName, sPayload);
         }
         //-------------------------------------------------------------------------------------------------------------
         public static void LoadPreviousScene()
         {
-            Dictionary<string, object> tParams = _previousScene[_previousScene.Count - 1];
-
+            Dictionary<string, object> tParams = PreviousScene[PreviousScene.Count - 1];
             object result;
-            tParams.TryGetValue("sceneName", out result);
+            tParams.TryGetValue(STSConstants.SceneNameKey, out result);
             string tPreviewSceneName = result.ToString();
-
-            tParams.TryGetValue("loadMode", out result);
+            tParams.TryGetValue(STSConstants.LoadModeKey, out result);
             LoadSceneMode tLoadMode = (LoadSceneMode)result;
-
-            tParams.TryGetValue("payloadData", out result);
+            tParams.TryGetValue(STSConstants.PayloadDataKey, out result);
             //STSTransitionData tPayLoadData = result as STSTransitionData;
-
             Singleton();
-            k_Singleton.LoadSceneByNameMethod(tPreviewSceneName, tLoadMode, null, null);
-
-            _previousScene.RemoveAt(_previousScene.Count - 1);
+            kSingleton.LoadSceneByNameMethod(tPreviewSceneName, tLoadMode, null, null);
+            PreviousScene.RemoveAt(PreviousScene.Count - 1);
         }
         //-------------------------------------------------------------------------------------------------------------
 		public static void UnloadScene (string sSceneName, string sNextSceneName, string sIntermediateSceneName = null)
 		{
 			Singleton();
-			k_Singleton.UnloadSceneByNameMethod (sSceneName, sIntermediateSceneName, sNextSceneName);
+			kSingleton.UnloadSceneByNameMethod (sSceneName, sIntermediateSceneName, sNextSceneName);
         }
         //-------------------------------------------------------------------------------------------------------------
 		public static void UnloadSceneNotActive (string sSceneNotActiveName)
 		{
 			Singleton();
-			k_Singleton.UnloadSceneNotActiveByNameMethod (sSceneNotActiveName);
+			kSingleton.UnloadSceneNotActiveByNameMethod (sSceneNotActiveName);
         }
-        //-------------------------------------------------------------------------------------------------------------
-//		public TransitionControllerScript () 
-//		{
-//			Debug.Log ("TransitionControllerScript Constructor");
-//			if (k_Singleton != null) 
-//			{
-//				if (k_Singleton != this) 
-//				{
-//					Destroy (this);
-//					this = k_Singleton;
-//				}
-//			}
-        //		}
         //-------------------------------------------------------------------------------------------------------------
 		// Singleton
 		public static STSTransitionController Singleton ()
 		{
-            Debug.Log ("STSTransitionController Singleton()");
-			if (k_Singleton == null) {
+            //Debug.Log ("STSTransitionController Singleton()");
+			if (kSingleton == null) {
 				// I need to create singleton
 				GameObject tObjToSpawn;
 				//spawn object
-				tObjToSpawn = new GameObject ("TransitionControllerObject");
+                tObjToSpawn = new GameObject (STSConstants.TransitionControllerObjectName);
 				//Add Components
 				tObjToSpawn.AddComponent<STSTransitionController> ();
 				// keep k_Singleton
-				k_Singleton = tObjToSpawn.GetComponent<STSTransitionController> ();
+				kSingleton = tObjToSpawn.GetComponent<STSTransitionController> ();
 				// Init Instance
-				k_Singleton.InitInstance ();
+				kSingleton.InitInstance ();
 				// memorize the init instance
-				k_Singleton.m_Initialized = true;
+				kSingleton.Initialized = true;
 
 				tObjToSpawn.AddComponent<STSTransitionParameters> ();
 				tObjToSpawn.AddComponent<STSTransitionStandBy> ();
 
 			}
-			return k_Singleton;
+			return kSingleton;
         }
         //-------------------------------------------------------------------------------------------------------------
 		// Memory managment
 		private void InitInstance ()
         {
-            Debug.Log("STSTransitionController InitInstance()");
+            //Debug.Log("STSTransitionController InitInstance()");
         }
         //-------------------------------------------------------------------------------------------------------------
 		//Awake is always called before any Start functions
 		private void Awake ()
         {
-            Debug.Log("STSTransitionController Awake()");
+            //Debug.Log("STSTransitionController Awake()");
 			//Check if instance already exists
-			if (k_Singleton == null) {
+			if (kSingleton == null) {
 				//if not, set instance to this
-				k_Singleton = this;
-				if (k_Singleton.m_Initialized == false) {
-					k_Singleton.InitInstance ();
-					k_Singleton.m_Initialized = true;
+				kSingleton = this;
+				if (kSingleton.Initialized == false) {
+					kSingleton.InitInstance ();
+					kSingleton.Initialized = true;
 				}
 				;
 			}
 		//If instance already exists and it's not this:
-		else if (k_Singleton != this) {
+		else if (kSingleton != this) {
 				//Then destroy this. This enforces our singleton pattern, meaning there can only ever be one instance of a GameManager.
 				Destroy (gameObject);    
 			}
@@ -180,20 +159,20 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
 		private void OnDestroy ()
         {
-            Debug.Log("STSTransitionController OnDestroy()");
+            //Debug.Log("STSTransitionController OnDestroy()");
         }
         //-------------------------------------------------------------------------------------------------------------
 		// Instance method
 		private void UnloadSceneByNameMethod (string sSceneName, string sIntermediateSceneName, string sNextSceneName)
         {
-            Debug.Log("STSTransitionController UnloadSceneByNameMethod()");
-			if (m_TransitionInProgress == false) 
+            //Debug.Log("STSTransitionController UnloadSceneByNameMethod()");
+			if (TransitionInProgress == false) 
 			{
-				m_TransitionInProgress = true;
-				m_PreviewScene = SceneManager.GetSceneByName (sSceneName);
+				TransitionInProgress = true;
+				PreviewScene = SceneManager.GetSceneByName (sSceneName);
                 //m_PreviewSceneName = sSceneName;
-				m_IntermediateSceneName = sIntermediateSceneName;
-				m_NextSceneName = sNextSceneName;
+				IntermediateSceneName = sIntermediateSceneName;
+				NextSceneName = sNextSceneName;
 
 				if (SceneManager.GetSceneByName (sSceneName).isLoaded == true && SceneManager.GetSceneByName (sNextSceneName).isLoaded == true) 
 				{
@@ -204,13 +183,13 @@ namespace SceneTransitionSystem
 				{
 					// The scene doesn't exist ... I cannot unload this Scene :-p
 					/*WARNING*/
-					Debug.Log ("The Scene '" + sSceneName + "' isn't loaded! Not possible to unload!");
+                    Debug.LogWarning ("The Scene '" + sSceneName + "' isn't loaded! Not possible to unload!");
 				} 
 				else if (SceneManager.GetSceneByName (sSceneName).isLoaded == true && SceneManager.GetSceneByName (sNextSceneName).isLoaded == false) 
 				{
 					// The scene to active doesn't exist ... I cannot active this Scene :-p
 					/*WARNING*/
-					Debug.Log ("The Next Scene '" + sNextSceneName + "' isn't loaded! Not possible to active!");
+                    Debug.LogWarning ("The Next Scene '" + sNextSceneName + "' isn't loaded! Not possible to active!");
 					// Perhaps I need to load the next scene ?
 					// but I have not the LoadSceneMode (single or additive)
 				} 
@@ -219,7 +198,7 @@ namespace SceneTransitionSystem
 					// The scene doesn't exist ... I cannot unload this Scene :-p
 					// The scene to active doesn't exist ... I cannot active this Scene :-p
 					/*WARNING*/
-					Debug.Log ("The Scene '" + sSceneName + "' and Next Scene '" + sNextSceneName + "' are not loaded! Not possible to unload or/and active!");
+                    Debug.LogWarning ("The Scene '" + sSceneName + "' and Next Scene '" + sNextSceneName + "' are not loaded! Not possible to unload or/and active!");
 					// Perhaps I need to load the next scene ?
 					// but I have not the LoadSceneMode (single or additive)
 				}
@@ -227,92 +206,92 @@ namespace SceneTransitionSystem
 			else 
 			{
 				/*WARNING*/
-				Debug.Log ("Transition allready in progress …");
+                Debug.LogWarning ("Transition allready in progress …");
 			}
         }
         //-------------------------------------------------------------------------------------------------------------
 		private void UnloadSceneNotActiveByNameMethod (string sSceneName)
         {
-            Debug.Log("STSTransitionController UnloadSceneNotActiveByNameMethod()");
-			if (m_TransitionInProgress == false)
+            //Debug.Log("STSTransitionController UnloadSceneNotActiveByNameMethod()");
+			if (TransitionInProgress == false)
 			{
-				m_TransitionInProgress = true;
-				m_PreviewScene = SceneManager.GetActiveScene ();
+				TransitionInProgress = true;
+				PreviewScene = SceneManager.GetActiveScene ();
 
 				if (SceneManager.GetSceneByName (sSceneName).isLoaded == true && SceneManager.GetActiveScene ().name != sSceneName)
 				{
 					// Ok I can unload the scene normally
-					m_SceneToUnload = SceneManager.GetSceneByName (sSceneName);
+					SceneToUnload = SceneManager.GetSceneByName (sSceneName);
 					StartCoroutine (UnloadSceneAsync ());
 				}
 				else if (SceneManager.GetSceneByName (sSceneName).isLoaded == true && SceneManager.GetActiveScene ().name == sSceneName)
 				{
 					// The scene exist but it's the active... I cannot unload this Scene :-p
 					/*WARNING*/
-					Debug.Log ("The Scene '" + sSceneName + "' is active! use method : public static void UnloadSceneByName (string sSceneName, string sTransitionSceneName, string sNextSceneName)");
+                    Debug.LogWarning ("The Scene '" + sSceneName + "' is active! use method : public static void UnloadSceneByName (string sSceneName, string sTransitionSceneName, string sNextSceneName)");
 				}
 				else if (SceneManager.GetSceneByName (sSceneName).isLoaded == false)
 				{
 					// The scene to unload doesn't exist ... I cannot unload this Scene :-p
 					/*WARNING*/
-					Debug.Log ("The Scene '" + sSceneName + "' is not loaded!");
+                    Debug.LogWarning ("The Scene '" + sSceneName + "' is not loaded!");
 				}
 			}
 			else
 			{
 				/*WARNING*/
-				Debug.Log ("Transition allready in progress …");
+                Debug.LogWarning ("Transition allready in progress …");
 			}
         }
         //-------------------------------------------------------------------------------------------------------------
 		private void LoadSceneByNameMethod (string sNextSceneName, LoadSceneMode sLoadSceneMode, string sIntermediateSceneName, STSTransitionData sPayload)
         {
-            Debug.Log("STSTransitionController LoadSceneByNameMethod()");
+            //Debug.Log("STSTransitionController LoadSceneByNameMethod()");
 			if (SceneManager.GetActiveScene ().name != sNextSceneName)
 			{
-			    if (m_TransitionInProgress == false)
+			    if (TransitionInProgress == false)
 			    {
-				    m_TransitionInProgress = true;
+				    TransitionInProgress = true;
 				    // memorize actual scene
-				    m_PreviewScene = SceneManager.GetActiveScene ();
+				    PreviewScene = SceneManager.GetActiveScene ();
 
                     // Save scene param for further use
                     Dictionary<string, object> tParams = new Dictionary<string, object>();
-                    tParams.Add("sceneName", SceneManager.GetActiveScene().name);
-                    tParams.Add("loadMode", sLoadSceneMode);
-                    tParams.Add("payloadData", sPayload);
-                    _previousScene.Add(tParams);
+                    tParams.Add(STSConstants.SceneNameKey, SceneManager.GetActiveScene().name);
+                    tParams.Add(STSConstants.LoadModeKey, sLoadSceneMode);
+                    tParams.Add(STSConstants.PayloadDataKey, sPayload);
+                    PreviousScene.Add(tParams);
 
-				    m_IntermediateSceneName = sIntermediateSceneName;
-				    m_TransitionData = sPayload;
-				    if (m_TransitionData == null)
+				    IntermediateSceneName = sIntermediateSceneName;
+				    TransitionData = sPayload;
+				    if (TransitionData == null)
 				    {
-					    m_TransitionData = new STSTransitionData ();
+					    TransitionData = new STSTransitionData ();
 				    }
-				    m_NextSceneName = sNextSceneName;
-				    m_LoadSceneMode = sLoadSceneMode;
+				    NextSceneName = sNextSceneName;
+				    LoadSceneModeSelected = sLoadSceneMode;
 				    StartCoroutine (LoadSceneByNameAsync ());
 			    }
 				else
 				{
 				    /*WARNING*/
-				    Debug.Log ("Transition allready in progress …");
+                    Debug.LogWarning ("Transition allready in progress …");
 				}
 			}
 			else
 			{
 				/*WARNING*/
-				Debug.Log ("Transition not necessary : active Scene is the Request Scene");
+                Debug.LogWarning ("Transition not necessary : active Scene is the Request Scene");
 			}
         }
         //-------------------------------------------------------------------------------------------------------------	
 		// Async method
 		private IEnumerator UnloadSceneAsync ()
         {
-            Debug.Log("STSTransitionController UnloadSceneAsync()");
-			STSTransitionParameters tTransitionParametersScript = GetTransitionsParams (m_SceneToUnload, true);
+            //Debug.Log("STSTransitionController UnloadSceneAsync()");
+			STSTransitionParameters tTransitionParametersScript = GetTransitionsParams (SceneToUnload, true);
 			// disable the user interactions
-			EventSystemEnable (m_SceneToUnload, false);
+			EventSystemEnable (SceneToUnload, false);
 			if (tTransitionParametersScript.ThisSceneDisable != null)
 			{
 				tTransitionParametersScript.ThisSceneDisable.Invoke (null);
@@ -324,7 +303,7 @@ namespace SceneTransitionSystem
 				tTransitionParametersScript.ThisSceneWillUnloaded.Invoke (null);
 			}
 			AsyncOperation tAsynchroneUnload;
-			tAsynchroneUnload = SceneManager.UnloadSceneAsync (m_SceneToUnload.name);
+			tAsynchroneUnload = SceneManager.UnloadSceneAsync (SceneToUnload.name);
 			while (!tAsynchroneUnload.isDone)
 			{
 				yield return null;
@@ -335,22 +314,22 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
 		private IEnumerator LoadSceneByNameAsync ()
         {
-            Debug.Log("STSTransitionController LoadSceneByNameAsync()");
+            //Debug.Log("STSTransitionController LoadSceneByNameAsync()");
 			// prepare future old params
-			m_OldSceneParams = this.GetComponent<STSTransitionParameters> ();
-			m_OldStandByParams = this.GetComponent<STSTransitionStandBy> ();
+			OldSceneParams = this.GetComponent<STSTransitionParameters> ();
+			OldStandByParams = this.GetComponent<STSTransitionStandBy> ();
 
 			//-------------------------------
 			// PREVIEW SCENE PROCESS
 			//-------------------------------
 			// get params
-			m_PreviewSceneParams = GetTransitionsParams (m_PreviewScene, true);
-			m_PreviewSceneParams.CopyIn (m_OldSceneParams);
+			PreviewSceneParams = GetTransitionsParams (PreviewScene, true);
+			PreviewSceneParams.CopyIn (OldSceneParams);
 			// disable the user interactions
 			EventSystemPrevent (false);
-			if (m_PreviewSceneParams.ThisSceneDisable != null)
+			if (PreviewSceneParams.ThisSceneDisable != null)
 			{
-				m_PreviewSceneParams.ThisSceneDisable.Invoke (m_TransitionData);
+				PreviewSceneParams.ThisSceneDisable.Invoke (TransitionData);
 			}
 			// Transition Out will Start
 			//if (m_PreviewSceneParams.AnimationOut.Start != null)
@@ -358,13 +337,13 @@ namespace SceneTransitionSystem
 			//	// calcul estimated second
 			//	m_PreviewSceneParams.AnimationOut.Start.Invoke (m_TransitionData, m_PreviewSceneParams.AnimationOut.Seconds);
 			//}
-            if (m_PreviewSceneParams.OnExitStart != null)
+            if (PreviewSceneParams.OnExitStart != null)
             {
                 // calcul estimated second
-                m_PreviewSceneParams.OnExitStart.Invoke(m_TransitionData);
+                PreviewSceneParams.OnExitStart.Invoke(TransitionData);
             }
 			// Transition Out GO!
-			AnimationTransitionOut (m_PreviewSceneParams);
+			AnimationTransitionOut (PreviewSceneParams);
 			while (AnimationFinished () == false)
 			{
 				yield return null;
@@ -375,9 +354,9 @@ namespace SceneTransitionSystem
 			//{
 				//m_PreviewSceneParams.AnimationOut.Finish.Invoke (m_TransitionData);
             //}
-            if (m_PreviewSceneParams.OnExitFinish != null)
+            if (PreviewSceneParams.OnExitFinish != null)
             {
-                m_PreviewSceneParams.OnExitFinish.Invoke(m_TransitionData);
+                PreviewSceneParams.OnExitFinish.Invoke(TransitionData);
             }
 			// Transition setp 1 is finished this scene can be replace by the next or intermediate Scene
 			//-------------------------------
@@ -386,17 +365,17 @@ namespace SceneTransitionSystem
 			// INTERMEDIATE SCENE PROCESS
 			//-------------------------------
 
-			m_PreviewSceneParams.CopyIn (m_OldSceneParams);
+			PreviewSceneParams.CopyIn (OldSceneParams);
 				
-			if (m_IntermediateSceneName != null)
+			if (IntermediateSceneName != null)
 			{
 				//-------------------------------
 
 				// actual scene must be persistent ?
-				LoadSceneMode tTransitionSceneMode = m_LoadSceneMode;
+				LoadSceneMode tTransitionSceneMode = LoadSceneModeSelected;
 				// load transition scene async
 				AsyncOperation tAsynchroneLoadIntermediateOperation;
-				tAsynchroneLoadIntermediateOperation = SceneManager.LoadSceneAsync (m_IntermediateSceneName, tTransitionSceneMode);
+				tAsynchroneLoadIntermediateOperation = SceneManager.LoadSceneAsync (IntermediateSceneName, tTransitionSceneMode);
 				tAsynchroneLoadIntermediateOperation.allowSceneActivation = false;
 				while (tAsynchroneLoadIntermediateOperation.progress < 0.9f) 
 				{
@@ -409,26 +388,26 @@ namespace SceneTransitionSystem
 					yield return null;
 				}
 				// get Transition Scene
-				m_IntermediateScene = SceneManager.GetSceneByName (m_IntermediateSceneName);
+				IntermediateScene = SceneManager.GetSceneByName (IntermediateSceneName);
 				// Active the next scene as root scene 
-				SceneManager.SetActiveScene (m_IntermediateScene);
+				SceneManager.SetActiveScene (IntermediateScene);
 				// disable audiolistener of preview scene
 				AudioListenerPrevent ();
 				// remove preview scene 
-				if (m_LoadSceneMode == LoadSceneMode.Single) 
+				if (LoadSceneModeSelected == LoadSceneMode.Single) 
 				{
 					// if m_SceneActual is allready loaded i need to unloaded it
-					if (SceneManager.GetSceneByName (m_PreviewScene.name).isLoaded) 
+					if (SceneManager.GetSceneByName (PreviewScene.name).isLoaded) 
 					{
 						AsyncOperation tAsynchroneUnloadActualScene;
-						tAsynchroneUnloadActualScene = SceneManager.UnloadSceneAsync (m_PreviewScene.name);
+						tAsynchroneUnloadActualScene = SceneManager.UnloadSceneAsync (PreviewScene.name);
 						while (tAsynchroneUnloadActualScene.progress < 0.9f) 
 						{
 							yield return null;
 						}
-						if (m_PreviewSceneParams.ThisSceneWillUnloaded != null) 
+						if (PreviewSceneParams.ThisSceneWillUnloaded != null) 
 						{
-							m_PreviewSceneParams.ThisSceneWillUnloaded.Invoke (m_TransitionData);
+							PreviewSceneParams.ThisSceneWillUnloaded.Invoke (TransitionData);
 						}
 						while (!tAsynchroneUnloadActualScene.isDone) 
 						{
@@ -438,23 +417,23 @@ namespace SceneTransitionSystem
 				}
 
 				// get params
-				m_IntermediateSceneParams = GetTransitionsParams (m_IntermediateScene, false);
+				IntermediateSceneParams = GetTransitionsParams (IntermediateScene, false);
 				// disable the user interactions until fadein 
-				EventSystemEnable (m_IntermediateScene, false);
+				EventSystemEnable (IntermediateScene, false);
 				// intermediate scene is loaded
-				if (m_IntermediateSceneParams.ThisSceneLoaded != null) {
-					m_IntermediateSceneParams.ThisSceneLoaded.Invoke (m_TransitionData);
+				if (IntermediateSceneParams.ThisSceneLoaded != null) {
+					IntermediateSceneParams.ThisSceneLoaded.Invoke (TransitionData);
 				}
 				// animation in
 				//if (m_IntermediateSceneParams.AnimationIn.Start != null) {
 					//m_IntermediateSceneParams.AnimationIn.Start.Invoke (m_TransitionData, m_IntermediateSceneParams.AnimationIn.Seconds);
                 //}
-                if (m_IntermediateSceneParams.OnEnterStart != null)
+                if (IntermediateSceneParams.OnEnterStart != null)
                 {
-                    m_IntermediateSceneParams.OnEnterStart.Invoke(m_TransitionData);
+                    IntermediateSceneParams.OnEnterStart.Invoke(TransitionData);
                 }
 				// animation in Go!
-				AnimationTransitionIn (m_IntermediateSceneParams);
+				AnimationTransitionIn (IntermediateSceneParams);
 				while (AnimationFinished () == false) {
 					yield return null;
 				}
@@ -462,20 +441,20 @@ namespace SceneTransitionSystem
 				//if (m_IntermediateSceneParams.AnimationIn.Finish != null) {
 					//m_IntermediateSceneParams.AnimationIn.Finish.Invoke (m_TransitionData);
                 //}
-                if (m_IntermediateSceneParams.OnEnterFinish != null)
+                if (IntermediateSceneParams.OnEnterFinish != null)
                 {
-                    m_IntermediateSceneParams.OnEnterFinish.Invoke(m_TransitionData);
+                    IntermediateSceneParams.OnEnterFinish.Invoke(TransitionData);
                 }
 				// enable the user interactions 
-				EventSystemEnable (m_IntermediateScene, true);
+				EventSystemEnable (IntermediateScene, true);
 				// enable the user interactions 
-				if (m_IntermediateSceneParams.ThisSceneEnable != null) {
-					m_IntermediateSceneParams.ThisSceneEnable.Invoke (m_TransitionData);
+				if (IntermediateSceneParams.ThisSceneEnable != null) {
+					IntermediateSceneParams.ThisSceneEnable.Invoke (TransitionData);
 				}
 				// start stand by
-				m_IntermediateStandByParams = GetStandByParams (m_IntermediateScene);
-				if (m_IntermediateStandByParams.StandByStart != null) {
-					m_IntermediateStandByParams.StandByStart.Invoke (m_TransitionData);
+				IntermediateSceneStandBy = GetStandByParams (IntermediateScene);
+				if (IntermediateSceneStandBy.StandByStart != null) {
+                    IntermediateSceneStandBy.StandByStart.Invoke (IntermediateSceneStandBy);
 				}
 				StandBy ();
 				// and load next scene async 
@@ -486,11 +465,11 @@ namespace SceneTransitionSystem
 			else 
 			{
 				// So! no transition! then the intermediate params are the preview scene params
-				m_IntermediateSceneParams = GetTransitionsParams (m_PreviewScene, true);
+				IntermediateSceneParams = GetTransitionsParams (PreviewScene, true);
 				// And the StandBy params are the preview scene StandBy params
-				m_IntermediateStandByParams = GetStandByParams (m_PreviewScene);
-				if (m_IntermediateStandByParams.StandByStart != null) {
-					m_IntermediateStandByParams.StandByStart.Invoke (m_TransitionData);
+				IntermediateSceneStandBy = GetStandByParams (PreviewScene);
+				if (IntermediateSceneStandBy.StandByStart != null) {
+                    IntermediateSceneStandBy.StandByStart.Invoke (IntermediateSceneStandBy);
 				}
 				StandBy ();
 				// and load next scene async 
@@ -500,18 +479,18 @@ namespace SceneTransitionSystem
 			}
 
 
-			m_IntermediateSceneParams.CopyIn (m_OldSceneParams);
-			m_IntermediateStandByParams.CopyIn (m_OldStandByParams);
+			IntermediateSceneParams.CopyIn (OldSceneParams);
+			IntermediateSceneStandBy.CopyIn (OldStandByParams);
 
 			//-------------------------------
 			// NEXT SCENE PROCESS
 			//-------------------------------
 			// load Next Scene
 			// actual scene must be persistent ?
-			LoadSceneMode tNextSceneMode = m_LoadSceneMode;
+			LoadSceneMode tNextSceneMode = LoadSceneModeSelected;
 			bool tNextSceneAllRedayExist = false;
 			// If scene with this name allready exist I use the old instance
-			if (SceneManager.GetSceneByName (m_NextSceneName).isLoaded) 
+			if (SceneManager.GetSceneByName (NextSceneName).isLoaded) 
 			{
 				// active next scene basically 
 				tNextSceneAllRedayExist = true;
@@ -524,46 +503,46 @@ namespace SceneTransitionSystem
 				// NEXT SCENE NEED TO BE LOADING
 				//-------------------------------
 				// load next scene async
-				if (m_IntermediateStandByParams.LoadNextSceneStart != null) 
+				if (IntermediateSceneStandBy.LoadNextSceneStart != null) 
 				{
-					m_IntermediateStandByParams.LoadNextSceneStart.Invoke (m_TransitionData, 0.0f);
+					IntermediateSceneStandBy.LoadNextSceneStart.Invoke (TransitionData, 0.0f);
 				}
 				AsyncOperation tAsynchroneloadNext;
-				tAsynchroneloadNext = SceneManager.LoadSceneAsync (m_NextSceneName, tNextSceneMode);
+				tAsynchroneloadNext = SceneManager.LoadSceneAsync (NextSceneName, tNextSceneMode);
 				tAsynchroneloadNext.allowSceneActivation = false;
 				// load next scene async can send percent :-)
 				while (tAsynchroneloadNext.progress < 0.9f) 
 				{
-					if (m_IntermediateStandByParams.LoadingNextScenePercent != null) 
+					if (IntermediateSceneStandBy.LoadingNextScenePercent != null) 
 					{
-						m_IntermediateStandByParams.LoadingNextScenePercent.Invoke (m_TransitionData, tAsynchroneloadNext.progress);
+						IntermediateSceneStandBy.LoadingNextScenePercent.Invoke (TransitionData, tAsynchroneloadNext.progress);
 					}
 					yield return null;
 				}
 
 				// need to send call back now (anticipate :-/ ) 
-				if (m_IntermediateStandByParams.LoadNextSceneFinish != null) 
+				if (IntermediateSceneStandBy.LoadNextSceneFinish != null) 
 				{
-					m_IntermediateStandByParams.LoadNextSceneFinish.Invoke (m_TransitionData, 1.0f);
+					IntermediateSceneStandBy.LoadNextSceneFinish.Invoke (TransitionData, 1.0f);
 				}
 
 				// when finish test if transition scene is allways in standby
-				if (m_IntermediateSceneName != null) 
+				if (IntermediateSceneName != null) 
 				{
 
 					//-------------------------------
 					// INTERMEDIATE SCENE UNLOAD
 					//-------------------------------
-					EventSystemEnable (m_IntermediateScene, true);
+					EventSystemEnable (IntermediateScene, true);
 					// continue standby if it's necessary
 					while (StandByIsProgressing()) 
 					{
 						yield return null;
 					}
 					// As sson as possible 
-					if (m_IntermediateStandByParams.StandByFinish != null) 
+					if (IntermediateSceneStandBy.StandByFinish != null) 
 					{
-						m_IntermediateStandByParams.StandByFinish.Invoke (m_TransitionData);
+                        IntermediateSceneStandBy.StandByFinish.Invoke (IntermediateSceneStandBy);
 					}
 					// Waiting to load the next Scene
 					while (WaitingToLauchNextScene()) 
@@ -573,22 +552,22 @@ namespace SceneTransitionSystem
 					}
 					// stanby is finished And the next scene can be lauch
 					// disable user interactions on the intermediate scene
-					EventSystemEnable (m_IntermediateScene, false);
-					if (m_IntermediateSceneParams.ThisSceneDisable != null) 
+					EventSystemEnable (IntermediateScene, false);
+					if (IntermediateSceneParams.ThisSceneDisable != null) 
 					{
-						m_IntermediateSceneParams.ThisSceneDisable.Invoke (m_TransitionData);
+						IntermediateSceneParams.ThisSceneDisable.Invoke (TransitionData);
 					}
 					// intermediate scene Transition Out start 
 					//if (m_IntermediateSceneParams.AnimationOut.Start != null) 
 					//{
 						//m_IntermediateSceneParams.AnimationOut.Start.Invoke (m_TransitionData, m_IntermediateSceneParams.AnimationOut.Seconds);
                     //}
-                    if (m_IntermediateSceneParams.OnExitStart != null)
+                    if (IntermediateSceneParams.OnExitStart != null)
                     {
-                        m_IntermediateSceneParams.OnExitStart.Invoke(m_TransitionData);
+                        IntermediateSceneParams.OnExitStart.Invoke(TransitionData);
                     }
 					// intermediate scene Transition Out GO! 
-					AnimationTransitionOut (m_IntermediateSceneParams);
+					AnimationTransitionOut (IntermediateSceneParams);
 					while (AnimationFinished () == false) 
 					{
 						yield return null;
@@ -598,15 +577,15 @@ namespace SceneTransitionSystem
 					//{
 						//m_IntermediateSceneParams.AnimationOut.Finish.Invoke (m_TransitionData);
                     //}
-                    if (m_IntermediateSceneParams.OnExitFinish != null)
+                    if (IntermediateSceneParams.OnExitFinish != null)
                     {
-                        m_IntermediateSceneParams.OnExitFinish.Invoke(m_TransitionData);
+                        IntermediateSceneParams.OnExitFinish.Invoke(TransitionData);
                     }
 					// fadeout is finish
 					// will unloaded the intermediate scene
-					if (m_IntermediateSceneParams.ThisSceneWillUnloaded != null) 
+					if (IntermediateSceneParams.ThisSceneWillUnloaded != null) 
 					{
-						m_IntermediateSceneParams.ThisSceneWillUnloaded.Invoke (m_TransitionData);
+						IntermediateSceneParams.ThisSceneWillUnloaded.Invoke (TransitionData);
 					}
 				}
 				tAsynchroneloadNext.allowSceneActivation = true;
@@ -621,25 +600,25 @@ namespace SceneTransitionSystem
 				//-------------------------------
 				// NEXT SCENE ALLREADY LOADED
 				//-------------------------------
-				m_NextScene = SceneManager.GetSceneByName (m_NextSceneName);
-				m_NextSceneParams = GetTransitionsParams (m_NextScene, false);
+				NextScene = SceneManager.GetSceneByName (NextSceneName);
+				NextSceneParams = GetTransitionsParams (NextScene, false);
 				// when finish test if transition scene is allways in standby
-				if (m_IntermediateSceneName != null) 
+				if (IntermediateSceneName != null) 
 				{
 					//-------------------------------
 					// INTERMEDIATE SCENE UNLOAD
 					//-------------------------------
 					// continue standby if it's necessary
-					EventSystemEnable (m_IntermediateScene, true);
+					EventSystemEnable (IntermediateScene, true);
 
 					while (StandByIsProgressing()) 
 					{
 						yield return null;
 					}
 					// send call back for standby finished
-					if (m_IntermediateStandByParams.StandByFinish != null) 
+					if (IntermediateSceneStandBy.StandByFinish != null) 
 					{
-						m_IntermediateStandByParams.StandByFinish.Invoke (m_TransitionData);
+                        IntermediateSceneStandBy.StandByFinish.Invoke (IntermediateSceneStandBy);
 					}
 					// Waiting to load the next Scene
 					while (WaitingToLauchNextScene()) {
@@ -648,22 +627,22 @@ namespace SceneTransitionSystem
 					}
 					// stanby is finish
 					// disable user interactions on the transition scene
-					EventSystemEnable (m_IntermediateScene, false);
+					EventSystemEnable (IntermediateScene, false);
 
 					// disable the transition scene
-					if (m_IntermediateSceneParams.ThisSceneDisable != null) 
+					if (IntermediateSceneParams.ThisSceneDisable != null) 
 					{
-						m_IntermediateSceneParams.ThisSceneDisable.Invoke (m_TransitionData);
+						IntermediateSceneParams.ThisSceneDisable.Invoke (TransitionData);
 					}
 					// Transition scene disappear by fadeout 
-					AnimationTransitionOut (m_IntermediateSceneParams);
+					AnimationTransitionOut (IntermediateSceneParams);
 					//if (m_IntermediateSceneParams.AnimationOut.Start != null) 
 					//{
 						//m_IntermediateSceneParams.AnimationOut.Start.Invoke (m_TransitionData, m_IntermediateSceneParams.AnimationOut.Seconds);
                     //}
-                    if (m_IntermediateSceneParams.OnExitStart != null)
+                    if (IntermediateSceneParams.OnExitStart != null)
                     {
-                        m_IntermediateSceneParams.OnExitStart.Invoke(m_TransitionData);
+                        IntermediateSceneParams.OnExitStart.Invoke(TransitionData);
                     }
 					while (AnimationFinished () == false) 
 					{
@@ -673,24 +652,24 @@ namespace SceneTransitionSystem
 					//{
 						//m_IntermediateSceneParams.AnimationOut.Finish.Invoke (m_TransitionData);
                     //}
-                    if (m_IntermediateSceneParams.OnExitFinish != null)
+                    if (IntermediateSceneParams.OnExitFinish != null)
                     {
-                        m_IntermediateSceneParams.OnExitFinish.Invoke(m_TransitionData);
+                        IntermediateSceneParams.OnExitFinish.Invoke(TransitionData);
                     }
 					// fadeout is finish
 					// unloaded the transition scene
-					if (m_IntermediateSceneParams.ThisSceneWillUnloaded != null) 
+					if (IntermediateSceneParams.ThisSceneWillUnloaded != null) 
 					{
-						m_IntermediateSceneParams.ThisSceneWillUnloaded.Invoke (m_TransitionData);
+						IntermediateSceneParams.ThisSceneWillUnloaded.Invoke (TransitionData);
 					}
 				}
 			}
-			m_NextScene = SceneManager.GetSceneByName (m_NextSceneName);
+			NextScene = SceneManager.GetSceneByName (NextSceneName);
 			// unload Intermediate Scene anyway
-			if (m_LoadSceneMode == LoadSceneMode.Additive && m_IntermediateSceneName != null) 
+			if (LoadSceneModeSelected == LoadSceneMode.Additive && IntermediateSceneName != null) 
 			{
 				AsyncOperation tAsynchroneUnloadTransition;
-				tAsynchroneUnloadTransition = SceneManager.UnloadSceneAsync (m_IntermediateSceneName);
+				tAsynchroneUnloadTransition = SceneManager.UnloadSceneAsync (IntermediateSceneName);
 
 				while (tAsynchroneUnloadTransition.progress < 0.9f) {
 					yield return null;
@@ -701,16 +680,16 @@ namespace SceneTransitionSystem
 				}
 			}
 			//remove preview scene (if not remove before)
-			if (m_LoadSceneMode == LoadSceneMode.Single) 
+			if (LoadSceneModeSelected == LoadSceneMode.Single) 
 			{
 				// if m_SceneActual is allready loaded i need to unloaded it
-				if (SceneManager.GetSceneByName (m_PreviewScene.name).isLoaded) 
+				if (SceneManager.GetSceneByName (PreviewScene.name).isLoaded) 
 				{
 					AsyncOperation tAsynchroneUnloadActualScene;
-					tAsynchroneUnloadActualScene = SceneManager.UnloadSceneAsync (m_PreviewScene.name);
-					if (m_PreviewSceneParams.ThisSceneWillUnloaded != null) 
+					tAsynchroneUnloadActualScene = SceneManager.UnloadSceneAsync (PreviewScene.name);
+					if (PreviewSceneParams.ThisSceneWillUnloaded != null) 
 					{
-						m_PreviewSceneParams.ThisSceneWillUnloaded.Invoke (m_TransitionData);
+						PreviewSceneParams.ThisSceneWillUnloaded.Invoke (TransitionData);
 					}
 					while (tAsynchroneUnloadActualScene.progress < 0.9f) 
 					{
@@ -727,26 +706,26 @@ namespace SceneTransitionSystem
 				}
 			}
 			// Active the next scene as root scene 
-			SceneManager.SetActiveScene (m_NextScene);
+			SceneManager.SetActiveScene (NextScene);
 			AudioListenerPrevent ();
 			// get params
-			m_NextSceneParams = GetTransitionsParams (m_NextScene, false);
+			NextSceneParams = GetTransitionsParams (NextScene, false);
 			// disable user interactions on the next scene
-			EventSystemEnable (m_NextScene, false);
+			EventSystemEnable (NextScene, false);
 			// scene is loaded
 			if (tNextSceneAllRedayExist == false) {
-				if (m_NextSceneParams.ThisSceneLoaded != null) {
-					m_NextSceneParams.ThisSceneLoaded.Invoke (m_TransitionData);
+				if (NextSceneParams.ThisSceneLoaded != null) {
+					NextSceneParams.ThisSceneLoaded.Invoke (TransitionData);
 				}
 			}
 			// Next scene appear by fade in 
-			AnimationTransitionIn (m_NextSceneParams);
+			AnimationTransitionIn (NextSceneParams);
 			//if (m_NextSceneParams.AnimationIn.Start != null) {
 				//m_NextSceneParams.AnimationIn.Start.Invoke (m_TransitionData, m_NextSceneParams.AnimationIn.Seconds);
             //}
-            if (m_NextSceneParams.OnEnterStart != null)
+            if (NextSceneParams.OnEnterStart != null)
             {
-                m_NextSceneParams.OnEnterStart.Invoke(m_TransitionData);
+                NextSceneParams.OnEnterStart.Invoke(TransitionData);
             }
 			while (AnimationFinished () == false) {
 				yield return null;
@@ -754,29 +733,29 @@ namespace SceneTransitionSystem
 			//if (m_NextSceneParams.AnimationIn.Finish != null) {
 				//m_NextSceneParams.AnimationIn.Finish.Invoke (m_TransitionData);
             //}
-            if (m_NextSceneParams.OnEnterFinish != null)
+            if (NextSceneParams.OnEnterFinish != null)
             {
-                m_NextSceneParams.OnEnterFinish.Invoke(m_TransitionData);
+                NextSceneParams.OnEnterFinish.Invoke(TransitionData);
             }
 			// fadein is finish
 			// next scene user interaction enable
 			EventSystemPrevent (true);
 			// next scene is enable
-			if (m_NextSceneParams.ThisSceneEnable != null) {
-				m_NextSceneParams.ThisSceneEnable.Invoke (m_TransitionData);
+			if (NextSceneParams.ThisSceneEnable != null) {
+				NextSceneParams.ThisSceneEnable.Invoke (TransitionData);
 			}
 
-			m_NextSceneParams.CopyIn (m_OldSceneParams);
+			NextSceneParams.CopyIn (OldSceneParams);
 
 			// My transition is finish. I can do an another transition
-			m_TransitionInProgress = false;
+			TransitionInProgress = false;
         }
         //-------------------------------------------------------------------------------------------------------------
 		// toolbox method
 
 		private void AudioListenerPrevent ()
         {
-            Debug.Log("STSTransitionController AudioListenerPrevent()");
+            //Debug.Log("STSTransitionController AudioListenerPrevent()");
 			for (int i = 0; i < SceneManager.sceneCount; i++) {
 				Scene tScene = SceneManager.GetSceneAt (i);
 				if (tScene.isLoaded) {
@@ -788,7 +767,7 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
 		private void AudioListenerEnable (Scene sScene, bool sEnable)
         {
-            Debug.Log("STSTransitionController AudioListenerEnable()");
+            //Debug.Log("STSTransitionController AudioListenerEnable()");
 			if (sScene.isLoaded) {
 				AudioListener tAudioListener = null;
 				GameObject[] tAllRootObjects = sScene.GetRootGameObjects ();
@@ -807,7 +786,7 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
 		private void EventSystemPrevent (bool sEnable)
         {
-            Debug.Log("STSTransitionController EventSystemPrevent()");
+            //Debug.Log("STSTransitionController EventSystemPrevent()");
 			for (int i = 0; i < SceneManager.sceneCount; i++) {
 				Scene tScene = SceneManager.GetSceneAt (i);
 				if (tScene.isLoaded) {
@@ -819,8 +798,8 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
 		private void EventSystemEnable (Scene sScene, bool sEnable)
         {
-            Debug.Log("STSTransitionController EventSystemEnable()");
-			if (m_PreventUserInteractions == true) 
+            //Debug.Log("STSTransitionController EventSystemEnable()");
+			if (PreventUserInteractions == true) 
 			{
 				EventSystem tEventSystem = null;
 				GameObject[] tAllRootObjects = sScene.GetRootGameObjects ();
@@ -844,14 +823,7 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
 		private STSTransitionParameters GetTransitionsParams (Scene sScene, bool sStartTransition)
         {
-            Debug.Log("STSTransitionController GetTransitionsParams()");
-//			if (sStartTransition == false) 
-//			{
-////			m_FadeInPreviewColor = m_FadeInColor;
-//				m_FadeOutPreviewColor = m_FadeOutColor;
-//			}
-			//Debug.Log ("GetFadeParams");
-//			TransitionParametersScript tTransitionParametersScript = GameObject.FindObjectOfType<TransitionParametersScript> ();
+            //Debug.Log("STSTransitionController GetTransitionsParams()");
 			STSTransitionParameters tTransitionParametersScript = null;
 			GameObject[] tAllRootObjects = sScene.GetRootGameObjects ();
 			foreach (GameObject tObject in tAllRootObjects) 
@@ -865,72 +837,18 @@ namespace SceneTransitionSystem
 			{
 				// create Game Object?
 				//Debug.Log ("NO PARAMS");
-				GameObject tObjToSpawn = new GameObject ("TransitionControllerObject");
+                GameObject tObjToSpawn = new GameObject (STSConstants.TransitionControllerObjectName);
 				tObjToSpawn.AddComponent<STSTransitionParameters> ();
 				tTransitionParametersScript = (STSTransitionParameters)tObjToSpawn.GetComponent<STSTransitionParameters> ();
                 tTransitionParametersScript.EffectOnEnter = STSEffectType.Default.Dupplicate();
                 tTransitionParametersScript.EffectOnExit = STSEffectType.Default.Dupplicate();
-				//tTransitionParametersScript.AnimationIn.Style = STSAnimationStyle.FadeIn;
-				//tTransitionParametersScript.AnimationOut.Style = STSAnimationStyle.FadeOut;
-				//tTransitionParametersScript.AnimationIn.Color = Color.black;
-				//tTransitionParametersScript.AnimationOut.Color = Color.black;
-				//tTransitionParametersScript.AnimationIn.Texture = null;
-				//tTransitionParametersScript.AnimationOut.Texture = null;
-				//tTransitionParametersScript.AnimationIn.Seconds = 0.8f;
-				//tTransitionParametersScript.AnimationOut.Seconds = 0.8f;
-			} 
-//			else 
-//			{
-//				m_FadeInColor = tTransitionParametersScript.TransitionInColor;
-//				m_FadeOutColor = tTransitionParametersScript.TransitionOutColor;
-//
-//				m_FadeInTexture = tTransitionParametersScript.TransitionInTexture;
-//				m_FadeOutTexture = tTransitionParametersScript.TransitionOutTexture;
-//
-//				m_FadeInSeconds = tTransitionParametersScript.TransitionInSpeed;
-//				m_FadeOutSeconds = tTransitionParametersScript.TransitionOutSpeed;
-//
-//				m_ThisSceneLoaded = tTransitionParametersScript.NextSceneLoaded;
-//				m_FadeInStart = tTransitionParametersScript.TransitionInStart;
-//				m_FadeInFinish = tTransitionParametersScript.TransitionInFinish;
-//				m_ThisSceneEnable = tTransitionParametersScript.NextSceneEnable;
-//
-//				m_ThisSceneDisable = tTransitionParametersScript.ThisSceneDisable;
-//				m_FadeOutStart = tTransitionParametersScript.TransitionOutStart;
-//				m_FadeOutFinish = tTransitionParametersScript.TransitionOutFinish;
-//				m_ThisSceneWillUnloaded = tTransitionParametersScript.ThisSceneWillUnloaded;
-//			}
-//
-//			if (tTransitionStandByScript == null)
-//			{
-//				m_StandByInSeconds = 5.0f;
-//				m_AutoLoadNextScene = true;
-//				m_NextSceneLoadingStart = null;
-//				m_NextSceneLoadingPercent = null;
-//				m_NextSceneLoadingFinish = null;
-//				m_StandByFinish = null;
-//			} 
-//			else 
-//			{
-//				m_StandByInSeconds = tTransitionStandByScript.StandByInSeconds;
-//				m_AutoLoadNextScene = tTransitionStandByScript.AutoLoadNextScene;
-//				m_NextSceneLoadingStart = tTransitionStandByScript.LoadNextSceneStart;
-//				m_NextSceneLoadingPercent = tTransitionStandByScript.LoadingNextScenePercent;
-//				m_NextSceneLoadingFinish = tTransitionStandByScript.LoadNextSceneFinish;
-//				m_StandByFinish = tTransitionStandByScript.StandByFinish;
-//			}
-//
-//			if (sStartTransition == true) {
-////			m_FadeInPreviewColor = m_FadeOutColor;
-//				m_FadeOutPreviewColor = m_FadeOutColor;
-//			}
-
+			}
 			return tTransitionParametersScript;
         }
         //-------------------------------------------------------------------------------------------------------------
 		private STSTransitionStandBy GetStandByParams (Scene sScene)
         {
-            Debug.Log("STSTransitionController GetStandByParams()");
+            //Debug.Log("STSTransitionController GetStandByParams()");
             //			TransitionStandByScript tTransitionStandByScript = GameObject.FindObjectOfType<TransitionStandByScript> ();
             STSTransitionStandBy tTransitionStandByScript = null;
 			GameObject[] tAllRootObjects = sScene.GetRootGameObjects ();
@@ -943,7 +861,7 @@ namespace SceneTransitionSystem
 			}
 			if (tTransitionStandByScript == null) 
 			{
-				GameObject tObjToSpawn = new GameObject ("TransitionControllerObject");
+                GameObject tObjToSpawn = new GameObject (STSConstants.TransitionControllerObjectName);
 				tObjToSpawn.AddComponent<STSTransitionStandBy> ();
 				tTransitionStandByScript = (STSTransitionStandBy)tObjToSpawn.GetComponent<STSTransitionStandBy> ();
 				tTransitionStandByScript.StandBySeconds = 5.0f;
@@ -952,49 +870,11 @@ namespace SceneTransitionSystem
 
 			return tTransitionStandByScript;
         }
-        //-------------------------------------------------------------------------------------------------------------
-
-
-        private STSEffect EffectType;
-
-
-		// Fade effect method
-		//private STSAnimationStyle m_AnimationStyle = STSAnimationStyle.None;
-		//private Texture2D m_AnimationTexture;
-//		private Texture2D m_FadeInTexture;
-//		private Texture2D m_FadeOutTexture;
-
-		//public Color m_AnimationColor = Color.yellow;
-//		private Color m_FadeInColor = Color.red;
-//		private Color m_FadeOutColor = Color.red;
-
-		//public Color m_AnimationPreviewColor = Color.yellow;
-//		private Color m_FadeOutPreviewColor = Color.red;
-
-//		private float m_FadeInSeconds = 1.0f;
-		// the fadding speed
-//		private float m_FadeOutSeconds = 1.0f;
-		// the fadding speed
-		//private float m_AnimationSpeed = 0.8f;
-		// the fadding speed
-
-		private int m_DrawDepth = -1000;
-		// the texture's order in the draw hiearchy: a low number means it rendre on top
-		//private float m_AlphaValue = 0.0f;
-		//the textur's alpha value between 0 and 1
-
-		// Animation counter
-		//private float m_AnimationCounter = 0.0f;
-		//private int m_AnimationDirection = -1;
-		// the direction to fade : in = -1 or out = 1
-
-		//private bool m_AnimationFinish = false;
-		//private bool m_AnimationInProgress = false;
-
+		//private int m_DrawDepth = -1000;
         //-------------------------------------------------------------------------------------------------------------
 		private bool AnimationProgress ()
         {
-            Debug.Log("STSTransitionController AnimationProgress()");
+            //Debug.Log("STSTransitionController AnimationProgress()");
             //return m_AnimationInProgress;
             return EffectType.AnimIsPlaying;
         }
@@ -1008,7 +888,7 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
 		private void AnimationTransitionIn (STSTransitionParameters sThisSceneParameters)
         {
-            Debug.Log("STSTransitionController AnimationTransitionIn()");
+            //Debug.Log("STSTransitionController AnimationTransitionIn()");
             Color tOldColor = Color.black;
             float tInterlude = 0;
             if (EffectType != null)
@@ -1023,129 +903,63 @@ namespace SceneTransitionSystem
                 EffectType = new STSEffectFade();
             }
             EffectType.StartEffectEnter(new Rect(0, 0, Screen.width, Screen.height), tOldColor, tInterlude);
-			//m_AnimationCounter = 1.0f;
-			//m_AnimationStyle = sThisSceneParameters.AnimationIn.Style;
-			//m_AnimationTexture = sThisSceneParameters.AnimationIn.Texture;
-			//m_AnimationColor = sThisSceneParameters.AnimationIn.Color;
-			//m_AnimationSpeed = 0.50f / sThisSceneParameters.AnimationIn.Seconds; // m_AlphaValue += m_FadeDirection * m_FadeSpeed * Time.deltaTime;
-			////Debug.Log ("m_OldSceneParams = " + m_OldSceneParams);
-			//if (m_OldSceneParams != null) 
-				//{
-				//m_AnimationPreviewColor = m_OldSceneParams.AnimationOut.Color;
-				//} 
-				//else 
-				//{
-				////Debug.Log ("m_OldSceneParams is null ?!");
-				//m_AnimationPreviewColor = sThisSceneParameters.AnimationOut.Color;
-				//}
-				//m_AnimationDirection = -1;
-				//m_AnimationInProgress = true;
-				//m_AnimationFinish = false;
         }
         //-------------------------------------------------------------------------------------------------------------
 		private void AnimationTransitionOut (STSTransitionParameters sThisSceneParameters)
         {
-            Debug.Log("STSTransitionController AnimationTransitionOut()");
-
+            //Debug.Log("STSTransitionController AnimationTransitionOut()");
             EffectType = sThisSceneParameters.EffectOnExit.GetEffect();
             if (EffectType == null)
             {
                 EffectType = new STSEffectFade();
             }
             EffectType.StartEffectExit(new Rect(0, 0, Screen.width, Screen.height));
-
-			//m_AnimationCounter = 0.0f;
-			//m_AnimationStyle = sThisSceneParameters.AnimationOut.Style;
-			//m_AnimationTexture = sThisSceneParameters.AnimationOut.Texture;
-			//m_AnimationColor = sThisSceneParameters.AnimationOut.Color;
-			//m_AnimationSpeed = 0.50f / sThisSceneParameters.AnimationOut.Seconds; // m_AlphaValue += m_FadeDirection * m_FadeSpeed * Time.deltaTime;
-			//if (m_OldSceneParams != null) 
-			//{
-			//	m_AnimationPreviewColor = m_OldSceneParams.AnimationOut.Color;
-			//} 
-			//else 
-			//{
-			//	m_AnimationPreviewColor = sThisSceneParameters.AnimationOut.Color;
-			//}
-			//m_AnimationDirection = 1;
-			//m_AnimationInProgress = true;
-			//m_AnimationFinish = false;
         }
-        //-------------------------------------------------------------------------------------------------------------
-//		private float BeginFade (int sDirection)
-//		{
-//			m_AnimationDirection = sDirection;
-//			m_AnimationInProgress = true;
-//			m_AnimationFinish = false;
-//			return (m_AnimationSpeed); // return the fadespeed variable so it's easy to time the appplicationLoadLevel;
-//		}
-//
-//		private void FadeInImmediatly ()
-//		{
-//			//Debug.Log ("FadeInImmediatly");
-//			m_AnimationInProgress = true;
-//			m_AnimationFinish = false;
-//			m_AlphaValue = 0;
-//		}
-//
-//		private void FadeOutImmediatly ()
-//		{
-//			//Debug.Log ("FadeOutImmediatly");
-//			m_AnimationInProgress = true;
-//			m_AnimationFinish = false;
-//			m_AlphaValue = 1;
-//		}
-
-		// Stand by method
-
-//		private float m_StandByInSeconds = 5.0f;
-//		private bool m_AutoLoadNextScene = true;
-		private float m_StandByTimer;
-		private bool m_LauchNextScene = false;
-        private bool m_StandByInProgress = false;
         //-------------------------------------------------------------------------------------------------------------
 		private void StandBy ()
         {
-            Debug.Log("STSTransitionController StandBy()");
-			m_StandByTimer = 0.0f;
-			m_StandByInProgress = true;
-			m_LauchNextScene = false;
+            //Debug.Log("STSTransitionController StandBy()");
+			StandByTimer = 0.0f;
+			StandByInProgress = true;
+			LauchNextScene = false;
         }
         //-------------------------------------------------------------------------------------------------------------
 		private bool StandByIsProgressing ()
         {
-            Debug.Log("STSTransitionController StandByIsProgressing()");
-			return m_StandByInProgress;
+            //Debug.Log("STSTransitionController StandByIsProgressing()");
+            StandByTimer += Time.deltaTime;
+            if (StandByTimer >= IntermediateSceneStandBy.StandBySeconds)
+            {
+                StandByInProgress = false;
+            }
+			return StandByInProgress;
         }
         //-------------------------------------------------------------------------------------------------------------
-		private bool StandByIsFinished ()
-        {
-            Debug.Log("STSTransitionController StandByIsFinished()");
-			return m_LauchNextScene;
-        }
+		//private bool StandByIsFinished ()
+   //     {
+   //         Debug.Log("STSTransitionController StandByIsFinished()");
+			//return m_LauchNextScene;
+        //}
         //-------------------------------------------------------------------------------------------------------------
 		private bool WaitingToLauchNextScene ()
         {
-            Debug.Log("STSTransitionController WaitingToLauchNextScene()");
-			return !m_LauchNextScene;
+            //Debug.Log("STSTransitionController WaitingToLauchNextScene()");
+            if (IntermediateSceneStandBy.AutoLoadNextScene == true)
+            {
+                // force auto active scene
+                LauchNextScene = true;
+            }
+			return !LauchNextScene;
         }
         //-------------------------------------------------------------------------------------------------------------
-		public static void FinishStandBy ()
+		public void FinishStandBy ()
         {
-            Debug.Log("STSTransitionController FinishStandBy()");
-            STSTransitionController.Singleton();
-			k_Singleton.EventSystemEnable (k_Singleton.m_IntermediateScene, false);
-			k_Singleton.m_LauchNextScene = true;
-			k_Singleton.m_StandByInProgress = true;
+            //Debug.Log("STSTransitionController FinishStandBy()");
+			EventSystemEnable (kSingleton.IntermediateScene, false);
+			LauchNextScene = true;
+            StandByInProgress = false;
         }
         //-------------------------------------------------------------------------------------------------------------
-
-	// animations
-
-
-
-		// override method
-
 		void OnGUI ()
         {
             //Debug.Log("STSTransitionController OnGUI()");
@@ -1153,229 +967,9 @@ namespace SceneTransitionSystem
             {
                 EffectType.DrawMaster(new Rect(0, 0, Screen.width, Screen.height));
             }
-			// waiting StandBy
-			//if (m_IntermediateStandByParams != null) 
-			//{
-			//	if (m_StandByInProgress == true) 
-			//	{
-			//		m_StandByTimer += Time.deltaTime;
-			//		if (m_StandByTimer >= m_IntermediateStandByParams.StandBySeconds) 
-			//		{
-			//			m_StandByInProgress = false;
-			//			if (m_IntermediateStandByParams.AutoLoadNextScene == true) 
-			//			{
-			//				m_LauchNextScene = true;
-			//			}
-			//		}
-			//	}
-			//}
-			//switch (m_AnimationStyle) {
-			//case STSAnimationStyle.FadeIn:
-			//	{
-			//		Animation_FadeIn ();
-			//	}
-			//	break;
-			//case STSAnimationStyle.FadeOut:
-			//	{
-			//		Animation_FadeOut ();
-			//	}
-			//	break;
-			//case STSAnimationStyle.ShutterBottomIn:
-			//	{
-			//		Animation_ShutterCutting (1, 1, 10, 1, 0, 1);
-			//	}
-			//	break;
-			//case STSAnimationStyle.ShutterTopIn:
-			//	{
-			//		Animation_ShutterCutting (1, 1, 10, 1, 0, -1);
-			//	}
-			//	break;
-			//case STSAnimationStyle.ShutterRightIn:
-			//	{
-			//		Animation_ShutterCutting (1, 1, 1, 10, 1, 0);
-			//	}
-			//	break;
-			//case STSAnimationStyle.ShutterLeftIn:
-			//	{
-			//		Animation_ShutterCutting (1, 1, 1, 10, -1, 0);
-			//	}
-			//	break;
-			//case STSAnimationStyle.ShutterBottomOut:
-			//	{
-			//		Animation_ShutterCutting (1, 1, 10, 1, 0, 1);
-			//	}
-			//	break;
-			//case STSAnimationStyle.ShutterTopOut:
-			//	{
-			//		Animation_ShutterCutting (1, 1, 10, 1, 0, -1);
-			//	}
-			//	break;
-			//case STSAnimationStyle.ShutterRightOut:
-			//	{
-			//		Animation_ShutterCutting (1, 1, 1, 10, 1, 0);
-			//	}
-			//	break;
-			//case STSAnimationStyle.ShutterLeftOut:
-			//	{
-			//		Animation_ShutterCutting (1, 1, 1, 10, -1, 0);
-			//	}
-			//	break;
-			//}
-
-			//			if (m_AnimationStyle == TransitionParametersScript.AnimationStyle.FadeIn) 
-			//			{
-			//				Animation_FadeIn ();
-			//
-			//			}
-			//			else if (m_AnimationStyle == TransitionParametersScript.AnimationStyle.FadeOut) 
-			//			{
-			//				Animation_FadeOut ();
-			//
-			//			}
         }
         //-------------------------------------------------------------------------------------------------------------
- //       void Animation_Next() {
- //           Debug.Log("STSTransitionController Animation_Next()");
-	//		//Debug.Log ("Animation_Next m_AnimationInProgress =" + m_AnimationInProgress);
-	//	if (m_AnimationInProgress == true) 
-	//		{
-	//			m_AnimationCounter +=  m_AnimationDirection * m_AnimationSpeed * Time.deltaTime;
-	//			m_AnimationCounter = Mathf.Clamp01 (m_AnimationCounter);
-	//			if (m_AnimationCounter == 0 && m_AnimationDirection == -1) 
-	//			{
-	//				m_AnimationFinish = true;
-	//				m_AnimationInProgress = false;
-	//			}
-	//			else if (m_AnimationCounter == 1 && m_AnimationDirection == 1) 
-	//			{
-	//				m_AnimationFinish = true;
-	//				m_AnimationInProgress = false;
-	//			}
-	//		}
- //       }
- //       //-------------------------------------------------------------------------------------------------------------
-	//private void Animation_FadeIn() 
- //       {
- //           Debug.Log("STSTransitionController Animation_FadeIn()");
-	//	Animation_Fade(-1);
- //       }
- //       //-------------------------------------------------------------------------------------------------------------
-	//private void Animation_FadeOut() 
-  //      {
-  //          Debug.Log("STSTransitionController Animation_FadeOut()");
-		//Animation_Fade(1);
-        //}
-        //-------------------------------------------------------------------------------------------------------------
-//	private void Animation_Fade(float sDirection) 
-//        {
-//            Debug.Log("STSTransitionController Animation_Fade()");
-//			float tAlpha = m_AnimationCounter;
-////			if (sDirection < 0) {
-////				tAlpha = 1 - tAlpha;
-////			}
-		//	//Debug.Log ("Animation_Fade direction = " + sDirection.ToString() + " alpha value = " + tAlpha.ToString() + " m_AnimationCounter = " + m_AnimationCounter.ToString());
-		//// Draw the animation
-		//	Color tfadeColor = Color.Lerp (m_AnimationColor, m_AnimationPreviewColor, m_AnimationCounter*2.0f);
-		////Color tfadeColor = m_AnimationColor;
-		//	Color tfadeColorAlpha = new Color (tfadeColor.r, tfadeColor.g, tfadeColor.b, tAlpha);
-		//if (m_AnimationTexture == null) 
-		//{
-		//	DrawQuad (new Rect (0, 0, Screen.width, Screen.height), tfadeColorAlpha);
-		//} 
-		//else 
-		//{
-		//	GUI.color = tfadeColorAlpha;	// set the alpha value
-		//	GUI.depth = m_DrawDepth; 	// make the black texture render on top (draw last)
-		//	GUI.DrawTexture (new Rect (0, 0, Screen.width, Screen.height), m_AnimationTexture); // draw the texture to fit the entire screen area
-		//}
-
-		//	// calculate the next animation
-		//	Animation_Next();
-		//}
-
-		//void Animation_Shutter (float sWidth, float sHeight, float sWidthCutting, float sHeightCutting, float sXDirection, float sYDirection)
-  //      {
-  //          Debug.Log("STSTransitionController Animation_Shutter()");
-		//	Color tfadeColor = Color.Lerp (m_AnimationColor, m_AnimationPreviewColor, m_AnimationCounter*2.0f);
-		//	float tX = (1-m_AnimationCounter)*sXDirection;
-		//	float tY = (1-m_AnimationCounter)*sYDirection;
-
-		//	if (sYDirection == 0) {
-		//		tY = 0;
-		//	}
-		//	if (sXDirection == 0) {
-		//		tX = 0;
-		//	}
-		//	Debug.Log ("tX = " + tX.ToString() + "  tY = " + tY.ToString());
-		//	Rect tRect = new Rect (Screen.width*tX, Screen.height*tY, Screen.width, Screen.height);
-		//	if (m_AnimationTexture == null) 
-		//	{
-		//		DrawQuad (tRect, tfadeColor);
-		//	} 
-		//	else 
-		//	{
-		//		GUI.color = tfadeColor;	// set the alpha value
-		//		GUI.depth = m_DrawDepth; 	// make the black texture render on top (draw last)
-		//		GUI.DrawTexture (tRect, m_AnimationTexture); // draw the texture to fit the entire screen area
-		//	}
-		//	// animation 
-		//	Animation_Next();
-  //      }
-  //      //-------------------------------------------------------------------------------------------------------------
-		//void Animation_ShutterCutting (float sWidth, float sHeight, float sWidthCutting, float sHeightCutting, float sXDirection, float sYDirection)
-  //      {
-  //          Debug.Log("STSTransitionController Animation_ShutterCutting()");
-		//	Color tfadeColor = Color.Lerp (m_AnimationColor, m_AnimationPreviewColor, m_AnimationCounter*2.0f);
-		//	float tX = (1-m_AnimationCounter)*sXDirection;
-		//	float tY = (1-m_AnimationCounter)*sYDirection;
-
-		//	if (sYDirection == 0) {
-		//		tY = 0;
-		//	}
-		//	if (sXDirection == 0) {
-		//		tX = 0;
-		//	}
-		//	float tIncrX = Screen.width / sWidthCutting;
-		//	for (int i = 0; i < sWidthCutting; i++) 
-		//	{
-		//		float Tyy = Screen.height * tY - i * tIncrX;
-
-		//		//Debug.Log ("tX = " + tX.ToString () + "  tY = " + tY.ToString ());
-		//		Rect tRect = new Rect (Screen.width * tX +tIncrX*i, Tyy, tIncrX, Screen.height);
-		//		if (m_AnimationTexture == null) {
-		//			DrawQuad (tRect, tfadeColor);
-		//		} else {
-		//			GUI.color = tfadeColor;	// set the alpha value
-		//			GUI.depth = m_DrawDepth; 	// make the black texture render on top (draw last)
-		//			GUI.DrawTexture (tRect, m_AnimationTexture); // draw the texture to fit the entire screen area
-		//		}
-		//	}
-		//	// animation 
-		//	Animation_Next();
-  //      }
-  //      //-------------------------------------------------------------------------------------------------------------
-
-
-
-
-		//// graphic tool box
-
-		//void DrawQuad (Rect position, Color color)
-   //     {
-   //         Debug.Log("STSTransitionController DrawQuad()");
-			//Texture2D tTexture = new Texture2D (1, 1);
-			//tTexture.SetPixel (0, 0, color);
-			//tTexture.Apply ();
-			//GUI.depth = m_DrawDepth; 
-			//GUI.skin.box.normal.background = tTexture;
-			//GUI.Box (position, GUIContent.none);
-        //}
-        //-------------------------------------------------------------------------------------------------------------
-
-		// end class
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-	// end namespace
 }
 //=====================================================================================================================
