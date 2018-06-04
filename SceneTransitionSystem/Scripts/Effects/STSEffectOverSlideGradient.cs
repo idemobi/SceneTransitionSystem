@@ -52,37 +52,37 @@ namespace SceneTransitionSystem
                 {
                     case STSNineCross.BottomLeft:
                         {
-                            STSTransitionDrawing.DrawRect(new Rect(sRect.x, sRect.y + sRect.height, sRect.width * Purcent, -sRect.height * Purcent), tColorLerp);
+                            STSDrawing.DrawRect(new Rect(sRect.x, sRect.y + sRect.height, sRect.width * Purcent, -sRect.height * Purcent), tColorLerp);
                         }
                         break;
                     case STSNineCross.BottomRight:
                         {
-                            STSTransitionDrawing.DrawRect(new Rect(sRect.x + sRect.width, sRect.y + sRect.height, -sRect.width * Purcent, -sRect.height * Purcent), tColorLerp);
+                            STSDrawing.DrawRect(new Rect(sRect.x + sRect.width, sRect.y + sRect.height, -sRect.width * Purcent, -sRect.height * Purcent), tColorLerp);
                         }
                         break;
                     case STSNineCross.TopLeft:
                         {
-                            STSTransitionDrawing.DrawRect(new Rect(sRect.x, sRect.y, sRect.width * Purcent, sRect.height * Purcent), tColorLerp);
+                            STSDrawing.DrawRect(new Rect(sRect.x, sRect.y, sRect.width * Purcent, sRect.height * Purcent), tColorLerp);
                         }
                         break;
                     case STSNineCross.TopRight:
                         {
-                            STSTransitionDrawing.DrawRect(new Rect(sRect.x + sRect.width, sRect.y, -sRect.width * Purcent, sRect.height * Purcent), tColorLerp);
+                            STSDrawing.DrawRect(new Rect(sRect.x + sRect.width, sRect.y, -sRect.width * Purcent, sRect.height * Purcent), tColorLerp);
                         }
                         break;
                     case STSNineCross.Right:
                         {
-                            STSTransitionDrawing.DrawRect(new Rect(sRect.x + sRect.width, sRect.y, -sRect.width * Purcent, sRect.height), tColorLerp);
+                            STSDrawing.DrawRect(new Rect(sRect.x + sRect.width, sRect.y, -sRect.width * Purcent, sRect.height), tColorLerp);
                         }
                         break;
                     case STSNineCross.Bottom:
                         {
-                            STSTransitionDrawing.DrawRect(new Rect(sRect.x, sRect.y + sRect.height, sRect.width, -sRect.height * Purcent), tColorLerp);
+                            STSDrawing.DrawRect(new Rect(sRect.x, sRect.y + sRect.height, sRect.width, -sRect.height * Purcent), tColorLerp);
                         }
                         break;
                     case STSNineCross.Top:
                         {
-                            STSTransitionDrawing.DrawRect(new Rect(sRect.x, sRect.y, sRect.width, sRect.height * Purcent), tColorLerp);
+                            STSDrawing.DrawRect(new Rect(sRect.x, sRect.y, sRect.width, sRect.height * Purcent), tColorLerp);
                         }
                         break;
                     case STSNineCross.Center:
@@ -91,13 +91,13 @@ namespace SceneTransitionSystem
                             float tHeight = sRect.height * Purcent;
                             float tX = sRect.position.x + (sRect.width - tWidth) / 2.0F;
                             float tY = sRect.position.y + (sRect.height - tHeight) / 2.0F;
-                            STSTransitionDrawing.DrawRect(new Rect(tX, tY, tWidth, tHeight), tColorLerp);
+                            STSDrawing.DrawRect(new Rect(tX, tY, tWidth, tHeight), tColorLerp);
                         }
                         break;
                     default:
                     case STSNineCross.Left:
                         {
-                            STSTransitionDrawing.DrawRect(new Rect(sRect.x, sRect.y, sRect.width * Purcent, sRect.height), tColorLerp);
+                            STSDrawing.DrawRect(new Rect(sRect.x, sRect.y, sRect.width * Purcent, sRect.height), tColorLerp);
                         }
                         break;
                 }

@@ -55,12 +55,24 @@ namespace SceneTransitionSystem
     {
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    public class STSNoFourCrossAttribute : Attribute
+    {
+    }
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     public class STSNoFiveCrossAttribute : Attribute
     {
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     public class STSNoNineCrossAttribute : Attribute
     {
+    }
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    public enum STSFourCross : int
+    {
+        Top,
+        Bottom,
+        Right,
+        Left,
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     public enum STSFiveCross :int 
@@ -144,6 +156,7 @@ namespace SceneTransitionSystem
         public Texture2D TextureSecondary = null;
         public Vector2 Offset;
 
+        public STSFourCross FourCross;
         public STSFiveCross FiveCross;
         public STSNineCross NineCross;
 
@@ -232,6 +245,11 @@ namespace SceneTransitionSystem
             ParameterOne = sObject.ParameterOne;
             ParameterTwo = sObject.ParameterTwo;
             ParameterThree = sObject.ParameterThree;
+
+            FourCross = sObject.FourCross;
+            FiveCross = sObject.FiveCross;
+            NineCross = sObject.NineCross;
+
 
             Duration = sObject.Duration;
             Purcent = sObject.Purcent;
@@ -383,7 +401,7 @@ namespace SceneTransitionSystem
                 {
                     ColorPurcent += (Time.deltaTime) / ColorDuration;
                     Color tColor = Color.Lerp(OldColor, TintPrimary, ColorPurcent);
-                    STSTransitionDrawing.DrawRect(sRect, tColor);
+                    STSDrawing.DrawRect(sRect, tColor);
                     if (ColorPurcent >= 1)
                     {
                         ColorIsPlaying = false;

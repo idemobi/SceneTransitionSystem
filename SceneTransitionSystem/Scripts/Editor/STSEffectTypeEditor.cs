@@ -109,13 +109,18 @@ namespace SceneTransitionSystem
                 tH += tNumberFieldStyle.fixedHeight + kMarge;
             }
 
-            // FiveCross
-            if (tEffectType.GetCustomAttributes(typeof(STSNoFiveCrossAttribute), true).Length == 0)
+            // FourCross
+            if (tEffectType.GetCustomAttributes(typeof(STSNoFourCrossAttribute), true).Length == 0)
             {
                 tH += tPopupFieldStyle.fixedHeight + kMarge;
             }
 
             // FiveCross
+            if (tEffectType.GetCustomAttributes(typeof(STSNoFiveCrossAttribute), true).Length == 0)
+            {
+                tH += tPopupFieldStyle.fixedHeight + kMarge;
+            }
+            // NineCross
             if (tEffectType.GetCustomAttributes(typeof(STSNoNineCrossAttribute), true).Length == 0)
             {
                 tH += tPopupFieldStyle.fixedHeight + kMarge;
@@ -266,6 +271,17 @@ namespace SceneTransitionSystem
                 tY += tNumberFieldStyle.fixedHeight + kMarge;
                 rReturn.Offset = tOffset.vector2Value;
             }
+
+            // FourCross
+            if (tEffectType.GetCustomAttributes(typeof(STSNoFourCrossAttribute), true).Length == 0)
+            {
+                Rect tRectFourCross = new Rect(position.x, tY, position.width, tPopupFieldStyle.fixedHeight);
+                SerializedProperty tFourCross = property.FindPropertyRelative("FourCross");
+                EditorGUI.PropertyField(tRectFourCross, tFourCross, false);
+                tY += tPopupFieldStyle.fixedHeight + kMarge;
+                rReturn.FourCross = (STSFourCross)tFourCross.intValue;
+            }
+
             // FiveCross
             if (tEffectType.GetCustomAttributes(typeof(STSNoFiveCrossAttribute), true).Length == 0)
             {
@@ -275,6 +291,7 @@ namespace SceneTransitionSystem
                 tY += tPopupFieldStyle.fixedHeight + kMarge;
                 rReturn.FiveCross = (STSFiveCross)tFiveCross.intValue;
             }
+
             // NineCross
             if (tEffectType.GetCustomAttributes(typeof(STSNoNineCrossAttribute), true).Length == 0)
             {
@@ -318,8 +335,8 @@ namespace SceneTransitionSystem
             //rReturn.Purcent = LocalPurcent;
             rReturn.Purcent = tPurcent.floatValue;
             // draw white rect
-            STSTransitionDrawing.DrawRect(tPreviewRect, Color.white);
-            STSTransitionDrawing.DrawCircle(tPreviewRect.center, tPreviewRect.height / 2.0F, 32, Color.red);
+            STSDrawing.DrawRect(tPreviewRect, Color.white);
+            STSDrawing.DrawCircle(tPreviewRect.center, tPreviewRect.height / 2.0F, 32, Color.red);
             // 
             // TODO : Add image in background
             // draw preview

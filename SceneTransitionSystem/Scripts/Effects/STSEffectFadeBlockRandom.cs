@@ -73,7 +73,7 @@ namespace SceneTransitionSystem
                 for (int i = 0; i < tIndex; i++)
                 {
                     STSTransitionTile tTile = Matrix.TilesList[i];
-                    STSTransitionDrawing.DrawRect(tTile.Rectangle, TintPrimary);
+                    STSDrawing.DrawRect(tTile.Rectangle, TintPrimary);
                 }
                 // Draw Alpha tile
                 if (tIndex < Matrix.TileCount)
@@ -82,7 +82,7 @@ namespace SceneTransitionSystem
                     float tAlpha = (Purcent * Matrix.TileCount) - (float)tIndex;
                     Color tColorLerp = Color.Lerp(TintSecondary, TintPrimary, tAlpha);
                     Color tFadeColorAlpha = new Color(TintPrimary.r, TintPrimary.g, TintPrimary.b, tAlpha*TintPrimary.a);
-                    STSTransitionDrawing.DrawRect(tTileAlpha.Rectangle, tFadeColorAlpha);
+                    STSDrawing.DrawRect(tTileAlpha.Rectangle, tFadeColorAlpha);
                 }
             }
             //STSBenchmark.Finish();

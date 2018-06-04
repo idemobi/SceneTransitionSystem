@@ -12,7 +12,7 @@ using UnityEditor;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public class STSTransitionDrawing
+    public class STSDrawing
     {
         //-------------------------------------------------------------------------------------------------------------
         private static Texture2D aaLineTex = null;
@@ -25,7 +25,7 @@ namespace SceneTransitionSystem
         static Material tMat;
         static string ShaderName = "UI/Default";
         //-------------------------------------------------------------------------------------------------------------
-        static STSTransitionDrawing()
+        static STSDrawing()
         {
             Initialize();
             tMat = new Material(Shader.Find(ShaderName));
@@ -337,7 +337,7 @@ namespace SceneTransitionSystem
             for (int i = 1; i < segments + 1; ++i)
             {
                 Vector2 v = CubeBezier(start, startTangent, end, endTangent, i / (float)segments);
-                STSTransitionDrawing.DrawLine(lastV, v, color, width, antiAlias);
+                STSDrawing.DrawLine(lastV, v, color, width, antiAlias);
                 lastV = v;
             }
         }

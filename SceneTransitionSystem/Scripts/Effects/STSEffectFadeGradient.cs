@@ -32,7 +32,7 @@ namespace SceneTransitionSystem
                 // Do drawing with purcent
                 Color tColorLerp = Color.Lerp(TintSecondary, TintPrimary, Purcent);
                 Color tFadeColorAlpha = new Color(tColorLerp.r, tColorLerp.g, tColorLerp.b, Purcent* TintPrimary.a);
-                STSTransitionDrawing.DrawRect(sRect, tFadeColorAlpha);
+                STSDrawing.DrawRect(sRect, tFadeColorAlpha);
             }
             //STSBenchmark.Finish();
         }

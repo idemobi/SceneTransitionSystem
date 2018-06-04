@@ -42,7 +42,7 @@ namespace SceneTransitionSystem
             int tRadius = (int)Mathf.Max(tWidth, tHeight);
             float tX = sRect.position.x + (sRect.width - tWidth) / 2.0F;
             float tY = sRect.position.y + (sRect.height - tHeight) / 2.0F;
-            STSTransitionDrawing.DrawCircle(sRect.center,tRadius,TintPrimary,tWidth,ParameterOne);
+            STSDrawing.DrawCircle(sRect.center,tRadius,TintPrimary,tWidth,ParameterOne);
         }
         //-------------------------------------------------------------------------------------------------------------
     }

@@ -112,7 +112,7 @@ namespace SceneTransitionSystem
                             break;
                     }
                     //Debug.Log("tTile.Rectangle = "+i+"   "+ tTile.Rectangle.ToString());
-                    STSTransitionDrawing.DrawRect(tTile.Rectangle, TintPrimary);
+                    STSDrawing.DrawRect(tTile.Rectangle, TintPrimary);
                 }
                 if (tIndex <= ParameterOne && tIndex >= 0)
                 {
@@ -142,7 +142,7 @@ namespace SceneTransitionSystem
                     }
                     float tAlpha = (Purcent * (float)ParameterOne) - (float)tIndex + 1;
                     Color tFadeColorAlpha = new Color(TintPrimary.r, TintPrimary.g, TintPrimary.b, tAlpha* TintPrimary.a);
-                    STSTransitionDrawing.DrawRect(tTileAlpha.Rectangle, tFadeColorAlpha);
+                    STSDrawing.DrawRect(tTileAlpha.Rectangle, tFadeColorAlpha);
                 }
             }
             //STSBenchmark.Finish();
