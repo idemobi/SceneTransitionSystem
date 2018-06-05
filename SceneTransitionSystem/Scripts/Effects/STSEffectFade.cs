@@ -41,7 +41,7 @@ namespace SceneTransitionSystem
             {
                 // Do drawing with purcent
                 Color tFadeColorAlpha = new Color(TintPrimary.r, TintPrimary.g, TintPrimary.b, Purcent* TintPrimary.a);
-                STSDrawing.DrawRect(sRect, tFadeColorAlpha);
+                STSDrawQuad.DrawRect(sRect, tFadeColorAlpha);
             }
             //STSBenchmark.Finish();
         }

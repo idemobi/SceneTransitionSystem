@@ -24,7 +24,7 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         public void CreateMatrix(int sLine, int sColumn)
         {
-            STSBenchmark.Start();
+            //STSBenchmark.Start();
             Matrix = new STSTile[sLine, sColumn];
             TilesList = new List<STSTile>();
             TileCount = 0;
@@ -38,12 +38,12 @@ namespace SceneTransitionSystem
                     TileCount++;
                 }
             }
-            STSBenchmark.Finish();
+            //STSBenchmark.Finish();
         }
         //-------------------------------------------------------------------------------------------------------------
         public void CreateMatrix(int sLine, int sColumn, Rect sRect)
         {
-            STSBenchmark.Start();
+            //STSBenchmark.Start();
             float tX = sRect.width / sColumn;
             float tY = sRect.height / sLine;
             Matrix = new STSTile[sLine, sColumn];
@@ -60,12 +60,12 @@ namespace SceneTransitionSystem
                     TileCount++;
                 }
             }
-            STSBenchmark.Finish();
+            //STSBenchmark.Finish();
         }
         //-------------------------------------------------------------------------------------------------------------
         public void CreateMatrix(int sLine, int sColumn, Rect sRect, float sStartDelayFactor)
         {
-            STSBenchmark.Start();
+            //STSBenchmark.Start();
             float tX = sRect.width / sColumn;
             float tY = sRect.height / sLine;
             Matrix = new STSTile[sLine, sColumn];
@@ -83,7 +83,7 @@ namespace SceneTransitionSystem
                     TileCount++;
                 }
             }
-            STSBenchmark.Finish();
+            //STSBenchmark.Finish();
         }
         //-------------------------------------------------------------------------------------------------------------
         public STSTile GetTile(int sLine, int sColumn)
@@ -95,7 +95,7 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         public void ShuffleList()
         {
-            STSBenchmark.Start();
+            //STSBenchmark.Start();
             int tCount = TilesList.Count;
             for (int i = 0; i <tCount; i++)
             {
@@ -103,7 +103,7 @@ namespace SceneTransitionSystem
                 TilesList.Remove(tTile);
                 TilesList.Insert(Random.Range(0, tCount - 1), tTile);
             }
-            STSBenchmark.Finish();
+            //STSBenchmark.Finish();
         }
         //-------------------------------------------------------------------------------------------------------------
     }

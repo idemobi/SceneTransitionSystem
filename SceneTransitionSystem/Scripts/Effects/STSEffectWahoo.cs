@@ -47,7 +47,7 @@ namespace SceneTransitionSystem
                 float tHeight = sRect.height * Purcent;
                 float tX = sRect.position.x + (sRect.width - tWidth) / 2.0F;
                 float tY = sRect.position.y + (sRect.height - tHeight) / 2.0F;
-                STSDrawing.DrawRect(new Rect(tX, tY, tWidth, tHeight), TintPrimary);
+                STSDrawQuad.DrawRect(new Rect(tX, tY, tWidth, tHeight), TintPrimary);
             }
             //STSBenchmark.Finish();
         }

@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: b6af553f242b703469ea1ebbe47d2660, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: e7471c7bc3e48f8408ba34ff15fec1e5, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.13169926, g: 0.18940026, b: 0.38855308, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -17754,12 +17754,12 @@ Prefab:
     - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
         type: 2}
       propertyPath: EffectOnEnter.EffectName
-      value: Over Slide
+      value: Fade Gradient
       objectReference: {fileID: 0}
     - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
         type: 2}
       propertyPath: EffectOnEnter.Purcent
-      value: 1
+      value: 0.724
       objectReference: {fileID: 0}
     - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
         type: 2}
@@ -17794,12 +17794,57 @@ Prefab:
     - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
         type: 2}
       propertyPath: EffectOnEnter.Duration
-      value: 2.54
+      value: 1.51
       objectReference: {fileID: 0}
     - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
         type: 2}
       propertyPath: EffectOnExit.Duration
-      value: 1.6
+      value: 2.59
+      objectReference: {fileID: 0}
+    - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
+        type: 2}
+      propertyPath: EffectOnEnter.TintPrimary.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
+        type: 2}
+      propertyPath: EffectOnEnter.TintPrimary.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
+        type: 2}
+      propertyPath: EffectOnEnter.TintPrimary.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
+        type: 2}
+      propertyPath: EffectOnEnter.ParameterOne
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
+        type: 2}
+      propertyPath: EffectOnEnter.ParameterTwo
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
+        type: 2}
+      propertyPath: EffectOnEnter.TintSecondary.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
+        type: 2}
+      propertyPath: EffectOnEnter.TintSecondary.r
+      value: 0.5441177
+      objectReference: {fileID: 0}
+    - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
+        type: 2}
+      propertyPath: EffectOnEnter.TintSecondary.g
+      value: 0.2440528
+      objectReference: {fileID: 0}
+    - target: {fileID: 114255756779058156, guid: 0e83aeb60f9fa48839bc951fe2a921aa,
+        type: 2}
+      propertyPath: EffectOnEnter.TintSecondary.b
+      value: 0.2440528
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0e83aeb60f9fa48839bc951fe2a921aa, type: 2}

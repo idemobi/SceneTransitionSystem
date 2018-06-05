@@ -73,7 +73,7 @@ namespace SceneTransitionSystem
                                 tLine = (int)((float)i % ((float)ParameterOne));
                                 //Debug.Log("index = "+i+"/"+tIndex+"/ "+TileCount+" ---> loop tLine ="+tLine +" tColumn = " +tColumn);
                                 STSTile tTile = Matrix.GetTile(tLine, tColumn);
-                                STSDrawing.DrawRect(tTile.Rectangle, TintPrimary);
+                                STSDrawQuad.DrawRect(tTile.Rectangle, TintPrimary);
                             }
                             // Draw Alpha tile
                             if (tIndex < Matrix.TileCount)
@@ -85,7 +85,7 @@ namespace SceneTransitionSystem
                                 float tAlpha = (Purcent * Matrix.TileCount) - (float)tIndex;
                                 Color tColorLerp = Color.Lerp(TintSecondary, TintPrimary, tAlpha);
                                 Color tFadeColorAlpha = new Color(tColorLerp.r, tColorLerp.g, tColorLerp.b, tAlpha);
-                                STSDrawing.DrawRect(tTileAlpha.Rectangle, tFadeColorAlpha);
+                                STSDrawQuad.DrawRect(tTileAlpha.Rectangle, tFadeColorAlpha);
                             }
                         }
                         break;
@@ -97,7 +97,7 @@ namespace SceneTransitionSystem
                                 tLine = (int)((float)i % ((float)ParameterOne));
                                 //Debug.Log("index = "+i+"/"+tIndex+"/ "+TileCount+" ---> loop tLine ="+tLine +" tColumn = " +tColumn);
                                 STSTile tTile = Matrix.GetTile(tLine, tColumn);
-                                STSDrawing.DrawRect(tTile.Rectangle, TintPrimary);
+                                STSDrawQuad.DrawRect(tTile.Rectangle, TintPrimary);
                             }
                             // Draw Alpha tile
                             if (tIndex < Matrix.TileCount)
@@ -109,7 +109,7 @@ namespace SceneTransitionSystem
                                 float tAlpha = (Purcent * Matrix.TileCount) - (float)tIndex;
                                 Color tColorLerp = Color.Lerp(TintSecondary, TintPrimary, tAlpha);
                                 Color tFadeColorAlpha = new Color(tColorLerp.r, tColorLerp.g, tColorLerp.b, tAlpha);
-                                STSDrawing.DrawRect(tTileAlpha.Rectangle, tFadeColorAlpha);
+                                STSDrawQuad.DrawRect(tTileAlpha.Rectangle, tFadeColorAlpha);
                             }
                         }
                         break;
@@ -121,7 +121,7 @@ namespace SceneTransitionSystem
                                 tColumn = (int)((float)i % ((float)ParameterTwo));
                                 //Debug.Log("index = "+i+"/"+tIndex+"/ "+TileCount+" ---> loop tLine ="+tLine +" tColumn = " +tColumn);
                                 STSTile tTile = Matrix.GetTile(tLine, tColumn);
-                                STSDrawing.DrawRect(tTile.Rectangle, TintPrimary);
+                                STSDrawQuad.DrawRect(tTile.Rectangle, TintPrimary);
                             }
                             // Draw Alpha tile
                             if (tIndex < Matrix.TileCount)
@@ -133,7 +133,7 @@ namespace SceneTransitionSystem
                                 float tAlpha = (Purcent * Matrix.TileCount) - (float)tIndex;
                                 Color tColorLerp = Color.Lerp(TintSecondary, TintPrimary, tAlpha);
                                 Color tFadeColorAlpha = new Color(tColorLerp.r, tColorLerp.g, tColorLerp.b, tAlpha);
-                                STSDrawing.DrawRect(tTileAlpha.Rectangle, tFadeColorAlpha);
+                                STSDrawQuad.DrawRect(tTileAlpha.Rectangle, tFadeColorAlpha);
                             }
                         }
                         break;
@@ -145,7 +145,7 @@ namespace SceneTransitionSystem
                                 tColumn = (int)((float)i % ((float)ParameterTwo));
                                 //Debug.Log("index = "+i+"/"+tIndex+"/ "+TileCount+" ---> loop tLine ="+tLine +" tColumn = " +tColumn);
                                 STSTile tTile = Matrix.GetTile(tLine, tColumn);
-                                STSDrawing.DrawRect(tTile.Rectangle, TintPrimary);
+                                STSDrawQuad.DrawRect(tTile.Rectangle, TintPrimary);
                             }
                             // Draw Alpha tile
                             if (tIndex < Matrix.TileCount)
@@ -157,7 +157,7 @@ namespace SceneTransitionSystem
                                 float tAlpha = (Purcent * Matrix.TileCount) - (float)tIndex;
                                 Color tColorLerp = Color.Lerp(TintSecondary, TintPrimary, tAlpha);
                                 Color tFadeColorAlpha = new Color(tColorLerp.r, tColorLerp.g, tColorLerp.b, tAlpha* TintPrimary.a);
-                                STSDrawing.DrawRect(tTileAlpha.Rectangle, tFadeColorAlpha);
+                                STSDrawQuad.DrawRect(tTileAlpha.Rectangle, tFadeColorAlpha);
                             }
                         }
                         break;

@@ -24,7 +24,7 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         public void Prepare(Rect sRect)
         {
-            Debug.Log("STSEffectFadeLine Prepare()");
+            //Debug.Log("STSEffectFadeLine Prepare()");
             if (ParameterOne < 1)
             {
                 ParameterOne = 1;
@@ -40,14 +40,14 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         public override void PrepareEffectEnter(Rect sRect)
         {
-            Debug.Log("STSEffectFadeLine PrepareEffectEnter()");
+            //Debug.Log("STSEffectFadeLine PrepareEffectEnter()");
             // Prepare your datas to draw
             Prepare(sRect);
         }
         //-------------------------------------------------------------------------------------------------------------
         public override void PrepareEffectExit(Rect sRect)
         {
-            Debug.Log("STSEffectFadeLine PrepareEffectExit()");
+            //Debug.Log("STSEffectFadeLine PrepareEffectExit()");
             // Prepare your datas to draw
             Prepare(sRect);
         }
@@ -65,7 +65,7 @@ namespace SceneTransitionSystem
                 {
                     STSTile tTile = Matrix.TilesList[i];
                     //STSTransitionDrawing.DrawRect(tTile.Rectangle, TintPrimary);
-                    STSDrawing.DrawCircle(tTile.Rectangle.center, tTile.Rectangle.width, 2, TintPrimary);
+                    STSDrawCircle.DrawCircle(tTile.Rectangle.center, tTile.Rectangle.width, 2, TintPrimary);
                 }
                 // Draw Alpha tile
                 if (tIndex < Matrix.TileCount)
@@ -76,7 +76,7 @@ namespace SceneTransitionSystem
                     //Color tFadeColorAlpha = new Color(TintPrimary.r, TintPrimary.g, TintPrimary.b, tAlpha*TintPrimary.a);
                     //STSTransitionDrawing.DrawRect(tTileAlpha.Rectangle, tFadeColorAlpha);
 
-                    STSDrawing.DrawCircle(tTileAlpha.Rectangle.center,tTileAlpha.Rectangle.width*tAlpha,2, TintPrimary);
+                    STSDrawCircle.DrawCircle(tTileAlpha.Rectangle.center,tTileAlpha.Rectangle.width*tAlpha,2, TintPrimary);
                 }
             }
             //STSBenchmark.Finish();
