@@ -520,7 +520,7 @@ namespace SceneTransitionSystem
                 {
                     ColorPurcent += (Time.deltaTime) / ColorDuration;
                     Color tColor = Color.Lerp(OldColor, TintPrimary, ColorPurcent);
-                    STSDrawing.DrawRect(sRect, tColor);
+                STSDrawQuad.DrawRect(sRect, tColor);
                     if (ColorPurcent >= 1)
                     {
                         ColorIsPlaying = false;
