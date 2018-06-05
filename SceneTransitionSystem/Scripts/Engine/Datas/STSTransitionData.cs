@@ -1,107 +1,117 @@
-﻿using System;
+﻿//=====================================================================================================================
+//
+// ideMobi copyright 2017 
+// All rights reserved by ideMobi
+//
+//=====================================================================================================================
+
+using System;
 using System.Collections.Generic;
 
 //=====================================================================================================================
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    /// <summary>
+    /// Transition scene system
+    /// </summary>
+    //-----------------------------------------------------------------------------------------------------------------
 	public class STSTransitionData
-    {
+	{
         //-------------------------------------------------------------------------------------------------------------
 		public string InternalName;
 		public string Title;
 		public string Subtitle;
 		public string Level;
-		public List<object> ListAsPayload;
-        public Dictionary<string, object> DictionaryAsPayload;
+        private Dictionary<string, object> DictionaryAsPayload = new Dictionary<string, object>();
+        //public List<object> ListAsPayload = new List<object>();
         //-------------------------------------------------------------------------------------------------------------
 		public STSTransitionData ()
 		{
-        }
+            // Empty!
+	    }
         //-------------------------------------------------------------------------------------------------------------
 		public STSTransitionData (string sInternalName)
 		{
-			this.InternalName = sInternalName;
-        }
+			InternalName = sInternalName;
+		}
         //-------------------------------------------------------------------------------------------------------------
 		public STSTransitionData (string sInternalName, string sTitle, string sSubtitle, string sLevel)
 		{
-			this.InternalName = sInternalName;
-			this.Title = sTitle;
-			this.Subtitle = sSubtitle;
-			this.Level = sLevel;
+			InternalName = sInternalName;
+			Title = sTitle;
+			Subtitle = sSubtitle;
+			Level = sLevel;
+		}
+        //-------------------------------------------------------------------------------------------------------------
+		public STSTransitionData (string sInternalName, string sTitle, string sSubtitle, string sLevel, /*List<object> sListAsPayload,*/ Dictionary<string, object> sDictionaryAsPayload)
+		{
+			InternalName = sInternalName;
+			Title = sTitle;
+			Subtitle = sSubtitle;
+			Level = sLevel;
+			//ListAsPayload = sListAsPayload;
+			DictionaryAsPayload = sDictionaryAsPayload;
+		}
+        //-------------------------------------------------------------------------------------------------------------
+        public void ClearPayLoad()
+        {
+            DictionaryAsPayload.Clear();
         }
         //-------------------------------------------------------------------------------------------------------------
-		public STSTransitionData (string sInternalName, string sTitle, string sSubtitle, string sLevel, List<object> sListAsPayload, Dictionary<string, object> sDictionaryAsPayload)
+		public void AddObjectForKeyInPayload (string sKey, object sObject)
 		{
-			this.InternalName = sInternalName;
-			this.Title = sTitle;
-			this.Subtitle = sSubtitle;
-			this.Level = sLevel;
-			this.ListAsPayload = sListAsPayload;
-			this.DictionaryAsPayload = sDictionaryAsPayload;
-        }
-        //-------------------------------------------------------------------------------------------------------------
-		public void AddObjectForKeyInPayload (object sObject, string sKey)
-		{
-			if (DictionaryAsPayload == null) {
+			if (DictionaryAsPayload == null)
+            {
 				DictionaryAsPayload = new Dictionary<string, object> ();
 			}
-			DictionaryAsPayload.Add (sKey, sObject);
-        }
-        //-------------------------------------------------------------------------------------------------------------
-        public object GetObjectForKeyInPayload(string sKey)
-        {
-            object rObject = null;
-            if (DictionaryAsPayload != null)
+            if (DictionaryAsPayload.ContainsKey(sKey))
             {
-                rObject = DictionaryAsPayload[sKey];
+                DictionaryAsPayload[sKey] = sObject;
             }
-            return rObject;
-        }
+            else
+            {
+                DictionaryAsPayload.Add(sKey, sObject);
+            }
+		}
+        //-------------------------------------------------------------------------------------------------------------
+        //public void AddObjectInPayload(object sObject)
+        //{
+        //    if (ListAsPayload == null)
+        //    {
+        //        ListAsPayload = new List<object>();
+        //    }
+        //    ListAsPayload.Add(sObject);
+        //}
         //-------------------------------------------------------------------------------------------------------------
         public object GetObject(string sKey)
         {
-            object value;
-            if (DictionaryAsPayload.TryGetValue(sKey, out value))
+            object tValue = null;
+            if (DictionaryAsPayload.TryGetValue(sKey, out tValue))
             {
-                return value;
+                return tValue;
             }
             return null;
         }
         //-------------------------------------------------------------------------------------------------------------
         public bool GetBool(string sKey, bool sDefault = false)
         {
-            object value;
-            if (DictionaryAsPayload.TryGetValue(sKey, out value))
+            object tValue;
+            if (DictionaryAsPayload.TryGetValue(sKey, out tValue))
             {
-                return Convert.ToBoolean(value);
+                return Convert.ToBoolean(tValue);
             }
             return sDefault;
         }
         //-------------------------------------------------------------------------------------------------------------
-        public string GetString(string sKey)
+        public string GetString(string sKey, string sDefault = "")
         {
-            object value;
-            if (DictionaryAsPayload.TryGetValue(sKey, out value))
+            object tValue;
+            if (DictionaryAsPayload.TryGetValue(sKey, out tValue))
             {
-                return Convert.ToString(value);
+                return Convert.ToString(tValue);
             }
-            return "";
-        }
-        //-------------------------------------------------------------------------------------------------------------
-		private void intialization ()
-		{
-			
-        }
-        //-------------------------------------------------------------------------------------------------------------
-        public void AddObjectInPayload(object sObject)
-        {
-            if (ListAsPayload == null)
-            {
-                ListAsPayload = new List<object>();
-            }
-            ListAsPayload.Add(sObject);
+            return sDefault;
         }
         //-------------------------------------------------------------------------------------------------------------
     }
