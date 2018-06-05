@@ -141,6 +141,7 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         //float LocalPurcent = 0.0F;
         STSEffect rReturn = null;
+        Rect OldRect;
         //-------------------------------------------------------------------------------------------------------------
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
@@ -468,10 +469,15 @@ namespace SceneTransitionSystem
             STSDrawQuad.DrawRect(tPreviewRect, Color.white);
             STSDrawCircle.DrawCircle(tPreviewRect.center, tPreviewRect.height / 2.0F, 32, Color.red);
             // 
+
+            if (OldRect.y != tPreviewRect.y || OldRect.width != tPreviewRect.width)
+            {
+                rReturn.PrepareEffectExit(tPreviewRect);
+            }
             // TODO : Add image in background
             // draw preview
             rReturn.Draw(tPreviewRect);
-
+            OldRect = tPreviewRect;
             //// test auto animation
             //LocalPurcent += Time.deltaTime;
             //if (LocalPurcent > 1.0F)
