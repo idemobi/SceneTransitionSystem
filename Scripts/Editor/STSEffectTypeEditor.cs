@@ -18,14 +18,29 @@ namespace SceneTransitionSystem
     [CustomPropertyDrawer(typeof(STSEffectType))]
     public class STSEffectTypeEditor : PropertyDrawer
     {
+        ////-------------------------------------------------------------------------------------------------------------
+        public static Texture2D kImagePreviewA = AssetDatabase.LoadAssetAtPath<Texture2D> (STSFindPackage.PathOfPackage ("/Scripts/Editor/Resources/STSPreviewA.png"));
+        public static Texture2D kImagePreviewB = AssetDatabase.LoadAssetAtPath<Texture2D> (STSFindPackage.PathOfPackage ("/Scripts/Editor/Resources/STSPreviewB.png"));
+        public static Texture2D kImagePreviewC = AssetDatabase.LoadAssetAtPath<Texture2D> (STSFindPackage.PathOfPackage ("/Scripts/Editor/Resources/STSPreviewC.png"));
+        public static Texture2D kImagePreviewD = AssetDatabase.LoadAssetAtPath<Texture2D> (STSFindPackage.PathOfPackage ("/Scripts/Editor/Resources/STSPreviewD.png"));
+        //-------------------------------------------------------------------------------------------------------------
+        public float kSizePreview = 80.0F;
+        public float kSizePreviewPopup = 30.0F;
         //-------------------------------------------------------------------------------------------------------------
         static GUIStyle tPopupFieldStyle;
         static GUIStyle tColorFieldStyle;
         static GUIStyle tTextfieldStyle;
         static GUIStyle tObjectFieldStyle;
         static GUIStyle tNumberFieldStyle;
+        static GUIStyle tNoPreviewFieldStyle;
         //-------------------------------------------------------------------------------------------------------------
         const float kMarge = 4.0F;
+        //-------------------------------------------------------------------------------------------------------------
+        //float LocalPurcent = 0.0F;
+        STSEffect rSmallPreview = null;
+        STSEffect rBigPreview = null;
+        Rect OldRect;
+        int SelectedPreview = 0;
         //-------------------------------------------------------------------------------------------------------------
         static STSEffectTypeEditor()
         {
@@ -43,6 +58,10 @@ namespace SceneTransitionSystem
 
             tNumberFieldStyle = new GUIStyle(EditorStyles.numberField);
             tNumberFieldStyle.fixedHeight = tNumberFieldStyle.CalcHeight(new GUIContent("A"), 100);
+
+            tNoPreviewFieldStyle = new GUIStyle(EditorStyles.boldLabel);
+            tNoPreviewFieldStyle.alignment = TextAnchor.MiddleCenter;
+            tNoPreviewFieldStyle.normal.textColor = Color.red;
         }
         //-------------------------------------------------------------------------------------------------------------
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
@@ -134,21 +153,18 @@ namespace SceneTransitionSystem
             tH += tNumberFieldStyle.fixedHeight + kMarge;
 
             // Purcent
-            tH += 80.0F + kMarge;
+            tH += kSizePreview + kMarge;
 
             return tH;
         }
-        //-------------------------------------------------------------------------------------------------------------
-        //float LocalPurcent = 0.0F;
-        STSEffect rReturn = null;
-        Rect OldRect;
         //-------------------------------------------------------------------------------------------------------------
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             float tY = position.y;
 
             EditorGUI.BeginProperty(position, label, property);
-
+            bool tAutoInstallPreview = false;
+            bool tAutoPreparePreview = false;
             EditorGUI.BeginChangeCheck();
             Rect tRect = new Rect(position.x, tY, position.width, tPopupFieldStyle.fixedHeight);
             SerializedProperty tEffectName = property.FindPropertyRelative("EffectName");
@@ -166,31 +182,48 @@ namespace SceneTransitionSystem
                     tValue = STSEffectType.kEffectNameList[tIndexNew];
                     tEffectName.stringValue = tValue;
                     tEffectName.serializedObject.ApplyModifiedProperties();
-                    rReturn = null;
+                    rSmallPreview = null;
+                    rBigPreview = null;
                 }
+                tAutoInstallPreview = true;
             }
             tY += tPopupFieldStyle.fixedHeight + kMarge;
-            bool tNewReturn = false;
-            if (rReturn == null)
+            //bool tNewReturn = false;
+            if (rSmallPreview == null)
             {
                 string tName = tEffectName.stringValue;
                 int tIndexDD = STSEffectType.kEffectNameList.IndexOf(tName);
                 if (tIndexDD < 0 || tIndexDD >= STSEffectType.kEffectNameList.Count())
                 {
-                    rReturn = new STSEffectFade();
+                    rSmallPreview = new STSEffectFade();
                 }
                 else
                 {
                     Type tEffectTypeDD = STSEffectType.kEffectTypeList[tIndexDD];
-                    rReturn = (STSEffect)Activator.CreateInstance(tEffectTypeDD);
+                    rSmallPreview = (STSEffect)Activator.CreateInstance(tEffectTypeDD);
                 }
-                tNewReturn = true;
+                //tNewReturn = true;
+            }
+            if (rBigPreview == null)
+            {
+                string tName = tEffectName.stringValue;
+                int tIndexDD = STSEffectType.kEffectNameList.IndexOf(tName);
+                if (tIndexDD < 0 || tIndexDD >= STSEffectType.kEffectNameList.Count())
+                {
+                    rBigPreview = new STSEffectFade();
+                }
+                else
+                {
+                    Type tEffectTypeDD = STSEffectType.kEffectTypeList[tIndexDD];
+                    rBigPreview = (STSEffect)Activator.CreateInstance(tEffectTypeDD);
+                }
+                //tNewReturn = true;
             }
             Type tEffectType = STSEffectType.kEffectTypeList[tIndexNew];
 
             EditorGUI.indentLevel++;
 
-
+            // Draw Parameter;
 
             EditorGUI.BeginChangeCheck();
 
@@ -200,13 +233,14 @@ namespace SceneTransitionSystem
                 GUIContent tEntitlement = null;
                 foreach (STSTintPrimaryAttribute tAtt in tEffectType.GetCustomAttributes(typeof(STSTintPrimaryAttribute), true))
                 {
-                    tEntitlement = new GUIContent (tAtt.Entitlement);
+                    tEntitlement = new GUIContent(tAtt.Entitlement);
                 }
                 Rect tRectTintPrimary = new Rect(position.x, tY, position.width, tColorFieldStyle.fixedHeight);
                 SerializedProperty tTintPrimary = property.FindPropertyRelative("TintPrimary");
-                EditorGUI.PropertyField(tRectTintPrimary, tTintPrimary,tEntitlement, false);
+                EditorGUI.PropertyField(tRectTintPrimary, tTintPrimary, tEntitlement, false);
                 tY += tColorFieldStyle.fixedHeight + kMarge;
-                rReturn.TintPrimary = tTintPrimary.colorValue;
+                rSmallPreview.TintPrimary = tTintPrimary.colorValue;
+                rBigPreview.TintPrimary = tTintPrimary.colorValue;
             }
 
             // Secondary Tint
@@ -219,9 +253,10 @@ namespace SceneTransitionSystem
                 }
                 Rect tRectTintSecondary = new Rect(position.x, tY, position.width, tColorFieldStyle.fixedHeight);
                 SerializedProperty tTintSecondary = property.FindPropertyRelative("TintSecondary");
-                EditorGUI.PropertyField(tRectTintSecondary, tTintSecondary,tEntitlement, false);
+                EditorGUI.PropertyField(tRectTintSecondary, tTintSecondary, tEntitlement, false);
                 tY += tColorFieldStyle.fixedHeight + kMarge;
-                rReturn.TintSecondary = tTintSecondary.colorValue;
+                rSmallPreview.TintSecondary = tTintSecondary.colorValue;
+                rBigPreview.TintSecondary = tTintSecondary.colorValue;
             }
 
             // Primary Texture
@@ -234,9 +269,10 @@ namespace SceneTransitionSystem
                 }
                 Rect tRectTexturePrimary = new Rect(position.x, tY, position.width, tObjectFieldStyle.fixedHeight);
                 SerializedProperty tTexturePrimary = property.FindPropertyRelative("TexturePrimary");
-                EditorGUI.PropertyField(tRectTexturePrimary, tTexturePrimary,tEntitlement, false);
+                EditorGUI.PropertyField(tRectTexturePrimary, tTexturePrimary, tEntitlement, false);
                 tY += tObjectFieldStyle.fixedHeight + kMarge;
-                rReturn.TexturePrimary = (Texture2D)tTexturePrimary.objectReferenceValue;
+                rSmallPreview.TexturePrimary = (Texture2D)tTexturePrimary.objectReferenceValue;
+                rBigPreview.TexturePrimary = (Texture2D)tTexturePrimary.objectReferenceValue;
             }
 
             // Secondary Texture
@@ -249,9 +285,10 @@ namespace SceneTransitionSystem
                 }
                 Rect tRectTextureSecondary = new Rect(position.x, tY, position.width, tObjectFieldStyle.fixedHeight);
                 SerializedProperty tTextureSecondary = property.FindPropertyRelative("TextureSecondary");
-                EditorGUI.PropertyField(tRectTextureSecondary, tTextureSecondary,tEntitlement, false);
+                EditorGUI.PropertyField(tRectTextureSecondary, tTextureSecondary, tEntitlement, false);
                 tY += tObjectFieldStyle.fixedHeight + kMarge;
-                rReturn.TextureSecondary = (Texture2D)tTextureSecondary.objectReferenceValue;
+                rSmallPreview.TextureSecondary = (Texture2D)tTextureSecondary.objectReferenceValue;
+                rBigPreview.TextureSecondary = (Texture2D)tTextureSecondary.objectReferenceValue;
             }
 
             // Parameter One
@@ -282,7 +319,8 @@ namespace SceneTransitionSystem
                     }
                     EditorGUI.IntSlider(tRectParameterOne, tParameterOne, tSliderMin, tSliderMax, tEntitlement);
                     tY += tPopupFieldStyle.fixedHeight + kMarge;
-                    rReturn.ParameterOne = tParameterOne.intValue;
+                    rSmallPreview.ParameterOne = tParameterOne.intValue;
+                    rBigPreview.ParameterOne = tParameterOne.intValue;
                 }
                 else
                 {
@@ -290,7 +328,8 @@ namespace SceneTransitionSystem
                     SerializedProperty tParameterOne = property.FindPropertyRelative("ParameterOne");
                     EditorGUI.PropertyField(tRectParameterOne, tParameterOne, tEntitlement, false);
                     tY += tNumberFieldStyle.fixedHeight + kMarge;
-                    rReturn.ParameterOne = tParameterOne.intValue;
+                    rSmallPreview.ParameterOne = tParameterOne.intValue;
+                    rBigPreview.ParameterOne = tParameterOne.intValue;
                 }
             }
 
@@ -322,7 +361,8 @@ namespace SceneTransitionSystem
                     }
                     EditorGUI.IntSlider(tRectParameterTwo, tParameterTwo, tSliderMin, tSliderMax, tEntitlement);
                     tY += tPopupFieldStyle.fixedHeight + kMarge;
-                    rReturn.ParameterTwo = tParameterTwo.intValue;
+                    rSmallPreview.ParameterTwo = tParameterTwo.intValue;
+                    rBigPreview.ParameterTwo = tParameterTwo.intValue;
                 }
                 else
                 {
@@ -330,7 +370,8 @@ namespace SceneTransitionSystem
                     SerializedProperty tParameterTwo = property.FindPropertyRelative("ParameterTwo");
                     EditorGUI.PropertyField(tRectParameterTwo, tParameterTwo, tEntitlement, false);
                     tY += tNumberFieldStyle.fixedHeight + kMarge;
-                    rReturn.ParameterTwo = tParameterTwo.intValue;
+                    rSmallPreview.ParameterTwo = tParameterTwo.intValue;
+                    rBigPreview.ParameterTwo = tParameterTwo.intValue;
                 }
             }
 
@@ -362,7 +403,8 @@ namespace SceneTransitionSystem
                     }
                     EditorGUI.IntSlider(tRectParameterThree, tParameterThree, tSliderMin, tSliderMax, tEntitlement);
                     tY += tPopupFieldStyle.fixedHeight + kMarge;
-                    rReturn.ParameterThree = tParameterThree.intValue;
+                    rSmallPreview.ParameterThree = tParameterThree.intValue;
+                    rBigPreview.ParameterThree = tParameterThree.intValue;
                 }
                 else
                 {
@@ -370,7 +412,8 @@ namespace SceneTransitionSystem
                     SerializedProperty tParameterThree = property.FindPropertyRelative("ParameterThree");
                     EditorGUI.PropertyField(tRectParameterThree, tParameterThree, tEntitlement, false);
                     tY += tNumberFieldStyle.fixedHeight + kMarge;
-                    rReturn.ParameterThree = tParameterThree.intValue;
+                    rSmallPreview.ParameterThree = tParameterThree.intValue;
+                    rBigPreview.ParameterThree = tParameterThree.intValue;
                 }
             }
 
@@ -384,9 +427,10 @@ namespace SceneTransitionSystem
                 }
                 Rect tRectOffset = new Rect(position.x, tY, position.width, tNumberFieldStyle.fixedHeight);
                 SerializedProperty tOffset = property.FindPropertyRelative("Offset");
-                EditorGUI.PropertyField(tRectOffset, tOffset,tEntitlement, false);
+                EditorGUI.PropertyField(tRectOffset, tOffset, tEntitlement, false);
                 tY += tNumberFieldStyle.fixedHeight + kMarge;
-                rReturn.Offset = tOffset.vector2Value;
+                rSmallPreview.Offset = tOffset.vector2Value;
+                rBigPreview.Offset = tOffset.vector2Value;
             }
 
             // FourCross
@@ -399,9 +443,10 @@ namespace SceneTransitionSystem
                 }
                 Rect tRectFourCross = new Rect(position.x, tY, position.width, tPopupFieldStyle.fixedHeight);
                 SerializedProperty tFourCross = property.FindPropertyRelative("FourCross");
-                EditorGUI.PropertyField(tRectFourCross, tFourCross,tEntitlement, false);
+                EditorGUI.PropertyField(tRectFourCross, tFourCross, tEntitlement, false);
                 tY += tPopupFieldStyle.fixedHeight + kMarge;
-                rReturn.FourCross = (STSFourCross)tFourCross.intValue;
+                rSmallPreview.FourCross = (STSFourCross)tFourCross.intValue;
+                rBigPreview.FourCross = (STSFourCross)tFourCross.intValue;
             }
 
             // FiveCross
@@ -414,9 +459,10 @@ namespace SceneTransitionSystem
                 }
                 Rect tRectFiveCross = new Rect(position.x, tY, position.width, tPopupFieldStyle.fixedHeight);
                 SerializedProperty tFiveCross = property.FindPropertyRelative("FiveCross");
-                EditorGUI.PropertyField(tRectFiveCross, tFiveCross,tEntitlement, false);
+                EditorGUI.PropertyField(tRectFiveCross, tFiveCross, tEntitlement, false);
                 tY += tPopupFieldStyle.fixedHeight + kMarge;
-                rReturn.FiveCross = (STSFiveCross)tFiveCross.intValue;
+                rSmallPreview.FiveCross = (STSFiveCross)tFiveCross.intValue;
+                rBigPreview.FiveCross = (STSFiveCross)tFiveCross.intValue;
             }
 
             // NineCross
@@ -429,61 +475,127 @@ namespace SceneTransitionSystem
                 }
                 Rect tRectNineCross = new Rect(position.x, tY, position.width, tPopupFieldStyle.fixedHeight);
                 SerializedProperty tNineCross = property.FindPropertyRelative("NineCross");
-                EditorGUI.PropertyField(tRectNineCross, tNineCross,tEntitlement, false);
+                EditorGUI.PropertyField(tRectNineCross, tNineCross, tEntitlement, false);
                 tY += tPopupFieldStyle.fixedHeight + kMarge;
-                rReturn.NineCross = (STSNineCross)tNineCross.intValue;
+                rSmallPreview.NineCross = (STSNineCross)tNineCross.intValue;
+                rBigPreview.NineCross = (STSNineCross)tNineCross.intValue;
             }
 
             if (EditorGUI.EndChangeCheck() == true)
             {
-                tNewReturn = true;
+                //tNewReturn = true;
+                tAutoInstallPreview = true;
+                tAutoPreparePreview = true;
             }
-
+            EditorGUI.BeginChangeCheck();
             // Duration
             Rect tRectDuration = new Rect(position.x, tY, position.width, tNumberFieldStyle.fixedHeight);
             SerializedProperty tDuration = property.FindPropertyRelative("Duration");
             //EditorGUI.PropertyField(tRectDuration, tDuration, false);
             EditorGUI.Slider(tRectDuration, tDuration, 0.1F, 10.0F);
             tY += tNumberFieldStyle.fixedHeight + kMarge;
+            rBigPreview.Duration = tDuration.floatValue;
 
             // Purcent
             Rect tRectPurcent = new Rect(position.x, tY, position.width, tNumberFieldStyle.fixedHeight);
             SerializedProperty tPurcent = property.FindPropertyRelative("Purcent");
-            EditorGUI.Slider(tRectPurcent, tPurcent, 0.0F, 1.0F);
+            EditorGUI.Slider(tRectPurcent, tPurcent, 0.0F, 1.0F, new GUIContent("Preview"));
             tY += tNumberFieldStyle.fixedHeight + kMarge;
+            rSmallPreview.Purcent = tPurcent.floatValue;
+            rBigPreview.Purcent = tPurcent.floatValue;
 
+            // Finish sub layput
             EditorGUI.indentLevel--;
-            EditorGUI.EndProperty();
 
-            //Draw local render
+            // Select the small background
+            SelectedPreview = EditorGUI.IntPopup(new Rect(position.x + position.width - kSizePreviewPopup - kMarge - kSizePreview * 2, tY, kSizePreviewPopup, tPopupFieldStyle.fixedHeight),
+            SelectedPreview, new string[] { "A", "B", "C", "D", "…" }, new int[] { 0, 1, 2, 3, 999 });
 
-            Rect tPreviewRect = new Rect(position.x, tY, position.width, 80.0F);
-            if (tNewReturn == true)
+            if (EditorGUI.EndChangeCheck() == true)
             {
-                Debug.Log("MUST PREPARE THE EFFECT EXIT");
-                rReturn.PrepareEffectExit(tPreviewRect);
+                //tNewReturn = true;
+                tAutoInstallPreview = true;
             }
-            //rReturn.Purcent = LocalPurcent;
-            rReturn.Purcent = tPurcent.floatValue;
-            // draw white rect
-            STSDrawQuad.DrawRect(tPreviewRect, Color.white);
-            STSDrawCircle.DrawCircle(tPreviewRect.center, tPreviewRect.height / 2.0F, 32, Color.red);
-            // 
 
-            if (OldRect.y != tPreviewRect.y || OldRect.width != tPreviewRect.width)
+            Rect tPreviewRect = new Rect(position.x + position.width - kSizePreview * 2, tY, kSizePreview * 2, kSizePreview);
+
+             //If rect change redraw effect
+            if (OldRect.y != tPreviewRect.y || OldRect.width != tPreviewRect.width || OldRect.x != tPreviewRect.x)
             {
-                rReturn.PrepareEffectExit(tPreviewRect);
+                rSmallPreview.PrepareEffectExit(tPreviewRect);
+            }
+            OldRect = tPreviewRect;
+
+            // button for big preview
+            if (GUI.Button(new Rect(position.x, tY, kSizePreviewPopup, tPopupFieldStyle.fixedHeight), "Preview"))
+            {
+                STSEffectPreview.EffectPreviewShow();
+            }
+            // If AutoInstallPreview?
+            if (tAutoInstallPreview == true)
+            {
+                rSmallPreview.PrepareEffectExit(tPreviewRect);
+                if (STSEffectPreview.kEffectPreview != null)
+                {
+                    STSEffectPreview.kEffectPreview.SetEffect(rBigPreview);
+                }
+            }
+            if (tAutoPreparePreview == true)
+            {
+                if (STSEffectPreview.kEffectPreview != null)
+                {
+                    STSEffectPreview.kEffectPreview.EffectPrepare();
+                }
+            }
+            // Draw big preview 
+            if (STSEffectPreview.kEffectPreview != null)
+            {
+                if (tEffectType.GetCustomAttributes(typeof(STSNoBigPreviewAttribute), true).Length == 0)
+                {
+                    STSEffectPreview.kEffectPreview.NoPreview = false;
+                    STSEffectPreview.kEffectPreview.Repaint();
+                }
+                else
+                {
+                    STSEffectPreview.kEffectPreview.NoPreview = true;
+                }
+            }
+            //Draw local small preview
+            if (SelectedPreview == 0)
+            {
+                GUI.DrawTexture(tPreviewRect, kImagePreviewA);
+            }
+            else if (SelectedPreview == 1)
+            {
+                GUI.DrawTexture(tPreviewRect, kImagePreviewB);
+            }
+            else if (SelectedPreview == 2)
+            {
+                GUI.DrawTexture(tPreviewRect, kImagePreviewC);
+            }
+            else if (SelectedPreview == 3)
+            {
+                GUI.DrawTexture(tPreviewRect, kImagePreviewD);
+            }
+            else
+            {
+                STSDrawQuad.DrawRect(tPreviewRect, Color.white);
+                STSDrawCircle.DrawCircle(tPreviewRect.center, tPreviewRect.height / 1.5F, 32, Color.red, tPreviewRect);
             }
             // TODO : Add image in background
             // draw preview
-            rReturn.Draw(tPreviewRect);
-            OldRect = tPreviewRect;
-            //// test auto animation
-            //LocalPurcent += Time.deltaTime;
-            //if (LocalPurcent > 1.0F)
-            //{
-            //    LocalPurcent = 0.0F;
-            //}
+
+            if (tEffectType.GetCustomAttributes(typeof(STSNoSmallPreviewAttribute), true).Length == 0)
+            {
+                rSmallPreview.Draw(tPreviewRect);
+            }
+            else
+            {
+                GUI.Label(tPreviewRect, new GUIContent("no preview available"), tNoPreviewFieldStyle);
+            }
+
+
+            EditorGUI.EndProperty();
         }
         //-------------------------------------------------------------------------------------------------------------
     }

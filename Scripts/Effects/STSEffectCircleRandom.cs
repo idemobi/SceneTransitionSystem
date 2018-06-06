@@ -12,6 +12,8 @@ namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     [STSEffectName("Circle Random")]
+    [STSNoSmallPreview]
+    [STSNoBigPreview]
     // *** Active some parameters in inspector
     [STSTintPrimary("Tint")]
     [STSParameterOne("Line Number", 1, 30)]

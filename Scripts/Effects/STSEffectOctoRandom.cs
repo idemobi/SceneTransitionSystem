@@ -12,6 +12,7 @@ namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     [STSEffectName("Octo Random")]
+    [STSNoSmallPreview]
     // *** Active some parameters in inspector
     [STSTintPrimary()]
     [STSParameterOne("Line Number", 1, 30)]
