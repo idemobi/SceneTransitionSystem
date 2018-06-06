@@ -92,12 +92,14 @@ namespace SceneTransitionSystem
         void OnGUI()
         {
             CheckResize();
+            Rect ThisRect = new Rect(0, 0, position.width, position.height);
             Debug.Log("OnGUI");
             if (Background == null)
             {
-                Background = AssetDatabase.LoadAssetAtPath<Texture2D>(STSFindPackage.PathOfPackage("/Scripts/Editor/Resources/STSPreviewA.png"));
+                //Background = AssetDatabase.LoadAssetAtPath<Texture2D>(STSFindPackage.PathOfPackage("/Scripts/Editor/Resources/STSPreviewA.png"));
+                STSDrawQuad.DrawRect(ThisRect, Color.white);
+                STSDrawCircle.DrawCircle(ThisRect.center, ThisRect.height / 2.0F, 64, Color.black);
             }
-            Rect ThisRect = new Rect(0, 0, position.width, position.height);
             if (Background != null)
             {
                 GUI.DrawTexture(ThisRect, Background);

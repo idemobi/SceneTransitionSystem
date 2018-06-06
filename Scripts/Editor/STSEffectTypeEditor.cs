@@ -19,13 +19,14 @@ namespace SceneTransitionSystem
     public class STSEffectTypeEditor : PropertyDrawer
     {
         ////-------------------------------------------------------------------------------------------------------------
-        public static Texture2D kImagePreviewA = AssetDatabase.LoadAssetAtPath<Texture2D> (STSFindPackage.PathOfPackage ("/Scripts/Editor/Resources/STSPreviewA.png"));
-        public static Texture2D kImagePreviewB = AssetDatabase.LoadAssetAtPath<Texture2D> (STSFindPackage.PathOfPackage ("/Scripts/Editor/Resources/STSPreviewB.png"));
-        public static Texture2D kImagePreviewC = AssetDatabase.LoadAssetAtPath<Texture2D> (STSFindPackage.PathOfPackage ("/Scripts/Editor/Resources/STSPreviewC.png"));
-        public static Texture2D kImagePreviewD = AssetDatabase.LoadAssetAtPath<Texture2D> (STSFindPackage.PathOfPackage ("/Scripts/Editor/Resources/STSPreviewD.png"));
+        public static Texture2D kImagePreviewA = AssetDatabase.LoadAssetAtPath<Texture2D>(STSFindPackage.PathOfPackage("/Scripts/Editor/Resources/STSPreviewA.png"));
+        public static Texture2D kImagePreviewB = AssetDatabase.LoadAssetAtPath<Texture2D>(STSFindPackage.PathOfPackage("/Scripts/Editor/Resources/STSPreviewB.png"));
+        public static Texture2D kImagePreviewC = AssetDatabase.LoadAssetAtPath<Texture2D>(STSFindPackage.PathOfPackage("/Scripts/Editor/Resources/STSPreviewC.png"));
+        public static Texture2D kImagePreviewD = AssetDatabase.LoadAssetAtPath<Texture2D>(STSFindPackage.PathOfPackage("/Scripts/Editor/Resources/STSPreviewD.png"));
         //-------------------------------------------------------------------------------------------------------------
         public float kSizePreview = 80.0F;
         public float kSizePreviewPopup = 30.0F;
+        public float kSizePreviewButton = 60.0F;
         //-------------------------------------------------------------------------------------------------------------
         static GUIStyle tPopupFieldStyle;
         static GUIStyle tColorFieldStyle;
@@ -140,8 +141,20 @@ namespace SceneTransitionSystem
                 tH += tPopupFieldStyle.fixedHeight + kMarge;
             }
 
+            //EightCross
+            if (tEffectType.GetCustomAttributes(typeof(STSEightCrossAttribute), true).Length > 0)
+            {
+                tH += tPopupFieldStyle.fixedHeight + kMarge;
+            }
+
             // NineCross
             if (tEffectType.GetCustomAttributes(typeof(STSNineCrossAttribute), true).Length > 0)
+            {
+                tH += tPopupFieldStyle.fixedHeight + kMarge;
+            }
+
+            // ClockwiseCross
+            if (tEffectType.GetCustomAttributes(typeof(STSClockwiseAttribute), true).Length > 0)
             {
                 tH += tPopupFieldStyle.fixedHeight + kMarge;
             }
@@ -465,6 +478,22 @@ namespace SceneTransitionSystem
                 rBigPreview.FiveCross = (STSFiveCross)tFiveCross.intValue;
             }
 
+            // EightCross
+            if (tEffectType.GetCustomAttributes(typeof(STSEightCrossAttribute), true).Length > 0)
+            {
+                GUIContent tEntitlement = null;
+                foreach (STSEightCrossAttribute tAtt in tEffectType.GetCustomAttributes(typeof(STSEightCrossAttribute), true))
+                {
+                    tEntitlement = new GUIContent(tAtt.Entitlement);
+                }
+                Rect tRectEightCross = new Rect(position.x, tY, position.width, tPopupFieldStyle.fixedHeight);
+                SerializedProperty tEightCross = property.FindPropertyRelative("EightCross");
+                EditorGUI.PropertyField(tRectEightCross, tEightCross, tEntitlement, false);
+                tY += tPopupFieldStyle.fixedHeight + kMarge;
+                rSmallPreview.EightCross = (STSEightCross)tEightCross.intValue;
+                rBigPreview.EightCross = (STSEightCross)tEightCross.intValue;
+            }
+
             // NineCross
             if (tEffectType.GetCustomAttributes(typeof(STSNineCrossAttribute), true).Length > 0)
             {
@@ -479,6 +508,22 @@ namespace SceneTransitionSystem
                 tY += tPopupFieldStyle.fixedHeight + kMarge;
                 rSmallPreview.NineCross = (STSNineCross)tNineCross.intValue;
                 rBigPreview.NineCross = (STSNineCross)tNineCross.intValue;
+            }
+
+            // Clockwise
+            if (tEffectType.GetCustomAttributes(typeof(STSClockwiseAttribute), true).Length > 0)
+            {
+                GUIContent tEntitlement = null;
+                foreach (STSClockwiseAttribute tAtt in tEffectType.GetCustomAttributes(typeof(STSClockwiseAttribute), true))
+                {
+                    tEntitlement = new GUIContent(tAtt.Entitlement);
+                }
+                Rect tRectClockwise = new Rect(position.x, tY, position.width, tPopupFieldStyle.fixedHeight);
+                SerializedProperty tClockwise = property.FindPropertyRelative("Clockwise");
+                EditorGUI.PropertyField(tRectClockwise, tClockwise, tEntitlement, false);
+                tY += tPopupFieldStyle.fixedHeight + kMarge;
+                rSmallPreview.Clockwise = (STSClockwise)tClockwise.intValue;
+                rBigPreview.Clockwise = (STSClockwise)tClockwise.intValue;
             }
 
             if (EditorGUI.EndChangeCheck() == true)
@@ -519,7 +564,7 @@ namespace SceneTransitionSystem
 
             Rect tPreviewRect = new Rect(position.x + position.width - kSizePreview * 2, tY, kSizePreview * 2, kSizePreview);
 
-             //If rect change redraw effect
+            //If rect change redraw effect
             if (OldRect.y != tPreviewRect.y || OldRect.width != tPreviewRect.width || OldRect.x != tPreviewRect.x)
             {
                 rSmallPreview.PrepareEffectExit(tPreviewRect);
@@ -527,9 +572,11 @@ namespace SceneTransitionSystem
             OldRect = tPreviewRect;
 
             // button for big preview
-            if (GUI.Button(new Rect(position.x, tY, kSizePreviewPopup, tPopupFieldStyle.fixedHeight), "Preview"))
+            if (GUI.Button(new Rect(position.x + position.width - kSizePreviewButton - kMarge - kSizePreview * 2, tY + tPopupFieldStyle.fixedHeight + kMarge, kSizePreviewButton, tPopupFieldStyle.fixedHeight), "Preview"))
             {
                 STSEffectPreview.EffectPreviewShow();
+                STSEffectPreview.kEffectPreview.SetEffect(rBigPreview);
+                STSEffectPreview.kEffectPreview.EffectPrepare();
             }
             // If AutoInstallPreview?
             if (tAutoInstallPreview == true)
@@ -580,7 +627,7 @@ namespace SceneTransitionSystem
             else
             {
                 STSDrawQuad.DrawRect(tPreviewRect, Color.white);
-                STSDrawCircle.DrawCircle(tPreviewRect.center, tPreviewRect.height / 1.5F, 32, Color.red, tPreviewRect);
+                STSDrawCircle.DrawCircle(tPreviewRect.center, tPreviewRect.height / 2.0F, 64, Color.black);
             }
             // TODO : Add image in background
             // draw preview

@@ -227,6 +227,38 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    public class STSEightCrossAttribute : Attribute
+    {
+        //-------------------------------------------------------------------------------------------------------------
+        public string Entitlement = "Eight cross";
+        //-------------------------------------------------------------------------------------------------------------
+        public STSEightCrossAttribute()
+        {
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public STSEightCrossAttribute(string sEntitlement)
+        {
+            this.Entitlement = sEntitlement;
+        }
+        //-------------------------------------------------------------------------------------------------------------
+    }
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    public class STSClockwiseAttribute : Attribute
+    {
+        //-------------------------------------------------------------------------------------------------------------
+        public string Entitlement = "Clockwise";
+        //-------------------------------------------------------------------------------------------------------------
+        public STSClockwiseAttribute()
+        {
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public STSClockwiseAttribute(string sEntitlement)
+        {
+            this.Entitlement = sEntitlement;
+        }
+        //-------------------------------------------------------------------------------------------------------------
+    }
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     public class STSNineCrossAttribute : Attribute
     {
         //-------------------------------------------------------------------------------------------------------------
@@ -260,6 +292,24 @@ namespace SceneTransitionSystem
         Center,
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    public enum STSEightCross : int
+    {
+        Top,
+        Bottom,
+        Right,
+        Left,
+        TopLeft,
+        TopRight,
+        BottomLeft,
+        BottomRight,
+    }
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    public enum STSClockwise : int
+    {
+        Clockwise, 
+        Counterclockwise
+    }
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     public enum STSNineCross : int
     {
         Top,
@@ -286,7 +336,10 @@ namespace SceneTransitionSystem
 
         public STSFourCross FourCross;
         public STSFiveCross FiveCross;
+        public STSEightCross EightCross;
         public STSNineCross NineCross;
+
+        public STSClockwise Clockwise;
 
         public int ParameterOne;
         public int ParameterTwo;
@@ -375,8 +428,10 @@ namespace SceneTransitionSystem
 
             FourCross = sObject.FourCross;
             FiveCross = sObject.FiveCross;
+            EightCross = sObject.EightCross;
             NineCross = sObject.NineCross;
 
+            Clockwise = sObject.Clockwise;
 
             Duration = sObject.Duration;
             Purcent = sObject.Purcent;
