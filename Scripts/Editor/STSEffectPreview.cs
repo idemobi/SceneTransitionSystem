@@ -41,7 +41,7 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         void Start()
         {
-            Debug.Log("Start");
+            //Debug.Log("Start");
             tNoPreviewFieldStyle = new GUIStyle(EditorStyles.boldLabel);
             tNoPreviewFieldStyle.alignment = TextAnchor.MiddleCenter;
             tNoPreviewFieldStyle.normal.textColor = Color.red;
@@ -73,7 +73,7 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         public void SetEffect(STSEffect sEffect)
         {
-            Debug.Log("SetEffect");
+            //Debug.Log("SetEffect");
             if (sEffect != Effect)
             {
                 Effect = sEffect;
@@ -93,7 +93,7 @@ namespace SceneTransitionSystem
         {
             CheckResize();
             Rect ThisRect = new Rect(0, 0, position.width, position.height);
-            Debug.Log("OnGUI");
+            //Debug.Log("OnGUI");
             if (Background == null)
             {
                 //Background = AssetDatabase.LoadAssetAtPath<Texture2D>(STSFindPackage.PathOfPackage("/Scripts/Editor/Resources/STSPreviewA.png"));
@@ -135,7 +135,7 @@ namespace SceneTransitionSystem
             }
             if (Effect != null)
             {
-                Debug.Log("effect is drawinf with purcent " + Effect.Purcent);
+                //Debug.Log("effect is drawinf with purcent " + Effect.Purcent);
                 Effect.Draw(ThisRect);
             }
             else

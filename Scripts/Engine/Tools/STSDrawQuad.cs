@@ -121,6 +121,51 @@ namespace SceneTransitionSystem
             }
         }
         //-------------------------------------------------------------------------------------------------------------
+        public static void DrawRectCenterGradient(Rect sRect, Color sColorA, Color sColorB)
+        {
+            if (Event.current.type.Equals(EventType.Repaint))
+            {
+#if UNITY_EDITOR
+                Initialize();
+#endif
+                GL.PushMatrix();
+                KMaterialUI.SetPass(0);
+                GL.LoadPixelMatrix();
+                // QUADS Method
+                GL.Begin(GL.TRIANGLES);
+
+                GL.Color(sColorA);
+                GL.Vertex3(sRect.x, sRect.y, 0);
+                GL.Vertex3(sRect.x, sRect.y + sRect.height, 0);
+                GL.Color(sColorB);
+                GL.Vertex3(sRect.x+ sRect.width / 2.0F, sRect.y + sRect.height/2.0F, 0);
+
+                GL.Color(sColorA);
+                GL.Vertex3(sRect.x + sRect.width, sRect.y + sRect.height, 0);
+                GL.Vertex3(sRect.x + sRect.width, sRect.y, 0);
+                GL.Color(sColorB);
+                GL.Vertex3(sRect.x + sRect.width / 2.0F, sRect.y + sRect.height / 2.0F, 0);
+
+
+                GL.Color(sColorA);
+                GL.Vertex3(sRect.x, sRect.y, 0);
+                GL.Vertex3(sRect.x + sRect.width, sRect.y, 0);
+                GL.Color(sColorB);
+                GL.Vertex3(sRect.x + sRect.width / 2.0F, sRect.y + sRect.height / 2.0F, 0);
+
+                GL.Color(sColorA);
+                GL.Vertex3(sRect.x, sRect.y + sRect.height, 0);
+                GL.Vertex3(sRect.x + sRect.width, sRect.y + sRect.height, 0);
+                GL.Color(sColorB);
+                GL.Vertex3(sRect.x + sRect.width / 2.0F, sRect.y + sRect.height / 2.0F, 0);
+
+
+
+                GL.End();
+                GL.PopMatrix();
+            }
+        }
+        //-------------------------------------------------------------------------------------------------------------
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 }
