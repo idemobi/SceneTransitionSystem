@@ -165,6 +165,13 @@ namespace SceneTransitionSystem
                 tH += tPopupFieldStyle.fixedHeight + kMarge;
             }
 
+
+            //  Animantion Curve
+            if (tEffectType.GetCustomAttributes(typeof(STSAnimationCurveAttribute), true).Length > 0)
+            {
+                tH += tPopupFieldStyle.fixedHeight + kMarge;
+            }
+
             // Duration
             tH += tNumberFieldStyle.fixedHeight + kMarge;
 
@@ -308,6 +315,23 @@ namespace SceneTransitionSystem
                 tY += tObjectFieldStyle.fixedHeight + kMarge;
                 rSmallPreview.TextureSecondary = (Texture2D)tTextureSecondary.objectReferenceValue;
                 rBigPreview.TextureSecondary = (Texture2D)tTextureSecondary.objectReferenceValue;
+            }
+
+            // Secondary Texture
+            if (tEffectType.GetCustomAttributes(typeof(STSAnimationCurveAttribute), true).Length > 0)
+            {
+                GUIContent tEntitlement = new GUIContent("Animation curve");
+                //foreach (STSAnimationCurveAttribute tAtt in tEffectType.GetCustomAttributes(typeof(STSAnimationCurveAttribute), true))
+                //{
+                //    tEntitlement = new GUIContent(tAtt.Entitlement);
+                //}
+                Rect tRectCurve = new Rect(position.x, tY, position.width, tObjectFieldStyle.fixedHeight);
+                SerializedProperty tCurve = property.FindPropertyRelative("Curve");
+                EditorGUI.PropertyField(tRectCurve, tCurve, tEntitlement, false);
+                tY += tObjectFieldStyle.fixedHeight + kMarge;
+                AnimationCurve tCurveAnim = (AnimationCurve)tCurve.animationCurveValue;
+                rSmallPreview.Curve = new AnimationCurve(tCurveAnim.keys);
+                rBigPreview.Curve = new AnimationCurve(tCurveAnim.keys);
             }
 
             // Parameter One

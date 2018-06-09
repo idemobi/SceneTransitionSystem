@@ -19,6 +19,10 @@ namespace SceneTransitionSystem
     {
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    public class STSAnimationCurveAttribute : Attribute
+    {
+    }
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     public class STSEffectNameAttribute : Attribute
     {
         //-------------------------------------------------------------------------------------------------------------
@@ -350,6 +354,7 @@ namespace SceneTransitionSystem
     {
         //[SerializeField]
         public string EffectName = "";
+        public AnimationCurve Curve;
         public Color TintPrimary = Color.black;
         public Color TintSecondary = Color.black;
         public Texture2D TexturePrimary = null;
@@ -370,6 +375,7 @@ namespace SceneTransitionSystem
 
         public float Duration = 1.0F;
         public float Purcent = 0.0F;
+        public float CurvePurcent = 0.0F;
         //-------------------------------------------------------------------------------------------------------------
         // Pseudo private... pblic but not in the inspector
         public int Direction = 0; // 0 is unknow; -1 go from 1.0F to 0.0F purcent; 1 go from 0.0F to 1.0F purcent
@@ -399,6 +405,7 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         public STSEffectType()
         {
+            Curve = AnimationCurve.Linear(0.0F,0.0F,1.0F,1.0F);
         }
         //-------------------------------------------------------------------------------------------------------------
         public STSEffect GetEffect()
@@ -459,6 +466,7 @@ namespace SceneTransitionSystem
 
             Duration = sObject.Duration;
             Purcent = sObject.Purcent;
+            Curve = new AnimationCurve(sObject.Curve.keys);
         }
         //-------------------------------------------------------------------------------------------------------------
         static STSEffectType()
@@ -544,7 +552,10 @@ namespace SceneTransitionSystem
             }
             //Debug.Log("STSEffect EstimatePurcent() => AnimPurcent = " + AnimPurcent.ToString("F3"));
             //Debug.Log("STSEffect EstimatePurcent() => Purcent = " + Purcent.ToString("F3"));
+            CurvePurcent = Curve.Evaluate(Purcent);
         }
+        //-------------------------------------------------------------------------------------------------------------
+
         //-------------------------------------------------------------------------------------------------------------
         public void StartEffectEnter(Rect sRect, Color sOldColor, float sInterEffectDelay)
         {

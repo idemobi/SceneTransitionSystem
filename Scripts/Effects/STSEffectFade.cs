@@ -14,6 +14,7 @@ namespace SceneTransitionSystem
     [STSEffectName("Fade")]
     // *** Active some parameters in inspector
     [STSTintPrimary("Tint")]
+    [STSAnimationCurve()]
     // ***
     public class STSEffectFade : STSEffect
     {
@@ -40,7 +41,7 @@ namespace SceneTransitionSystem
             if (Purcent > 0)
             {
                 // Do drawing with purcent
-                Color tFadeColorAlpha = new Color(TintPrimary.r, TintPrimary.g, TintPrimary.b, Purcent* TintPrimary.a);
+                Color tFadeColorAlpha = new Color(TintPrimary.r, TintPrimary.g, TintPrimary.b, CurvePurcent* TintPrimary.a);
                 STSDrawQuad.DrawRect(sRect, tFadeColorAlpha);
             }
             //STSBenchmark.Finish();
