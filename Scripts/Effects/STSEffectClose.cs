@@ -11,12 +11,12 @@ using UnityEngine;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    [STSEffectName("Column")]
+    [STSEffectName("Close effect")]
     // *** Active some parameters in inspector
     [STSTintPrimary()]
     //[STSParameterOne("Line Number", 1, 30)]
     [STSParameterTwo("Division Number", 1, 30)]
-    [STSClockwise]
+    [STSTwoCross()]
     // ***
     public class STSEffectClose : STSEffect
     {
@@ -63,7 +63,7 @@ namespace SceneTransitionSystem
             if (Purcent > 0)
             {
                 float tPurcentP = Purcent / 2.0F;
-                if (Clockwise == STSClockwise.Clockwise)
+                if (TwoCross == STSTwoCross.Horizontal)
                 {
                     foreach (STSTile tTile in Matrix.TilesList)
                     {

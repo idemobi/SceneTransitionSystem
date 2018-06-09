@@ -11,7 +11,7 @@ using UnityEngine;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    [STSEffectName("Click Block")]
+    [STSEffectName("Clock/Click Block")]
     // *** Active some parameters in inspector
     [STSTintPrimary()]
     [STSParameterOne("Line Number", 1, 30)]

@@ -11,7 +11,7 @@ using UnityEngine;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    [STSEffectName("Cluck Block")]
+    [STSEffectName("Clock/Cluck Block")]
     // *** Active some parameters in inspector
     [STSTintPrimary()]
     [STSParameterOne("Line Number", 1, 30)]

@@ -195,6 +195,22 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    public class STSTwoCrossAttribute : Attribute
+    {
+        //-------------------------------------------------------------------------------------------------------------
+        public string Entitlement = "Two cross";
+        //-------------------------------------------------------------------------------------------------------------
+        public STSTwoCrossAttribute()
+        {
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public STSTwoCrossAttribute(string sEntitlement)
+        {
+            this.Entitlement = sEntitlement;
+        }
+        //-------------------------------------------------------------------------------------------------------------
+    }
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     public class STSFourCrossAttribute : Attribute
     {
         //-------------------------------------------------------------------------------------------------------------
@@ -310,6 +326,12 @@ namespace SceneTransitionSystem
         Counterclockwise
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    public enum STSTwoCross : int
+    {
+        Vertical,
+        Horizontal
+    }
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     public enum STSNineCross : int
     {
         Top,
@@ -334,6 +356,7 @@ namespace SceneTransitionSystem
         public Texture2D TextureSecondary = null;
         public Vector2 Offset;
 
+        public STSTwoCross TwoCross;
         public STSFourCross FourCross;
         public STSFiveCross FiveCross;
         public STSEightCross EightCross;
@@ -426,6 +449,7 @@ namespace SceneTransitionSystem
             ParameterTwo = sObject.ParameterTwo;
             ParameterThree = sObject.ParameterThree;
 
+            TwoCross = sObject.TwoCross;
             FourCross = sObject.FourCross;
             FiveCross = sObject.FiveCross;
             EightCross = sObject.EightCross;

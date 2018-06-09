@@ -129,6 +129,12 @@ namespace SceneTransitionSystem
                 tH += tNumberFieldStyle.fixedHeight + kMarge;
             }
 
+            // TwoCross
+            if (tEffectType.GetCustomAttributes(typeof(STSTwoCrossAttribute), true).Length > 0)
+            {
+                tH += tPopupFieldStyle.fixedHeight + kMarge;
+            }
+
             // FourCross
             if (tEffectType.GetCustomAttributes(typeof(STSFourCrossAttribute), true).Length > 0)
             {
@@ -444,6 +450,22 @@ namespace SceneTransitionSystem
                 tY += tNumberFieldStyle.fixedHeight + kMarge;
                 rSmallPreview.Offset = tOffset.vector2Value;
                 rBigPreview.Offset = tOffset.vector2Value;
+            }
+
+            // TwoCross
+            if (tEffectType.GetCustomAttributes(typeof(STSTwoCrossAttribute), true).Length > 0)
+            {
+                GUIContent tEntitlement = null;
+                foreach (STSTwoCrossAttribute tAtt in tEffectType.GetCustomAttributes(typeof(STSTwoCrossAttribute), true))
+                {
+                    tEntitlement = new GUIContent(tAtt.Entitlement);
+                }
+                Rect tRectTwoCross = new Rect(position.x, tY, position.width, tPopupFieldStyle.fixedHeight);
+                SerializedProperty tTwoCross = property.FindPropertyRelative("TwoCross");
+                EditorGUI.PropertyField(tRectTwoCross, tTwoCross, tEntitlement, false);
+                tY += tPopupFieldStyle.fixedHeight + kMarge;
+                rSmallPreview.TwoCross = (STSTwoCross)tTwoCross.intValue;
+                rBigPreview.TwoCross = (STSTwoCross)tTwoCross.intValue;
             }
 
             // FourCross
