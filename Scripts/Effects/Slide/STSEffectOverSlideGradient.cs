@@ -11,7 +11,7 @@ using UnityEngine;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    [STSEffectName("Over Slide Gradient")]
+    [STSEffectName("Slide/Over Slide Gradient")]
     // *** Active some parameters in inspector
     [STSTintPrimary()]
     [STSTintSecondary()]

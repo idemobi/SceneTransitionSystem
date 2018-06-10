@@ -11,7 +11,7 @@ using UnityEngine;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    [STSEffectName("Fade Block Gradient")]
+    [STSEffectName("Block/Fade Block Gradient")]
     // *** Active some parameters in inspector
     [STSTintPrimary()]
     [STSTintSecondary()]

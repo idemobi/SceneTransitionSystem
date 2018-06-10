@@ -11,7 +11,7 @@ using UnityEngine;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    [STSEffectName("Fade Line")]
+    [STSEffectName("Line/Fade")]
     // *** Active some parameters in inspector
     [STSTintPrimary()]
     [STSParameterOne("Line Number", 1, 30)]

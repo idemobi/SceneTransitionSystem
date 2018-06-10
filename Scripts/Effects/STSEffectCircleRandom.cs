@@ -11,7 +11,7 @@ using UnityEngine;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    [STSEffectName("Circle Random")]
+    [STSEffectName("Circle/Circle Random")]
     [STSNoSmallPreview]
     [STSNoBigPreview]
     // *** Active some parameters in inspector

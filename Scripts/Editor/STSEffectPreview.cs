@@ -156,7 +156,7 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         void OnGUI()
         {
-            Debug.Log("OnGUI");
+            //Debug.Log("OnGUI");
             CheckResize();
             Rect ThisRect = new Rect(0, 0, position.width, position.height);
             if (Background == null)
@@ -171,7 +171,7 @@ namespace SceneTransitionSystem
             }
             if (NoPreview == true)
             {
-                GUI.Label(ThisRect, new GUIContent("no preview available"), tNoPreviewFieldStyle);
+                GUI.Label(ThisRect, new GUIContent(STSConstants.K_NO_BIG_PREVIEW), tNoPreviewFieldStyle);
             }
             int tSelectedPreviewNew = EditorGUILayout.IntPopup(SelectedPreview, new string[] { "A", "B", "C", "D", "…" }, new int[] { 0, 1, 2, 3, 999 });
             if (tSelectedPreviewNew != SelectedPreview)

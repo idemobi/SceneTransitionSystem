@@ -11,7 +11,7 @@ using UnityEngine;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    [STSEffectName("Radiant Block")]
+    [STSEffectName("Circle/Radiant Block")]
     // *** Active some parameters in inspector
     [STSTintPrimary()]
     [STSTintSecondary()]

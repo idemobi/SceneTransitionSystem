@@ -6,6 +6,8 @@
 //=====================================================================================================================
 
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 //=====================================================================================================================
 namespace SceneTransitionSystem
@@ -34,29 +36,145 @@ namespace SceneTransitionSystem
         public STSTransitionEvent ThisSceneDisable;
         public STSTransitionEvent ThisSceneWillUnloaded;
         //-------------------------------------------------------------------------------------------------------------
-        // Use this for initialization
+        private STSEffect EffectOnEnterDup;
+        private STSEffect EffectOnExitDup;
+        private bool ExitInProgress = false;
+        private bool EnterInProgress = false;
+        private bool ExitAndEnterInProgress = false;
+        private bool PlayInProgress = false;
+        //-------------------------------------------------------------------------------------------------------------
         void Awake()
         {
             // test if Transition controller exist
             STSTransitionController.Singleton();
         }
         //-------------------------------------------------------------------------------------------------------------
-        // Use this for initialization
         void Start()
         {
 
         }
         //-------------------------------------------------------------------------------------------------------------
-        // Update is called once per frame
         void Update()
         {
 
         }
         //-------------------------------------------------------------------------------------------------------------
-        // Update is called once per frame
-        void PlayExitAndEnterNow()
+        private void OnGUI()
         {
-            Debug.LogWarning("TODO => PlayExitAndEnterNow()");
+            if (PlayInProgress == true)
+            {
+                if (ExitInProgress == true)
+                {
+                    if (EffectOnExitDup.AnimIsFinished==false)
+                    {
+                        EffectOnExitDup.DrawMaster(new Rect(0, Screen.height, Screen.width, -Screen.height));
+                    }
+                    else
+                    {
+                        ExitInProgress = false;
+                        if (OnExitFinish != null)
+                        {
+                            OnExitFinish.Invoke(null);
+                        }
+                        if (ExitAndEnterInProgress == true)
+                        {
+                            PlayEnterNow();
+                        }
+                        else
+                        {
+                            PlayInProgress = false;
+                        }
+                    }
+                }
+                if (EnterInProgress == true)
+                {
+                    if (EffectOnEnterDup.AnimIsFinished == false)
+                    {
+                        EffectOnEnterDup.DrawMaster(new Rect(0, Screen.height, Screen.width, -Screen.height));
+                    }
+                    else
+                    {
+                        EnterInProgress = false;
+                        ExitAndEnterInProgress = false; // anyway
+                        if (OnEnterFinish != null)
+                        {
+                            OnEnterFinish.Invoke(null);
+                        }
+                    }
+                }
+            }
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public void PlayExitNow()
+        {
+            if (OnExitStart != null)
+            {
+                OnExitStart.Invoke(null);
+            }
+            ExitInProgress = true;
+            PlayInProgress = true;
+            EffectOnExitDup = EffectOnExit.GetEffect();
+            EffectOnExitDup.StartEffectExit(new Rect(0, Screen.height, Screen.width, -Screen.height));
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public void PlayEnterNow()
+        {
+            if (OnEnterStart != null)
+            {
+                OnEnterStart.Invoke(null);
+            }
+            EnterInProgress = true;
+            PlayInProgress = true;
+            EffectOnExitDup = EffectOnExit.GetEffect();
+            EffectOnEnterDup = EffectOnEnter.GetEffect();
+            EffectOnEnterDup.StartEffectEnter(new Rect(0, Screen.height, Screen.width, -Screen.height),EffectOnExitDup.TintPrimary,InterEffectDuration);
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public void PlayExitAndEnterNow()
+        {
+            ExitAndEnterInProgress = true;
+            PlayExitNow();
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        private bool PreventUserInteractions = true;
+        //-------------------------------------------------------------------------------------------------------------
+        private void EventSystemPrevent(bool sEnable)
+        {
+            //Debug.Log("STSTransitionController EventSystemPrevent()");
+            for (int i = 0; i < SceneManager.sceneCount; i++)
+            {
+                Scene tScene = SceneManager.GetSceneAt(i);
+                if (tScene.isLoaded)
+                {
+                    EventSystemEnable(tScene, false);
+                }
+            }
+            EventSystemEnable(SceneManager.GetActiveScene(), sEnable);
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        private void EventSystemEnable(Scene sScene, bool sEnable)
+        {
+            //Debug.Log("STSTransitionController EventSystemEnable()");
+            if (PreventUserInteractions == true)
+            {
+                EventSystem tEventSystem = null;
+                GameObject[] tAllRootObjects = sScene.GetRootGameObjects();
+                foreach (GameObject tObject in tAllRootObjects)
+                {
+                    if (tObject.GetComponent<EventSystem>() != null)
+                    {
+                        tEventSystem = tObject.GetComponent<EventSystem>();
+                    }
+                }
+                if (tEventSystem != null)
+                {
+                    tEventSystem.enabled = sEnable;
+                }
+                else
+                {
+                    //Debug.Log ("No <EventSystem> type component found in the root Objects. Becarefull!");
+                }
+            }
         }
         //-------------------------------------------------------------------------------------------------------------
         public void CopyIn(STSTransitionParameters sDestination)

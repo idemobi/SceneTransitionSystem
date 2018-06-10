@@ -11,7 +11,7 @@ using UnityEngine;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    [STSEffectName("Fade Block Random")]
+    [STSEffectName("Block/Fade Block Random")]
     // *** Active some parameters in inspector
     [STSTintPrimary()]
     [STSTintSecondary()]
@@ -72,7 +72,7 @@ namespace SceneTransitionSystem
                 {
                     STSTile tTileAlpha = Matrix.TilesList[tIndex];
                     float tAlpha = (Purcent * Matrix.TileCount) - (float)tIndex;
-                    Color tColorLerp = Color.Lerp(TintSecondary, TintPrimary, tAlpha);
+                    //Color tColorLerp = Color.Lerp(TintSecondary, TintPrimary, tAlpha);
                     Color tFadeColorAlpha = new Color(TintPrimary.r, TintPrimary.g, TintPrimary.b, tAlpha*TintPrimary.a);
                     STSDrawQuad.DrawRect(tTileAlpha.Rectangle, tFadeColorAlpha);
                 }

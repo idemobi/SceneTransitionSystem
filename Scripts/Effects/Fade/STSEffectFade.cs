@@ -11,12 +11,14 @@ using UnityEngine;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    [STSEffectName("Fade")]
+    [STSEffectName("Fade/Fade basic")]
     // *** Active some parameters in inspector
     [STSTintPrimary("Tint")]
     // ***
     public class STSEffectFade : STSEffect
     {
+        //-------------------------------------------------------------------------------------------------------------
+        public static string K_FADE_NAME = "Fade/Fade basic";
         //-------------------------------------------------------------------------------------------------------------
         public void Prepare(Rect sRect)
         {
@@ -41,7 +43,7 @@ namespace SceneTransitionSystem
             if (Purcent > 0)
             {
                 // Do drawing with purcent
-                Color tFadeColorAlpha = new Color(TintPrimary.r, TintPrimary.g, TintPrimary.b, Purcent* TintPrimary.a);
+                Color tFadeColorAlpha = new Color(TintPrimary.r, TintPrimary.g, TintPrimary.b, Purcent * TintPrimary.a);
                 STSDrawQuad.DrawRect(sRect, tFadeColorAlpha);
             }
             //STSBenchmark.Finish();

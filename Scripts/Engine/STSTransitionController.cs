@@ -81,11 +81,11 @@ namespace SceneTransitionSystem
         {
             Dictionary<string, object> tParams = PreviousScene[PreviousScene.Count - 1];
             object result;
-            tParams.TryGetValue(STSConstants.SceneNameKey, out result);
+            tParams.TryGetValue(STSConstants.K_SCENE_NAME_KEY, out result);
             string tPreviewSceneName = result.ToString();
-            tParams.TryGetValue(STSConstants.LoadModeKey, out result);
+            tParams.TryGetValue(STSConstants.K_LOAD_MODE_KEY, out result);
             LoadSceneMode tLoadMode = (LoadSceneMode)result;
-            tParams.TryGetValue(STSConstants.PayloadDataKey, out result);
+            tParams.TryGetValue(STSConstants.K_PAYLOAD_DATA_KEY, out result);
             //STSTransitionData tPayLoadData = result as STSTransitionData;
             Singleton();
             kSingleton.LoadSceneByNameMethod(tPreviewSceneName, tLoadMode, null, null);
@@ -112,7 +112,7 @@ namespace SceneTransitionSystem
 				// I need to create singleton
 				GameObject tObjToSpawn;
 				//spawn object
-                tObjToSpawn = new GameObject (STSConstants.TransitionControllerObjectName);
+                tObjToSpawn = new GameObject (STSConstants.K_TRANSITION_CONTROLLER_OBJECT_NAME);
 				//Add Components
 				tObjToSpawn.AddComponent<STSTransitionController> ();
 				// keep k_Singleton
@@ -259,9 +259,9 @@ namespace SceneTransitionSystem
 
                     // Save scene param for further use
                     Dictionary<string, object> tParams = new Dictionary<string, object>();
-                    tParams.Add(STSConstants.SceneNameKey, SceneManager.GetActiveScene().name);
-                    tParams.Add(STSConstants.LoadModeKey, sLoadSceneMode);
-                    tParams.Add(STSConstants.PayloadDataKey, sPayload);
+                    tParams.Add(STSConstants.K_SCENE_NAME_KEY, SceneManager.GetActiveScene().name);
+                    tParams.Add(STSConstants.K_LOAD_MODE_KEY, sLoadSceneMode);
+                    tParams.Add(STSConstants.K_PAYLOAD_DATA_KEY, sPayload);
                     PreviousScene.Add(tParams);
 
 				    IntermediateSceneName = sIntermediateSceneName;
@@ -839,7 +839,7 @@ namespace SceneTransitionSystem
 			{
 				// create Game Object?
 				//Debug.Log ("NO PARAMS");
-                GameObject tObjToSpawn = new GameObject (STSConstants.TransitionControllerObjectName);
+                GameObject tObjToSpawn = new GameObject (STSConstants.K_TRANSITION_CONTROLLER_OBJECT_NAME);
 				tObjToSpawn.AddComponent<STSTransitionParameters> ();
 				tTransitionParametersScript = (STSTransitionParameters)tObjToSpawn.GetComponent<STSTransitionParameters> ();
                 if (DefaultEffectOnEnter != null)
@@ -877,7 +877,7 @@ namespace SceneTransitionSystem
 			}
 			if (tTransitionStandByScript == null) 
 			{
-                GameObject tObjToSpawn = new GameObject (STSConstants.TransitionControllerObjectName);
+                GameObject tObjToSpawn = new GameObject (STSConstants.K_TRANSITION_CONTROLLER_OBJECT_NAME);
 				tObjToSpawn.AddComponent<STSTransitionStandBy> ();
 				tTransitionStandByScript = (STSTransitionStandBy)tObjToSpawn.GetComponent<STSTransitionStandBy> ();
 				tTransitionStandByScript.StandBySeconds = 5.0f;

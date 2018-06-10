@@ -11,7 +11,7 @@ using UnityEngine;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    [STSEffectName("Octo Random")]
+    [STSEffectName("Octo/Octo Random")]
     [STSNoSmallPreview]
     // *** Active some parameters in inspector
     [STSTintPrimary()]

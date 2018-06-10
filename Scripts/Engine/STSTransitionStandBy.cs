@@ -11,6 +11,9 @@ using UnityEngine;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    /// <summary>
+    /// STS Transition standby script. Use during the wating to load in intermediary scene.
+    /// </summary>
     public class STSTransitionStandBy : MonoBehaviour
     {
         //-------------------------------------------------------------------------------------------------------------

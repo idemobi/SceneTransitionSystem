@@ -11,7 +11,7 @@ using UnityEngine;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    [STSEffectName("Curve/Fade")]
+    [STSEffectName("Fade/Fade curve")]
     // *** Active some parameters in inspector
     [STSTintPrimary("Tint")]
     [STSAnimationCurve()]

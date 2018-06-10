@@ -85,7 +85,7 @@ namespace SceneTransitionSystem
                                 //Debug.Log("index = " + tIndex + "/" + tIndex + "/ " + TileCount + " ---> loop tLineAlpha =" + tLineAlpha + " tColumnAlpha = " + tColumnAlpha);
                                 STSTile tTileAlpha = Matrix.GetTile(tLine, tColumn);
                                 float tAlpha = (Purcent * Matrix.TileCount) - (float)tIndex;
-                                Color tColorLerp = Color.Lerp(TintSecondary, TintPrimary, tAlpha);
+                                //Color tColorLerp = Color.Lerp(TintSecondary, TintPrimary, tAlpha);
                                 Color tFadeColorAlpha = new Color(TintPrimary.r, TintPrimary.g, TintPrimary.b, tAlpha);
                                 STSDrawQuad.DrawRect(tTileAlpha.Rectangle, tFadeColorAlpha);
                             }
@@ -109,7 +109,7 @@ namespace SceneTransitionSystem
                                 //Debug.Log("index = " + tIndex + "/" + tIndex + "/ " + TileCount + " ---> loop tLineAlpha =" + tLineAlpha + " tColumnAlpha = " + tColumnAlpha);
                                 STSTile tTileAlpha = Matrix.GetTile(tLine, tColumn);
                                 float tAlpha = (Purcent * Matrix.TileCount) - (float)tIndex;
-                                Color tColorLerp = Color.Lerp(TintSecondary, TintPrimary, tAlpha);
+                                //Color tColorLerp = Color.Lerp(TintSecondary, TintPrimary, tAlpha);
                                 Color tFadeColorAlpha = new Color(TintPrimary.r, TintPrimary.g, TintPrimary.b, tAlpha);
                                 STSDrawQuad.DrawRect(tTileAlpha.Rectangle, tFadeColorAlpha);
                             }
@@ -133,7 +133,7 @@ namespace SceneTransitionSystem
                                 //Debug.Log("index = " + tIndex + "/" + tIndex + "/ " + TileCount + " ---> loop tLineAlpha =" + tLineAlpha + " tColumnAlpha = " + tColumnAlpha);
                                 STSTile tTileAlpha = Matrix.GetTile(tLine, tColumn);
                                 float tAlpha = (Purcent * Matrix.TileCount) - (float)tIndex;
-                                Color tColorLerp = Color.Lerp(TintSecondary, TintPrimary, tAlpha);
+                                //Color tColorLerp = Color.Lerp(TintSecondary, TintPrimary, tAlpha);
                                 Color tFadeColorAlpha = new Color(TintPrimary.r, TintPrimary.g, TintPrimary.b, tAlpha);
                                 STSDrawQuad.DrawRect(tTileAlpha.Rectangle, tFadeColorAlpha);
                             }

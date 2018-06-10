@@ -399,9 +399,9 @@ namespace SceneTransitionSystem
         public static List<Type> kEffectTypeList = new List<Type>();
         public static List<string> kEffectNameList = new List<string>();
         //-------------------------------------------------------------------------------------------------------------
-        public static STSEffectType Default = new STSEffectType("Fade", Color.black, 1.0F);
-        public static STSEffectType QuickDefault = new STSEffectType("Fade", Color.black, 0.50F);
-        public static STSEffectType Flash = new STSEffectType("Fade", Color.white, 0.50F);
+        public static STSEffectType Default = new STSEffectType(STSEffectFade.K_FADE_NAME, Color.black, 1.0F);
+        public static STSEffectType QuickDefault = new STSEffectType(STSEffectFade.K_FADE_NAME, Color.black, 0.50F);
+        public static STSEffectType Flash = new STSEffectType(STSEffectFade.K_FADE_NAME, Color.white, 0.50F);
         //-------------------------------------------------------------------------------------------------------------
         public STSEffectType()
         {

@@ -28,6 +28,7 @@ namespace SceneTransitionSystem
         public float kSizePreviewPopup = 30.0F;
         public float kSizePreviewButton = 60.0F;
         //-------------------------------------------------------------------------------------------------------------
+        static GUIStyle tMiniButtonStyle;
         static GUIStyle tPopupFieldStyle;
         static GUIStyle tColorFieldStyle;
         static GUIStyle tTextfieldStyle;
@@ -45,6 +46,9 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         static STSEffectTypeEditor()
         {
+            tMiniButtonStyle = new GUIStyle(EditorStyles.miniButton);
+            tMiniButtonStyle.fixedHeight = tMiniButtonStyle.CalcHeight(new GUIContent("A"), 100);
+
             tPopupFieldStyle = new GUIStyle(EditorStyles.popup);
             tPopupFieldStyle.fixedHeight = tPopupFieldStyle.CalcHeight(new GUIContent("A"), 100);
 
@@ -618,14 +622,14 @@ namespace SceneTransitionSystem
             OldRect = tPreviewRect;
 
             // button for big preview
-            if (GUI.Button(new Rect(position.x + position.width - kSizePreviewButton - kMarge - kSizePreview * 2, tY + tPopupFieldStyle.fixedHeight + kMarge, kSizePreviewButton, tPopupFieldStyle.fixedHeight), "Preview"))
+            if (GUI.Button(new Rect(position.x + position.width - kSizePreviewButton - kMarge - kSizePreview * 2, tY + tPopupFieldStyle.fixedHeight + kMarge, kSizePreviewButton, tPopupFieldStyle.fixedHeight), STSConstants.K_SHOW_BIG_PREVIEW, tMiniButtonStyle))
             {
                 STSEffectPreview.EffectPreviewShow();
                 STSEffectPreview.kEffectPreview.SetEffect(rBigPreview);
                 STSEffectPreview.kEffectPreview.EffectPrepare();
             }
             // button to run in big preview
-            if (GUI.Button(new Rect(position.x + position.width - kSizePreviewButton - kMarge - kSizePreview * 2, tY + 2*(tPopupFieldStyle.fixedHeight + kMarge), kSizePreviewButton, tPopupFieldStyle.fixedHeight), "Run Anim"))
+            if (GUI.Button(new Rect(position.x + position.width - kSizePreviewButton - kMarge - kSizePreview * 2, tY + 2*(tPopupFieldStyle.fixedHeight + kMarge), kSizePreviewButton, tPopupFieldStyle.fixedHeight),STSConstants.K_RUN_BIG_PREVIEW, tMiniButtonStyle))
             {
                 STSEffectPreview.EffectPreviewShow();
                 STSEffectPreview.kEffectPreview.SetEffect(rBigPreview);
@@ -694,7 +698,7 @@ namespace SceneTransitionSystem
             }
             else
             {
-                GUI.Label(tPreviewRect, new GUIContent("no preview available"), tNoPreviewFieldStyle);
+                GUI.Label(tPreviewRect, new GUIContent(STSConstants.K_NO_LITTLE_PREVIEW), tNoPreviewFieldStyle);
             }
 
 
