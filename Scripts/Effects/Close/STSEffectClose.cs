@@ -25,7 +25,7 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         public void Prepare(Rect sRect)
         {
-            //Debug.Log("STSEffectFadeLine Prepare()");
+            Debug.Log("STSEffectFadeLine Prepare()");
             ParameterOne = 1;
             if (ParameterTwo < 1)
             {
@@ -33,13 +33,13 @@ namespace SceneTransitionSystem
             }
             Matrix = new STSMatrix();
 
-            if (Clockwise == STSClockwise.Clockwise)
+            if (TwoCross == STSTwoCross.Vertical)
             {
                 Matrix.CreateMatrix(ParameterOne, ParameterTwo, sRect);
             }
             else
             {
-                Matrix.CreateMatrix(ParameterTwo,ParameterOne, sRect);
+                Matrix.CreateMatrix(ParameterTwo, ParameterOne, sRect);
             }
         }
         //-------------------------------------------------------------------------------------------------------------
@@ -63,7 +63,7 @@ namespace SceneTransitionSystem
             if (Purcent > 0)
             {
                 float tPurcentP = Purcent / 2.0F;
-                if (TwoCross == STSTwoCross.Horizontal)
+                if (TwoCross == STSTwoCross.Vertical)
                 {
                     foreach (STSTile tTile in Matrix.TilesList)
                     {

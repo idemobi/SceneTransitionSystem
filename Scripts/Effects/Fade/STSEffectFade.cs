@@ -11,42 +11,25 @@ using UnityEngine;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    [STSEffectName("Inter Block")]
+    [STSEffectName("Fade")]
     // *** Active some parameters in inspector
-    [STSTintPrimary()]
-    [STSParameterOne("Line Number", 1, 30)]
-    [STSParameterTwo("Column Number", 1, 30)]
+    [STSTintPrimary("Tint")]
     // ***
-    public class STSEffectInterBlock : STSEffect
+    public class STSEffectFade : STSEffect
     {
-        //-------------------------------------------------------------------------------------------------------------
-        private STSMatrix Matrix;
         //-------------------------------------------------------------------------------------------------------------
         public void Prepare(Rect sRect)
         {
-            //Debug.Log("STSEffectFadeLine Prepare()");
-            if (ParameterOne < 1)
-            {
-                ParameterOne = 1;
-            }
-            if (ParameterTwo < 1)
-            {
-                ParameterTwo = 1;
-            }
-            Matrix = new STSMatrix();
-            Matrix.CreateMatrix(ParameterOne, ParameterTwo, sRect);
         }
         //-------------------------------------------------------------------------------------------------------------
         public override void PrepareEffectEnter(Rect sRect)
         {
-            //Debug.Log("STSEffectFadeLine PrepareEffectEnter()");
             // Prepare your datas to draw
             Prepare(sRect);
         }
         //-------------------------------------------------------------------------------------------------------------
         public override void PrepareEffectExit(Rect sRect)
         {
-            //Debug.Log("STSEffectFadeLine PrepareEffectExit()");
             // Prepare your datas to draw
             Prepare(sRect);
         }
@@ -54,18 +37,12 @@ namespace SceneTransitionSystem
         public override void Draw(Rect sRect)
         {
             //STSBenchmark.Start();
+            //Debug.Log("Purcent = " + Purcent.ToString("F3"));
             if (Purcent > 0)
             {
-                float tWidthPurcent = Matrix.TilesList[0].Rectangle.width * Purcent;
-                float tWidth = Matrix.TilesList[0].Rectangle.width;
-                float tHeight = Matrix.TilesList[0].Rectangle.height / 2.0F;
-                foreach (STSTile tTile in  Matrix.TilesList)
-                {
-                    Rect tA = new Rect(tTile.Rectangle.x, tTile.Rectangle.y, tWidthPurcent, tHeight);
-                    Rect tB = new Rect(tTile.Rectangle.x+tWidth, tTile.Rectangle.y+tHeight, -tWidthPurcent, tHeight);
-                    STSDrawQuad.DrawRect(tA, TintPrimary);
-                    STSDrawQuad.DrawRect(tB, TintPrimary);
-                }
+                // Do drawing with purcent
+                Color tFadeColorAlpha = new Color(TintPrimary.r, TintPrimary.g, TintPrimary.b, Purcent* TintPrimary.a);
+                STSDrawQuad.DrawRect(sRect, tFadeColorAlpha);
             }
             //STSBenchmark.Finish();
         }

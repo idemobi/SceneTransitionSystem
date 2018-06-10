@@ -15,6 +15,9 @@ namespace SceneTransitionSystem
         //[MenuItem(NWDConstants.K_MENU_ENVIRONMENT_SYNC, false, 62)]
         //-------------------------------------------------------------------------------------------------------------
         STSEffect Effect = null;
+        float Duration = 1.0F;
+        bool IsPlaying = false;
+        float Delta = 0.0F;
         Texture2D Background = null;
         public bool NoPreview = false;
         static GUIStyle tNoPreviewFieldStyle;
@@ -48,9 +51,48 @@ namespace SceneTransitionSystem
             LastPosition = position;
         }
         //-------------------------------------------------------------------------------------------------------------
+        double editorDeltaTime = 0f;
+        double lastTimeSinceStartup = 0f;
+        //-------------------------------------------------------------------------------------------------------------
+        private void SetEditorDeltaTime()
+        {
+            if (lastTimeSinceStartup == 0f)
+            {
+                lastTimeSinceStartup = EditorApplication.timeSinceStartup;
+            }
+            editorDeltaTime = EditorApplication.timeSinceStartup - lastTimeSinceStartup;
+            lastTimeSinceStartup = EditorApplication.timeSinceStartup;
+        }
+        //-------------------------------------------------------------------------------------------------------------
         void Update()
         {
             //Debug.Log("Update");
+            if (IsPlaying == true)
+            {
+                SetEditorDeltaTime();
+                Delta += (float)editorDeltaTime;
+                //Debug.Log("Update IsPlaying == true Delta = " + Delta.ToString("F3") + "  /" + Duration.ToString("F3"));
+                if (Delta <= Duration)
+                {
+                    if (Effect != null)
+                    {
+                        Effect.EstimatePurcent();
+                        Repaint();
+                        //Debug.Log("Update effect Purcent = " + Effect.Purcent.ToString("F3"));
+                        // Repaint();
+                    }
+                    else
+                    {
+                        //Debug.Log("Update effect is null");
+                        IsPlaying = false;
+                    }
+                }
+                else
+                {
+                    //Debug.Log("Update play is finish");
+                    IsPlaying = false;
+                }
+            }
         }
         //-------------------------------------------------------------------------------------------------------------
         public void CheckResize()
@@ -65,35 +107,58 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         public void EffectPrepare()
         {
+            if (IsPlaying == false)
+            {
+                if (Effect != null)
+                {
+                    Effect.PrepareEffectExit(new Rect(0, 0, position.width, position.height));
+                }
+            }
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public void EffectRun(float sDuration)
+        {
+            Debug.Log("EffectRun sDuration" + sDuration.ToString("F3"));
             if (Effect != null)
             {
-                Effect.PrepareEffectExit(new Rect(0, 0, position.width, position.height));
+                Debug.Log("EffectRun is not null");
+                Effect.Purcent = 0;
+                Duration = sDuration;
+                IsPlaying = true;
+                Delta = 0.0F;
+                Debug.Log("Update IsPlaying == true Delta = " + Delta.ToString("F3") + "  /" + Duration.ToString("F3"));
             }
         }
         //-------------------------------------------------------------------------------------------------------------
         public void SetEffect(STSEffect sEffect)
         {
-            //Debug.Log("SetEffect");
-            if (sEffect != Effect)
+            if (IsPlaying == false)
             {
-                Effect = sEffect;
-                EffectPrepare();
+                //Debug.Log("SetEffect");
+                if (sEffect != Effect)
+                {
+                    Effect = sEffect;
+                    EffectPrepare();
+                }
             }
         }
         //-------------------------------------------------------------------------------------------------------------
         public void SetEffectPurcent(float sPurcent)
         {
-            if (Effect != null)
+            if (IsPlaying == false)
             {
-                Effect.Purcent = sPurcent;
+                if (Effect != null)
+                {
+                    Effect.Purcent = sPurcent;
+                }
             }
         }
         //-------------------------------------------------------------------------------------------------------------
         void OnGUI()
         {
+            Debug.Log("OnGUI");
             CheckResize();
             Rect ThisRect = new Rect(0, 0, position.width, position.height);
-            //Debug.Log("OnGUI");
             if (Background == null)
             {
                 //Background = AssetDatabase.LoadAssetAtPath<Texture2D>(STSFindPackage.PathOfPackage("/Scripts/Editor/Resources/STSPreviewA.png"));
@@ -136,6 +201,7 @@ namespace SceneTransitionSystem
             if (Effect != null)
             {
                 //Debug.Log("effect is drawinf with purcent " + Effect.Purcent);
+                Effect.EstimateCurvePurcent();
                 Effect.Draw(ThisRect);
             }
             else

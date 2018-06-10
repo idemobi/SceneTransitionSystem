@@ -202,7 +202,7 @@ namespace SceneTransitionSystem
     public class STSTwoCrossAttribute : Attribute
     {
         //-------------------------------------------------------------------------------------------------------------
-        public string Entitlement = "Two cross";
+        public string Entitlement = "Orientation";
         //-------------------------------------------------------------------------------------------------------------
         public STSTwoCrossAttribute()
         {
@@ -466,7 +466,14 @@ namespace SceneTransitionSystem
 
             Duration = sObject.Duration;
             Purcent = sObject.Purcent;
-            Curve = new AnimationCurve(sObject.Curve.keys);
+            if (sObject.Curve != null)
+            {
+                Curve = new AnimationCurve(sObject.Curve.keys);
+            }
+            else
+            {
+                Curve = AnimationCurve.Linear(0.0F,0.0F,1.0F,1.0F);
+            }
         }
         //-------------------------------------------------------------------------------------------------------------
         static STSEffectType()
@@ -519,7 +526,12 @@ namespace SceneTransitionSystem
     public class STSEffect : STSEffectType
     {
         //-------------------------------------------------------------------------------------------------------------
-        protected void EstimatePurcent()
+        public void EstimateCurvePurcent()
+        {
+            CurvePurcent = Curve.Evaluate(Purcent);
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public void EstimatePurcent()
         {
             if (AnimPurcent < 1.0F || AnimPurcent >= 0.0F)
             {
@@ -552,10 +564,7 @@ namespace SceneTransitionSystem
             }
             //Debug.Log("STSEffect EstimatePurcent() => AnimPurcent = " + AnimPurcent.ToString("F3"));
             //Debug.Log("STSEffect EstimatePurcent() => Purcent = " + Purcent.ToString("F3"));
-            CurvePurcent = Curve.Evaluate(Purcent);
         }
-        //-------------------------------------------------------------------------------------------------------------
-
         //-------------------------------------------------------------------------------------------------------------
         public void StartEffectEnter(Rect sRect, Color sOldColor, float sInterEffectDelay)
         {
@@ -631,6 +640,7 @@ namespace SceneTransitionSystem
                     {
                         // estimate purcent
                         EstimatePurcent();
+                        //EstimateCurvePurcent();
                         Draw(sRect);
                     }
                 }

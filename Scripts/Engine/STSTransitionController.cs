@@ -59,6 +59,8 @@ namespace SceneTransitionSystem
 		//private STSTransitionParameters m_SceneToUnloadParams;
 
         //-------------------------------------------------------------------------------------------------------------
+        public STSEffectType DefaultEffectOnEnter;
+        public STSEffectType DefaultEffectOnExit;
         private STSEffect EffectType;
         //-------------------------------------------------------------------------------------------------------------
         private float StandByTimer;
@@ -840,8 +842,22 @@ namespace SceneTransitionSystem
                 GameObject tObjToSpawn = new GameObject (STSConstants.TransitionControllerObjectName);
 				tObjToSpawn.AddComponent<STSTransitionParameters> ();
 				tTransitionParametersScript = (STSTransitionParameters)tObjToSpawn.GetComponent<STSTransitionParameters> ();
-                tTransitionParametersScript.EffectOnEnter = STSEffectType.Default.Dupplicate();
-                tTransitionParametersScript.EffectOnExit = STSEffectType.Default.Dupplicate();
+                if (DefaultEffectOnEnter != null)
+                {
+                    tTransitionParametersScript.EffectOnEnter = DefaultEffectOnEnter.Dupplicate();
+                }
+                else
+                {
+                    tTransitionParametersScript.EffectOnEnter = STSEffectType.Default.Dupplicate();
+                }
+                if (DefaultEffectOnEnter != null)
+                {
+                    tTransitionParametersScript.EffectOnExit = DefaultEffectOnExit.Dupplicate();
+                }
+                else
+                {
+                    tTransitionParametersScript.EffectOnExit = STSEffectType.Default.Dupplicate();
+                }
 			}
 			return tTransitionParametersScript;
         }

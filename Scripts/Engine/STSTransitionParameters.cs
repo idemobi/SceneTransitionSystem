@@ -53,6 +53,12 @@ namespace SceneTransitionSystem
 
         }
         //-------------------------------------------------------------------------------------------------------------
+        // Update is called once per frame
+        void PlayExitAndEnterNow()
+        {
+            Debug.LogWarning("TODO => PlayExitAndEnterNow()");
+        }
+        //-------------------------------------------------------------------------------------------------------------
         public void CopyIn(STSTransitionParameters sDestination)
         {
             sDestination.EffectOnEnter = this.EffectOnEnter.Dupplicate();

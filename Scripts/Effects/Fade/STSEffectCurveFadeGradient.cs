@@ -11,37 +11,25 @@ using UnityEngine;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    [STSEffectName("Fade")]
+    [STSEffectName("Curve/Fade Gradient")]
     // *** Active some parameters in inspector
-    [STSTintPrimary("Tint")]
+    [STSTintPrimary()]
+    [STSTintSecondary()]
     [STSAnimationCurve()]
     // ***
-    public class STSEffectFade : STSEffect
+    public class STSEffectCurveFadeGradient : STSEffect
     {
-        //-------------------------------------------------------------------------------------------------------------
-        public void Prepare(Rect sRect)
-        {
-        }
-        //-------------------------------------------------------------------------------------------------------------
-        public override void PrepareEffectEnter(Rect sRect)
-        {
-            // Prepare your datas to draw
-            Prepare(sRect);
-        }
-        //-------------------------------------------------------------------------------------------------------------
-        public override void PrepareEffectExit(Rect sRect)
-        {
-            // Prepare your datas to draw
-            Prepare(sRect);
-        }
         //-------------------------------------------------------------------------------------------------------------
         public override void Draw(Rect sRect)
         {
             //STSBenchmark.Start();
+            // Add curve percent calculate
+            CurvePurcent = Curve.Evaluate(Purcent);
             if (Purcent > 0)
             {
                 // Do drawing with purcent
-                Color tFadeColorAlpha = new Color(TintPrimary.r, TintPrimary.g, TintPrimary.b, CurvePurcent* TintPrimary.a);
+                Color tColorLerp = Color.Lerp(TintSecondary, TintPrimary, CurvePurcent);
+                Color tFadeColorAlpha = new Color(tColorLerp.r, tColorLerp.g, tColorLerp.b, CurvePurcent* TintPrimary.a);
                 STSDrawQuad.DrawRect(sRect, tFadeColorAlpha);
             }
             //STSBenchmark.Finish();

@@ -624,6 +624,14 @@ namespace SceneTransitionSystem
                 STSEffectPreview.kEffectPreview.SetEffect(rBigPreview);
                 STSEffectPreview.kEffectPreview.EffectPrepare();
             }
+            // button to run in big preview
+            if (GUI.Button(new Rect(position.x + position.width - kSizePreviewButton - kMarge - kSizePreview * 2, tY + 2*(tPopupFieldStyle.fixedHeight + kMarge), kSizePreviewButton, tPopupFieldStyle.fixedHeight), "Run Anim"))
+            {
+                STSEffectPreview.EffectPreviewShow();
+                STSEffectPreview.kEffectPreview.SetEffect(rBigPreview);
+                STSEffectPreview.kEffectPreview.EffectPrepare();
+                STSEffectPreview.kEffectPreview.EffectRun(tDuration.floatValue);
+            }
             // If AutoInstallPreview?
             if (tAutoInstallPreview == true)
             {
@@ -680,6 +688,8 @@ namespace SceneTransitionSystem
 
             if (tEffectType.GetCustomAttributes(typeof(STSNoSmallPreviewAttribute), true).Length == 0)
             {
+
+                rSmallPreview.EstimateCurvePurcent();
                 rSmallPreview.Draw(tPreviewRect);
             }
             else
