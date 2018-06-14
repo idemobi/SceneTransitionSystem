@@ -114,6 +114,16 @@ namespace SceneTransitionSystem
             return sDefault;
         }
         //-------------------------------------------------------------------------------------------------------------
+        public int GetInt(string sKey, int sDefault = -1)
+        {
+            object tValue;
+            if (DictionaryAsPayload.TryGetValue(sKey, out tValue))
+            {
+                return Convert.ToInt32(tValue);
+            }
+            return sDefault;
+        }
+        //-------------------------------------------------------------------------------------------------------------
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 }
