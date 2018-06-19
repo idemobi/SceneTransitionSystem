@@ -23,7 +23,7 @@ namespace SceneTransitionSystem
     {
         //-------------------------------------------------------------------------------------------------------------
         static Texture2D kTexture;
-        static Material KMaterialUI;
+        static Material kMaterialUI;
         static string kShaderNameUI = "UI/Default";
         //-------------------------------------------------------------------------------------------------------------
         static STSDrawTriangle()
@@ -33,9 +33,9 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         static void Initialize()
         {
-            if (KMaterialUI == null)
+            if (kMaterialUI == null)
             {
-                KMaterialUI = new Material(Shader.Find(kShaderNameUI));
+                kMaterialUI = new Material(Shader.Find(kShaderNameUI));
             }
             if (kTexture == null)
             {
@@ -52,7 +52,7 @@ namespace SceneTransitionSystem
                 Initialize();
 #endif
                 GL.PushMatrix();
-                KMaterialUI.SetPass(0);
+                kMaterialUI.SetPass(0);
                 GL.LoadPixelMatrix();
                 GL.Begin(GL.TRIANGLES);
                 GL.Color(sColor);
@@ -73,7 +73,7 @@ namespace SceneTransitionSystem
                 Initialize();
 #endif
                 GL.PushMatrix();
-                KMaterialUI.SetPass(0);
+                kMaterialUI.SetPass(0);
                 GL.LoadPixelMatrix();
                 GL.Begin(GL.TRIANGLES);
                 GL.Color(sColor);

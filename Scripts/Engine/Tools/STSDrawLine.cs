@@ -23,7 +23,7 @@ namespace SceneTransitionSystem
     {
         //-------------------------------------------------------------------------------------------------------------
         static Texture2D kTexture;
-        static Material KMaterial;
+        static Material kMaterial;
         static string kShaderName = "UI/Default";
         //-------------------------------------------------------------------------------------------------------------
         static STSDrawLine()
@@ -33,9 +33,9 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         static void Initialize()
         {
-            if (KMaterial == null)
+            if (kMaterial == null)
             {
-                KMaterial = new Material(Shader.Find(kShaderName));
+                kMaterial = new Material(Shader.Find(kShaderName));
             }
             if (kTexture == null)
             {
@@ -52,7 +52,7 @@ namespace SceneTransitionSystem
                 Initialize();
 #endif
                 GL.PushMatrix();
-                KMaterial.SetPass(0);
+                kMaterial.SetPass(0);
                 GL.LoadPixelMatrix();
                 GL.Begin(GL.TRIANGLES);
                 GL.Color(sColor);
@@ -73,7 +73,7 @@ namespace SceneTransitionSystem
                 Initialize();
 #endif
                 GL.PushMatrix();
-                KMaterial.SetPass(0);
+                kMaterial.SetPass(0);
                 GL.LoadPixelMatrix();
                 GL.Begin(GL.LINES);
                 GL.Color(sColor);
