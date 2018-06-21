@@ -14,17 +14,21 @@ namespace SceneTransitionSystem
     /// <summary>
     /// STS Constants. Use to declare all constants.
     /// </summary>
-    public class STSConstants
+    public static class STSConstants
     {
         //-------------------------------------------------------------------------------------------------------------
         /// <summary>
         /// The name of the transition controller game object in the root scene.
         /// </summary>
-        public static string K_TRANSITION_CONTROLLER_OBJECT_NAME = "TransitionControllerObject";
+        public static string K_TRANSITION_CONTROLLER_OBJECT_NAME = "TransitionControllerObjectKey_eerd58";
         /// <summary>
         /// The scene name key use in payload as dictionary key.
         /// </summary>
         public static string K_SCENE_NAME_KEY = "SceneNameKey_88jk7fe";
+        /// <summary>
+        /// The scene name key use in payload as dictionary key.
+        /// </summary>
+        public static string K_INTERMEDIATE_SCENE_NAME_KEY = "IntermediateSceneNameKey_88jk7fe";
         /// <summary>
         /// The load mode key use in payload as dictionary key.
         /// </summary>
@@ -34,11 +38,23 @@ namespace SceneTransitionSystem
         /// </summary>
         public static string K_PAYLOAD_DATA_KEY = "PayloadDataKey_33h52fe";
         //-------------------------------------------------------------------------------------------------------------
-        public static string K_NO_LITTLE_PREVIEW = "no little preview available";
-        public static string K_NO_BIG_PREVIEW = "no preview available";
-        public static string K_SHOW_BIG_PREVIEW = "Show preview";
-        public static string K_RUN_BIG_PREVIEW = "Run preview";
-
+        /// <summary>
+        /// 
+        /// </summary>
+        public static string K_NO_LITTLE_PREVIEW = "NoLittlePreviewKey_4frg5yt";
+        /// <summary>
+        /// 
+        /// </summary>
+        public static string K_NO_BIG_PREVIEW = "NoBigPreviewKey_f5eyqu";
+        /// <summary>
+        /// 
+        /// </summary>
+        public static string K_SHOW_BIG_PREVIEW = "ShowBigPreviewKey_t58595";
+        /// <summary>
+        /// 
+        /// </summary>
+        public static string K_RUN_BIG_PREVIEW = "RunBigPreviewKey_d57d8d";
+        //-------------------------------------------------------------------------------------------------------------
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 }

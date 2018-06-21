@@ -16,15 +16,15 @@ namespace SceneTransitionSystem
     /// Transition scene system
     /// </summary>
     //-----------------------------------------------------------------------------------------------------------------
-	public class STSTransitionData
+    public partial class STSTransitionData
 	{
         //-------------------------------------------------------------------------------------------------------------
 		public string InternalName;
 		public string Title;
 		public string Subtitle;
 		public string Level;
+        //-------------------------------------------------------------------------------------------------------------
         private Dictionary<string, object> DictionaryAsPayload = new Dictionary<string, object>();
-        //public List<object> ListAsPayload = new List<object>();
         //-------------------------------------------------------------------------------------------------------------
 		public STSTransitionData ()
 		{
@@ -44,13 +44,12 @@ namespace SceneTransitionSystem
 			Level = sLevel;
 		}
         //-------------------------------------------------------------------------------------------------------------
-		public STSTransitionData (string sInternalName, string sTitle, string sSubtitle, string sLevel, /*List<object> sListAsPayload,*/ Dictionary<string, object> sDictionaryAsPayload)
+		public STSTransitionData (string sInternalName, string sTitle, string sSubtitle, string sLevel, Dictionary<string, object> sDictionaryAsPayload)
 		{
 			InternalName = sInternalName;
 			Title = sTitle;
 			Subtitle = sSubtitle;
 			Level = sLevel;
-			//ListAsPayload = sListAsPayload;
 			DictionaryAsPayload = sDictionaryAsPayload;
 		}
         //-------------------------------------------------------------------------------------------------------------

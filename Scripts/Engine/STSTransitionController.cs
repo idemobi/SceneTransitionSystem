@@ -15,7 +15,7 @@ using UnityEngine;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public class STSTransitionController : MonoBehaviour
+    public partial class STSTransitionController : MonoBehaviour
     {
         //-------------------------------------------------------------------------------------------------------------
         private static STSTransitionController kSingleton = null;
@@ -70,7 +70,7 @@ namespace SceneTransitionSystem
 		// Class method
 		public static void LoadScene(string sNextSceneName,
             LoadSceneMode sLoadSceneMode = LoadSceneMode.Single,
-            string sIntermediateSceneName = "",
+            string sIntermediateSceneName = null,
             STSTransitionData sPayload = null)
 		{
 			Singleton();
@@ -81,14 +81,37 @@ namespace SceneTransitionSystem
         {
             Dictionary<string, object> tParams = PreviousScene[PreviousScene.Count - 1];
             object result;
+
+            // Get previous scene
             tParams.TryGetValue(STSConstants.K_SCENE_NAME_KEY, out result);
             string tPreviewSceneName = result.ToString();
+
+            // Get lscene oad mode
             tParams.TryGetValue(STSConstants.K_LOAD_MODE_KEY, out result);
             LoadSceneMode tLoadMode = (LoadSceneMode)result;
-            tParams.TryGetValue(STSConstants.K_PAYLOAD_DATA_KEY, out result);
-            //STSTransitionData tPayLoadData = result as STSTransitionData;
+
+            // Get intermediate scene
+            string tIntermediateSceneName = null;
+            if (tParams.TryGetValue(STSConstants.K_INTERMEDIATE_SCENE_NAME_KEY, out result) && result != null)
+            {
+                tIntermediateSceneName = result.ToString();
+            }
+
+            // Get Payload Data from PreviousScene - 2
+            STSTransitionData tPayLoadData = null;
+            int tIndex = PreviousScene.Count - 2;
+            if (tIndex >= 0)
+            {
+                tParams = PreviousScene[tIndex];
+                if (tParams.TryGetValue(STSConstants.K_PAYLOAD_DATA_KEY, out result) && result != null)
+                {
+                    tPayLoadData = result as STSTransitionData;
+                }
+            }
+
             Singleton();
-            kSingleton.LoadSceneByNameMethod(tPreviewSceneName, tLoadMode, null, null);
+            kSingleton.LoadSceneByNameMethod(tPreviewSceneName, tLoadMode, tIntermediateSceneName, tPayLoadData, true);
+
             PreviousScene.RemoveAt(PreviousScene.Count - 1);
         }
         //-------------------------------------------------------------------------------------------------------------
@@ -129,6 +152,11 @@ namespace SceneTransitionSystem
 			return kSingleton;
         }
         //-------------------------------------------------------------------------------------------------------------
+        public static void ResetHistory()
+        {
+            PreviousScene.Clear();
+        }
+        //-------------------------------------------------------------------------------------------------------------
 		// Memory managment
 		private void InitInstance ()
         {
@@ -138,9 +166,9 @@ namespace SceneTransitionSystem
 		//Awake is always called before any Start functions
 		private void Awake ()
         {
-            //Debug.Log("STSTransitionController Awake()");
 			//Check if instance already exists
-			if (kSingleton == null) {
+			if (kSingleton == null)
+            {
 				//if not, set instance to this
 				kSingleton = this;
 				if (kSingleton.Initialized == false) {
@@ -149,8 +177,9 @@ namespace SceneTransitionSystem
 				}
 				;
 			}
-		//If instance already exists and it's not this:
-		else if (kSingleton != this) {
+		    //If instance already exists and it's not this:
+		    else if (kSingleton != this)
+            {
 				//Then destroy this. This enforces our singleton pattern, meaning there can only ever be one instance of a GameManager.
 				Destroy (gameObject);    
 			}
@@ -246,30 +275,38 @@ namespace SceneTransitionSystem
 			}
         }
         //-------------------------------------------------------------------------------------------------------------
-		private void LoadSceneByNameMethod (string sNextSceneName, LoadSceneMode sLoadSceneMode, string sIntermediateSceneName, STSTransitionData sPayload)
+		private void LoadSceneByNameMethod (string sNextSceneName, LoadSceneMode sLoadSceneMode, string sIntermediateSceneName, STSTransitionData sPayload, bool sLoadPreviousScene = false)
         {
-            //Debug.Log("STSTransitionController LoadSceneByNameMethod()");
 			if (SceneManager.GetActiveScene ().name != sNextSceneName)
 			{
-			    if (TransitionInProgress == false)
+                if (TransitionInProgress == false)
 			    {
 				    TransitionInProgress = true;
-				    // memorize actual scene
-				    PreviewScene = SceneManager.GetActiveScene ();
 
-                    // Save scene param for further use
-                    Dictionary<string, object> tParams = new Dictionary<string, object>();
-                    tParams.Add(STSConstants.K_SCENE_NAME_KEY, SceneManager.GetActiveScene().name);
-                    tParams.Add(STSConstants.K_LOAD_MODE_KEY, sLoadSceneMode);
-                    tParams.Add(STSConstants.K_PAYLOAD_DATA_KEY, sPayload);
-                    PreviousScene.Add(tParams);
+                    // Save scene param for further use if not a previous scene
+                    if (sLoadPreviousScene == false)
+                    {
+                        Dictionary<string, object> tParams = new Dictionary<string, object>
+                        {
+                            { STSConstants.K_SCENE_NAME_KEY, SceneManager.GetActiveScene().name },
+                            { STSConstants.K_LOAD_MODE_KEY, sLoadSceneMode },
+                            { STSConstants.K_INTERMEDIATE_SCENE_NAME_KEY, sIntermediateSceneName },
+                            { STSConstants.K_PAYLOAD_DATA_KEY, sPayload }
+                        };
+                        PreviousScene.Add(tParams);
+                    }
+
+                    // memorize actual scene
+                    PreviewScene = SceneManager.GetActiveScene();
 
 				    IntermediateSceneName = sIntermediateSceneName;
+
 				    TransitionData = sPayload;
 				    if (TransitionData == null)
 				    {
 					    TransitionData = new STSTransitionData ();
 				    }
+
 				    NextSceneName = sNextSceneName;
 				    LoadSceneModeSelected = sLoadSceneMode;
 				    StartCoroutine (LoadSceneByNameAsync ());
