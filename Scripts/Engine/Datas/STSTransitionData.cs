@@ -83,6 +83,16 @@ namespace SceneTransitionSystem
         //    ListAsPayload.Add(sObject);
         //}
         //-------------------------------------------------------------------------------------------------------------
+        public bool HasKey(string sKey)
+        {
+            bool rValue = false;
+            if (DictionaryAsPayload.ContainsKey(sKey))
+            {
+                rValue = true;
+            }
+            return rValue;
+        }
+        //-------------------------------------------------------------------------------------------------------------
         public object GetObject(string sKey)
         {
             object tValue = null;
