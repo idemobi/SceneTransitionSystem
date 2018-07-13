@@ -20,7 +20,7 @@ namespace SceneTransitionSystem
         /// <summary>
         /// The name of the transition controller game object in the root scene.
         /// </summary>
-        public static string K_TRANSITION_CONTROLLER_OBJECT_NAME = "TransitionControllerObjectKey_eerd58";
+        public static string K_TRANSITION_CONTROLLER_OBJECT_NAME = "STSTransitionControllerObject";
         /// <summary>
         /// The scene name key use in payload as dictionary key.
         /// </summary>
