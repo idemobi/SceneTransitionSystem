@@ -267,19 +267,19 @@ namespace SceneTransitionSystem
 
             // Pick texture and material (and tweak width) based on anti-alias setting.
             Texture2D tex;
-            Material mat;
+           // Material mat;
             if (antiAlias)
             {
                 // Multiplying by three is fine for anti-aliasing width-1 lines, but make a wide "fringe"
                 // for thicker lines, which may or may not be desirable.
                 width = width * 3.0f;
                 tex = aaLineTex;
-                mat = blendMaterial;
+             //   mat = blendMaterial;
             }
             else
             {
                 tex = lineTex;
-                mat = blitMaterial;
+              //  mat = blitMaterial;
             }
 
             float wdx = width * dy / len;
