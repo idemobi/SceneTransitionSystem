@@ -79,6 +79,11 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         public static void LoadPreviousScene()
         {
+            if(PreviousScene.Count == 0)
+            {
+                return;
+            }
+
             Dictionary<string, object> tParams = PreviousScene[PreviousScene.Count - 1];
             object result;
 
