@@ -882,8 +882,7 @@ namespace SceneTransitionSystem
 				// create Game Object?
 				//Debug.Log ("NO PARAMS");
                 GameObject tObjToSpawn = new GameObject (STSConstants.K_TRANSITION_CONTROLLER_OBJECT_NAME);
-				tObjToSpawn.AddComponent<STSTransitionParameters> ();
-				tTransitionParametersScript = (STSTransitionParameters)tObjToSpawn.GetComponent<STSTransitionParameters> ();
+                tTransitionParametersScript = tObjToSpawn.AddComponent<STSTransitionParameters> ();
                 if (DefaultEffectOnEnter != null)
                 {
                     tTransitionParametersScript.EffectOnEnter = DefaultEffectOnEnter.Dupplicate();
