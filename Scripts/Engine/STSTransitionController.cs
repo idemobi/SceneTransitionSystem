@@ -77,7 +77,7 @@ namespace SceneTransitionSystem
 			kSingleton.LoadSceneByNameMethod (sNextSceneName, sLoadSceneMode, sIntermediateSceneName, sPayload);
         }
         //-------------------------------------------------------------------------------------------------------------
-        public static void LoadPreviousScene()
+        public static void LoadPreviousScene(int sStackPayload = 2)
         {
             if(PreviousScene.Count == 0)
             {
@@ -104,7 +104,7 @@ namespace SceneTransitionSystem
 
             // Get Payload Data from PreviousScene - 2
             STSTransitionData tPayLoadData = null;
-            int tIndex = PreviousScene.Count - 2;
+            int tIndex = PreviousScene.Count - sStackPayload;
             if (tIndex >= 0)
             {
                 tParams = PreviousScene[tIndex];
