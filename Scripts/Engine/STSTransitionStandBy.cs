@@ -4,9 +4,7 @@
 // All rights reserved by ideMobi
 //
 //=====================================================================================================================
-
 using UnityEngine;
-
 //=====================================================================================================================
 namespace SceneTransitionSystem
 {
@@ -17,7 +15,7 @@ namespace SceneTransitionSystem
     public class STSTransitionStandBy : MonoBehaviour
     {
         //-------------------------------------------------------------------------------------------------------------
-        [Header ("Intermediate Scene Parameters")]
+        [Header("Intermediate Scene Parameters")]
         [Tooltip("Minimum stand by on transition scene in seconds")]
         public float StandBySeconds = 0.0f;
         [Tooltip("The next scene must be active automatically?")]
@@ -37,7 +35,7 @@ namespace SceneTransitionSystem
             sDestination.CopyIn(this);
         }
         //-------------------------------------------------------------------------------------------------------------
-        public void CopyIn (STSTransitionStandBy sDestination)
+        public void CopyIn(STSTransitionStandBy sDestination)
         {
             sDestination.StandBySeconds = this.StandBySeconds;
             sDestination.AutoLoadNextScene = this.AutoLoadNextScene;

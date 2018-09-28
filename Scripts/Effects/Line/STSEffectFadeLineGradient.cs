@@ -1,12 +1,16 @@
-﻿using System;
+﻿//=====================================================================================================================
+//
+// ideMobi copyright 2018
+// All rights reserved by ideMobi
+//
+//=====================================================================================================================
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Reflection;
-
 using UnityEngine;
-
 //=====================================================================================================================
 namespace SceneTransitionSystem
 {
@@ -25,7 +29,7 @@ namespace SceneTransitionSystem
         public void Prepare(Rect sRect)
         {
             //Debug.Log("STSEffectFadeLine Prepare()");
-            if (ParameterOne<1)
+            if (ParameterOne < 1)
             {
                 ParameterOne = 1;
             }
@@ -134,7 +138,7 @@ namespace SceneTransitionSystem
                     }
                     float tAlpha = (Purcent * (float)ParameterOne) - (float)tIndex + 1;
                     Color tColorLerp = Color.Lerp(TintSecondary, TintPrimary, tAlpha);
-                    Color tFadeColorAlpha = new Color(tColorLerp.r, tColorLerp.g, tColorLerp.b, tAlpha* TintPrimary.a);
+                    Color tFadeColorAlpha = new Color(tColorLerp.r, tColorLerp.g, tColorLerp.b, tAlpha * TintPrimary.a);
                     STSDrawQuad.DrawRect(tTileAlpha.Rectangle, tFadeColorAlpha);
                 }
             }

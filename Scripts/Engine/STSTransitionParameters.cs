@@ -4,11 +4,9 @@
 // All rights reserved by ideMobi
 //
 //=====================================================================================================================
-
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
-
 //=====================================================================================================================
 namespace SceneTransitionSystem
 {
@@ -65,7 +63,7 @@ namespace SceneTransitionSystem
             {
                 if (ExitInProgress == true)
                 {
-                    if (EffectOnExitDup.AnimIsFinished==false)
+                    if (EffectOnExitDup.AnimIsFinished == false)
                     {
                         EffectOnExitDup.DrawMaster(new Rect(0, Screen.height, Screen.width, -Screen.height));
                     }
@@ -127,7 +125,7 @@ namespace SceneTransitionSystem
             PlayInProgress = true;
             EffectOnExitDup = EffectOnExit.GetEffect();
             EffectOnEnterDup = EffectOnEnter.GetEffect();
-            EffectOnEnterDup.StartEffectEnter(new Rect(0, Screen.height, Screen.width, -Screen.height),EffectOnExitDup.TintPrimary,InterEffectDuration);
+            EffectOnEnterDup.StartEffectEnter(new Rect(0, Screen.height, Screen.width, -Screen.height), EffectOnExitDup.TintPrimary, InterEffectDuration);
         }
         //-------------------------------------------------------------------------------------------------------------
         public void PlayExitAndEnterNow()

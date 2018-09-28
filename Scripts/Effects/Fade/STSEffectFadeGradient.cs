@@ -1,12 +1,16 @@
-﻿using System;
+﻿//=====================================================================================================================
+//
+// ideMobi copyright 2018
+// All rights reserved by ideMobi
+//
+//=====================================================================================================================
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Reflection;
-
 using UnityEngine;
-
 //=====================================================================================================================
 namespace SceneTransitionSystem
 {
@@ -26,7 +30,7 @@ namespace SceneTransitionSystem
             {
                 // Do drawing with purcent
                 Color tColorLerp = Color.Lerp(TintSecondary, TintPrimary, Purcent);
-                Color tFadeColorAlpha = new Color(tColorLerp.r, tColorLerp.g, tColorLerp.b, Purcent* TintPrimary.a);
+                Color tFadeColorAlpha = new Color(tColorLerp.r, tColorLerp.g, tColorLerp.b, Purcent * TintPrimary.a);
                 STSDrawQuad.DrawRect(sRect, tFadeColorAlpha);
 
                 //Color tFadeColorAlphaA = new Color(TintPrimary.r, TintPrimary.g, TintPrimary.b, Purcent * TintPrimary.a);

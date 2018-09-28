@@ -4,7 +4,6 @@
 // All rights reserved by ideMobi
 //
 //=====================================================================================================================
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
@@ -14,7 +13,6 @@ using System.Reflection;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-
 //=====================================================================================================================
 namespace SceneTransitionSystem
 {
@@ -138,7 +136,7 @@ namespace SceneTransitionSystem
                 GL.Vertex3(sRect.x, sRect.y, 0);
                 GL.Vertex3(sRect.x, sRect.y + sRect.height, 0);
                 GL.Color(sColorB);
-                GL.Vertex3(sRect.x+ sRect.width / 2.0F, sRect.y + sRect.height/2.0F, 0);
+                GL.Vertex3(sRect.x + sRect.width / 2.0F, sRect.y + sRect.height / 2.0F, 0);
 
                 GL.Color(sColorA);
                 GL.Vertex3(sRect.x + sRect.width, sRect.y + sRect.height, 0);

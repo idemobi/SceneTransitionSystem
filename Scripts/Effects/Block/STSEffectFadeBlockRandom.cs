@@ -1,12 +1,16 @@
-﻿using System;
+﻿//=====================================================================================================================
+//
+// ideMobi copyright 2018
+// All rights reserved by ideMobi
+//
+//=====================================================================================================================
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Reflection;
-
 using UnityEngine;
-
 //=====================================================================================================================
 namespace SceneTransitionSystem
 {
@@ -73,7 +77,7 @@ namespace SceneTransitionSystem
                     STSTile tTileAlpha = Matrix.TilesList[tIndex];
                     float tAlpha = (Purcent * Matrix.TileCount) - (float)tIndex;
                     //Color tColorLerp = Color.Lerp(TintSecondary, TintPrimary, tAlpha);
-                    Color tFadeColorAlpha = new Color(TintPrimary.r, TintPrimary.g, TintPrimary.b, tAlpha*TintPrimary.a);
+                    Color tFadeColorAlpha = new Color(TintPrimary.r, TintPrimary.g, TintPrimary.b, tAlpha * TintPrimary.a);
                     STSDrawQuad.DrawRect(tTileAlpha.Rectangle, tFadeColorAlpha);
                 }
             }

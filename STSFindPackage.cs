@@ -1,12 +1,15 @@
-﻿using System.Collections;
+﻿//=====================================================================================================================
+//
+// ideMobi copyright 2018
+// All rights reserved by ideMobi
+//
+//=====================================================================================================================
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-
 using UnityEngine;
-
 #if UNITY_EDITOR
 using UnityEditor;
-
 //=====================================================================================================================
 namespace SceneTransitionSystem
 {

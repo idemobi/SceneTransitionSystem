@@ -4,9 +4,7 @@
 // All rights reserved by ideMobi
 //
 //=====================================================================================================================
-
 using UnityEngine;
-
 //=====================================================================================================================
 namespace SceneTransitionSystem
 {
@@ -24,7 +22,7 @@ namespace SceneTransitionSystem
         public void Prepare(Rect sRect)
         {
             //Debug.Log("STSEffectFadeLine Prepare()");
-            if (ParameterOne<1)
+            if (ParameterOne < 1)
             {
                 ParameterOne = 1;
             }
@@ -132,7 +130,7 @@ namespace SceneTransitionSystem
                             break;
                     }
                     float tAlpha = (Purcent * (float)ParameterOne) - (float)tIndex + 1;
-                    Color tFadeColorAlpha = new Color(TintPrimary.r, TintPrimary.g, TintPrimary.b, tAlpha* TintPrimary.a);
+                    Color tFadeColorAlpha = new Color(TintPrimary.r, TintPrimary.g, TintPrimary.b, tAlpha * TintPrimary.a);
                     STSDrawQuad.DrawRect(tTileAlpha.Rectangle, tFadeColorAlpha);
                 }
             }

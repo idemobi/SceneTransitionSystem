@@ -4,10 +4,8 @@
 // All rights reserved by ideMobi
 //
 //=====================================================================================================================
-
 using System;
 using System.Collections.Generic;
-
 //=====================================================================================================================
 namespace SceneTransitionSystem
 {
@@ -17,53 +15,53 @@ namespace SceneTransitionSystem
     /// </summary>
     //-----------------------------------------------------------------------------------------------------------------
     public partial class STSTransitionData
-	{
+    {
         //-------------------------------------------------------------------------------------------------------------
-		public string InternalName;
-		public string Title;
-		public string Subtitle;
-		public string Level;
+        public string InternalName;
+        public string Title;
+        public string Subtitle;
+        public string Level;
         //-------------------------------------------------------------------------------------------------------------
         private Dictionary<string, object> DictionaryAsPayload = new Dictionary<string, object>();
         //-------------------------------------------------------------------------------------------------------------
-		public STSTransitionData ()
-		{
+        public STSTransitionData()
+        {
             // Empty!
-	    }
+        }
         //-------------------------------------------------------------------------------------------------------------
-		public STSTransitionData (string sInternalName)
-		{
-			InternalName = sInternalName;
-		}
+        public STSTransitionData(string sInternalName)
+        {
+            InternalName = sInternalName;
+        }
         //-------------------------------------------------------------------------------------------------------------
-		public STSTransitionData (string sInternalName, string sTitle, string sSubtitle, string sLevel)
-		{
-			InternalName = sInternalName;
-			Title = sTitle;
-			Subtitle = sSubtitle;
-			Level = sLevel;
-		}
+        public STSTransitionData(string sInternalName, string sTitle, string sSubtitle, string sLevel)
+        {
+            InternalName = sInternalName;
+            Title = sTitle;
+            Subtitle = sSubtitle;
+            Level = sLevel;
+        }
         //-------------------------------------------------------------------------------------------------------------
-		public STSTransitionData (string sInternalName, string sTitle, string sSubtitle, string sLevel, Dictionary<string, object> sDictionaryAsPayload)
-		{
-			InternalName = sInternalName;
-			Title = sTitle;
-			Subtitle = sSubtitle;
-			Level = sLevel;
-			DictionaryAsPayload = sDictionaryAsPayload;
-		}
+        public STSTransitionData(string sInternalName, string sTitle, string sSubtitle, string sLevel, Dictionary<string, object> sDictionaryAsPayload)
+        {
+            InternalName = sInternalName;
+            Title = sTitle;
+            Subtitle = sSubtitle;
+            Level = sLevel;
+            DictionaryAsPayload = sDictionaryAsPayload;
+        }
         //-------------------------------------------------------------------------------------------------------------
         public void ClearPayLoad()
         {
             DictionaryAsPayload.Clear();
         }
         //-------------------------------------------------------------------------------------------------------------
-		public void AddObjectForKeyInPayload (string sKey, object sObject)
-		{
-			if (DictionaryAsPayload == null)
+        public void AddObjectForKeyInPayload(string sKey, object sObject)
+        {
+            if (DictionaryAsPayload == null)
             {
-				DictionaryAsPayload = new Dictionary<string, object> ();
-			}
+                DictionaryAsPayload = new Dictionary<string, object>();
+            }
             if (DictionaryAsPayload.ContainsKey(sKey))
             {
                 DictionaryAsPayload[sKey] = sObject;
@@ -72,7 +70,7 @@ namespace SceneTransitionSystem
             {
                 DictionaryAsPayload.Add(sKey, sObject);
             }
-		}
+        }
         //-------------------------------------------------------------------------------------------------------------
         //public void AddObjectInPayload(object sObject)
         //{

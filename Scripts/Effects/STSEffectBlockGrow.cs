@@ -4,9 +4,7 @@
 // All rights reserved by ideMobi
 //
 //=====================================================================================================================
-
 using UnityEngine;
-
 //=====================================================================================================================
 namespace SceneTransitionSystem
 {
@@ -160,7 +158,7 @@ namespace SceneTransitionSystem
                                 //Debug.Log("index = " + tIndex + "/" + tIndex + "/ " + TileCount + " ---> loop tLineAlpha =" + tLine + " tColumnAlpha = " + tColumn);
                                 STSTile tTileAlpha = Matrix.GetTile(tLine, tColumn);
                                 float tAlpha = (Purcent * Matrix.TileCount) - (float)tIndex;
-                                Color tFadeColorAlpha = new Color(TintPrimary.r, TintPrimary.g, TintPrimary.b, tAlpha* TintPrimary.a);
+                                Color tFadeColorAlpha = new Color(TintPrimary.r, TintPrimary.g, TintPrimary.b, tAlpha * TintPrimary.a);
                                 STSDrawQuad.DrawRect(tTileAlpha.Rectangle, tFadeColorAlpha);
                             }
                         }

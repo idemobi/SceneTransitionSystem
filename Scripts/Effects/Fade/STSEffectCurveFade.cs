@@ -1,12 +1,16 @@
-﻿using System;
+﻿//=====================================================================================================================
+//
+// ideMobi copyright 2018
+// All rights reserved by ideMobi
+//
+//=====================================================================================================================
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Reflection;
-
 using UnityEngine;
-
 //=====================================================================================================================
 namespace SceneTransitionSystem
 {
@@ -45,7 +49,7 @@ namespace SceneTransitionSystem
             if (Purcent > 0)
             {
                 // Do drawing with purcent
-                Color tFadeColorAlpha = new Color(TintPrimary.r, TintPrimary.g, TintPrimary.b, CurvePurcent* TintPrimary.a);
+                Color tFadeColorAlpha = new Color(TintPrimary.r, TintPrimary.g, TintPrimary.b, CurvePurcent * TintPrimary.a);
                 STSDrawQuad.DrawRect(sRect, tFadeColorAlpha);
             }
             //STSBenchmark.Finish();

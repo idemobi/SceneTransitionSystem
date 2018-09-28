@@ -1,12 +1,16 @@
-﻿using System;
+﻿//=====================================================================================================================
+//
+// ideMobi copyright 2018
+// All rights reserved by ideMobi
+//
+//=====================================================================================================================
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Reflection;
-
 using UnityEngine;
-
 //=====================================================================================================================
 namespace SceneTransitionSystem
 {
@@ -38,7 +42,7 @@ namespace SceneTransitionSystem
     public class STSTintPrimaryAttribute : Attribute
     {
         //-------------------------------------------------------------------------------------------------------------
-        public string Entitlement="Tint Primary";
+        public string Entitlement = "Tint Primary";
         //-------------------------------------------------------------------------------------------------------------
         public STSTintPrimaryAttribute()
         {
@@ -54,7 +58,7 @@ namespace SceneTransitionSystem
     public class STSTintSecondaryAttribute : Attribute
     {
         //-------------------------------------------------------------------------------------------------------------
-        public string Entitlement= "Tint Secondary";
+        public string Entitlement = "Tint Secondary";
         //-------------------------------------------------------------------------------------------------------------
         public STSTintSecondaryAttribute()
         {
@@ -70,7 +74,7 @@ namespace SceneTransitionSystem
     public class STSTexturePrimaryAttribute : Attribute
     {
         //-------------------------------------------------------------------------------------------------------------
-        public string Entitlement= "Texture Primary";
+        public string Entitlement = "Texture Primary";
         //-------------------------------------------------------------------------------------------------------------
         public STSTexturePrimaryAttribute()
         {
@@ -86,7 +90,7 @@ namespace SceneTransitionSystem
     public class STSTextureSecondaryAttribute : Attribute
     {
         //-------------------------------------------------------------------------------------------------------------
-        public string Entitlement= "Texture Secondary";
+        public string Entitlement = "Texture Secondary";
         //-------------------------------------------------------------------------------------------------------------
         public STSTextureSecondaryAttribute()
         {
@@ -326,7 +330,7 @@ namespace SceneTransitionSystem
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     public enum STSClockwise : int
     {
-        Clockwise, 
+        Clockwise,
         Counterclockwise
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -405,7 +409,7 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         public STSEffectType()
         {
-            Curve = AnimationCurve.Linear(0.0F,0.0F,1.0F,1.0F);
+            Curve = AnimationCurve.Linear(0.0F, 0.0F, 1.0F, 1.0F);
         }
         //-------------------------------------------------------------------------------------------------------------
         public STSEffect GetEffect()
@@ -472,7 +476,7 @@ namespace SceneTransitionSystem
             }
             else
             {
-                Curve = AnimationCurve.Linear(0.0F,0.0F,1.0F,1.0F);
+                Curve = AnimationCurve.Linear(0.0F, 0.0F, 1.0F, 1.0F);
             }
         }
         //-------------------------------------------------------------------------------------------------------------
@@ -622,28 +626,28 @@ namespace SceneTransitionSystem
         {
             //if (Event.current.type.Equals(EventType.Repaint))
             //{
-                // Do drawing
-                if (ColorIsFinished == false)
-                {
-                    ColorPurcent += (Time.deltaTime) / ColorDuration;
-                    Color tColor = Color.Lerp(OldColor, TintPrimary, ColorPurcent);
+            // Do drawing
+            if (ColorIsFinished == false)
+            {
+                ColorPurcent += (Time.deltaTime) / ColorDuration;
+                Color tColor = Color.Lerp(OldColor, TintPrimary, ColorPurcent);
                 STSDrawQuad.DrawRect(sRect, tColor);
-                    if (ColorPurcent >= 1)
-                    {
-                        ColorIsPlaying = false;
-                        ColorIsFinished = true;
-                    }
-                }
-                else
+                if (ColorPurcent >= 1)
                 {
-                    if (AnimIsPlaying == true) // play animation
-                    {
-                        // estimate purcent
-                        EstimatePurcent();
-                        //EstimateCurvePurcent();
-                        Draw(sRect);
-                    }
+                    ColorIsPlaying = false;
+                    ColorIsFinished = true;
                 }
+            }
+            else
+            {
+                if (AnimIsPlaying == true) // play animation
+                {
+                    // estimate purcent
+                    EstimatePurcent();
+                    //EstimateCurvePurcent();
+                    Draw(sRect);
+                }
+            }
             //}
         }
         //-------------------------------------------------------------------------------------------------------------

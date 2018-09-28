@@ -1,11 +1,16 @@
-﻿using UnityEngine.Events;
-
+﻿//=====================================================================================================================
+//
+// ideMobi copyright 2018
+// All rights reserved by ideMobi
+//
+//=====================================================================================================================
+using UnityEngine.Events;
 //=====================================================================================================================
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	[System.Serializable]
-	public class STSTransitionLoading : UnityEvent <STSTransitionData, float>
+    [System.Serializable]
+    public class STSTransitionLoading : UnityEvent<STSTransitionData, float>
     {
         //-------------------------------------------------------------------------------------------------------------
 

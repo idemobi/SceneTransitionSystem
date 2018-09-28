@@ -1,12 +1,16 @@
-﻿using System;
+﻿//=====================================================================================================================
+//
+// ideMobi copyright 2018
+// All rights reserved by ideMobi
+//
+//=====================================================================================================================
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Reflection;
-
 using UnityEngine;
-
 //=====================================================================================================================
 namespace SceneTransitionSystem
 {
@@ -77,7 +81,7 @@ namespace SceneTransitionSystem
                     //Color tColorLerp = Color.Lerp(TintSecondary, TintPrimary, tAlpha);
                     //Color tFadeColorAlpha = new Color(TintPrimary.r, TintPrimary.g, TintPrimary.b, tAlpha*TintPrimary.a);
                     //STSTransitionDrawing.DrawRect(tTileAlpha.Rectangle, tFadeColorAlpha);
-                    STSDrawCircle.DrawCircle(tTileAlpha.Rectangle.center,tTileAlpha.Rectangle.width*tAlpha,32, TintPrimary);
+                    STSDrawCircle.DrawCircle(tTileAlpha.Rectangle.center, tTileAlpha.Rectangle.width * tAlpha, 32, TintPrimary);
                 }
             }
             //STSBenchmark.Finish();

@@ -4,7 +4,6 @@
 // All rights reserved by ideMobi
 //
 //=====================================================================================================================
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
@@ -14,7 +13,6 @@ using System.Reflection;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-
 //=====================================================================================================================
 namespace SceneTransitionSystem
 {

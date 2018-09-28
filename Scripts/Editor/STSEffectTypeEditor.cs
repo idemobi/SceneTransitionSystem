@@ -1,16 +1,19 @@
-﻿using System;
+﻿//=====================================================================================================================
+//
+// ideMobi copyright 2018
+// All rights reserved by ideMobi
+//
+//=====================================================================================================================
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Reflection;
-
 using UnityEngine;
-
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditorInternal;
-
 //=====================================================================================================================
 namespace SceneTransitionSystem
 {
@@ -629,7 +632,7 @@ namespace SceneTransitionSystem
                 STSEffectPreview.kEffectPreview.EffectPrepare();
             }
             // button to run in big preview
-            if (GUI.Button(new Rect(position.x + position.width - kSizePreviewButton - kMarge - kSizePreview * 2, tY + 2*(tPopupFieldStyle.fixedHeight + kMarge), kSizePreviewButton, tPopupFieldStyle.fixedHeight),STSConstants.K_RUN_BIG_PREVIEW, tMiniButtonStyle))
+            if (GUI.Button(new Rect(position.x + position.width - kSizePreviewButton - kMarge - kSizePreview * 2, tY + 2 * (tPopupFieldStyle.fixedHeight + kMarge), kSizePreviewButton, tPopupFieldStyle.fixedHeight), STSConstants.K_RUN_BIG_PREVIEW, tMiniButtonStyle))
             {
                 STSEffectPreview.EffectPreviewShow();
                 STSEffectPreview.kEffectPreview.SetEffect(rBigPreview);

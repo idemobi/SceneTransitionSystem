@@ -1,12 +1,16 @@
-﻿using System;
+﻿//=====================================================================================================================
+//
+// ideMobi copyright 2018
+// All rights reserved by ideMobi
+//
+//=====================================================================================================================
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Reflection;
-
 using UnityEngine;
-
 //=====================================================================================================================
 namespace SceneTransitionSystem
 {
@@ -89,7 +93,7 @@ namespace SceneTransitionSystem
                         STSDrawQuad.DrawRect(tA, TintPrimary);
                         STSDrawQuad.DrawRect(tB, TintPrimary);
                     }
-                    
+
                 }
             }
             //STSBenchmark.Finish();

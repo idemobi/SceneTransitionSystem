@@ -1,4 +1,10 @@
-﻿using UnityEngine;
+﻿//=====================================================================================================================
+//
+// ideMobi copyright 2018
+// All rights reserved by ideMobi
+//
+//=====================================================================================================================
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 //=====================================================================================================================
@@ -30,8 +36,8 @@ namespace SceneTransitionSystem
             Matrix = new STSTile[sLine, sColumn];
             TilesList = new List<STSTile>();
             TileCount = 0;
-            Line=sLine;
-            Column=sColumn;
+            Line = sLine;
+            Column = sColumn;
             for (int i = 0; i < sLine; i++)
             {
                 for (int j = 0; j < sColumn; j++)
@@ -60,7 +66,7 @@ namespace SceneTransitionSystem
                 for (int j = 0; j < sColumn; j++)
                 {
                     STSTile tTile = new STSTile();//GetTile(i, j);
-                    tTile.Rectangle = new Rect(sRect.x+j * tX,sRect.y + i * tY, tX, tY);
+                    tTile.Rectangle = new Rect(sRect.x + j * tX, sRect.y + i * tY, tX, tY);
                     Matrix[i, j] = tTile;
                     TilesList.Add(tTile);
                     TileCount++;
@@ -105,7 +111,7 @@ namespace SceneTransitionSystem
         {
             //STSBenchmark.Start();
             int tCount = TilesList.Count;
-            for (int i = 0; i <tCount; i++)
+            for (int i = 0; i < tCount; i++)
             {
                 STSTile tTile = TilesList[i];
                 TilesList.Remove(tTile);
@@ -159,7 +165,7 @@ namespace SceneTransitionSystem
             //STSBenchmark.Finish();
         }
         //-------------------------------------------------------------------------------------------------------------
-        public void OrderList(STSEightCross sDirection , STSClockwise sClosckwise)
+        public void OrderList(STSEightCross sDirection, STSClockwise sClosckwise)
         {
             //STSBenchmark.Start();
             switch (sDirection)

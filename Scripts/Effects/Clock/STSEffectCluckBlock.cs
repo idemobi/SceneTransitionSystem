@@ -1,12 +1,16 @@
-﻿using System;
+﻿//=====================================================================================================================
+//
+// ideMobi copyright 2018
+// All rights reserved by ideMobi
+//
+//=====================================================================================================================
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Reflection;
-
 using UnityEngine;
-
 //=====================================================================================================================
 namespace SceneTransitionSystem
 {
@@ -82,14 +86,14 @@ namespace SceneTransitionSystem
                                     }
                                     if (Purcent > 0.125F)
                                     {
-                                        Vector2 tEa = new Vector2(tX , tY + tHeight - tHeightHalf * Purcent);
-                                        Vector2 tEb = new Vector2(tX , tY + tHeight);
+                                        Vector2 tEa = new Vector2(tX, tY + tHeight - tHeightHalf * Purcent);
+                                        Vector2 tEb = new Vector2(tX, tY + tHeight);
                                         STSDrawTriangle.DrawTriangle(tEa, tEb, tTt, TintPrimary);
                                     }
                                     if (Purcent > 0.250F)
                                     {
-                                        Vector2 tFa = new Vector2(tX , tY + tHeightHalf - tHeightHalf * Purcent);
-                                        Vector2 tFb = new Vector2(tX , tY + tHeightHalf);
+                                        Vector2 tFa = new Vector2(tX, tY + tHeightHalf - tHeightHalf * Purcent);
+                                        Vector2 tFb = new Vector2(tX, tY + tHeightHalf);
                                         STSDrawTriangle.DrawTriangle(tFa, tFb, tTt, TintPrimary);
                                     }
                                     if (Purcent > 0.375F)
@@ -107,19 +111,19 @@ namespace SceneTransitionSystem
                                     if (Purcent > 0.625F)
                                     {
                                         Vector2 tAa = new Vector2(tX + tWidth, tY);
-                                        Vector2 tAb = new Vector2(tX+ tWidth, tY + tHeightHalf * Purcent);
+                                        Vector2 tAb = new Vector2(tX + tWidth, tY + tHeightHalf * Purcent);
                                         STSDrawTriangle.DrawTriangle(tAa, tAb, tTt, TintPrimary);
                                     }
                                     if (Purcent > 0.750F)
                                     {
-                                        Vector2 tBa = new Vector2(tX+ tWidth, tY + tHeightHalf);
-                                        Vector2 tBb = new Vector2(tX+ tWidth, tY + tHeightHalf + tHeightHalf * Purcent);
+                                        Vector2 tBa = new Vector2(tX + tWidth, tY + tHeightHalf);
+                                        Vector2 tBb = new Vector2(tX + tWidth, tY + tHeightHalf + tHeightHalf * Purcent);
                                         STSDrawTriangle.DrawTriangle(tBa, tBb, tTt, TintPrimary);
                                     }
                                     if (Purcent > 0.875F)
                                     {
-                                        Vector2 tCa = new Vector2(tX+ tWidth, tY + tHeight);
-                                        Vector2 tCb = new Vector2(tX+ tWidth - tWidthHalf * Purcent, tY + tHeight);
+                                        Vector2 tCa = new Vector2(tX + tWidth, tY + tHeight);
+                                        Vector2 tCb = new Vector2(tX + tWidth - tWidthHalf * Purcent, tY + tHeight);
                                         STSDrawTriangle.DrawTriangle(tCa, tCb, tTt, TintPrimary);
                                     }
                                 }
