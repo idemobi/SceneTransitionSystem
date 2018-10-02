@@ -545,27 +545,43 @@ namespace SceneTransitionSystem
 				// NEXT SCENE NEED TO BE LOADING
 				//-------------------------------
 				// load next scene async
-				if (IntermediateSceneStandBy.LoadNextSceneStart != null) 
-				{
-					IntermediateSceneStandBy.LoadNextSceneStart.Invoke (TransitionData, 0.0f);
-				}
+				if (IntermediateSceneStandBy.LoadNextSceneStart != null)
+                {
+                    if (IntermediateSceneStandBy.SceneLoadingGauge != null)
+                    {
+                        IntermediateSceneStandBy.SceneLoadingGauge.VerticalValue = 0.0F;
+                        IntermediateSceneStandBy.SceneLoadingGauge.HorizontalValue = 0.0F;
+                    }
+                    IntermediateSceneStandBy.LoadNextSceneStart.Invoke (TransitionData, 0.0F);
+                }
 				AsyncOperation tAsynchroneloadNext;
 				tAsynchroneloadNext = SceneManager.LoadSceneAsync (NextSceneName, tNextSceneMode);
 				tAsynchroneloadNext.allowSceneActivation = false;
 				// load next scene async can send percent :-)
 				while (tAsynchroneloadNext.progress < 0.9f) 
 				{
-					if (IntermediateSceneStandBy.LoadingNextScenePercent != null) 
-					{
-						IntermediateSceneStandBy.LoadingNextScenePercent.Invoke (TransitionData, tAsynchroneloadNext.progress);
-					}
+					if (IntermediateSceneStandBy.LoadingNextScenePercent != null)
+                    {
+                        if (IntermediateSceneStandBy.SceneLoadingGauge != null)
+                        {
+                            IntermediateSceneStandBy.SceneLoadingGauge.VerticalValue = tAsynchroneloadNext.progress;
+                            IntermediateSceneStandBy.SceneLoadingGauge.HorizontalValue = tAsynchroneloadNext.progress;
+                        }
+                        IntermediateSceneStandBy.LoadingNextScenePercent.Invoke (TransitionData, tAsynchroneloadNext.progress);
+
+                    }
 					yield return null;
 				}
 
 				// need to send call back now (anticipate :-/ ) 
-				if (IntermediateSceneStandBy.LoadNextSceneFinish != null) 
-				{
-					IntermediateSceneStandBy.LoadNextSceneFinish.Invoke (TransitionData, 1.0f);
+				if (IntermediateSceneStandBy.LoadNextSceneFinish != null)
+                {
+                    if (IntermediateSceneStandBy.SceneLoadingGauge != null)
+                    {
+                        IntermediateSceneStandBy.SceneLoadingGauge.VerticalValue = 1.0F;
+                        IntermediateSceneStandBy.SceneLoadingGauge.HorizontalValue = 1.0F;
+                    }
+                    IntermediateSceneStandBy.LoadNextSceneFinish.Invoke (TransitionData, 1.0f);
 				}
 
 				// when finish test if transition scene is allways in standby
