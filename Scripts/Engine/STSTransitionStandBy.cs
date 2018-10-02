@@ -39,6 +39,7 @@ namespace SceneTransitionSystem
         {
             sDestination.StandBySeconds = this.StandBySeconds;
             sDestination.AutoLoadNextScene = this.AutoLoadNextScene;
+            sDestination.SceneLoadingGauge = this.SceneLoadingGauge;
             sDestination.LoadNextSceneStart = this.LoadNextSceneStart;
             sDestination.LoadingNextScenePercent = this.LoadingNextScenePercent;
             sDestination.LoadNextSceneFinish = this.LoadNextSceneFinish;
