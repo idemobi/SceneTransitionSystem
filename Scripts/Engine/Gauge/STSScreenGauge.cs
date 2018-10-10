@@ -37,6 +37,15 @@ namespace SceneTransitionSystem
         [Range(0.0F, 1.0F)]
         public float VerticalValue = 1.0F;
         //-------------------------------------------------------------------------------------------------------------
+        [Header("Animation")]
+        public bool Smooth = true;
+        public float Speed = 1.0F;
+        float HorizontalValueInit = 0.0F;
+        float VerticalValueInit = 0.0F;
+        float HorizontalValueTarget = 1.0F;
+        float VerticalValueTarget = 1.0F;
+        float DeltaTimeCounter = 0.0F;
+        //-------------------------------------------------------------------------------------------------------------
         public void SetHidden(bool sValue)
         {
             gameObject.SetActive(!sValue);
@@ -66,6 +75,28 @@ namespace SceneTransitionSystem
             }
         }
         //-------------------------------------------------------------------------------------------------------------
+        public void SetHorizontalValue(float sHorizontalValue, bool sRegress = false)
+        {
+            if (sHorizontalValue < HorizontalValue && sRegress == false)
+            {
+                sHorizontalValue = HorizontalValue;
+            }
+            HorizontalValueInit = HorizontalValue;
+            HorizontalValueTarget = sHorizontalValue;
+            DeltaTimeCounter = 0.0F;
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public void SetVerticalValue(float sVerticalValue, bool sRegress = false)
+        {
+            if (sVerticalValue < VerticalValue && sRegress == false)
+            {
+                sVerticalValue = VerticalValue;
+            }
+            VerticalValueInit = VerticalValue;
+            VerticalValueTarget = sVerticalValue;
+            DeltaTimeCounter = 0.0F;
+        }
+        //-------------------------------------------------------------------------------------------------------------
         void Awake()
         {
             ReDraw();
@@ -73,6 +104,20 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         public void Update()
         {
+            if (Application.isPlaying == true)
+            {
+                if (Smooth == true)
+                {
+                    DeltaTimeCounter += Time.deltaTime * Speed;
+                    HorizontalValue = Mathf.Lerp(HorizontalValueInit, HorizontalValueTarget, DeltaTimeCounter);
+                    VerticalValue = Mathf.Lerp(VerticalValueInit, VerticalValueTarget, DeltaTimeCounter);
+                }
+                else
+                {
+                    HorizontalValue = HorizontalValueTarget;
+                    VerticalValue = VerticalValueTarget;
+                }
+            }
             ReDraw();
         }
         //-------------------------------------------------------------------------------------------------------------

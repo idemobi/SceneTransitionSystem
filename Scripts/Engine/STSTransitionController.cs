@@ -549,8 +549,8 @@ namespace SceneTransitionSystem
                 {
                     if (IntermediateSceneStandBy.SceneLoadingGauge != null)
                     {
-                        IntermediateSceneStandBy.SceneLoadingGauge.VerticalValue = 0.0F;
-                        IntermediateSceneStandBy.SceneLoadingGauge.HorizontalValue = 0.0F;
+                        IntermediateSceneStandBy.SceneLoadingGauge.SetVerticalValue(0.0F);
+                        IntermediateSceneStandBy.SceneLoadingGauge.SetHorizontalValue(0.0F);
                     }
                     IntermediateSceneStandBy.LoadNextSceneStart.Invoke (TransitionData, 0.0F);
                 }
@@ -564,8 +564,8 @@ namespace SceneTransitionSystem
                     {
                         if (IntermediateSceneStandBy.SceneLoadingGauge != null)
                         {
-                            IntermediateSceneStandBy.SceneLoadingGauge.VerticalValue = tAsynchroneloadNext.progress;
-                            IntermediateSceneStandBy.SceneLoadingGauge.HorizontalValue = tAsynchroneloadNext.progress;
+                            IntermediateSceneStandBy.SceneLoadingGauge.SetVerticalValue(tAsynchroneloadNext.progress);
+                            IntermediateSceneStandBy.SceneLoadingGauge.SetHorizontalValue(tAsynchroneloadNext.progress);
                         }
                         IntermediateSceneStandBy.LoadingNextScenePercent.Invoke (TransitionData, tAsynchroneloadNext.progress);
 
@@ -578,8 +578,8 @@ namespace SceneTransitionSystem
                 {
                     if (IntermediateSceneStandBy.SceneLoadingGauge != null)
                     {
-                        IntermediateSceneStandBy.SceneLoadingGauge.VerticalValue = 1.0F;
-                        IntermediateSceneStandBy.SceneLoadingGauge.HorizontalValue = 1.0F;
+                        IntermediateSceneStandBy.SceneLoadingGauge.SetVerticalValue(1.0F);
+                        IntermediateSceneStandBy.SceneLoadingGauge.SetHorizontalValue(1.0F);
                     }
                     IntermediateSceneStandBy.LoadNextSceneFinish.Invoke (TransitionData, 1.0f);
 				}
