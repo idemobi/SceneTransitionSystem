@@ -1,0 +1,12 @@
+{
+    "name": "STSEditorAssembly",
+    "references": [
+        "SceneTransitionSystemAssembly"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
