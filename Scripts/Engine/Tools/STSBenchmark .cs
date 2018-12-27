@@ -1,25 +1,21 @@
-﻿//=====================================================================================================================
+//=====================================================================================================================
 //
-// ideMobi copyright 2018 
+// ideMobi copyright 2017 
 // All rights reserved by ideMobi
 //
 //=====================================================================================================================
+
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.IO;
-using UnityEngine;
 using System.Diagnostics;
-#if UNITY_EDITOR
-using UnityEditor;
-using UnityEditorInternal;
-#endif
+
 //=====================================================================================================================
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    /// <summary>
+    /// 
+    /// </summary>
     public class STSBenchmark
     {
         //-------------------------------------------------------------------------------------------------------------
@@ -40,8 +36,16 @@ namespace SceneTransitionSystem
         {
             StackTrace st = new StackTrace();
             StackFrame sf = st.GetFrame(2);
-            string tMethod = sf.GetMethod().DeclaringType.Name + " " + sf.GetMethod().Name;
+            string tMethod = sf.GetMethod().DeclaringType.Name + " "+ sf.GetMethod().Name;
             return tMethod;
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        protected static UnityEngine.Object GetObject()
+        {
+            //StackTrace st = new StackTrace();
+            //StackFrame sf = st.GetFrame(2);
+            UnityEngine.Object sObject = null;
+            return sObject;
         }
         //-------------------------------------------------------------------------------------------------------------
         public static void Start()
@@ -58,7 +62,7 @@ namespace SceneTransitionSystem
             {
                 cStartDico[sKey] = DateTime.Now;
                 cCounterDico[sKey] = 0;
-                cTagDico[sKey] = "";
+                cTagDico[sKey] = string.Empty;
                 cMaxDico[sKey] = kMaxDefault;
                 cMaxGranDico[sKey] = kMaxPerOperationDefault;
             }
@@ -66,11 +70,11 @@ namespace SceneTransitionSystem
             {
                 cStartDico.Add(sKey, DateTime.Now);
                 cCounterDico.Add(sKey, 0);
-                cTagDico.Add(sKey, "");
+                cTagDico.Add(sKey, string.Empty);
                 cMaxDico.Add(sKey, kMaxDefault);
-                cMaxGranDico.Add(sKey, kMaxPerOperationDefault);
-
+                cMaxGranDico.Add(sKey,kMaxPerOperationDefault);
             }
+            UnityEngine.Debug.Log("benchmark : '" + sKey + " start now!");
         }
         //-------------------------------------------------------------------------------------------------------------
         public static void Tag(string sTag)
@@ -140,7 +144,7 @@ namespace SceneTransitionSystem
                 string tTag = cTagDico[sKey];
                 if (string.IsNullOrEmpty(tTag) == false)
                 {
-                    tTag = " (tag : " + tTag + ")";
+                    tTag = " (tag : "+tTag+")";
                 }
                 float tMax = cMaxDico[sKey];
                 float tMaxGranule = cMaxGranDico[sKey];
@@ -160,8 +164,9 @@ namespace SceneTransitionSystem
                 {
                     if (tCounter == 1)
                     {
-                        UnityEngine.Debug.Log("benchmark : '" + sKey + "'" + tTag + " execute " + tCounter + " operation in <color=" + tMaxColor + ">" +
-                                              rDelta.ToString("F4") + " seconds </color>");
+                        UnityEngine.Debug.Log("benchmark : '" + sKey +"'"+tTag+ " execute " + tCounter +
+                         " operation in <color=" + tMaxColor + ">" +
+                         rDelta.ToString("F3") + " seconds </color>");
                     }
                     else if (tCounter > 1)
                     {
@@ -171,12 +176,15 @@ namespace SceneTransitionSystem
                         {
                             tMaxGranuleColor = "red";
                         }
-                        UnityEngine.Debug.Log("benchmark : '" + sKey + "'" + tTag + " execute " + tCounter + " operations in <color=" + tMaxColor + ">" + rDelta.ToString("F4") +
-                                              " seconds </color>(<color=" + tMaxGranuleColor + ">" + tGranule.ToString("F5") + " seconds per operation</color>)");
+                        UnityEngine.Debug.Log("benchmark : '" + sKey + "'"+tTag+ " execute " + tCounter +
+                         " operations in <color=" + tMaxColor + ">" + rDelta.ToString("F3") +
+                         " seconds </color>(<color="+tMaxGranuleColor+">" + tGranule.ToString("F5") +
+                         " seconds per operation</color>)");
                     }
                     else
                     {
-                        UnityEngine.Debug.Log("benchmark : '" + sKey + "'" + tTag + " execute in <color=" + tMaxColor + ">" + rDelta.ToString("F4") + " seconds </color>");
+                        UnityEngine.Debug.Log("benchmark : '" + sKey + "'"+tTag+ " execute in <color="+tMaxColor+">" +
+                         rDelta.ToString("F3") + " seconds </color>");
                     }
                 }
             }
