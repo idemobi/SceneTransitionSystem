@@ -121,15 +121,15 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         public void EffectRun(float sDuration)
         {
-            Debug.Log("EffectRun sDuration" + sDuration.ToString("F3"));
+            //Debug.Log("EffectRun sDuration" + sDuration.ToString("F3"));
             if (Effect != null)
             {
-                Debug.Log("EffectRun is not null");
+                //Debug.Log("EffectRun is not null");
                 Effect.Purcent = 0;
                 Duration = sDuration;
                 IsPlaying = true;
                 Delta = 0.0F;
-                Debug.Log("Update IsPlaying == true Delta = " + Delta.ToString("F3") + "  /" + Duration.ToString("F3"));
+                //Debug.Log("Update IsPlaying == true Delta = " + Delta.ToString("F3") + "  /" + Duration.ToString("F3"));
             }
         }
         //-------------------------------------------------------------------------------------------------------------
