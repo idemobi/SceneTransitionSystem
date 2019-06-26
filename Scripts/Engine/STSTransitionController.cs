@@ -4,11 +4,13 @@
 // All rights reserved by ideMobi
 //
 //=====================================================================================================================
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using UnityEngine;
+
 //=====================================================================================================================
 namespace SceneTransitionSystem
 {
@@ -860,22 +862,25 @@ namespace SceneTransitionSystem
 			if (PreventUserInteractions == true) 
 			{
 				EventSystem tEventSystem = null;
-				GameObject[] tAllRootObjects = sScene.GetRootGameObjects ();
-				foreach (GameObject tObject in tAllRootObjects) 
-				{
-					if (tObject.GetComponent<EventSystem> () != null) 
-					{
-						tEventSystem = tObject.GetComponent<EventSystem> ();
-					}
-				}
-				if (tEventSystem != null) 
-				{
-					tEventSystem.enabled = sEnable;
-				} 
-				else 
-				{
-					//Debug.Log ("No <EventSystem> type component found in the root Objects. Becarefull!");
-				}
+                if (sScene != null)
+                {
+                    GameObject[] tAllRootObjects = sScene.GetRootGameObjects();
+                    foreach (GameObject tObject in tAllRootObjects)
+                    {
+                        if (tObject.GetComponent<EventSystem>() != null)
+                        {
+                            tEventSystem = tObject.GetComponent<EventSystem>();
+                        }
+                    }
+                    if (tEventSystem != null)
+                    {
+                        tEventSystem.enabled = sEnable;
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning("EventSystemEnable() - Scene is null");
+                }
 			}
         }
         //-------------------------------------------------------------------------------------------------------------
