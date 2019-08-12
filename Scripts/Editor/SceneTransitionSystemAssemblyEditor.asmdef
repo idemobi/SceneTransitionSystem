@@ -1,0 +1,17 @@
+{
+    "name": "SceneTransitionSystemAssemblyEditor",
+    "references": [
+        "GUID:775040031accc4020860cbf222fdb84c"
+    ],
+    "includePlatforms": [
+        "Editor",
+        "WSA"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}
