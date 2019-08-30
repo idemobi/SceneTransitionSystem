@@ -18,11 +18,11 @@ namespace SceneTransitionSystem
         /// <summary>
         /// The name of the transition controller game object in the root scene.
         /// </summary>
-        public static string K_TRANSITION_CONTROLLER_OBJECT_NAME = "STSTransitionControllerObject";
+        public static string K_TRANSITION_CONTROLLER_OBJECT_NAME = "STSControllerObject";
         /// <summary>
         /// The scene name key use in payload as dictionary key.
         /// </summary>
-        public static string K_SCENE_NAME_KEY = "SceneNameKey_88jk7fe";
+        public static string K_SCENE_NAME_KEY = "SceneNameKey_872d7fe";
         /// <summary>
         /// The scene name key use in payload as dictionary key.
         /// </summary>
@@ -39,19 +39,19 @@ namespace SceneTransitionSystem
         /// <summary>
         /// 
         /// </summary>
-        public static string K_NO_LITTLE_PREVIEW = "NoLittlePreviewKey_4frg5yt";
+        public static string K_NO_LITTLE_PREVIEW = "No little preview";
         /// <summary>
         /// 
         /// </summary>
-        public static string K_NO_BIG_PREVIEW = "NoBigPreviewKey_f5eyqu";
+        public static string K_NO_BIG_PREVIEW = "No big preview";
         /// <summary>
         /// 
         /// </summary>
-        public static string K_SHOW_BIG_PREVIEW = "ShowBigPreviewKey_t58595";
+        public static string K_SHOW_BIG_PREVIEW = "Big preview";
         /// <summary>
         /// 
         /// </summary>
-        public static string K_RUN_BIG_PREVIEW = "RunBigPreviewKey_d57d8d";
+        public static string K_RUN_BIG_PREVIEW = "Run big preview";
         //-------------------------------------------------------------------------------------------------------------
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

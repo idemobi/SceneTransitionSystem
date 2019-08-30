@@ -18,14 +18,14 @@
 //namespace SceneTransitionSystem
 //{
 //    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//    [CustomEditor(typeof(STSTransitionCallback))]
-//    public class STSTransitionCallbackEditor : Editor
+//    [CustomEditor(typeof(STSIntermediateCallback))]
+//    public class STSIntermediateCallbackEditor : Editor
 //    {
 //        //-------------------------------------------------------------------------------------------------------------
 //        public override void OnInspectorGUI()
 //        {
-//            STSTransitionCallback tTarget = (STSTransitionCallback)target;
-//            if (tTarget.gameObject.GetComponent<STSTransitionInterface>() != null)
+//            STSIntermediateCallback tTarget = (STSIntermediateCallback)target;
+//            if (tTarget.gameObject.GetComponent<STSIntermediateInterface>() != null)
 //            {
 //                serializedObject.Update();
 //                DrawDefaultInspector();
@@ -33,7 +33,7 @@
 //            }
 //            else
 //            {
-//                EditorGUILayout.HelpBox("Need component with interface ISTSTransitionParameters!", MessageType.Error);
+//                EditorGUILayout.HelpBox("Need component with interface ISTSTransitionStandBy!", MessageType.Error);
 //            }
 //        }
 //        //-------------------------------------------------------------------------------------------------------------

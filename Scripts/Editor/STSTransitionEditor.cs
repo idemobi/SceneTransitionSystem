@@ -18,14 +18,14 @@ using UnityEditorInternal;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    [CustomEditor(typeof(STSTransitionStandByCallback))]
-    public class STSTransitionStandByCallbackEditor : Editor
+    [CustomEditor(typeof(STSTransition))]
+    public class STSTransitionEditor : Editor
     {
         //-------------------------------------------------------------------------------------------------------------
         public override void OnInspectorGUI()
         {
-            STSTransitionStandByCallback tTarget = (STSTransitionStandByCallback)target;
-            if (tTarget.gameObject.GetComponent<ISTSTransitionStandBy>() != null)
+            STSTransition  tTarget = (STSTransition)target;
+            if (tTarget.gameObject.GetComponent<STSTransitionInterface>() != null)
             {
                 serializedObject.Update();
                 DrawDefaultInspector();
@@ -33,7 +33,7 @@ namespace SceneTransitionSystem
             }
             else
             {
-                EditorGUILayout.HelpBox("Need component with interface ISTSTransitionStandBy!", MessageType.Error);
+                EditorGUILayout.HelpBox("Need component with interface ISTSTransitionParameters!", MessageType.Error);
             }
         }
         //-------------------------------------------------------------------------------------------------------------

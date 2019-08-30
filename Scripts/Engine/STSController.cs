@@ -15,10 +15,10 @@ using UnityEngine;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public partial class STSTransitionController : MonoBehaviour, ISTSTransitionParameters, ISTSTransitionStandBy
+    public partial class STSController : MonoBehaviour /*, STSTransitionInterface, STSIntermediateInterface*/
     {
         //-------------------------------------------------------------------------------------------------------------
-        private static STSTransitionController kSingleton = null;
+        private static STSController kSingleton = null;
 
         // initialized or not?
         private bool Initialized = false;
@@ -33,29 +33,34 @@ namespace SceneTransitionSystem
         private STSTransitionData TransitionData;
 
         // Old scene params
-        private STSTransitionParameters OldSceneParams;
-        private STSTransitionStandBy OldStandByParams;
+        private STSTransition OldSceneParams;
+        private STSIntermediate OldStandByParams;
 
         // Previous scene
         private static List<Dictionary<string, object>> PreviousScene = new List<Dictionary<string, object>>();
 
         // Scenes controlled
         private Scene PreviewScene;
-        private STSTransitionParameters PreviewSceneParams;
+        private STSTransition PreviewSceneParams;
+        List<STSTransitionInterface> ListPreviewScene;
 
         private Scene IntermediateScene;
         private string IntermediateSceneName;
-        private STSTransitionParameters IntermediateSceneParams;
-        private STSTransitionStandBy IntermediateSceneStandBy;
+        private STSTransition IntermediateSceneParams;
+        private STSIntermediate IntermediateSceneStandBy;
+        List<STSTransitionInterface> ListIntermediate;
+        List<STSIntermediateInterface> ListIntermediateStandBy;
 
         private Scene NextScene;
         private string NextSceneName;
-        private STSTransitionParameters NextSceneParams;
+        private STSTransition NextSceneParams;
+        List<STSTransitionInterface> ListNextScene;
 
         // Scene load mode
         private LoadSceneMode LoadSceneModeSelected;
 
         private Scene SceneToUnload;
+        List<STSTransitionInterface> ListSceneToUnload;
         //private STSTransitionParameters m_SceneToUnloadParams;
 
         //-------------------------------------------------------------------------------------------------------------
@@ -66,52 +71,52 @@ namespace SceneTransitionSystem
         private float StandByTimer;
         private bool LauchNextScene = false;
         private bool StandByInProgress = false;
-        //-------------------------------------------------------------------------------------------------------------
-        private List<ISTSTransitionParameters> TransitionList = new List<ISTSTransitionParameters>();
-        private List<ISTSTransitionStandBy> StandByList = new List<ISTSTransitionStandBy>();
+        ////-------------------------------------------------------------------------------------------------------------
+        //private List<STSTransitionInterface> TransitionList = new List<STSTransitionInterface>();
+        //private List<STSIntermediateInterface> StandByList = new List<STSIntermediateInterface>();
 
-        private List<ISTSTransitionParameters> OldTransitionList = new List<ISTSTransitionParameters>();
-        private List<ISTSTransitionStandBy> OldStandByList = new List<ISTSTransitionStandBy>();
+        //private List<STSTransitionInterface> OldTransitionList = new List<STSTransitionInterface>();
+        //private List<STSIntermediateInterface> OldStandByList = new List<STSIntermediateInterface>();
         //-------------------------------------------------------------------------------------------------------------
-        public void AddTransitionCallBack(ISTSTransitionParameters sObject)
-        {
-            if (TransitionList.Contains(sObject) == false)
-            {
-                TransitionList.Add(sObject);
-            }
-        }
-        //-------------------------------------------------------------------------------------------------------------
-        public void RemoveTransitionCallBack(ISTSTransitionParameters sObject)
-        {
-            if (TransitionList.Contains(sObject) == true)
-            {
-                TransitionList.Remove(sObject);
-            }
-            if (OldTransitionList.Contains(sObject) == true)
-            {
-                OldTransitionList.Remove(sObject);
-            }
-        }
-        //-------------------------------------------------------------------------------------------------------------
-        public void AddStandByCallBack(ISTSTransitionStandBy sObject)
-        {
-            if (StandByList.Contains(sObject) == false)
-            {
-                StandByList.Add(sObject);
-            }
-        }
-        //-------------------------------------------------------------------------------------------------------------
-        public void RemoveStandByCallBack(ISTSTransitionStandBy sObject)
-        {
-            if (StandByList.Contains(sObject) == true)
-            {
-                StandByList.Remove(sObject);
-            }
-            if (OldStandByList.Contains(sObject) == true)
-            {
-                OldStandByList.Remove(sObject);
-            }
-        }
+        //public void AddTransitionCallBack(STSTransitionInterface sObject)
+        //{
+        //    if (TransitionList.Contains(sObject) == false)
+        //    {
+        //        TransitionList.Add(sObject);
+        //    }
+        //}
+        ////-------------------------------------------------------------------------------------------------------------
+        //public void RemoveTransitionCallBack(STSTransitionInterface sObject)
+        //{
+        //    if (TransitionList.Contains(sObject) == true)
+        //    {
+        //        TransitionList.Remove(sObject);
+        //    }
+        //    if (OldTransitionList.Contains(sObject) == true)
+        //    {
+        //        OldTransitionList.Remove(sObject);
+        //    }
+        //}
+        ////-------------------------------------------------------------------------------------------------------------
+        //public void AddStandByCallBack(STSIntermediateInterface sObject)
+        //{
+        //    if (StandByList.Contains(sObject) == false)
+        //    {
+        //        StandByList.Add(sObject);
+        //    }
+        //}
+        ////-------------------------------------------------------------------------------------------------------------
+        //public void RemoveStandByCallBack(STSIntermediateInterface sObject)
+        //{
+        //    if (StandByList.Contains(sObject) == true)
+        //    {
+        //        StandByList.Remove(sObject);
+        //    }
+        //    if (OldStandByList.Contains(sObject) == true)
+        //    {
+        //        OldStandByList.Remove(sObject);
+        //    }
+        //}
         //-------------------------------------------------------------------------------------------------------------
         // Class method
         public static void LoadScene(string sNextSceneName,
@@ -179,7 +184,7 @@ namespace SceneTransitionSystem
         }
         //-------------------------------------------------------------------------------------------------------------
         // Singleton
-        public static STSTransitionController Singleton()
+        public static STSController Singleton()
         {
             //Debug.Log ("STSTransitionController Singleton()");
             if (kSingleton == null)
@@ -189,15 +194,15 @@ namespace SceneTransitionSystem
                 //spawn object
                 tObjToSpawn = new GameObject(STSConstants.K_TRANSITION_CONTROLLER_OBJECT_NAME);
                 //Add Components
-                tObjToSpawn.AddComponent<STSTransitionController>();
+                tObjToSpawn.AddComponent<STSController>();
                 // keep k_Singleton
-                kSingleton = tObjToSpawn.GetComponent<STSTransitionController>();
+                kSingleton = tObjToSpawn.GetComponent<STSController>();
                 // Init Instance
                 kSingleton.InitInstance();
                 // memorize the init instance
                 kSingleton.Initialized = true;
-                tObjToSpawn.AddComponent<STSTransitionParameters>();
-                tObjToSpawn.AddComponent<STSTransitionStandBy>();
+                tObjToSpawn.AddComponent<STSTransition>();
+                tObjToSpawn.AddComponent<STSIntermediate>();
 
             }
             return kSingleton;
@@ -335,20 +340,20 @@ namespace SceneTransitionSystem
                 {
                     TransitionInProgress = true;
 
-                    List<ISTSTransitionParameters> tTransitionList = TransitionList;
-                    List<ISTSTransitionStandBy> tStandByList = StandByList;
+                    //List<STSTransitionInterface> tTransitionList = TransitionList;
+                    //List<STSIntermediateInterface> tStandByList = StandByList;
 
-                    List<ISTSTransitionParameters> tOldTransitionList = OldTransitionList;
-                    List<ISTSTransitionStandBy> tOldStandByList = OldStandByList;
+                    //List<STSTransitionInterface> tOldTransitionList = OldTransitionList;
+                    //List<STSIntermediateInterface> tOldStandByList = OldStandByList;
 
-                    TransitionList = tOldTransitionList;
-                    StandByList = tOldStandByList;
+                    //TransitionList = tOldTransitionList;
+                    //StandByList = tOldStandByList;
 
-                    OldTransitionList = tTransitionList;
-                    OldStandByList = tStandByList;
+                    //OldTransitionList = tTransitionList;
+                    //OldStandByList = tStandByList;
 
-                    TransitionList.Clear();
-                    StandByList.Clear();
+                    //TransitionList.Clear();
+                    //StandByList.Clear();
 
                     // Save scene param for further use if not a previous scene
                     if (sLoadPreviousScene == false)
@@ -395,10 +400,12 @@ namespace SceneTransitionSystem
         private IEnumerator UnloadSceneAsync()
         {
             //Debug.Log("STSTransitionController UnloadSceneAsync()");
-            STSTransitionParameters tTransitionParametersScript = GetTransitionsParams(SceneToUnload, true);
+            STSTransition tTransitionParametersScript = GetTransitionsParams(SceneToUnload, true);
+
+            ListSceneToUnload = GetTransitionInterface(SceneToUnload);
             // disable the user interactions
             EventSystemEnable(SceneToUnload, false);
-            foreach (ISTSTransitionParameters tParameters in TransitionList)
+            foreach (STSTransitionInterface tParameters in ListSceneToUnload)
             {
                 tParameters.OnTransitionSceneDisable(null);
             }
@@ -407,7 +414,7 @@ namespace SceneTransitionSystem
                 tTransitionParametersScript.Interfaced.OnTransitionSceneDisable(null);
             }
             EventSystemEnable(SceneManager.GetActiveScene(), false);
-            foreach (ISTSTransitionParameters tParameters in TransitionList)
+            foreach (STSTransitionInterface tParameters in ListSceneToUnload)
             {
                 tParameters.OnTransitionSceneWillUnloaded(null);
             }
@@ -429,8 +436,8 @@ namespace SceneTransitionSystem
         {
             //Debug.Log("STSTransitionController LoadSceneByNameAsync()");
             // prepare future old params
-            OldSceneParams = this.GetComponent<STSTransitionParameters>();
-            OldStandByParams = this.GetComponent<STSTransitionStandBy>();
+            OldSceneParams = this.GetComponent<STSTransition>();
+            OldStandByParams = this.GetComponent<STSIntermediate>();
 
             //-------------------------------
             // PREVIEW SCENE PROCESS
@@ -438,13 +445,15 @@ namespace SceneTransitionSystem
             // get params
             PreviewSceneParams = GetTransitionsParams(PreviewScene, true);
             PreviewSceneParams.CopyIn(OldSceneParams);
+            ListPreviewScene = GetTransitionInterface(PreviewScene);
+            Debug.Log("ListPreviewScene count =" + ListPreviewScene.Count);
             // disable the user interactions
             EventSystemPrevent(false);
             if (PreviewSceneParams.Interfaced != null)
             {
                 PreviewSceneParams.Interfaced.OnTransitionSceneDisable(TransitionData);
             }
-            foreach (ISTSTransitionParameters tParameters in OldTransitionList)
+            foreach (STSTransitionInterface tParameters in ListPreviewScene)
             {
                 tParameters.OnTransitionSceneDisable(TransitionData);
             }
@@ -454,7 +463,7 @@ namespace SceneTransitionSystem
                 // calcul estimated second
                 PreviewSceneParams.Interfaced.OnTransitionExitStart(TransitionData);
             }
-            foreach (ISTSTransitionParameters tParameters in OldTransitionList)
+            foreach (STSTransitionInterface tParameters in ListPreviewScene)
             {
                 tParameters.OnTransitionExitStart(TransitionData);
             }
@@ -469,7 +478,7 @@ namespace SceneTransitionSystem
             {
                 PreviewSceneParams.Interfaced.OnTransitionExitFinish(TransitionData);
             }
-            foreach (ISTSTransitionParameters tParameters in OldTransitionList)
+            foreach (STSTransitionInterface tParameters in ListPreviewScene)
             {
                 tParameters.OnTransitionExitFinish(TransitionData);
             }
@@ -524,7 +533,7 @@ namespace SceneTransitionSystem
                         {
                             PreviewSceneParams.Interfaced.OnTransitionSceneWillUnloaded(TransitionData);
                         }
-                        foreach (ISTSTransitionParameters tParameters in OldTransitionList)
+                        foreach (STSTransitionInterface tParameters in ListPreviewScene)
                         {
                             tParameters.OnTransitionSceneWillUnloaded(TransitionData);
                         }
@@ -539,12 +548,14 @@ namespace SceneTransitionSystem
                 IntermediateSceneParams = GetTransitionsParams(IntermediateScene, false);
                 // disable the user interactions until fadein 
                 EventSystemEnable(IntermediateScene, false);
+                ListIntermediate = GetTransitionInterface(IntermediateScene);
+                Debug.Log("ListIntermediate count =" + ListIntermediate.Count);
                 // intermediate scene is loaded
                 if (IntermediateSceneParams.Interfaced != null)
                 {
                     IntermediateSceneParams.Interfaced.OnTransitionSceneLoaded(TransitionData);
                 }
-                foreach (ISTSTransitionParameters tParameters in TransitionList)
+                foreach (STSTransitionInterface tParameters in ListIntermediate)
                 {
                     tParameters.OnTransitionSceneLoaded(TransitionData);
                 }
@@ -553,7 +564,7 @@ namespace SceneTransitionSystem
                 {
                     IntermediateSceneParams.Interfaced.OnTransitionEnterStart(TransitionData);
                 }
-                foreach (ISTSTransitionParameters tParameters in TransitionList)
+                foreach (STSTransitionInterface tParameters in ListIntermediate)
                 {
                     tParameters.OnTransitionEnterStart(TransitionData);
                 }
@@ -568,7 +579,7 @@ namespace SceneTransitionSystem
                 {
                     IntermediateSceneParams.Interfaced.OnTransitionEnterFinish(TransitionData);
                 }
-                foreach (ISTSTransitionParameters tParameters in TransitionList)
+                foreach (STSTransitionInterface tParameters in ListIntermediate)
                 {
                     tParameters.OnTransitionEnterFinish(TransitionData);
                 }
@@ -579,7 +590,7 @@ namespace SceneTransitionSystem
                 {
                     IntermediateSceneParams.Interfaced.OnTransitionSceneEnable(TransitionData);
                 }
-                foreach (ISTSTransitionParameters tParameters in TransitionList)
+                foreach (STSTransitionInterface tParameters in ListIntermediate)
                 {
                     tParameters.OnTransitionSceneEnable(TransitionData);
                 }
@@ -589,7 +600,7 @@ namespace SceneTransitionSystem
                 {
                     IntermediateSceneStandBy.Interfaced.OnStandByStart(IntermediateSceneStandBy);
                 }
-                foreach (ISTSTransitionStandBy tParameters in StandByList)
+                foreach (STSIntermediateInterface tParameters in ListIntermediate)
                 {
                     tParameters.OnStandByStart(IntermediateSceneStandBy);
                 }
@@ -605,6 +616,7 @@ namespace SceneTransitionSystem
                 IntermediateSceneParams = GetTransitionsParams(PreviewScene, true);
                 // And the StandBy params are the preview scene StandBy params
                 IntermediateSceneStandBy = GetStandByParams(PreviewScene);
+                ListIntermediateStandBy = GetIntermediateInterface(PreviewScene);
                 //if (IntermediateSceneStandBy.StandByStart != null) {
                 //                IntermediateSceneStandBy.StandByStart.Invoke (IntermediateSceneStandBy);
                 //}
@@ -612,7 +624,7 @@ namespace SceneTransitionSystem
                 {
                     IntermediateSceneStandBy.Interfaced.OnStandByStart(IntermediateSceneStandBy);
                 }
-                foreach (ISTSTransitionStandBy tParameters in StandByList)
+                foreach (STSIntermediateInterface tParameters in ListIntermediateStandBy)
                 {
                     tParameters.OnStandByStart(IntermediateSceneStandBy);
                 }
@@ -648,11 +660,13 @@ namespace SceneTransitionSystem
                 // NEXT SCENE NEED TO BE LOADING
                 //-------------------------------
                 // load next scene async
+                ListIntermediateStandBy = GetIntermediateInterface(PreviewScene);
+                Debug.Log("ListIntermediateStandBy count =" + ListIntermediateStandBy.Count);
                 if (IntermediateSceneStandBy.Interfaced != null)
                 {
                     IntermediateSceneStandBy.Interfaced.OnLoadNextSceneStart(TransitionData, 0.0F);
                 }
-                foreach (ISTSTransitionStandBy tParameters in StandByList)
+                foreach (STSIntermediateInterface tParameters in ListIntermediateStandBy)
                 {
                     tParameters.OnLoadNextSceneStart(TransitionData, 0.0F);
                 }
@@ -672,7 +686,7 @@ namespace SceneTransitionSystem
                         IntermediateSceneStandBy.Interfaced.OnLoadingNextScenePercent(TransitionData, tAsynchroneloadNext.progress);
 
                     }
-                    foreach (ISTSTransitionStandBy tParameters in StandByList)
+                    foreach (STSIntermediateInterface tParameters in ListIntermediateStandBy)
                     {
                         tParameters.OnLoadingNextScenePercent(TransitionData, tAsynchroneloadNext.progress);
                     }
@@ -689,7 +703,7 @@ namespace SceneTransitionSystem
                 {
                     IntermediateSceneStandBy.Interfaced.OnLoadNextSceneFinish(TransitionData, 1.0f);
                 }
-                foreach (ISTSTransitionStandBy tParameters in StandByList)
+                foreach (STSIntermediateInterface tParameters in ListIntermediateStandBy)
                 {
                     tParameters.OnLoadingNextScenePercent(TransitionData, 1.0F);
                 }
@@ -717,7 +731,7 @@ namespace SceneTransitionSystem
                     {
                         IntermediateSceneStandBy.Interfaced.OnStandByFinish(IntermediateSceneStandBy);
                     }
-                    foreach (ISTSTransitionStandBy tParameters in StandByList)
+                    foreach (STSIntermediateInterface tParameters in ListIntermediateStandBy)
                     {
                         tParameters.OnStandByFinish(IntermediateSceneStandBy);
                     }
@@ -734,7 +748,7 @@ namespace SceneTransitionSystem
                     {
                         IntermediateSceneParams.Interfaced.OnTransitionSceneDisable(TransitionData);
                     }
-                    foreach (ISTSTransitionParameters tParameters in TransitionList)
+                    foreach (STSTransitionInterface tParameters in ListIntermediate)
                     {
                         tParameters.OnTransitionSceneDisable(TransitionData);
                     }
@@ -743,7 +757,7 @@ namespace SceneTransitionSystem
                     {
                         IntermediateSceneParams.Interfaced.OnTransitionEnterStart(TransitionData);
                     }
-                    foreach (ISTSTransitionParameters tParameters in TransitionList)
+                    foreach (STSTransitionInterface tParameters in ListIntermediate)
                     {
                         tParameters.OnTransitionEnterStart(TransitionData);
                     }
@@ -758,7 +772,7 @@ namespace SceneTransitionSystem
                     {
                         IntermediateSceneParams.Interfaced.OnTransitionExitFinish(TransitionData);
                     }
-                    foreach (ISTSTransitionParameters tParameters in TransitionList)
+                    foreach (STSTransitionInterface tParameters in ListIntermediate)
                     {
                         tParameters.OnTransitionExitFinish(TransitionData);
                     }
@@ -768,7 +782,7 @@ namespace SceneTransitionSystem
                     {
                         IntermediateSceneParams.Interfaced.OnTransitionSceneWillUnloaded(TransitionData);
                     }
-                    foreach (ISTSTransitionParameters tParameters in TransitionList)
+                    foreach (STSTransitionInterface tParameters in ListIntermediate)
                     {
                         tParameters.OnTransitionSceneWillUnloaded(TransitionData);
                     }
@@ -787,6 +801,8 @@ namespace SceneTransitionSystem
                 //-------------------------------
                 NextScene = SceneManager.GetSceneByName(NextSceneName);
                 NextSceneParams = GetTransitionsParams(NextScene, false);
+                ListNextScene = GetTransitionInterface(NextScene);
+                Debug.Log("ListNextScene count =" + ListNextScene.Count);
                 // when finish test if transition scene is allways in standby
                 if (IntermediateSceneName != null)
                 {
@@ -805,7 +821,7 @@ namespace SceneTransitionSystem
                     {
                         IntermediateSceneStandBy.Interfaced.OnStandByFinish(IntermediateSceneStandBy);
                     }
-                    foreach (ISTSTransitionStandBy tParameters in StandByList)
+                    foreach (STSIntermediateInterface tParameters in ListIntermediateStandBy)
                     {
                         tParameters.OnStandByFinish(IntermediateSceneStandBy);
                     }
@@ -824,7 +840,7 @@ namespace SceneTransitionSystem
                     {
                         IntermediateSceneParams.Interfaced.OnTransitionSceneDisable(TransitionData);
                     }
-                    foreach (ISTSTransitionParameters tParameters in TransitionList)
+                    foreach (STSTransitionInterface tParameters in ListIntermediate)
                     {
                         tParameters.OnTransitionSceneDisable(TransitionData);
                     }
@@ -834,7 +850,7 @@ namespace SceneTransitionSystem
                     {
                         IntermediateSceneParams.Interfaced.OnTransitionExitStart(TransitionData);
                     }
-                    foreach (ISTSTransitionParameters tParameters in TransitionList)
+                    foreach (STSTransitionInterface tParameters in ListIntermediate)
                     {
                         tParameters.OnTransitionExitStart(TransitionData);
                     }
@@ -846,7 +862,7 @@ namespace SceneTransitionSystem
                     {
                         IntermediateSceneParams.Interfaced.OnTransitionExitFinish(TransitionData);
                     }
-                    foreach (ISTSTransitionParameters tParameters in TransitionList)
+                    foreach (STSTransitionInterface tParameters in ListIntermediate)
                     {
                         tParameters.OnTransitionExitFinish(TransitionData);
                     }
@@ -855,7 +871,7 @@ namespace SceneTransitionSystem
                     {
                         IntermediateSceneParams.Interfaced.OnTransitionSceneWillUnloaded(TransitionData);
                     }
-                    foreach (ISTSTransitionParameters tParameters in TransitionList)
+                    foreach (STSTransitionInterface tParameters in ListIntermediate)
                     {
                         tParameters.OnTransitionSceneWillUnloaded(TransitionData);
                     }
@@ -890,7 +906,7 @@ namespace SceneTransitionSystem
                     {
                         PreviewSceneParams.Interfaced.OnTransitionSceneWillUnloaded(TransitionData);
                     }
-                    foreach (ISTSTransitionParameters tParameters in TransitionList)
+                    foreach (STSTransitionInterface tParameters in ListPreviewScene)
                     {
                         tParameters.OnTransitionSceneWillUnloaded(TransitionData);
                     }
@@ -914,6 +930,9 @@ namespace SceneTransitionSystem
             AudioListenerPrevent();
             // get params
             NextSceneParams = GetTransitionsParams(NextScene, false);
+            ListNextScene = GetTransitionInterface(NextScene);
+            Debug.Log("ListNextScene count =" + ListNextScene.Count);
+            //List<STSTransitionInterface> tListNextScene = GetTransitionInterface(NextScene);
             // disable user interactions on the next scene
             EventSystemEnable(NextScene, false);
             // scene is loaded
@@ -923,8 +942,9 @@ namespace SceneTransitionSystem
                 {
                     NextSceneParams.Interfaced.OnTransitionSceneLoaded(TransitionData);
                 }
-                foreach (ISTSTransitionParameters tParameters in TransitionList)
+                foreach (STSTransitionInterface tParameters in ListNextScene)
                 {
+                    Debug.Log("try OnTransitionSceneLoaded");
                     tParameters.OnTransitionSceneLoaded(TransitionData);
                 }
             }
@@ -934,7 +954,7 @@ namespace SceneTransitionSystem
             {
                 NextSceneParams.Interfaced.OnTransitionEnterStart(TransitionData);
             }
-            foreach (ISTSTransitionParameters tParameters in TransitionList)
+            foreach (STSTransitionInterface tParameters in ListNextScene)
             {
                 tParameters.OnTransitionEnterStart(TransitionData);
             }
@@ -946,7 +966,7 @@ namespace SceneTransitionSystem
             {
                 NextSceneParams.Interfaced.OnTransitionEnterFinish(TransitionData);
             }
-            foreach (ISTSTransitionParameters tParameters in TransitionList)
+            foreach (STSTransitionInterface tParameters in ListNextScene)
             {
                 tParameters.OnTransitionEnterFinish(TransitionData);
             }
@@ -958,7 +978,7 @@ namespace SceneTransitionSystem
             {
                 NextSceneParams.Interfaced.OnTransitionSceneEnable(TransitionData);
             }
-            foreach (ISTSTransitionParameters tParameters in TransitionList)
+            foreach (STSTransitionInterface tParameters in ListNextScene)
             {
                 tParameters.OnTransitionSceneEnable(TransitionData);
             }
@@ -1030,7 +1050,7 @@ namespace SceneTransitionSystem
             if (PreventUserInteractions == true)
             {
                 EventSystem tEventSystem = null;
-                if (sScene != null)
+                if (string.IsNullOrEmpty(sScene.name) == false)
                 {
                     GameObject[] tAllRootObjects = sScene.GetRootGameObjects();
                     foreach (GameObject tObject in tAllRootObjects)
@@ -1051,18 +1071,56 @@ namespace SceneTransitionSystem
                 }
             }
         }
+
         //-------------------------------------------------------------------------------------------------------------
-        private STSTransitionParameters GetTransitionsParams(Scene sScene, bool sStartTransition)
+        private List<STSTransitionInterface> GetTransitionInterface(Scene sScene)
+        {
+            List<STSTransitionInterface> rReturn = new List<STSTransitionInterface>();
+            // if (string.IsNullOrEmpty(sScene.name) == false)
+            {
+                GameObject[] tAllRootObjects = sScene.GetRootGameObjects();
+                foreach (GameObject tObject in tAllRootObjects)
+                {
+                    foreach (STSTransitionInterface tR in GetComponentsInChildren<STSTransitionInterface>())
+                    {
+                        Debug.Log("GetTransitionInterface add one ");
+                        rReturn.Add(tR);
+                    }
+                }
+            }
+            return rReturn;
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        private List<STSIntermediateInterface> GetIntermediateInterface(Scene sScene)
+        {
+            List<STSIntermediateInterface> rReturn = new List<STSIntermediateInterface>();
+            // if (string.IsNullOrEmpty(sScene.name) == false)
+            {
+                GameObject[] tAllRootObjects = sScene.GetRootGameObjects();
+                foreach (GameObject tObject in tAllRootObjects)
+                {
+                    foreach (STSIntermediateInterface tR in GetComponentsInChildren<STSIntermediateInterface>())
+                    {
+                        Debug.Log("GetIntermediateInterface add one ");
+                        rReturn.Add(tR);
+                    }
+                }
+            }
+            return rReturn;
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        private STSTransition GetTransitionsParams(Scene sScene, bool sStartTransition)
         {
             //Debug.Log("STSTransitionController GetTransitionsParams()");
-            STSTransitionParameters tTransitionParametersScript = null;
+            STSTransition tTransitionParametersScript = null;
             GameObject[] tAllRootObjects = sScene.GetRootGameObjects();
             // quick solution?!
             foreach (GameObject tObject in tAllRootObjects)
             {
-                if (tObject.GetComponent<STSTransitionParameters>() != null)
+                if (tObject.GetComponent<STSTransition>() != null)
                 {
-                    tTransitionParametersScript = tObject.GetComponent<STSTransitionParameters>();
+                    tTransitionParametersScript = tObject.GetComponent<STSTransition>();
                     break;
                 }
             }
@@ -1071,9 +1129,9 @@ namespace SceneTransitionSystem
             {
                 foreach (GameObject tObject in tAllRootObjects)
                 {
-                    if (tObject.GetComponentInChildren<STSTransitionParameters>() != null)
+                    if (tObject.GetComponentInChildren<STSTransition>() != null)
                     {
-                        tTransitionParametersScript = tObject.GetComponent<STSTransitionParameters>();
+                        tTransitionParametersScript = tObject.GetComponent<STSTransition>();
                         break;
                     }
                 }
@@ -1084,7 +1142,7 @@ namespace SceneTransitionSystem
                 // create Game Object?
                 //Debug.Log ("NO PARAMS");
                 GameObject tObjToSpawn = new GameObject(STSConstants.K_TRANSITION_CONTROLLER_OBJECT_NAME);
-                tTransitionParametersScript = tObjToSpawn.AddComponent<STSTransitionParameters>();
+                tTransitionParametersScript = tObjToSpawn.AddComponent<STSTransition>();
                 if (DefaultEffectOnEnter != null)
                 {
                     tTransitionParametersScript.EffectOnEnter = DefaultEffectOnEnter.Dupplicate();
@@ -1105,17 +1163,17 @@ namespace SceneTransitionSystem
             return tTransitionParametersScript;
         }
         //-------------------------------------------------------------------------------------------------------------
-        private STSTransitionStandBy GetStandByParams(Scene sScene)
+        private STSIntermediate GetStandByParams(Scene sScene)
         {
             //Debug.Log("STSTransitionController GetStandByParams()");
-            STSTransitionStandBy tTransitionStandByScript = null;
+            STSIntermediate tTransitionStandByScript = null;
             GameObject[] tAllRootObjects = sScene.GetRootGameObjects();
             // quick solution?!
             foreach (GameObject tObject in tAllRootObjects)
             {
-                if (tObject.GetComponent<STSTransitionStandBy>() != null)
+                if (tObject.GetComponent<STSIntermediate>() != null)
                 {
-                    tTransitionStandByScript = tObject.GetComponent<STSTransitionStandBy>();
+                    tTransitionStandByScript = tObject.GetComponent<STSIntermediate>();
                     break;
                 }
             }
@@ -1124,9 +1182,9 @@ namespace SceneTransitionSystem
             {
                 foreach (GameObject tObject in tAllRootObjects)
                 {
-                    if (tObject.GetComponentInChildren<STSTransitionStandBy>() != null)
+                    if (tObject.GetComponentInChildren<STSIntermediate>() != null)
                     {
-                        tTransitionStandByScript = tObject.GetComponent<STSTransitionStandBy>();
+                        tTransitionStandByScript = tObject.GetComponent<STSIntermediate>();
                         break;
                     }
                 }
@@ -1135,8 +1193,8 @@ namespace SceneTransitionSystem
             if (tTransitionStandByScript == null)
             {
                 GameObject tObjToSpawn = new GameObject(STSConstants.K_TRANSITION_CONTROLLER_OBJECT_NAME);
-                tObjToSpawn.AddComponent<STSTransitionStandBy>();
-                tTransitionStandByScript = (STSTransitionStandBy)tObjToSpawn.GetComponent<STSTransitionStandBy>();
+                tObjToSpawn.AddComponent<STSIntermediate>();
+                tTransitionStandByScript = (STSIntermediate)tObjToSpawn.GetComponent<STSIntermediate>();
                 tTransitionStandByScript.StandBySeconds = 5.0f;
                 tTransitionStandByScript.AutoLoadNextScene = true;
             }
@@ -1159,7 +1217,7 @@ namespace SceneTransitionSystem
             return EffectType.AnimIsFinished;
         }
         //-------------------------------------------------------------------------------------------------------------
-        private void AnimationTransitionIn(STSTransitionParameters sThisSceneParameters)
+        private void AnimationTransitionIn(STSTransition sThisSceneParameters)
         {
             //Debug.Log("STSTransitionController AnimationTransitionIn()");
             Color tOldColor = Color.black;
@@ -1178,7 +1236,7 @@ namespace SceneTransitionSystem
             EffectType.StartEffectEnter(new Rect(0, 0, Screen.width, Screen.height), tOldColor, tInterlude);
         }
         //-------------------------------------------------------------------------------------------------------------
-        private void AnimationTransitionOut(STSTransitionParameters sThisSceneParameters)
+        private void AnimationTransitionOut(STSTransition sThisSceneParameters)
         {
             //Debug.Log("STSTransitionController AnimationTransitionOut()");
             EffectType = sThisSceneParameters.EffectOnExit.GetEffect();
@@ -1244,67 +1302,68 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         public void OnTransitionEnterStart(STSTransitionData sData)
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
         //-------------------------------------------------------------------------------------------------------------
         public void OnTransitionEnterFinish(STSTransitionData sData)
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
         //-------------------------------------------------------------------------------------------------------------
         public void OnTransitionExitStart(STSTransitionData sData)
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
         //-------------------------------------------------------------------------------------------------------------
         public void OnTransitionExitFinish(STSTransitionData sData)
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
         //-------------------------------------------------------------------------------------------------------------
         public void OnTransitionSceneLoaded(STSTransitionData sData)
         {
-            throw new System.NotImplementedException();
+            Debug.Log("jhjhkjkhjhk");
+            //throw new System.NotImplementedException();
         }
         //-------------------------------------------------------------------------------------------------------------
         public void OnTransitionSceneEnable(STSTransitionData sData)
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
         //-------------------------------------------------------------------------------------------------------------
         public void OnTransitionSceneDisable(STSTransitionData sData)
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
         //-------------------------------------------------------------------------------------------------------------
         public void OnTransitionSceneWillUnloaded(STSTransitionData sData)
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
         //-------------------------------------------------------------------------------------------------------------
         public void OnLoadNextSceneStart(STSTransitionData sData, float sPercent)
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
         //-------------------------------------------------------------------------------------------------------------
         public void OnLoadingNextScenePercent(STSTransitionData sData, float sPercent)
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
         //-------------------------------------------------------------------------------------------------------------
         public void OnLoadNextSceneFinish(STSTransitionData sData, float sPercent)
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
         //-------------------------------------------------------------------------------------------------------------
-        public void OnStandByStart(STSTransitionStandBy sStandBy)
+        public void OnStandByStart(STSIntermediate sStandBy)
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
         //-------------------------------------------------------------------------------------------------------------
-        public void OnStandByFinish(STSTransitionStandBy sStandBy)
+        public void OnStandByFinish(STSIntermediate sStandBy)
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
         //-------------------------------------------------------------------------------------------------------------
     }

@@ -9,19 +9,19 @@ using UnityEngine;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public interface ISTSTransitionStandBy
+    public interface STSIntermediateInterface
     {
         void OnLoadNextSceneStart(STSTransitionData sData, float sPercent);
         void OnLoadingNextScenePercent(STSTransitionData sData, float sPercent);
         void OnLoadNextSceneFinish(STSTransitionData sData, float sPercent);
-        void OnStandByStart(STSTransitionStandBy sStandBy);
-        void OnStandByFinish(STSTransitionStandBy sStandBy);
+        void OnStandByStart(STSIntermediate sStandBy);
+        void OnStandByFinish(STSIntermediate sStandBy);
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     /// <summary>
     /// STS Transition standby script. Use during the wating to load in intermediary scene.
     /// </summary>
-    public class STSTransitionStandBy : MonoBehaviour
+    public class STSIntermediate : MonoBehaviour
     {
         //-------------------------------------------------------------------------------------------------------------
         [Header("Intermediate Scene Parameters")]
@@ -32,7 +32,7 @@ namespace SceneTransitionSystem
         //[Tooltip("The gauge to use in canvas")]
         //public STSScreenGauge SceneLoadingGauge;
         //[Header("Interfaced")]
-        public ISTSTransitionStandBy Interfaced;
+        public STSIntermediateInterface Interfaced;
 
         //[Header("Next scene loading progress callbacks")]
         //public STSTransitionLoading LoadNextSceneStart;
@@ -42,12 +42,12 @@ namespace SceneTransitionSystem
         //public STSStandByEvent StandByStart;
         //public STSStandByEvent StandByFinish;
         //-------------------------------------------------------------------------------------------------------------
-        public void CopyFrom(STSTransitionStandBy sDestination)
+        public void CopyFrom(STSIntermediate sDestination)
         {
             sDestination.CopyIn(this);
         }
         //-------------------------------------------------------------------------------------------------------------
-        public void CopyIn(STSTransitionStandBy sDestination)
+        public void CopyIn(STSIntermediate sDestination)
         {
             sDestination.StandBySeconds = this.StandBySeconds;
             sDestination.AutoLoadNextScene = this.AutoLoadNextScene;
@@ -62,12 +62,12 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         public void FinishStandByAction()
         {
-            STSTransitionController.Singleton().FinishStandBy();
+            STSController.Singleton().FinishStandBy();
         }
         //-------------------------------------------------------------------------------------------------------------
         void Start()
         {
-            Interfaced = GetComponent<ISTSTransitionStandBy>();
+            Interfaced = GetComponent<STSIntermediateInterface>();
         }
         //-------------------------------------------------------------------------------------------------------------
     }

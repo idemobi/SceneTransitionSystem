@@ -12,17 +12,17 @@
 //    /// <summary>
 //    /// STS Transition standby script. Use during the waiting to load in intermediary scene.
 //    /// </summary>
-//    public class STSTransitionCallback : MonoBehaviour
+//    public class STSIntermediateCallback : MonoBehaviour
 //    {
 //        //-------------------------------------------------------------------------------------------------------------
-//        public STSTransitionInterface Interfaced;
+//        public STSIntermediateInterface Interfaced;
 //        //-------------------------------------------------------------------------------------------------------------
 //        void Start()
 //        {
-//            Interfaced = GetComponent<STSTransitionInterface>();
+//            Interfaced = GetComponent<STSIntermediateInterface>();
 //            //if (Interfaced != null)
 //            //{
-//            //    STSTransitionController.Singleton().AddTransitionCallBack(Interfaced);
+//            //    STSTransitionController.Singleton().AddStandByCallBack(Interfaced);
 //            //}
 //        }
 //        //-------------------------------------------------------------------------------------------------------------
@@ -30,7 +30,7 @@
 //        {
 //            //if (Interfaced != null)
 //            //{
-//            //    STSTransitionController.Singleton().RemoveTransitionCallBack(Interfaced);
+//            //    STSTransitionController.Singleton().RemoveStandByCallBack(Interfaced);
 //            //}
 //        }
 //        //-------------------------------------------------------------------------------------------------------------

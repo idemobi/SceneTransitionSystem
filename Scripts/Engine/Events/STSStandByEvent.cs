@@ -10,7 +10,7 @@ namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     [System.Serializable]
-    public class STSStandByEvent : UnityEvent<STSTransitionStandBy>
+    public class STSStandByEvent : UnityEvent<STSIntermediate>
     {
         //-------------------------------------------------------------------------------------------------------------
 

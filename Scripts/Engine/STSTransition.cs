@@ -11,7 +11,7 @@ using UnityEngine.SceneManagement;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public interface ISTSTransitionParameters
+    public interface STSTransitionInterface
     {
         void OnTransitionEnterStart(STSTransitionData sData);
         void OnTransitionEnterFinish(STSTransitionData sData);
@@ -23,7 +23,7 @@ namespace SceneTransitionSystem
         void OnTransitionSceneWillUnloaded(STSTransitionData sData);
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public class STSTransitionParameters : MonoBehaviour
+    public class STSTransition : MonoBehaviour
     {
         //-------------------------------------------------------------------------------------------------------------
         [Header("On enter scene effect")]
@@ -33,10 +33,10 @@ namespace SceneTransitionSystem
         public float InterEffectDuration = 0.50F;
         [Header("On exit scene effect")]
         public STSEffectType EffectOnExit;
-        public STSScreenGauge SceneLoadingGauge;
+        //public STSScreenGauge SceneLoadingGauge;
         //-------------------------------------------------------------------------------------------------------------
         //[Header("Interfaced")]
-        public ISTSTransitionParameters Interfaced;
+        public STSTransitionInterface Interfaced;
         //[Header("On enter effect callback")]
         //public STSTransitionEvent OnEnterStart;
         //public STSTransitionEvent OnEnterFinish;
@@ -59,12 +59,12 @@ namespace SceneTransitionSystem
         void Awake()
         {
             // test if Transition controller exist
-            STSTransitionController.Singleton();
+            STSController.Singleton();
         }
         //-------------------------------------------------------------------------------------------------------------
         void Start()
         {
-            Interfaced = GetComponent<ISTSTransitionParameters>();
+            Interfaced = GetComponent<STSTransitionInterface>();
         }
         //-------------------------------------------------------------------------------------------------------------
         void Update()
@@ -206,14 +206,14 @@ namespace SceneTransitionSystem
             }
         }
         //-------------------------------------------------------------------------------------------------------------
-        public void CopyIn(STSTransitionParameters sDestination)
+        public void CopyIn(STSTransition sDestination)
         {
             sDestination.EffectOnEnter = this.EffectOnEnter.Dupplicate();
             sDestination.InterEffectDuration = this.InterEffectDuration;
             sDestination.EffectOnExit = this.EffectOnExit.Dupplicate();
 
             sDestination.Interfaced = this.Interfaced;
-            sDestination.SceneLoadingGauge = this.SceneLoadingGauge;
+            //sDestination.SceneLoadingGauge = this.SceneLoadingGauge;
 
             //sDestination.OnEnterStart = this.OnEnterStart;
             //sDestination.OnEnterFinish = this.OnEnterFinish;

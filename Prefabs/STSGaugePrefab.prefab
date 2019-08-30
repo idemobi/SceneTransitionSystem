@@ -57,9 +57,9 @@ MonoBehaviour:
   ImageFill: {fileID: 114262894392196414}
   ImageOverLay: {fileID: 114734331586215936}
   HorizontalExpand: 1
-  HorizontalMin: 30
+  HorizontalMin: 0
   VerticalExpand: 0
-  VerticalMin: 30
+  VerticalMin: 0
   HorizontalValue: 0
   VerticalValue: 0
   Smooth: 1

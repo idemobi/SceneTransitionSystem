@@ -209,7 +209,7 @@ namespace SceneTransitionSystem
             }
             else
             {
-                Debug.Log("effect is null");
+                //Debug.Log("effect is null");
             }
         }
         //-------------------------------------------------------------------------------------------------------------
