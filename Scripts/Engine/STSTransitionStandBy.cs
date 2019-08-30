@@ -14,7 +14,6 @@ namespace SceneTransitionSystem
         void OnLoadNextSceneStart(STSTransitionData sData, float sPercent);
         void OnLoadingNextScenePercent(STSTransitionData sData, float sPercent);
         void OnLoadNextSceneFinish(STSTransitionData sData, float sPercent);
-
         void OnStandByStart(STSTransitionStandBy sStandBy);
         void OnStandByFinish(STSTransitionStandBy sStandBy);
     }
