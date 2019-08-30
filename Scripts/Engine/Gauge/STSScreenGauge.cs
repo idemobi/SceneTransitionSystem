@@ -15,7 +15,7 @@ using UnityEditor;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    [RequireComponent(typeof(Image))]
+    [RequireComponent(typeof(Image), typeof(CanvasGroup))]
     [ExecuteInEditMode]
     public class STSScreenGauge : MonoBehaviour
     {
@@ -40,6 +40,9 @@ namespace SceneTransitionSystem
         [Header("Animation")]
         public bool Smooth = true;
         public float Speed = 1.0F;
+        public float SpeedHidden = 0.10F;
+        private bool Hidden = false;
+        private CanvasGroup Layer;
         float HorizontalValueInit = 0.0F;
         float VerticalValueInit = 0.0F;
         float HorizontalValueTarget = 1.0F;
@@ -48,7 +51,7 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         public void SetHidden(bool sValue)
         {
-            gameObject.SetActive(!sValue);
+            Hidden = sValue;
         }
         //-------------------------------------------------------------------------------------------------------------
         public void CheckHorizontalValue()
@@ -97,8 +100,9 @@ namespace SceneTransitionSystem
             DeltaTimeCounter = 0.0F;
         }
         //-------------------------------------------------------------------------------------------------------------
-        void Awake()
+        void OnEnable()
         {
+            Layer = gameObject.GetComponent<CanvasGroup>();
             ReDraw();
         }
         //-------------------------------------------------------------------------------------------------------------
@@ -111,6 +115,14 @@ namespace SceneTransitionSystem
                     DeltaTimeCounter += Time.deltaTime * Speed;
                     HorizontalValue = Mathf.Lerp(HorizontalValueInit, HorizontalValueTarget, DeltaTimeCounter);
                     VerticalValue = Mathf.Lerp(VerticalValueInit, VerticalValueTarget, DeltaTimeCounter);
+                    if (Hidden == true && Layer.alpha > 0.0F)
+                    {
+                        Layer.alpha -= Time.deltaTime * SpeedHidden;
+                    }
+                    else if (Hidden == false && Layer.alpha < 1.0F)
+                    {
+                        Layer.alpha += Time.deltaTime * SpeedHidden;
+                    }
                 }
                 else
                 {

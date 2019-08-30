@@ -29,7 +29,7 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         public void Prepare(Rect sRect)
         {
-            Debug.Log("STSEffectFadeLine Prepare()");
+            //Debug.Log("STSEffectFadeLine Prepare()");
             ParameterOne = 1;
             if (ParameterTwo < 1)
             {

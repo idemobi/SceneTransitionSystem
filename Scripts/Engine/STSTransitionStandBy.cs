@@ -29,8 +29,8 @@ namespace SceneTransitionSystem
         public float StandBySeconds = 0.0f;
         [Tooltip("The next scene must be active automatically?")]
         public bool AutoLoadNextScene = true;
-        [Tooltip("The gauge to use in canvas")]
-        public STSScreenGauge SceneLoadingGauge;
+        //[Tooltip("The gauge to use in canvas")]
+        //public STSScreenGauge SceneLoadingGauge;
         //[Header("Interfaced")]
         public ISTSTransitionStandBy Interfaced;
 
@@ -51,7 +51,7 @@ namespace SceneTransitionSystem
         {
             sDestination.StandBySeconds = this.StandBySeconds;
             sDestination.AutoLoadNextScene = this.AutoLoadNextScene;
-            sDestination.SceneLoadingGauge = this.SceneLoadingGauge;
+            //sDestination.SceneLoadingGauge = this.SceneLoadingGauge;
             sDestination.Interfaced = this.Interfaced;
             //sDestination.LoadNextSceneStart = this.LoadNextSceneStart;
             //sDestination.LoadingNextScenePercent = this.LoadingNextScenePercent;

@@ -33,6 +33,7 @@ namespace SceneTransitionSystem
         public float InterEffectDuration = 0.50F;
         [Header("On exit scene effect")]
         public STSEffectType EffectOnExit;
+        public STSScreenGauge SceneLoadingGauge;
         //-------------------------------------------------------------------------------------------------------------
         //[Header("Interfaced")]
         public ISTSTransitionParameters Interfaced;
@@ -212,6 +213,7 @@ namespace SceneTransitionSystem
             sDestination.EffectOnExit = this.EffectOnExit.Dupplicate();
 
             sDestination.Interfaced = this.Interfaced;
+            sDestination.SceneLoadingGauge = this.SceneLoadingGauge;
 
             //sDestination.OnEnterStart = this.OnEnterStart;
             //sDestination.OnEnterFinish = this.OnEnterFinish;

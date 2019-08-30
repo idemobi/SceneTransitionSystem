@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 114818321475558314}
   - component: {fileID: 222764447192783764}
   - component: {fileID: 114832741906016304}
+  - component: {fileID: 8250247350925257272}
   m_Layer: 5
   m_Name: STSGaugePrefab
   m_TagString: Untagged
@@ -59,10 +60,11 @@ MonoBehaviour:
   HorizontalMin: 30
   VerticalExpand: 0
   VerticalMin: 30
-  HorizontalValue: 0.14
-  VerticalValue: 1
+  HorizontalValue: 0
+  VerticalValue: 0
   Smooth: 1
-  Speed: 1
+  Speed: 5
+  SpeedHidden: 1
 --- !u!222 &222764447192783764
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -101,6 +103,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!225 &8250247350925257272
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1041283210422174}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1314243170875904
 GameObject:
   m_ObjectHideFlags: 0
