@@ -90,7 +90,7 @@ namespace SceneTransitionSystem
                         //}
                         if (Interfaced != null)
                         {
-                           Interfaced.OnTransitionExitFinish(null);
+                            Interfaced.OnTransitionExitFinish(null);
                         }
                         if (ExitAndEnterInProgress == true)
                         {
@@ -118,7 +118,7 @@ namespace SceneTransitionSystem
                         //}
                         if (Interfaced != null)
                         {
-                           Interfaced.OnTransitionEnterFinish(null);
+                            Interfaced.OnTransitionEnterFinish(null);
                         }
                     }
                 }
@@ -133,7 +133,7 @@ namespace SceneTransitionSystem
             //}
             if (Interfaced != null)
             {
-               Interfaced.OnTransitionExitStart(null);
+                Interfaced.OnTransitionExitStart(null);
             }
             ExitInProgress = true;
             PlayInProgress = true;
