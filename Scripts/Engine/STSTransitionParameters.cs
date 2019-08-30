@@ -13,14 +13,14 @@ namespace SceneTransitionSystem
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     public interface ISTSTransitionParameters
     {
-        void OnTransitionEnterStart();
-        void OnTransitionEnterFinish();
-        void OnTransitionExitStart();
-        void OnTransitionExitFinish();
-        void OnTransitionSceneLoaded();
-        void OnTransitionSceneEnable();
-        void OnTransitionSceneDisable();
-        void OnTransitionSceneWillUnloaded();
+        void OnTransitionEnterStart(STSTransitionData sData);
+        void OnTransitionEnterFinish(STSTransitionData sData);
+        void OnTransitionExitStart(STSTransitionData sData);
+        void OnTransitionExitFinish(STSTransitionData sData);
+        void OnTransitionSceneLoaded(STSTransitionData sData);
+        void OnTransitionSceneEnable(STSTransitionData sData);
+        void OnTransitionSceneDisable(STSTransitionData sData);
+        void OnTransitionSceneWillUnloaded(STSTransitionData sData);
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     public class STSTransitionParameters : MonoBehaviour
@@ -36,17 +36,17 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         [Header("Interfaced")]
         public ISTSTransitionParameters Interfaced;
-        [Header("On enter effect callback")]
-        public STSTransitionEvent OnEnterStart;
-        public STSTransitionEvent OnEnterFinish;
-        [Header("On exit effect callback")]
-        public STSTransitionEvent OnExitStart;
-        public STSTransitionEvent OnExitFinish;
-        [Header("This Scene state callback")]
-        public STSTransitionEvent ThisSceneLoaded;
-        public STSTransitionEvent ThisSceneEnable;
-        public STSTransitionEvent ThisSceneDisable;
-        public STSTransitionEvent ThisSceneWillUnloaded;
+        //[Header("On enter effect callback")]
+        //public STSTransitionEvent OnEnterStart;
+        //public STSTransitionEvent OnEnterFinish;
+        //[Header("On exit effect callback")]
+        //public STSTransitionEvent OnExitStart;
+        //public STSTransitionEvent OnExitFinish;
+        //[Header("This Scene state callback")]
+        //public STSTransitionEvent ThisSceneLoaded;
+        //public STSTransitionEvent ThisSceneEnable;
+        //public STSTransitionEvent ThisSceneDisable;
+        //public STSTransitionEvent ThisSceneWillUnloaded;
         //-------------------------------------------------------------------------------------------------------------
         private STSEffect EffectOnEnterDup;
         private STSEffect EffectOnExitDup;
@@ -84,9 +84,13 @@ namespace SceneTransitionSystem
                     else
                     {
                         ExitInProgress = false;
-                        if (OnExitFinish != null)
+                        //if (OnExitFinish != null)
+                        //{
+                        //    OnExitFinish.Invoke(null);
+                        //}
+                        if (Interfaced != null)
                         {
-                            OnExitFinish.Invoke(null);
+                           Interfaced.OnTransitionExitFinish(null);
                         }
                         if (ExitAndEnterInProgress == true)
                         {
@@ -108,9 +112,13 @@ namespace SceneTransitionSystem
                     {
                         EnterInProgress = false;
                         ExitAndEnterInProgress = false; // anyway
-                        if (OnEnterFinish != null)
+                        //if (OnEnterFinish != null)
+                        //{
+                        //    OnEnterFinish.Invoke(null);
+                        //}
+                        if (Interfaced != null)
                         {
-                            OnEnterFinish.Invoke(null);
+                           Interfaced.OnTransitionEnterFinish(null);
                         }
                     }
                 }
@@ -119,9 +127,13 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         public void PlayExitNow()
         {
-            if (OnExitStart != null)
+            //if (OnExitStart != null)
+            //{
+            //    OnExitStart.Invoke(null);
+            //}
+            if (Interfaced != null)
             {
-                OnExitStart.Invoke(null);
+               Interfaced.OnTransitionExitStart(null);
             }
             ExitInProgress = true;
             PlayInProgress = true;
@@ -131,9 +143,13 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         public void PlayEnterNow()
         {
-            if (OnEnterStart != null)
+            //if (OnxEnterStart != null)
+            //{
+            //    OnEnterStart.Invoke(null);
+            //}
+            if (Interfaced != null)
             {
-                OnEnterStart.Invoke(null);
+                Interfaced.OnTransitionEnterStart(null);
             }
             EnterInProgress = true;
             PlayInProgress = true;
@@ -193,17 +209,19 @@ namespace SceneTransitionSystem
         {
             sDestination.EffectOnEnter = this.EffectOnEnter.Dupplicate();
             sDestination.InterEffectDuration = this.InterEffectDuration;
-
             sDestination.EffectOnExit = this.EffectOnExit.Dupplicate();
-            sDestination.OnEnterStart = this.OnEnterStart;
-            sDestination.OnEnterFinish = this.OnEnterFinish;
-            sDestination.OnExitStart = this.OnExitStart;
-            sDestination.OnExitFinish = this.OnExitFinish;
 
-            sDestination.ThisSceneLoaded = this.ThisSceneLoaded;
-            sDestination.ThisSceneEnable = this.ThisSceneEnable;
-            sDestination.ThisSceneDisable = this.ThisSceneDisable;
-            sDestination.ThisSceneWillUnloaded = this.ThisSceneWillUnloaded;
+            sDestination.Interfaced = this.Interfaced;
+
+            //sDestination.OnEnterStart = this.OnEnterStart;
+            //sDestination.OnEnterFinish = this.OnEnterFinish;
+            //sDestination.OnExitStart = this.OnExitStart;
+            //sDestination.OnExitFinish = this.OnExitFinish;
+
+            //sDestination.ThisSceneLoaded = this.ThisSceneLoaded;
+            //sDestination.ThisSceneEnable = this.ThisSceneEnable;
+            //sDestination.ThisSceneDisable = this.ThisSceneDisable;
+            //sDestination.ThisSceneWillUnloaded = this.ThisSceneWillUnloaded;
 
         }
         //--------------------------------------------------------------------------------------------------------------

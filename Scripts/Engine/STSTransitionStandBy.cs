@@ -9,6 +9,16 @@ using UnityEngine;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    public interface ISTSTransitionStandBy
+    {
+        void OnLoadNextSceneStart(STSTransitionData sData, float sPercent);
+        void OnLoadingNextScenePercent(STSTransitionData sData, float sPercent);
+        void OnLoadNextSceneFinish(STSTransitionData sData, float sPercent);
+
+        void OnStandByStart(STSTransitionStandBy sStandBy);
+        void OnStandByFinish(STSTransitionStandBy sStandBy);
+    }
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     /// <summary>
     /// STS Transition standby script. Use during the wating to load in intermediary scene.
     /// </summary>
@@ -22,13 +32,16 @@ namespace SceneTransitionSystem
         public bool AutoLoadNextScene = true;
         [Tooltip("The gauge to use in canvas")]
         public STSScreenGauge SceneLoadingGauge;
-        [Header("Next scene loading progress callbacks")]
-        public STSTransitionLoading LoadNextSceneStart;
-        public STSTransitionLoading LoadingNextScenePercent;
-        public STSTransitionLoading LoadNextSceneFinish;
-        [Header("Stand by callbacks")]
-        public STSStandByEvent StandByStart;
-        public STSStandByEvent StandByFinish;
+        [Header("Interfaced")]
+        public ISTSTransitionParameters Interfaced;
+
+        //[Header("Next scene loading progress callbacks")]
+        //public STSTransitionLoading LoadNextSceneStart;
+        //public STSTransitionLoading LoadingNextScenePercent;
+        //public STSTransitionLoading LoadNextSceneFinish;
+        //[Header("Stand by callbacks")]
+        //public STSStandByEvent StandByStart;
+        //public STSStandByEvent StandByFinish;
         //-------------------------------------------------------------------------------------------------------------
         public void CopyFrom(STSTransitionStandBy sDestination)
         {
@@ -40,11 +53,12 @@ namespace SceneTransitionSystem
             sDestination.StandBySeconds = this.StandBySeconds;
             sDestination.AutoLoadNextScene = this.AutoLoadNextScene;
             sDestination.SceneLoadingGauge = this.SceneLoadingGauge;
-            sDestination.LoadNextSceneStart = this.LoadNextSceneStart;
-            sDestination.LoadingNextScenePercent = this.LoadingNextScenePercent;
-            sDestination.LoadNextSceneFinish = this.LoadNextSceneFinish;
-            sDestination.StandByStart = this.StandByStart;
-            sDestination.StandByFinish = this.StandByFinish;
+            sDestination.Interfaced = this.Interfaced;
+            //sDestination.LoadNextSceneStart = this.LoadNextSceneStart;
+            //sDestination.LoadingNextScenePercent = this.LoadingNextScenePercent;
+            //sDestination.LoadNextSceneFinish = this.LoadNextSceneFinish;
+            //sDestination.StandByStart = this.StandByStart;
+            //sDestination.StandByFinish = this.StandByFinish;
         }
         //-------------------------------------------------------------------------------------------------------------
         public void FinishStandByAction()

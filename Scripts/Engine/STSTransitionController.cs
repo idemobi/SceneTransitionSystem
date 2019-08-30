@@ -336,15 +336,23 @@ namespace SceneTransitionSystem
 			STSTransitionParameters tTransitionParametersScript = GetTransitionsParams (SceneToUnload, true);
 			// disable the user interactions
 			EventSystemEnable (SceneToUnload, false);
-			if (tTransitionParametersScript.ThisSceneDisable != null)
+			//if (tTransitionParametersScript.ThisSceneDisable != null)
+			//{
+			//	tTransitionParametersScript.ThisSceneDisable.Invoke (null);
+			//}
+            if (tTransitionParametersScript.Interfaced != null)
 			{
-				tTransitionParametersScript.ThisSceneDisable.Invoke (null);
+				tTransitionParametersScript.Interfaced.OnTransitionSceneDisable(null);
 			}
 			EventSystemEnable (SceneManager.GetActiveScene (), false);
 			// send message to the scene : you will be unloaded
-			if (tTransitionParametersScript.ThisSceneWillUnloaded != null)
+			//if (tTransitionParametersScript.ThisSceneWillUnloaded != null)
+			//{
+			//	tTransitionParametersScript.ThisSceneWillUnloaded.Invoke (null);
+			//}
+			if (tTransitionParametersScript.Interfaced != null)
 			{
-				tTransitionParametersScript.ThisSceneWillUnloaded.Invoke (null);
+				tTransitionParametersScript.Interfaced.OnTransitionSceneWillUnloaded(null);
 			}
 			AsyncOperation tAsynchroneUnload;
 			tAsynchroneUnload = SceneManager.UnloadSceneAsync (SceneToUnload.name);
@@ -371,9 +379,13 @@ namespace SceneTransitionSystem
 			PreviewSceneParams.CopyIn (OldSceneParams);
 			// disable the user interactions
 			EventSystemPrevent (false);
-			if (PreviewSceneParams.ThisSceneDisable != null)
+			//if (PreviewSceneParams.ThisSceneDisable != null)
+			//{
+			//	PreviewSceneParams.ThisSceneDisable.Invoke (TransitionData);
+			//}
+			if (PreviewSceneParams.Interfaced != null)
 			{
-				PreviewSceneParams.ThisSceneDisable.Invoke (TransitionData);
+				PreviewSceneParams.Interfaced.OnTransitionSceneDisable(TransitionData);
 			}
 			// Transition Out will Start
 			//if (m_PreviewSceneParams.AnimationOut.Start != null)
@@ -381,10 +393,15 @@ namespace SceneTransitionSystem
 			//	// calcul estimated second
 			//	m_PreviewSceneParams.AnimationOut.Start.Invoke (m_TransitionData, m_PreviewSceneParams.AnimationOut.Seconds);
 			//}
-            if (PreviewSceneParams.OnExitStart != null)
+            //if (PreviewSceneParams.OnExitStart != null)
+            //{
+            //    // calcul estimated second
+            //    PreviewSceneParams.OnExitStart.Invoke(TransitionData);
+            //}
+            if (PreviewSceneParams.Interfaced != null)
             {
                 // calcul estimated second
-                PreviewSceneParams.OnExitStart.Invoke(TransitionData);
+                PreviewSceneParams.Interfaced.OnTransitionExitStart(TransitionData);
             }
 			// Transition Out GO!
 			AnimationTransitionOut (PreviewSceneParams);
@@ -398,9 +415,13 @@ namespace SceneTransitionSystem
 			//{
 				//m_PreviewSceneParams.AnimationOut.Finish.Invoke (m_TransitionData);
             //}
-            if (PreviewSceneParams.OnExitFinish != null)
+            //if (PreviewSceneParams.OnExitFinish != null)
+            //{
+            //    PreviewSceneParams.OnExitFinish.Invoke(TransitionData);
+            //}
+            if (PreviewSceneParams.Interfaced != null)
             {
-                PreviewSceneParams.OnExitFinish.Invoke(TransitionData);
+                PreviewSceneParams.Interfaced.OnTransitionExitFinish(TransitionData);
             }
 			// Transition setp 1 is finished this scene can be replace by the next or intermediate Scene
 			//-------------------------------
@@ -449,9 +470,13 @@ namespace SceneTransitionSystem
 						{
 							yield return null;
 						}
-						if (PreviewSceneParams.ThisSceneWillUnloaded != null) 
+						//if (PreviewSceneParams.ThisSceneWillUnloaded != null) 
+						//{
+						//	PreviewSceneParams.ThisSceneWillUnloaded.Invoke (TransitionData);
+						//}
+						if (PreviewSceneParams.Interfaced != null) 
 						{
-							PreviewSceneParams.ThisSceneWillUnloaded.Invoke (TransitionData);
+							PreviewSceneParams.Interfaced.OnTransitionSceneWillUnloaded (TransitionData);
 						}
 						while (!tAsynchroneUnloadActualScene.isDone) 
 						{
@@ -465,16 +490,23 @@ namespace SceneTransitionSystem
 				// disable the user interactions until fadein 
 				EventSystemEnable (IntermediateScene, false);
 				// intermediate scene is loaded
-				if (IntermediateSceneParams.ThisSceneLoaded != null) {
-					IntermediateSceneParams.ThisSceneLoaded.Invoke (TransitionData);
+				//if (IntermediateSceneParams.ThisSceneLoaded != null) {
+				//	IntermediateSceneParams.ThisSceneLoaded.Invoke (TransitionData);
+				//}
+				if (IntermediateSceneParams.Interfaced != null) {
+					IntermediateSceneParams.Interfaced.OnTransitionSceneLoaded(TransitionData);
 				}
 				// animation in
 				//if (m_IntermediateSceneParams.AnimationIn.Start != null) {
 					//m_IntermediateSceneParams.AnimationIn.Start.Invoke (m_TransitionData, m_IntermediateSceneParams.AnimationIn.Seconds);
                 //}
-                if (IntermediateSceneParams.OnEnterStart != null)
+                //if (IntermediateSceneParams.OnEnterStart != null)
+                //{
+                //    IntermediateSceneParams.OnEnterStart.Invoke(TransitionData);
+                //}
+                if (IntermediateSceneParams.Interfaced != null)
                 {
-                    IntermediateSceneParams.OnEnterStart.Invoke(TransitionData);
+                    IntermediateSceneParams.Interfaced.OnTransitionEnterStart(TransitionData);
                 }
 				// animation in Go!
 				AnimationTransitionIn (IntermediateSceneParams);
@@ -485,20 +517,30 @@ namespace SceneTransitionSystem
 				//if (m_IntermediateSceneParams.AnimationIn.Finish != null) {
 					//m_IntermediateSceneParams.AnimationIn.Finish.Invoke (m_TransitionData);
                 //}
-                if (IntermediateSceneParams.OnEnterFinish != null)
+                //if (IntermediateSceneParams.OnEnterFinish != null)
+                //{
+                //    IntermediateSceneParams.OnEnterFinish.Invoke(TransitionData);
+                //}
+                if (IntermediateSceneParams.Interfaced != null)
                 {
-                    IntermediateSceneParams.OnEnterFinish.Invoke(TransitionData);
+                    IntermediateSceneParams.Interfaced.OnTransitionEnterFinish(TransitionData);
                 }
 				// enable the user interactions 
 				EventSystemEnable (IntermediateScene, true);
 				// enable the user interactions 
-				if (IntermediateSceneParams.ThisSceneEnable != null) {
-					IntermediateSceneParams.ThisSceneEnable.Invoke (TransitionData);
+				//if (IntermediateSceneParams.ThisSceneEnable != null) {
+				//	IntermediateSceneParams.ThisSceneEnable.Invoke (TransitionData);
+				//}
+				if (IntermediateSceneParams.Interfaced != null) {
+					IntermediateSceneParams.Interfaced.OnTransitionSceneEnable (TransitionData);
 				}
 				// start stand by
 				IntermediateSceneStandBy = GetStandByParams (IntermediateScene);
-				if (IntermediateSceneStandBy.StandByStart != null) {
-                    IntermediateSceneStandBy.StandByStart.Invoke (IntermediateSceneStandBy);
+				//if (IntermediateSceneStandBy.StandByStart != null) {
+    //                IntermediateSceneStandBy.StandByStart.Invoke (IntermediateSceneStandBy);
+				//}
+				if (IntermediateSceneStandBy.Interfaced != null) {
+                    IntermediateSceneStandBy.Interfaced.OnStandByStart (IntermediateSceneStandBy);
 				}
 				StandBy ();
 				// and load next scene async 
@@ -512,8 +554,11 @@ namespace SceneTransitionSystem
 				IntermediateSceneParams = GetTransitionsParams (PreviewScene, true);
 				// And the StandBy params are the preview scene StandBy params
 				IntermediateSceneStandBy = GetStandByParams (PreviewScene);
-				if (IntermediateSceneStandBy.StandByStart != null) {
-                    IntermediateSceneStandBy.StandByStart.Invoke (IntermediateSceneStandBy);
+				//if (IntermediateSceneStandBy.StandByStart != null) {
+    //                IntermediateSceneStandBy.StandByStart.Invoke (IntermediateSceneStandBy);
+				//}
+				if (IntermediateSceneStandBy.Interfaced != null) {
+                    IntermediateSceneStandBy.Interfaced.OnStandByStart (IntermediateSceneStandBy);
 				}
 				StandBy ();
 				// and load next scene async 
@@ -547,44 +592,57 @@ namespace SceneTransitionSystem
 				// NEXT SCENE NEED TO BE LOADING
 				//-------------------------------
 				// load next scene async
-				if (IntermediateSceneStandBy.LoadNextSceneStart != null)
+				//if (IntermediateSceneStandBy.LoadNextSceneStart != null)
+    //            {
+    //                IntermediateSceneStandBy.LoadNextSceneStart.Invoke (TransitionData, 0.0F);
+    //            }
+                if (IntermediateSceneStandBy.Interfaced != null)
                 {
+                    IntermediateSceneStandBy.Interfaced.OnLoadNextSceneStart (TransitionData, 0.0F);
+                }
                     if (IntermediateSceneStandBy.SceneLoadingGauge != null)
                     {
                         IntermediateSceneStandBy.SceneLoadingGauge.SetVerticalValue(0.0F);
                         IntermediateSceneStandBy.SceneLoadingGauge.SetHorizontalValue(0.0F);
                     }
-                    IntermediateSceneStandBy.LoadNextSceneStart.Invoke (TransitionData, 0.0F);
-                }
 				AsyncOperation tAsynchroneloadNext;
 				tAsynchroneloadNext = SceneManager.LoadSceneAsync (NextSceneName, tNextSceneMode);
 				tAsynchroneloadNext.allowSceneActivation = false;
 				// load next scene async can send percent :-)
 				while (tAsynchroneloadNext.progress < 0.9f) 
 				{
-					if (IntermediateSceneStandBy.LoadingNextScenePercent != null)
+					//if (IntermediateSceneStandBy.LoadingNextScenePercent != null)
+     //               {
+     //                   IntermediateSceneStandBy.LoadingNextScenePercent.Invoke (TransitionData, tAsynchroneloadNext.progress);
+
+     //               }
+                    if (IntermediateSceneStandBy.Interfaced != null)
                     {
+                        IntermediateSceneStandBy.Interfaced.OnLoadingNextScenePercent (TransitionData, tAsynchroneloadNext.progress);
+
+                    }
                         if (IntermediateSceneStandBy.SceneLoadingGauge != null)
                         {
                             IntermediateSceneStandBy.SceneLoadingGauge.SetVerticalValue(tAsynchroneloadNext.progress);
                             IntermediateSceneStandBy.SceneLoadingGauge.SetHorizontalValue(tAsynchroneloadNext.progress);
                         }
-                        IntermediateSceneStandBy.LoadingNextScenePercent.Invoke (TransitionData, tAsynchroneloadNext.progress);
-
-                    }
 					yield return null;
 				}
 
 				// need to send call back now (anticipate :-/ ) 
-				if (IntermediateSceneStandBy.LoadNextSceneFinish != null)
+				//if (IntermediateSceneStandBy.LoadNextSceneFinish != null)
+    //            {
+    //                IntermediateSceneStandBy.LoadNextSceneFinish.Invoke (TransitionData, 1.0f);
+				//}
+				if (IntermediateSceneStandBy.Interfaced != null)
                 {
+                    IntermediateSceneStandBy.Interfaced.OnLoadNextSceneFinish (TransitionData, 1.0f);
+				}
                     if (IntermediateSceneStandBy.SceneLoadingGauge != null)
                     {
                         IntermediateSceneStandBy.SceneLoadingGauge.SetVerticalValue(1.0F);
                         IntermediateSceneStandBy.SceneLoadingGauge.SetHorizontalValue(1.0F);
                     }
-                    IntermediateSceneStandBy.LoadNextSceneFinish.Invoke (TransitionData, 1.0f);
-				}
 
 				// when finish test if transition scene is allways in standby
 				if (IntermediateSceneName != null) 
@@ -600,9 +658,13 @@ namespace SceneTransitionSystem
 						yield return null;
 					}
 					// As sson as possible 
-					if (IntermediateSceneStandBy.StandByFinish != null) 
+					//if (IntermediateSceneStandBy.StandByFinish != null) 
+					//{
+     //                   IntermediateSceneStandBy.StandByFinish.Invoke (IntermediateSceneStandBy);
+					//}
+					if (IntermediateSceneStandBy.Interfaced != null) 
 					{
-                        IntermediateSceneStandBy.StandByFinish.Invoke (IntermediateSceneStandBy);
+                        IntermediateSceneStandBy.Interfaced.OnStandByFinish (IntermediateSceneStandBy);
 					}
 					// Waiting to load the next Scene
 					while (WaitingToLauchNextScene()) 
@@ -613,18 +675,26 @@ namespace SceneTransitionSystem
 					// stanby is finished And the next scene can be lauch
 					// disable user interactions on the intermediate scene
 					EventSystemEnable (IntermediateScene, false);
-					if (IntermediateSceneParams.ThisSceneDisable != null) 
+					//if (IntermediateSceneParams.ThisSceneDisable != null) 
+					//{
+					//	IntermediateSceneParams.ThisSceneDisable.Invoke (TransitionData);
+					//}
+					if (IntermediateSceneParams.Interfaced != null) 
 					{
-						IntermediateSceneParams.ThisSceneDisable.Invoke (TransitionData);
+						IntermediateSceneParams.Interfaced.OnTransitionSceneDisable (TransitionData);
 					}
 					// intermediate scene Transition Out start 
 					//if (m_IntermediateSceneParams.AnimationOut.Start != null) 
 					//{
 						//m_IntermediateSceneParams.AnimationOut.Start.Invoke (m_TransitionData, m_IntermediateSceneParams.AnimationOut.Seconds);
                     //}
-                    if (IntermediateSceneParams.OnExitStart != null)
+                    //if (IntermediateSceneParams.OnExitStart != null)
+                    //{
+                    //    IntermediateSceneParams.OnExitStart.Invoke(TransitionData);
+                    //}
+                    if (IntermediateSceneParams.Interfaced != null)
                     {
-                        IntermediateSceneParams.OnExitStart.Invoke(TransitionData);
+                        IntermediateSceneParams.Interfaced.OnTransitionEnterStart(TransitionData);
                     }
 					// intermediate scene Transition Out GO! 
 					AnimationTransitionOut (IntermediateSceneParams);
@@ -637,15 +707,23 @@ namespace SceneTransitionSystem
 					//{
 						//m_IntermediateSceneParams.AnimationOut.Finish.Invoke (m_TransitionData);
                     //}
-                    if (IntermediateSceneParams.OnExitFinish != null)
+                    //if (IntermediateSceneParams.OnExitFinish != null)
+                    //{
+                    //    IntermediateSceneParams.OnExitFinish.Invoke(TransitionData);
+                    //}
+                    if (IntermediateSceneParams.Interfaced != null)
                     {
-                        IntermediateSceneParams.OnExitFinish.Invoke(TransitionData);
+                        IntermediateSceneParams.Interfaced.OnTransitionExitFinish(TransitionData);
                     }
 					// fadeout is finish
 					// will unloaded the intermediate scene
-					if (IntermediateSceneParams.ThisSceneWillUnloaded != null) 
+					//if (IntermediateSceneParams.ThisSceneWillUnloaded != null) 
+					//{
+					//	IntermediateSceneParams.ThisSceneWillUnloaded.Invoke (TransitionData);
+					//}
+					if (IntermediateSceneParams.Interfaced != null) 
 					{
-						IntermediateSceneParams.ThisSceneWillUnloaded.Invoke (TransitionData);
+						IntermediateSceneParams.Interfaced.OnTransitionSceneWillUnloaded (TransitionData);
 					}
 				}
 				tAsynchroneloadNext.allowSceneActivation = true;
@@ -676,9 +754,14 @@ namespace SceneTransitionSystem
 						yield return null;
 					}
 					// send call back for standby finished
-					if (IntermediateSceneStandBy.StandByFinish != null) 
+					//if (IntermediateSceneStandBy.StandByFinish != null) 
+					//{
+     //                   IntermediateSceneStandBy.StandByFinish.Invoke (IntermediateSceneStandBy);
+					//}
+                    
+					if (IntermediateSceneStandBy.Interfaced != null) 
 					{
-                        IntermediateSceneStandBy.StandByFinish.Invoke (IntermediateSceneStandBy);
+                        IntermediateSceneStandBy.Interfaced.OnStandByFinish (IntermediateSceneStandBy);
 					}
 					// Waiting to load the next Scene
 					while (WaitingToLauchNextScene()) {
@@ -690,9 +773,13 @@ namespace SceneTransitionSystem
 					EventSystemEnable (IntermediateScene, false);
 
 					// disable the transition scene
-					if (IntermediateSceneParams.ThisSceneDisable != null) 
+					//if (IntermediateSceneParams.ThisSceneDisable != null) 
+					//{
+					//	IntermediateSceneParams.ThisSceneDisable.Invoke (TransitionData);
+					//}
+					if (IntermediateSceneParams.Interfaced != null) 
 					{
-						IntermediateSceneParams.ThisSceneDisable.Invoke (TransitionData);
+						IntermediateSceneParams.Interfaced.OnTransitionSceneDisable (TransitionData);
 					}
 					// Transition scene disappear by fadeout 
 					AnimationTransitionOut (IntermediateSceneParams);
@@ -700,9 +787,13 @@ namespace SceneTransitionSystem
 					//{
 						//m_IntermediateSceneParams.AnimationOut.Start.Invoke (m_TransitionData, m_IntermediateSceneParams.AnimationOut.Seconds);
                     //}
-                    if (IntermediateSceneParams.OnExitStart != null)
+                    //if (IntermediateSceneParams.OnExitStart != null)
+                    //{
+                    //    IntermediateSceneParams.OnExitStart.Invoke(TransitionData);
+                    //}
+                    if (IntermediateSceneParams.Interfaced != null)
                     {
-                        IntermediateSceneParams.OnExitStart.Invoke(TransitionData);
+                        IntermediateSceneParams.Interfaced.OnTransitionExitStart(TransitionData);
                     }
 					while (AnimationFinished () == false) 
 					{
@@ -712,15 +803,23 @@ namespace SceneTransitionSystem
 					//{
 						//m_IntermediateSceneParams.AnimationOut.Finish.Invoke (m_TransitionData);
                     //}
-                    if (IntermediateSceneParams.OnExitFinish != null)
+                    //if (IntermediateSceneParams.OnExitFinish != null)
+                    //{
+                    //    IntermediateSceneParams.OnExitFinish.Invoke(TransitionData);
+                    //}
+                    if (IntermediateSceneParams.Interfaced != null)
                     {
-                        IntermediateSceneParams.OnExitFinish.Invoke(TransitionData);
+                        IntermediateSceneParams.Interfaced.OnTransitionExitFinish(TransitionData);
                     }
 					// fadeout is finish
 					// unloaded the transition scene
-					if (IntermediateSceneParams.ThisSceneWillUnloaded != null) 
+					//if (IntermediateSceneParams.ThisSceneWillUnloaded != null) 
+					//{
+					//	IntermediateSceneParams.ThisSceneWillUnloaded.Invoke (TransitionData);
+					//}
+					if (IntermediateSceneParams.Interfaced != null) 
 					{
-						IntermediateSceneParams.ThisSceneWillUnloaded.Invoke (TransitionData);
+						IntermediateSceneParams.Interfaced.OnTransitionSceneWillUnloaded (TransitionData);
 					}
 				}
 			}
@@ -747,9 +846,13 @@ namespace SceneTransitionSystem
 				{
 					AsyncOperation tAsynchroneUnloadActualScene;
 					tAsynchroneUnloadActualScene = SceneManager.UnloadSceneAsync (PreviewScene.name);
-					if (PreviewSceneParams.ThisSceneWillUnloaded != null) 
+					//if (PreviewSceneParams.ThisSceneWillUnloaded != null) 
+					//{
+					//	PreviewSceneParams.ThisSceneWillUnloaded.Invoke (TransitionData);
+					//}
+					if (PreviewSceneParams.Interfaced != null) 
 					{
-						PreviewSceneParams.ThisSceneWillUnloaded.Invoke (TransitionData);
+						PreviewSceneParams.Interfaced.OnTransitionSceneWillUnloaded (TransitionData);
 					}
 					while (tAsynchroneUnloadActualScene.progress < 0.9f) 
 					{
@@ -774,8 +877,11 @@ namespace SceneTransitionSystem
 			EventSystemEnable (NextScene, false);
 			// scene is loaded
 			if (tNextSceneAllRedayExist == false) {
-				if (NextSceneParams.ThisSceneLoaded != null) {
-					NextSceneParams.ThisSceneLoaded.Invoke (TransitionData);
+				//if (NextSceneParams.ThisSceneLoaded != null) {
+				//	NextSceneParams.ThisSceneLoaded.Invoke (TransitionData);
+				//}
+				if (NextSceneParams.Interfaced!= null) {
+					NextSceneParams.Interfaced.OnTransitionSceneLoaded (TransitionData);
 				}
 			}
 			// Next scene appear by fade in 
@@ -783,9 +889,13 @@ namespace SceneTransitionSystem
 			//if (m_NextSceneParams.AnimationIn.Start != null) {
 				//m_NextSceneParams.AnimationIn.Start.Invoke (m_TransitionData, m_NextSceneParams.AnimationIn.Seconds);
             //}
-            if (NextSceneParams.OnEnterStart != null)
+            //if (NextSceneParams.OnEnterStart != null)
+            //{
+            //    NextSceneParams.OnEnterStart.Invoke(TransitionData);
+            //}
+            if (NextSceneParams.Interfaced != null)
             {
-                NextSceneParams.OnEnterStart.Invoke(TransitionData);
+                NextSceneParams.Interfaced.OnTransitionEnterStart(TransitionData);
             }
 			while (AnimationFinished () == false) {
 				yield return null;
@@ -793,16 +903,23 @@ namespace SceneTransitionSystem
 			//if (m_NextSceneParams.AnimationIn.Finish != null) {
 				//m_NextSceneParams.AnimationIn.Finish.Invoke (m_TransitionData);
             //}
-            if (NextSceneParams.OnEnterFinish != null)
+            //if (NextSceneParams.OnEnterFinish != null)
+            //{
+            //    NextSceneParams.OnEnterFinish.Invoke(TransitionData);
+            //}
+            if (NextSceneParams.Interfaced != null)
             {
-                NextSceneParams.OnEnterFinish.Invoke(TransitionData);
+                NextSceneParams.Interfaced.OnTransitionExitFinish(TransitionData);
             }
 			// fadein is finish
 			// next scene user interaction enable
 			EventSystemPrevent (true);
 			// next scene is enable
-			if (NextSceneParams.ThisSceneEnable != null) {
-				NextSceneParams.ThisSceneEnable.Invoke (TransitionData);
+			//if (NextSceneParams.ThisSceneEnable != null) {
+			//	NextSceneParams.ThisSceneEnable.Invoke (TransitionData);
+			//}
+			if (NextSceneParams.Interfaced != null) {
+				NextSceneParams.Interfaced.OnTransitionSceneEnable (TransitionData);
 			}
 
 			NextSceneParams.CopyIn (OldSceneParams);
