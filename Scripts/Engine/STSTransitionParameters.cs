@@ -34,7 +34,7 @@ namespace SceneTransitionSystem
         [Header("On exit scene effect")]
         public STSEffectType EffectOnExit;
         //-------------------------------------------------------------------------------------------------------------
-        [Header("Interfaced")]
+        //[Header("Interfaced")]
         public ISTSTransitionParameters Interfaced;
         //[Header("On enter effect callback")]
         //public STSTransitionEvent OnEnterStart;
@@ -63,7 +63,7 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         void Start()
         {
-
+            Interfaced = GetComponent<ISTSTransitionParameters>();
         }
         //-------------------------------------------------------------------------------------------------------------
         void Update()

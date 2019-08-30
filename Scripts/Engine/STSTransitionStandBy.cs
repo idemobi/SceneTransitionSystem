@@ -32,8 +32,8 @@ namespace SceneTransitionSystem
         public bool AutoLoadNextScene = true;
         [Tooltip("The gauge to use in canvas")]
         public STSScreenGauge SceneLoadingGauge;
-        [Header("Interfaced")]
-        public ISTSTransitionParameters Interfaced;
+        //[Header("Interfaced")]
+        public ISTSTransitionStandBy Interfaced;
 
         //[Header("Next scene loading progress callbacks")]
         //public STSTransitionLoading LoadNextSceneStart;
@@ -64,6 +64,11 @@ namespace SceneTransitionSystem
         public void FinishStandByAction()
         {
             STSTransitionController.Singleton().FinishStandBy();
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        void Start()
+        {
+            Interfaced = GetComponent<ISTSTransitionStandBy>();
         }
         //-------------------------------------------------------------------------------------------------------------
     }
