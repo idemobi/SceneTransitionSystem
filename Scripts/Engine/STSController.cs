@@ -660,7 +660,7 @@ namespace SceneTransitionSystem
                 // NEXT SCENE NEED TO BE LOADING
                 //-------------------------------
                 // load next scene async
-                ListIntermediateStandBy = GetIntermediateInterface(PreviewScene);
+                ListIntermediateStandBy = GetIntermediateInterface(IntermediateScene);
                 Debug.Log("ListIntermediateStandBy count =" + ListIntermediateStandBy.Count);
                 if (IntermediateSceneStandBy.Interfaced != null)
                 {
@@ -1081,11 +1081,17 @@ namespace SceneTransitionSystem
                 GameObject[] tAllRootObjects = sScene.GetRootGameObjects();
                 foreach (GameObject tObject in tAllRootObjects)
                 {
-                    foreach (STSTransitionInterface tR in GetComponentsInChildren<STSTransitionInterface>())
+                    STSTransitionInterface tT = tObject.GetComponent<STSTransitionInterface>();
+                    if (tT!=null)
                     {
-                        Debug.Log("GetTransitionInterface add one ");
-                        rReturn.Add(tR);
+                        Debug.Log("GetTransitionInterface add this ");
+                       // rReturn.Add(tT);
                     }
+                    //foreach (STSTransitionInterface tR in GetComponentsInChildren<STSTransitionInterface>())
+                    //{
+                    //    Debug.Log("GetTransitionInterface add one ");
+                    //    rReturn.Add(tR);
+                    //}
                 }
             }
             return rReturn;
@@ -1100,11 +1106,17 @@ namespace SceneTransitionSystem
                 GameObject[] tAllRootObjects = sScene.GetRootGameObjects();
                 foreach (GameObject tObject in tAllRootObjects)
                 {
-                    foreach (STSIntermediateInterface tR in GetComponentsInChildren<STSIntermediateInterface>())
+                    STSIntermediateInterface tT = tObject.GetComponent<STSIntermediateInterface>();
+                    if (tT!=null)
                     {
-                        Debug.Log("GetIntermediateInterface add one ");
-                        rReturn.Add(tR);
+                        Debug.Log("GetIntermediateInterface add this ");
+                       // rReturn.Add(tT);
                     }
+                    //foreach (STSIntermediateInterface tR in GetComponentsInChildren<STSIntermediateInterface>())
+                    //{
+                    //    Debug.Log("GetIntermediateInterface add one ");
+                    //    rReturn.Add(tR);
+                    //}
                 }
             }
             return rReturn;
