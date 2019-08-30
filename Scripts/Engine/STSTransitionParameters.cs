@@ -11,6 +11,18 @@ using UnityEngine.SceneManagement;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    public interface ISTSTransitionParameters
+    {
+        void OnTransitionEnterStart();
+        void OnTransitionEnterFinish();
+        void OnTransitionExitStart();
+        void OnTransitionExitFinish();
+        void OnTransitionSceneLoaded();
+        void OnTransitionSceneEnable();
+        void OnTransitionSceneDisable();
+        void OnTransitionSceneWillUnloaded();
+    }
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     public class STSTransitionParameters : MonoBehaviour
     {
         //-------------------------------------------------------------------------------------------------------------
@@ -22,6 +34,8 @@ namespace SceneTransitionSystem
         [Header("On exit scene effect")]
         public STSEffectType EffectOnExit;
         //-------------------------------------------------------------------------------------------------------------
+        [Header("Interfaced")]
+        public ISTSTransitionParameters Interfaced;
         [Header("On enter effect callback")]
         public STSTransitionEvent OnEnterStart;
         public STSTransitionEvent OnEnterFinish;
