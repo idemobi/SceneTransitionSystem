@@ -15,8 +15,13 @@ using UnityEngine;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    public delegate void STSDelegate(STSTransitionData sTransitionData);
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     public partial class STSController : MonoBehaviour, STSTransitionInterface, STSIntermediateInterface
     {
+        //-------------------------------------------------------------------------------------------------------------
+        const string K_SCENE_MUST_BY_LOADED = "K_SCENE_MUST_BY_LOADED";
+        const string K_TRANSITION_IN_PROGRESS = "K_TRANSITION_IN_PROGRESS";
         //-------------------------------------------------------------------------------------------------------------
         private static STSController kSingleton = null;
 
@@ -570,7 +575,7 @@ namespace SceneTransitionSystem
                     //-------------------------------
                     EventSystemEnable(IntermediateScene, true);
                     // continue standby if it's necessary
-                    while (StandByIsProgressing())
+                    while (StandByIsProgressing(IntermediateSceneStandBy))
                     {
                         yield return null;
                     }
@@ -580,7 +585,7 @@ namespace SceneTransitionSystem
                         IntermediateSceneStandBy.Interfaced.OnStandByFinish(IntermediateSceneStandBy);
                     }
                     // Waiting to load the next Scene
-                    while (WaitingToLauchNextScene())
+                    while (WaitingToLauchNextScene(IntermediateSceneStandBy))
                     {
                         //Debug.Log ("StandByIsNotFinished loop");
                         yield return null;
@@ -681,7 +686,7 @@ namespace SceneTransitionSystem
                     //-------------------------------
                     // continue standby if it's necessary
                     EventSystemEnable(IntermediateScene, true);
-                    while (StandByIsProgressing())
+                    while (StandByIsProgressing(IntermediateSceneStandBy))
                     {
                         yield return null;
                     }
@@ -691,7 +696,7 @@ namespace SceneTransitionSystem
                         IntermediateSceneStandBy.Interfaced.OnStandByFinish(IntermediateSceneStandBy);
                     }
                     // Waiting to load the next Scene
-                    while (WaitingToLauchNextScene())
+                    while (WaitingToLauchNextScene(IntermediateSceneStandBy))
                     {
                         //Debug.Log ("StandByIsNotFinished loop");
                         yield return null;
@@ -982,7 +987,7 @@ namespace SceneTransitionSystem
         //    return rReturn;
         //}
         //-------------------------------------------------------------------------------------------------------------
-        private STSTransition GetTransitionsParams(Scene sScene, bool sStartTransition)
+        private STSTransition GetTransitionsParams(Scene sScene, bool sStartTransition) //TODO remove sStartTransition
         {
             //Debug.Log("STSTransitionController GetTransitionsParams()");
             STSTransition tTransitionParametersScript = null;
@@ -1096,8 +1101,8 @@ namespace SceneTransitionSystem
             float tInterlude = 0;
             if (EffectType != null)
             {
-                // I get the old value of 
-                tOldColor = EffectType.TintPrimary;
+                // I get the old value of
+                tOldColor = new Color(EffectType.TintPrimary.r, EffectType.TintPrimary.g, EffectType.TintPrimary.b, EffectType.TintPrimary.a);
                 tInterlude = sThisSceneParameters.InterEffectDuration;
             }
             EffectType = sThisSceneParameters.EffectOnEnter.GetEffect();
@@ -1127,11 +1132,11 @@ namespace SceneTransitionSystem
             LauchNextScene = false;
         }
         //-------------------------------------------------------------------------------------------------------------
-        private bool StandByIsProgressing()
+        private bool StandByIsProgressing(STSIntermediate sIntermediateSceneStandBy)
         {
             //Debug.Log("STSTransitionController StandByIsProgressing()");
             StandByTimer += Time.deltaTime;
-            if (StandByTimer >= IntermediateSceneStandBy.StandBySeconds)
+            if (StandByTimer >= sIntermediateSceneStandBy.StandBySeconds)
             {
                 StandByInProgress = false;
             }
@@ -1144,10 +1149,10 @@ namespace SceneTransitionSystem
         //return m_LauchNextScene;
         //}
         //-------------------------------------------------------------------------------------------------------------
-        private bool WaitingToLauchNextScene()
+        private bool WaitingToLauchNextScene(STSIntermediate sIntermediateSceneStandBy)
         {
             //Debug.Log("STSTransitionController WaitingToLauchNextScene()");
-            if (IntermediateSceneStandBy.AutoLoadNextScene == true)
+            if (sIntermediateSceneStandBy.AutoLoadNextScene == true)
             {
                 // force auto active scene
                 LauchNextScene = true;
