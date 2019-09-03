@@ -171,10 +171,184 @@ namespace SceneTransitionSystem
             List<string> sScenesToRemove,
             STSTransitionData sTransitionData)
         {
+            bool tRemoveActual = false;
+            if (sScenesToRemove.Contains(sActualActiveScene))
+            {
+                sScenesToRemove.Remove(sActualActiveScene);
+                tRemoveActual = true;
+            }
+            //AsyncOperation tAsyncOperation;
+            Dictionary<string, AsyncOperation> tAsyncOperationList = new Dictionary<string, AsyncOperation>();
+            //-------------------------------
+            // ACTUAL SCENE DISABLE
+            //-------------------------------
+            TransitionInProgress = true;
+            //-------------------------------
+            Scene tActualScene = SceneManager.GetSceneByName(sActualActiveScene);
+            //-------------------------------
+            STSTransition tActualSceneParams = GetTransitionsParams(tActualScene, true);
+            // disable the user interactions
+            EventSystemPrevent(false);
+            // post scene is disable!
+            if (tActualSceneParams.Interfaced != null)
+            {
+                tActualSceneParams.Interfaced.OnTransitionSceneDisable(sTransitionData);
+            }
+            // post scene start effect transition out!
+            if (tActualSceneParams.Interfaced != null)
+            {
+                tActualSceneParams.Interfaced.OnTransitionExitStart(sTransitionData);
+            }
+            // scene start effect transition out!
+            AnimationTransitionOut(tActualSceneParams);
+            // waiting effect will finish
             while (AnimationFinished() == false)
             {
                 yield return null;
             }
+            // post scene finish effcet transition out
+            if (tActualSceneParams.Interfaced != null)
+            {
+                tActualSceneParams.Interfaced.OnTransitionExitFinish(sTransitionData);
+            }
+
+            //-------------------------------
+            // COUNT SCENES TO REMOVE OR ADD
+            //-------------------------------
+
+            float tSceneCount = sScenesToAdd.Count + sScenesToRemove.Count;
+            int tSceneCounter = 0;
+
+            //-------------------------------
+            // LOADED SCENES ADDED
+            //-------------------------------
+
+            foreach (string tSceneToAdd in sScenesToAdd)
+            {
+                //Debug.Log("tSceneToAdd :" + tSceneToAdd);
+                if (SceneManager.GetSceneByName(tSceneToAdd).isLoaded)
+                {
+                    //Debug.Log("tSceneToAdd :" + tSceneToAdd + " allready finish!");
+                }
+                else
+                {
+                    AsyncOperation tAsyncOperationAdd = SceneManager.LoadSceneAsync(tSceneToAdd, LoadSceneMode.Additive);
+                    tAsyncOperationList.Add(tSceneToAdd, tAsyncOperationAdd);
+                    tAsyncOperationAdd.allowSceneActivation = false;
+                    //Debug.Log("tSceneToAdd :" + tSceneToAdd + " 90%!");
+                }
+                tSceneCounter++;
+            }
+            //-------------------------------
+            // UNLOADED SCENES REMOVED
+            //-------------------------------
+            foreach (string tSceneToRemove in sScenesToRemove)
+            {
+                //Debug.Log("tSceneToRemove :" + tSceneToRemove);
+                // fadeout is finish
+                // will unloaded the  scene
+                Scene tSceneToDelete = SceneManager.GetSceneByName(tSceneToRemove);
+                STSTransition tSceneToDeleteParams = GetTransitionsParams(tSceneToDelete, false);
+                if (tSceneToDeleteParams.Interfaced != null)
+                {
+                    tSceneToDeleteParams.Interfaced.OnTransitionSceneWillUnloaded(sTransitionData);
+                }
+                if (SceneManager.GetSceneByName(tSceneToRemove).isLoaded)
+                {
+                    AsyncOperation tAsyncOperationRemove = SceneManager.UnloadSceneAsync(tSceneToRemove);
+                    tAsyncOperationRemove.allowSceneActivation = true; //? needed?
+                    //while (tAsyncOperationRemove.progress < 0.9f)
+                    //{
+                    //    yield return null;
+                    //}
+                    //while (!tAsyncOperationRemove.isDone)
+                    //{
+                    //    yield return null;
+                    //}
+                }
+                tSceneCounter++;
+                Debug.Log("tSceneToRemove :" + tSceneToRemove + " finish!");
+            }
+            //-------------------------------
+            // ACTIVE ADDED SCENES
+            //-------------------------------
+            foreach (string tSceneToAdd in sScenesToAdd)
+            {
+                // scene is loaded!
+                if (tAsyncOperationList.ContainsKey(tSceneToAdd))
+                {
+                    AsyncOperation tAsyncOperationAdd = tAsyncOperationList[tSceneToAdd];
+                    tAsyncOperationAdd.allowSceneActivation = true;
+                    while (!tAsyncOperationAdd.isDone)
+                    {
+                        yield return null;
+                    }
+                    Scene tNextScene = SceneManager.GetSceneByName(tSceneToAdd);
+                    STSTransition tNextSceneParams = GetTransitionsParams(tNextScene, false);
+                    if (tNextSceneParams.Interfaced != null)
+                    {
+                        tNextSceneParams.Interfaced.OnTransitionSceneLoaded(sTransitionData);
+                    }
+                    EventSystemPrevent(false);
+                    AudioListenerPrevent();
+                    //Debug.Log("tSceneToAdd :" + tSceneToAdd + " finish!");
+                }
+            }
+            //-------------------------------
+            // NEXT SCENE PROCESS
+            //-------------------------------
+            Scene tNextActiveScene = SceneManager.GetSceneByName(sNextActiveScene);
+            SceneManager.SetActiveScene(tNextActiveScene);
+            AudioListenerPrevent();
+            // get params
+            STSTransition sNextSceneParams = GetTransitionsParams(tNextActiveScene, false);
+            EventSystemEnable(tNextActiveScene, false);
+            // Next scene appear by fade in
+            //-------------------------------
+            // INTERMEDIATE UNLOAD
+            //-------------------------------
+            if (tRemoveActual==true)
+            {
+            if (tActualSceneParams.Interfaced != null)
+            {
+                tActualSceneParams.Interfaced.OnTransitionSceneWillUnloaded(sTransitionData);
+            }
+            AsyncOperation tAsyncOperationIntermediateUnload = SceneManager.UnloadSceneAsync(sActualActiveScene);
+            tAsyncOperationIntermediateUnload.allowSceneActivation = true; //? needed?
+                                                                           //while (tAsyncOperationIntermediateUnload.progress < 0.9f)
+                                                                           //{
+                                                                           //    yield return null;
+                                                                           //}
+                                                                           //while (!tAsyncOperationIntermediateUnload.isDone)
+                                                                           //{
+                                                                           //    yield return null;
+                                                                           //}
+            }
+            //-------------------------------
+            // NEXT SCENE ENABLE
+            //-------------------------------
+            AnimationTransitionIn(sNextSceneParams);
+            if (sNextSceneParams.Interfaced != null)
+            {
+                sNextSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData);
+            }
+            while (AnimationFinished() == false)
+            {
+                yield return null;
+            }
+            if (sNextSceneParams.Interfaced != null)
+            {
+                sNextSceneParams.Interfaced.OnTransitionEnterFinish(sTransitionData);
+            }
+            // fadein is finish
+            EventSystemPrevent(true);
+            // next scene is enable
+            if (sNextSceneParams.Interfaced != null)
+            {
+                sNextSceneParams.Interfaced.OnTransitionSceneEnable(sTransitionData);
+            }
+            // My transition is finish. I can do an another transition
+            TransitionInProgress = false;
         }
         //-------------------------------------------------------------------------------------------------------------
         private IEnumerator INTERNAL_ChangeScenesWithIntermediate(
@@ -427,7 +601,6 @@ namespace SceneTransitionSystem
             //-------------------------------
             // ACTIVE ADDED SCENES
             //-------------------------------
-
             foreach (string tSceneToAdd in sScenesToAdd)
             {
                 // scene is loaded!
@@ -450,7 +623,6 @@ namespace SceneTransitionSystem
                     //Debug.Log("tSceneToAdd :" + tSceneToAdd + " finish!");
                 }
             }
-
             //-------------------------------
             // NEXT SCENE PROCESS
             //-------------------------------

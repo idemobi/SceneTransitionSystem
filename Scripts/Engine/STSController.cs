@@ -1026,9 +1026,12 @@ namespace SceneTransitionSystem
             // no solution?!
             if (tTransitionParametersScript == null)
             {
+                Scene tActual = SceneManager.GetActiveScene();
+                SceneManager.SetActiveScene(sScene);
                 // create Game Object?
                 //Debug.Log ("NO PARAMS");
-                GameObject tObjToSpawn = new GameObject(STSConstants.K_TRANSITION_CONTROLLER_OBJECT_NAME);
+                GameObject tObjToSpawn = new GameObject(STSConstants.K_TRANSITION_DEFAULT_OBJECT_NAME);
+                tObjToSpawn.AddComponent<STSSceneController>();
                 tTransitionParametersScript = tObjToSpawn.AddComponent<STSTransition>();
                 if (DefaultEffectOnEnter != null)
                 {
@@ -1046,6 +1049,7 @@ namespace SceneTransitionSystem
                 {
                     tTransitionParametersScript.EffectOnExit = STSEffectType.Default.Dupplicate();
                 }
+                SceneManager.SetActiveScene(tActual);
             }
             return tTransitionParametersScript;
         }
@@ -1079,11 +1083,14 @@ namespace SceneTransitionSystem
             // no solution?!
             if (tTransitionStandByScript == null)
             {
-                GameObject tObjToSpawn = new GameObject(STSConstants.K_TRANSITION_CONTROLLER_OBJECT_NAME);
-                tObjToSpawn.AddComponent<STSIntermediate>();
-                tTransitionStandByScript = (STSIntermediate)tObjToSpawn.GetComponent<STSIntermediate>();
+                Scene tActual = SceneManager.GetActiveScene();
+                SceneManager.SetActiveScene(sScene);
+                GameObject tObjToSpawn = new GameObject(STSConstants.K_TRANSITION_INTERMEDIATE_OBJECT_NAME);
+                tObjToSpawn.AddComponent<STSSceneIntermediateController>();
+                tTransitionStandByScript = tObjToSpawn.AddComponent<STSIntermediate>();
                 tTransitionStandByScript.StandBySeconds = 5.0f;
                 tTransitionStandByScript.AutoLoadNextScene = true;
+                SceneManager.SetActiveScene(tActual);
             }
 
             return tTransitionStandByScript;

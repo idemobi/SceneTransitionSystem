@@ -20,6 +20,14 @@ namespace SceneTransitionSystem
         /// </summary>
         public static string K_TRANSITION_CONTROLLER_OBJECT_NAME = "STSControllerObject";
         /// <summary>
+        /// the name for default object transition
+        /// </summary>
+        public static string K_TRANSITION_DEFAULT_OBJECT_NAME = "STSTransitionDefault";
+        /// <summary>
+        /// the name for default object intermediate
+        /// </summary>
+        public static string K_TRANSITION_INTERMEDIATE_OBJECT_NAME = "STSIntermediateDefault";
+        /// <summary>
         /// The scene name key use in payload as dictionary key.
         /// </summary>
         public static string K_SCENE_NAME_KEY = "SceneNameKey_872d7fe";
