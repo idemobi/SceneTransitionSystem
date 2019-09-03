@@ -22,9 +22,6 @@ namespace SceneTransitionSystem
         void OnStandByFinish(STSIntermediate sStandBy);
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    /// <summary>
-    /// STS Transition standby script. Use during the wating to load in intermediary scene.
-    /// </summary>
     public class STSIntermediate : MonoBehaviour
     {
         //-------------------------------------------------------------------------------------------------------------
@@ -33,18 +30,8 @@ namespace SceneTransitionSystem
         public float StandBySeconds = 0.0f;
         [Tooltip("The next scene must be active automatically?")]
         public bool AutoLoadNextScene = true;
-        //[Tooltip("The gauge to use in canvas")]
-        //public STSScreenGauge SceneLoadingGauge;
-        //[Header("Interfaced")]
+        //-------------------------------------------------------------------------------------------------------------
         public STSIntermediateInterface Interfaced;
-
-        //[Header("Next scene loading progress callbacks")]
-        //public STSTransitionLoading LoadNextSceneStart;
-        //public STSTransitionLoading LoadingNextScenePercent;
-        //public STSTransitionLoading LoadNextSceneFinish;
-        //[Header("Stand by callbacks")]
-        //public STSStandByEvent StandByStart;
-        //public STSStandByEvent StandByFinish;
         //-------------------------------------------------------------------------------------------------------------
         public void CopyFrom(STSIntermediate sDestination)
         {
@@ -55,13 +42,7 @@ namespace SceneTransitionSystem
         {
             sDestination.StandBySeconds = this.StandBySeconds;
             sDestination.AutoLoadNextScene = this.AutoLoadNextScene;
-            //sDestination.SceneLoadingGauge = this.SceneLoadingGauge;
             sDestination.Interfaced = this.Interfaced;
-            //sDestination.LoadNextSceneStart = this.LoadNextSceneStart;
-            //sDestination.LoadingNextScenePercent = this.LoadingNextScenePercent;
-            //sDestination.LoadNextSceneFinish = this.LoadNextSceneFinish;
-            //sDestination.StandByStart = this.StandByStart;
-            //sDestination.StandByFinish = this.StandByFinish;
         }
         //-------------------------------------------------------------------------------------------------------------
         public void FinishStandByAction()

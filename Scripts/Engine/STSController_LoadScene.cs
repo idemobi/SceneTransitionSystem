@@ -110,17 +110,25 @@ namespace SceneTransitionSystem
                     sScenesToRemove.Remove(string.Empty);
                 }
                 // active scene protection
+                if (SceneManager.GetSceneByName(sNextActiveScene).isLoaded == false)
+                {
+                    if (sScenesToAdd.Contains(sNextActiveScene) == false)
+                    {
+                        sScenesToAdd.Add(sNextActiveScene);
+                    }
+                }
                 if (sScenesToRemove.Contains(sNextActiveScene) == true)
                 {
                     sScenesToRemove.Remove(sNextActiveScene);
                 }
-                //if (SceneManager.GetSceneByName(sNextActiveScene).isLoaded == false)
-                //{
-                if (sScenesToAdd.Contains(sNextActiveScene) == false)
+                // futur scenes protection
+                foreach (string tSceneName in sScenesToAdd)
                 {
-                    sScenesToAdd.Add(sNextActiveScene);
+                    if (sScenesToRemove.Contains(tSceneName) == true)
+                    {
+                        sScenesToRemove.Remove(tSceneName);
+                    }
                 }
-                //}
                 // test possibilities
                 bool tPossible = false;
                 List<Scene> tScenes = new List<Scene>();
@@ -357,10 +365,10 @@ namespace SceneTransitionSystem
                     //    yield return null;
                     //}
                 }
-                    if (tIntermediateSceneStandBy.Interfaced != null)
-                    {
-                        tIntermediateSceneStandBy.Interfaced.OnUnloadScene(sTransitionData, tSceneToRemove, tSceneCounter, (tSceneCounter + 1.0F) / tSceneCount);
-                    }
+                if (tIntermediateSceneStandBy.Interfaced != null)
+                {
+                    tIntermediateSceneStandBy.Interfaced.OnUnloadScene(sTransitionData, tSceneToRemove, tSceneCounter, (tSceneCounter + 1.0F) / tSceneCount);
+                }
                 tSceneCounter++;
                 Debug.Log("tSceneToRemove :" + tSceneToRemove + " finish!");
             }

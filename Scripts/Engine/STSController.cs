@@ -33,10 +33,6 @@ namespace SceneTransitionSystem
         private Dictionary<string, STSScenesPackage> HistoricByKey =  new Dictionary<string, STSScenesPackage>();
         private List<STSScenesPackage> Historic = new List<STSScenesPackage>();
 
-
-
-
-
         private static STSController kSingleton = null;
 
         // initialized or not?
@@ -1096,21 +1092,16 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         private bool AnimationProgress()
         {
-            //Debug.Log("STSTransitionController AnimationProgress()");
-            //return m_AnimationInProgress;
             return EffectType.AnimIsPlaying;
         }
         //-------------------------------------------------------------------------------------------------------------
         private bool AnimationFinished()
         {
-            //Debug.Log("STSTransitionController AnimationFinished()");
-            //return m_AnimationFinish;
             return EffectType.AnimIsFinished;
         }
         //-------------------------------------------------------------------------------------------------------------
         private void AnimationTransitionIn(STSTransition sThisSceneParameters)
         {
-            //Debug.Log("STSTransitionController AnimationTransitionIn()");
             Color tOldColor = Color.black;
             float tInterlude = 0;
             if (EffectType != null)
@@ -1129,7 +1120,6 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         private void AnimationTransitionOut(STSTransition sThisSceneParameters)
         {
-            //Debug.Log("STSTransitionController AnimationTransitionOut()");
             EffectType = sThisSceneParameters.EffectOnExit.GetEffect();
             if (EffectType == null)
             {
@@ -1140,7 +1130,6 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         private void StandBy()
         {
-            //Debug.Log("STSTransitionController StandBy()");
             StandByTimer = 0.0f;
             StandByInProgress = true;
             LauchNextScene = false;
@@ -1148,7 +1137,6 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         private bool StandByIsProgressing(STSIntermediate sIntermediateSceneStandBy)
         {
-            //Debug.Log("STSTransitionController StandByIsProgressing()");
             StandByTimer += Time.deltaTime;
             if (StandByTimer >= sIntermediateSceneStandBy.StandBySeconds)
             {
@@ -1157,18 +1145,10 @@ namespace SceneTransitionSystem
             return StandByInProgress;
         }
         //-------------------------------------------------------------------------------------------------------------
-        //private bool StandByIsFinished ()
-        //     {
-        //         Debug.Log("STSTransitionController StandByIsFinished()");
-        //return m_LauchNextScene;
-        //}
-        //-------------------------------------------------------------------------------------------------------------
         private bool WaitingToLauchNextScene(STSIntermediate sIntermediateSceneStandBy)
         {
-            //Debug.Log("STSTransitionController WaitingToLauchNextScene()");
             if (sIntermediateSceneStandBy.AutoLoadNextScene == true)
             {
-                // force auto active scene
                 LauchNextScene = true;
             }
             return !LauchNextScene;
@@ -1176,15 +1156,12 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         public void FinishStandBy()
         {
-            //Debug.Log("STSTransitionController FinishStandBy()");
-            //EventSystemEnable(kSingleton.IntermediateScene, false);
             LauchNextScene = true;
             StandByInProgress = false;
         }
         //-------------------------------------------------------------------------------------------------------------
         void OnGUI()
         {
-            //Debug.Log("STSTransitionController OnGUI()");
             if (EffectType != null)
             {
                 EffectType.DrawMaster(new Rect(0, 0, Screen.width, Screen.height));
@@ -1255,30 +1232,30 @@ namespace SceneTransitionSystem
         {
             //throw new System.NotImplementedException();
         }
-
+        //-------------------------------------------------------------------------------------------------------------
         public void OnLoadNextSceneStart(STSTransitionData sData, string sSceneName, int SceneNumber, float sScenePercent, float sPercent)
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
-
+        //-------------------------------------------------------------------------------------------------------------
         public void OnLoadingNextScenePercent(STSTransitionData sData, string sSceneName, int SceneNumber, float sScenePercent, float sPercent)
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
-
+        //-------------------------------------------------------------------------------------------------------------
         public void OnLoadNextSceneFinish(STSTransitionData sData, string sSceneName, int SceneNumber, float sScenePercent, float sPercent)
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
-
+        //-------------------------------------------------------------------------------------------------------------
         public void OnSceneAllReadyLoaded(STSTransitionData sData, string sSceneName, int SceneNumber, float sPercent)
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
-
+        //-------------------------------------------------------------------------------------------------------------
         public void OnUnloadScene(STSTransitionData sData, string sSceneName, int SceneNumber, float sPercent)
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
         //-------------------------------------------------------------------------------------------------------------
     }

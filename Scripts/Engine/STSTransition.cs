@@ -33,21 +33,8 @@ namespace SceneTransitionSystem
         public float InterEffectDuration = 0.50F;
         [Header("On exit scene effect")]
         public STSEffectType EffectOnExit;
-        //public STSScreenGauge SceneLoadingGauge;
         //-------------------------------------------------------------------------------------------------------------
-        //[Header("Interfaced")]
         public STSTransitionInterface Interfaced;
-        //[Header("On enter effect callback")]
-        //public STSTransitionEvent OnEnterStart;
-        //public STSTransitionEvent OnEnterFinish;
-        //[Header("On exit effect callback")]
-        //public STSTransitionEvent OnExitStart;
-        //public STSTransitionEvent OnExitFinish;
-        //[Header("This Scene state callback")]
-        //public STSTransitionEvent ThisSceneLoaded;
-        //public STSTransitionEvent ThisSceneEnable;
-        //public STSTransitionEvent ThisSceneDisable;
-        //public STSTransitionEvent ThisSceneWillUnloaded;
         //-------------------------------------------------------------------------------------------------------------
         private STSEffect EffectOnEnterDup;
         private STSEffect EffectOnExitDup;
@@ -85,10 +72,6 @@ namespace SceneTransitionSystem
                     else
                     {
                         ExitInProgress = false;
-                        //if (OnExitFinish != null)
-                        //{
-                        //    OnExitFinish.Invoke(null);
-                        //}
                         if (Interfaced != null)
                         {
                             Interfaced.OnTransitionExitFinish(null);
@@ -112,11 +95,7 @@ namespace SceneTransitionSystem
                     else
                     {
                         EnterInProgress = false;
-                        ExitAndEnterInProgress = false; // anyway
-                        //if (OnEnterFinish != null)
-                        //{
-                        //    OnEnterFinish.Invoke(null);
-                        //}
+                        ExitAndEnterInProgress = false;
                         if (Interfaced != null)
                         {
                             Interfaced.OnTransitionEnterFinish(null);
@@ -128,10 +107,6 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         public void PlayExitNow()
         {
-            //if (OnExitStart != null)
-            //{
-            //    OnExitStart.Invoke(null);
-            //}
             if (Interfaced != null)
             {
                 Interfaced.OnTransitionExitStart(null);
@@ -144,10 +119,6 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         public void PlayEnterNow()
         {
-            //if (OnxEnterStart != null)
-            //{
-            //    OnEnterStart.Invoke(null);
-            //}
             if (Interfaced != null)
             {
                 Interfaced.OnTransitionEnterStart(null);
@@ -169,7 +140,6 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         private void EventSystemPrevent(bool sEnable)
         {
-            //Debug.Log("STSTransitionController EventSystemPrevent()");
             for (int i = 0; i < SceneManager.sceneCount; i++)
             {
                 Scene tScene = SceneManager.GetSceneAt(i);
@@ -183,7 +153,6 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         private void EventSystemEnable(Scene sScene, bool sEnable)
         {
-            //Debug.Log("STSTransitionController EventSystemEnable()");
             if (PreventUserInteractions == true)
             {
                 EventSystem tEventSystem = null;
@@ -211,20 +180,7 @@ namespace SceneTransitionSystem
             sDestination.EffectOnEnter = this.EffectOnEnter.Dupplicate();
             sDestination.InterEffectDuration = this.InterEffectDuration;
             sDestination.EffectOnExit = this.EffectOnExit.Dupplicate();
-
             sDestination.Interfaced = this.Interfaced;
-            //sDestination.SceneLoadingGauge = this.SceneLoadingGauge;
-
-            //sDestination.OnEnterStart = this.OnEnterStart;
-            //sDestination.OnEnterFinish = this.OnEnterFinish;
-            //sDestination.OnExitStart = this.OnExitStart;
-            //sDestination.OnExitFinish = this.OnExitFinish;
-
-            //sDestination.ThisSceneLoaded = this.ThisSceneLoaded;
-            //sDestination.ThisSceneEnable = this.ThisSceneEnable;
-            //sDestination.ThisSceneDisable = this.ThisSceneDisable;
-            //sDestination.ThisSceneWillUnloaded = this.ThisSceneWillUnloaded;
-
         }
         //--------------------------------------------------------------------------------------------------------------
     }
