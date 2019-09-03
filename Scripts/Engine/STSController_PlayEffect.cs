@@ -37,7 +37,7 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         private void INTERNAL_PlayEffectWithCallBackScene(string sSceneName, STSTransitionData sTransitionData = null, STSDelegate sDelegate = null)
         {
-            if (TransitionInProgress == true)
+            if (TransitionInProgress == false)
             {
                 List<string> tScenes = new List<string>();
                 for (int tSceneIndex = 0; tSceneIndex < SceneManager.sceneCount; tSceneIndex++)
@@ -64,7 +64,7 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         private void INTERNAL_PlayEffectWithCallBackTransition(STSTransition sTransitionParams, STSTransitionData sTransitionData = null, STSDelegate sDelegate = null)
         {
-            if (TransitionInProgress == true)
+            if (TransitionInProgress == false)
             {
                 StartCoroutine(INTERNAL_PlayEffectWithCallBackSceneAsync(sTransitionParams, sTransitionData, sDelegate));
             }
@@ -95,7 +95,10 @@ namespace SceneTransitionSystem
             {
                 sTransitionParams.Interfaced.OnTransitionExitFinish(sTransitionData);
             }
-            sDelegate(sTransitionData);
+            if (sDelegate != null)
+            {
+                sDelegate(sTransitionData);
+            }
             AnimationTransitionIn(sTransitionParams);
             if (sTransitionParams.Interfaced != null)
             {

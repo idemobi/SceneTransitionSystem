@@ -11,9 +11,13 @@ namespace SceneTransitionSystem
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     public interface STSIntermediateInterface
     {
-        void OnLoadNextSceneStart(STSTransitionData sData, float sPercent);
-        void OnLoadingNextScenePercent(STSTransitionData sData, float sPercent);
-        void OnLoadNextSceneFinish(STSTransitionData sData, float sPercent);
+        void OnLoadNextSceneStart(STSTransitionData sData, string sSceneName, int SceneNumber, float sScenePercent, float sPercent);
+        void OnLoadingNextScenePercent(STSTransitionData sData, string sSceneName, int SceneNumber, float sScenePercent, float sPercent);
+        void OnLoadNextSceneFinish(STSTransitionData sData, string sSceneName, int SceneNumber, float sScenePercent, float sPercent);
+        void OnSceneAllReadyLoaded(STSTransitionData sData, string sSceneName, int SceneNumber, float sPercent);
+
+        void OnUnloadScene(STSTransitionData sData, string sSceneName, int SceneNumber, float sPercent);
+
         void OnStandByStart(STSIntermediate sStandBy);
         void OnStandByFinish(STSIntermediate sStandBy);
     }

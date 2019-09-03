@@ -76,7 +76,7 @@ namespace SceneTransitionSystem
             for (int tSceneIndex = 0; tSceneIndex < SceneManager.sceneCount; tSceneIndex++)
             {
                 Scene tScene = SceneManager.GetSceneAt(tSceneIndex);
-                tScenesToRemove.Remove(tScene.name);
+                tScenesToRemove.Add(tScene.name);
             }
             Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, sScenesToAdd, tScenesToRemove, sIntermediateScene, sTransitionData);
         }
@@ -89,8 +89,9 @@ namespace SceneTransitionSystem
             string sIntermediateScene,
             STSTransitionData sTransitionData)
         {
-            if (TransitionInProgress == true)
+            if (TransitionInProgress == false)
             {
+                // null protection
                 if (sScenesToAdd == null)
                 {
                     sScenesToAdd = new List<string>();
@@ -99,18 +100,28 @@ namespace SceneTransitionSystem
                 {
                     sScenesToRemove = new List<string>();
                 }
-                if (sScenesToAdd.Contains(sActualActiveScene) == true)
+                // trim
+                while (sScenesToAdd.Contains(string.Empty) == true)
                 {
-                    sScenesToAdd.Remove(sActualActiveScene);
+                    sScenesToAdd.Remove(string.Empty);
                 }
+                while (sScenesToRemove.Contains(string.Empty) == true)
+                {
+                    sScenesToRemove.Remove(string.Empty);
+                }
+                // active scene protection
                 if (sScenesToRemove.Contains(sNextActiveScene) == true)
                 {
                     sScenesToRemove.Remove(sNextActiveScene);
                 }
+                //if (SceneManager.GetSceneByName(sNextActiveScene).isLoaded == false)
+                //{
                 if (sScenesToAdd.Contains(sNextActiveScene) == false)
                 {
                     sScenesToAdd.Add(sNextActiveScene);
                 }
+                //}
+                // test possibilities
                 bool tPossible = false;
                 List<Scene> tScenes = new List<Scene>();
                 for (int tSceneIndex = 0; tSceneIndex < SceneManager.sceneCount; tSceneIndex++)
@@ -166,8 +177,13 @@ namespace SceneTransitionSystem
             List<string> sScenesToRemove,
             STSTransitionData sTransitionData)
         {
+
+            //AsyncOperation tAsyncOperation;
+            Dictionary<string, AsyncOperation> tAsyncOperationList = new Dictionary<string, AsyncOperation>();
             //-------------------------------
-            TransitionInProgress = false;
+            // ACTUAL SCENE DISABLE
+            //-------------------------------
+            TransitionInProgress = true;
             //-------------------------------
             Scene tActualScene = SceneManager.GetSceneByName(sActualActiveScene);
             //-------------------------------
@@ -192,515 +208,288 @@ namespace SceneTransitionSystem
                 yield return null;
             }
             // post scene finish effcet transition out
-            if (ActualSceneParams.Interfaced != null)
+            if (tActualSceneParams.Interfaced != null)
             {
                 tActualSceneParams.Interfaced.OnTransitionExitFinish(sTransitionData);
             }
-
-            //TODO : Load sIntermediateScene or Activate sIntermediateScene
-
+            //-------------------------------
+            // INTERMEDIATE SCENE LOAD AND ENABLE
             //-------------------------------
             // load transition scene async
-            AsyncOperation tAsynchroneLoadIntermediateOperation;
-            tAsynchroneLoadIntermediateOperation = SceneManager.LoadSceneAsync(IntermediateSceneName, LoadSceneMode.Additive);
-            tAsynchroneLoadIntermediateOperation.allowSceneActivation = false;
-            while (tAsynchroneLoadIntermediateOperation.progress < 0.9f)
+            AsyncOperation tAsyncOperationIntermediate = SceneManager.LoadSceneAsync(sIntermediateScene, LoadSceneMode.Additive);
+            tAsyncOperationIntermediate.allowSceneActivation = true;
+            while (tAsyncOperationIntermediate.progress < 0.9f)
             {
                 yield return null;
             }
-            // Intermediate scene will be active
-            tAsynchroneLoadIntermediateOperation.allowSceneActivation = true;
-            while (!tAsynchroneLoadIntermediateOperation.isDone)
+            while (!tAsyncOperationIntermediate.isDone)
             {
                 yield return null;
             }
             // get Transition Scene
-            IntermediateScene = SceneManager.GetSceneByName(IntermediateSceneName);
+            Scene tIntermediateScene = SceneManager.GetSceneByName(sIntermediateScene);
             // Active the next scene as root scene 
-            SceneManager.SetActiveScene(IntermediateScene);
+            SceneManager.SetActiveScene(tIntermediateScene);
             // disable audiolistener of preview scene
             AudioListenerPrevent();
             // get params
-            IntermediateSceneParams = GetTransitionsParams(IntermediateScene, false);
+            STSTransition tIntermediateSceneParams = GetTransitionsParams(tIntermediateScene, false);
             // disable the user interactions until fadein 
-            EventSystemEnable(IntermediateScene, false);
+            EventSystemEnable(tIntermediateScene, false);
             // intermediate scene is loaded
-            if (IntermediateSceneParams.Interfaced != null)
+            if (tIntermediateSceneParams.Interfaced != null)
             {
-                IntermediateSceneParams.Interfaced.OnTransitionSceneLoaded(TransitionData);
+                tIntermediateSceneParams.Interfaced.OnTransitionSceneLoaded(sTransitionData);
             }
             // animation in
-            if (IntermediateSceneParams.Interfaced != null)
+            if (tIntermediateSceneParams.Interfaced != null)
             {
-                IntermediateSceneParams.Interfaced.OnTransitionEnterStart(TransitionData);
+                tIntermediateSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData);
             }
             // animation in Go!
-            AnimationTransitionIn(IntermediateSceneParams);
+            AnimationTransitionIn(tIntermediateSceneParams);
             while (AnimationFinished() == false)
             {
                 yield return null;
             }
             // animation in Finish
-            if (IntermediateSceneParams.Interfaced != null)
+            if (tIntermediateSceneParams.Interfaced != null)
             {
-                IntermediateSceneParams.Interfaced.OnTransitionEnterFinish(TransitionData);
+                tIntermediateSceneParams.Interfaced.OnTransitionEnterFinish(sTransitionData);
             }
             // enable the user interactions 
-            EventSystemEnable(IntermediateScene, true);
+            EventSystemEnable(tIntermediateScene, true);
             // enable the user interactions 
-            if (IntermediateSceneParams.Interfaced != null)
+            if (tIntermediateSceneParams.Interfaced != null)
             {
-                IntermediateSceneParams.Interfaced.OnTransitionSceneEnable(TransitionData);
+                tIntermediateSceneParams.Interfaced.OnTransitionSceneEnable(sTransitionData);
             }
+
+            //-------------------------------
+            // INTERMEDIATE SCENE START STAND BY
+            //-------------------------------
             // start stand by
-            IntermediateSceneStandBy = GetStandByParams(IntermediateScene);
-            if (IntermediateSceneStandBy.Interfaced != null)
+
+            STSIntermediate tIntermediateSceneStandBy = GetStandByParams(tIntermediateScene);
+            if (tIntermediateSceneStandBy.Interfaced != null)
             {
-                IntermediateSceneStandBy.Interfaced.OnStandByStart(IntermediateSceneStandBy);
+                tIntermediateSceneStandBy.Interfaced.OnStandByStart(tIntermediateSceneStandBy);
             }
+
             StandBy();
 
-            //TODO : Load sNextActiveScene or Activate sNextActiveScene
-
-            //TODO : Unload sScenesToRemove list 
-
-            //TODO : Load sScenesToAdd list if necessary
-
-
-            //TODO : play effect Out sIntermediateScene
-
-            //TODO : active sNextActiveScene
-
-            //TODO : Unload sIntermediateScene
-
-            //TODO : play effect in sNextActiveScene
-
-
-
-            // Transition setp 1 is finished this scene can be replace by the next or intermediate Scene
             //-------------------------------
-            // ACTUAL SCENE IS CONCLUDED
+            // COUNT SCENES TO REMOVE OR ADD
             //-------------------------------
-            // INTERMEDIATE SCENE PROCESS
+
+            float tSceneCount = sScenesToAdd.Count + sScenesToRemove.Count;
+            int tSceneCounter = 0;
+
             //-------------------------------
-            if (string.IsNullOrEmpty(IntermediateSceneName) == false)
+            // LOADED SCENES ADDED
+            //-------------------------------
+
+            foreach (string tSceneToAdd in sScenesToAdd)
             {
-                //-------------------------------
-                // load transition scene async
-                AsyncOperation tAsynchroneLoadIntermediateOperation;
-                tAsynchroneLoadIntermediateOperation = SceneManager.LoadSceneAsync(IntermediateSceneName, LoadSceneMode.Additive);
-                tAsynchroneLoadIntermediateOperation.allowSceneActivation = false;
-                while (tAsynchroneLoadIntermediateOperation.progress < 0.9f)
+                //Debug.Log("tSceneToAdd :" + tSceneToAdd);
+                if (SceneManager.GetSceneByName(tSceneToAdd).isLoaded)
                 {
-                    yield return null;
+                    if (tIntermediateSceneStandBy.Interfaced != null)
+                    {
+                        tIntermediateSceneStandBy.Interfaced.OnSceneAllReadyLoaded(sTransitionData, tSceneToAdd, tSceneCounter, (tSceneCounter + 1.0F) / tSceneCount);
+                    }
+                    //Debug.Log("tSceneToAdd :" + tSceneToAdd + " allready finish!");
                 }
-                // Intermediate scene will be active
-                tAsynchroneLoadIntermediateOperation.allowSceneActivation = true;
-                while (!tAsynchroneLoadIntermediateOperation.isDone)
+                else
                 {
-                    yield return null;
+                    if (tIntermediateSceneStandBy.Interfaced != null)
+                    {
+                        tIntermediateSceneStandBy.Interfaced.OnLoadNextSceneStart(sTransitionData, tSceneToAdd, tSceneCounter, 0.0F, 0.0F);
+                    }
+
+                    AsyncOperation tAsyncOperationAdd = SceneManager.LoadSceneAsync(tSceneToAdd, LoadSceneMode.Additive);
+                    tAsyncOperationList.Add(tSceneToAdd, tAsyncOperationAdd);
+                    tAsyncOperationAdd.allowSceneActivation = false;
+                    while (tAsyncOperationAdd.progress < 0.9f)
+                    {
+                        if (tIntermediateSceneStandBy.Interfaced != null)
+                        {
+                            tIntermediateSceneStandBy.Interfaced.OnLoadingNextScenePercent(sTransitionData, tSceneToAdd, tSceneCounter, tAsyncOperationAdd.progress, (tSceneCounter + tAsyncOperationAdd.progress) / tSceneCount);
+                        }
+                        yield return null;
+                    }
+                    if (tIntermediateSceneStandBy.Interfaced != null)
+                    {
+                        tIntermediateSceneStandBy.Interfaced.OnLoadNextSceneFinish(sTransitionData, tSceneToAdd, tSceneCounter, 1.0F, (tSceneCounter + 1.0F) / tSceneCount);
+                    }
+                    //Debug.Log("tSceneToAdd :" + tSceneToAdd + " 90%!");
                 }
-                // get Transition Scene
-                IntermediateScene = SceneManager.GetSceneByName(IntermediateSceneName);
-                // Active the next scene as root scene 
-                SceneManager.SetActiveScene(IntermediateScene);
-                // disable audiolistener of preview scene
-                AudioListenerPrevent();
-                // get params
-                IntermediateSceneParams = GetTransitionsParams(IntermediateScene, false);
-                // disable the user interactions until fadein 
-                EventSystemEnable(IntermediateScene, false);
-                // intermediate scene is loaded
-                if (IntermediateSceneParams.Interfaced != null)
-                {
-                    IntermediateSceneParams.Interfaced.OnTransitionSceneLoaded(TransitionData);
-                }
-                // animation in
-                if (IntermediateSceneParams.Interfaced != null)
-                {
-                    IntermediateSceneParams.Interfaced.OnTransitionEnterStart(TransitionData);
-                }
-                // animation in Go!
-                AnimationTransitionIn(IntermediateSceneParams);
-                while (AnimationFinished() == false)
-                {
-                    yield return null;
-                }
-                // animation in Finish
-                if (IntermediateSceneParams.Interfaced != null)
-                {
-                    IntermediateSceneParams.Interfaced.OnTransitionEnterFinish(TransitionData);
-                }
-                // enable the user interactions 
-                EventSystemEnable(IntermediateScene, true);
-                // enable the user interactions 
-                if (IntermediateSceneParams.Interfaced != null)
-                {
-                    IntermediateSceneParams.Interfaced.OnTransitionSceneEnable(TransitionData);
-                }
-                // start stand by
-                IntermediateSceneStandBy = GetStandByParams(IntermediateScene);
-                if (IntermediateSceneStandBy.Interfaced != null)
-                {
-                    IntermediateSceneStandBy.Interfaced.OnStandByStart(IntermediateSceneStandBy);
-                }
-                StandBy();
-                // and load next scene async 
-                //-------------------------------
-                // INTERMEDIATE SCENE IS IN PLACE
-                //-------------------------------
+                tSceneCounter++;
             }
-            else
+            //-------------------------------
+            // UNLOADED SCENES REMOVED
+            //-------------------------------
+            foreach (string tSceneToRemove in sScenesToRemove)
             {
-                // So! no transition! then the intermediate params are the preview scene params
-                IntermediateSceneParams = GetTransitionsParams(ActualScene, true);
-                // And the StandBy params are the preview scene StandBy params
-                IntermediateSceneStandBy = GetStandByParams(ActualScene);
-
-                if (IntermediateSceneStandBy.Interfaced != null)
+                //Debug.Log("tSceneToRemove :" + tSceneToRemove);
+                // fadeout is finish
+                // will unloaded the  scene
+                Scene tSceneToDelete = SceneManager.GetSceneByName(tSceneToRemove);
+                STSTransition tSceneToDeleteParams = GetTransitionsParams(tSceneToDelete, false);
+                if (tSceneToDeleteParams.Interfaced != null)
                 {
-                    IntermediateSceneStandBy.Interfaced.OnStandByStart(IntermediateSceneStandBy);
+                    tSceneToDeleteParams.Interfaced.OnTransitionSceneWillUnloaded(sTransitionData);
                 }
-                StandBy();
-                // and load next scene async 
-                //-------------------------------
-                // NO INTERMEDIATE SCENE IS IN PLACE, I USE THE PREVIEW SCENE
-                //-------------------------------
+                if (SceneManager.GetSceneByName(tSceneToRemove).isLoaded)
+                {
+                    AsyncOperation tAsyncOperationRemove = SceneManager.UnloadSceneAsync(tSceneToRemove);
+                    tAsyncOperationRemove.allowSceneActivation = true; //? needed?
+                    //while (tAsyncOperationRemove.progress < 0.9f)
+                    //{
+                    //    if (tIntermediateSceneStandBy.Interfaced != null)
+                    //    {
+                    //        tIntermediateSceneStandBy.Interfaced.OnLoadingNextScenePercent(sTransitionData, tSceneToRemove, tSceneCounter, tAsyncOperationRemove.progress, (tSceneCounter + tAsyncOperationRemove.progress) / tSceneCount);
+                    //    }
+                    //    yield return null;
+                    //}
+                    //while (!tAsyncOperationRemove.isDone)
+                    //{
+                    //    yield return null;
+                    //}
+                }
+                    if (tIntermediateSceneStandBy.Interfaced != null)
+                    {
+                        tIntermediateSceneStandBy.Interfaced.OnUnloadScene(sTransitionData, tSceneToRemove, tSceneCounter, (tSceneCounter + 1.0F) / tSceneCount);
+                    }
+                tSceneCounter++;
+                Debug.Log("tSceneToRemove :" + tSceneToRemove + " finish!");
+            }
+            //-------------------------------
+            // INTERMEDIATE STAND BY
+            //-------------------------------
+            while (StandByIsProgressing(tIntermediateSceneStandBy))
+            {
+                yield return null;
+            }
+            // As soon as possible 
+            if (tIntermediateSceneStandBy.Interfaced != null)
+            {
+                tIntermediateSceneStandBy.Interfaced.OnStandByFinish(tIntermediateSceneStandBy);
+            }
+            // Waiting to load the next Scene
+            while (WaitingToLauchNextScene(tIntermediateSceneStandBy))
+            {
+                //Debug.Log ("StandByIsNotFinished loop");
+                yield return null;
             }
 
-            IntermediateSceneParams.CopyIn(OldSceneParams);
-            IntermediateSceneStandBy.CopyIn(OldStandByParams);
+            //-------------------------------
+            // INTERMEDIATE GO TO NEXT SCENE PROCESS
+            //-------------------------------
+            // stanby is finished And the next scene can be lauch
+            // disable user interactions on the intermediate scene
+            EventSystemEnable(tIntermediateScene, false);
+            if (tIntermediateSceneParams.Interfaced != null)
+            {
+                tIntermediateSceneParams.Interfaced.OnTransitionSceneDisable(sTransitionData);
+            }
+            // intermediate scene Transition Out start 
+            if (tIntermediateSceneParams.Interfaced != null)
+            {
+                tIntermediateSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData);
+            }
+            // intermediate scene Transition Out GO! 
+            AnimationTransitionOut(tIntermediateSceneParams);
+            while (AnimationFinished() == false)
+            {
+                yield return null;
+            }
+            // intermediate scene Transition Out finished! 
+            if (tIntermediateSceneParams.Interfaced != null)
+            {
+                tIntermediateSceneParams.Interfaced.OnTransitionExitFinish(sTransitionData);
+            }
+            // fadeout is finish
+            // will unloaded the intermediate scene
+            if (tIntermediateSceneParams.Interfaced != null)
+            {
+                tIntermediateSceneParams.Interfaced.OnTransitionSceneWillUnloaded(sTransitionData);
+            }
+
+            //-------------------------------
+            // ACTIVE ADDED SCENES
+            //-------------------------------
+
+            foreach (string tSceneToAdd in sScenesToAdd)
+            {
+                // scene is loaded!
+                if (tAsyncOperationList.ContainsKey(tSceneToAdd))
+                {
+                    AsyncOperation tAsyncOperationAdd = tAsyncOperationList[tSceneToAdd];
+                    tAsyncOperationAdd.allowSceneActivation = true;
+                    while (!tAsyncOperationAdd.isDone)
+                    {
+                        yield return null;
+                    }
+                    Scene tNextScene = SceneManager.GetSceneByName(tSceneToAdd);
+                    STSTransition tNextSceneParams = GetTransitionsParams(tNextScene, false);
+                    if (tNextSceneParams.Interfaced != null)
+                    {
+                        tNextSceneParams.Interfaced.OnTransitionSceneLoaded(sTransitionData);
+                    }
+                    EventSystemPrevent(false);
+                    AudioListenerPrevent();
+                    //Debug.Log("tSceneToAdd :" + tSceneToAdd + " finish!");
+                }
+            }
+
             //-------------------------------
             // NEXT SCENE PROCESS
             //-------------------------------
-            // load Next Scene
-            // actual scene must be persistent ?
-            LoadSceneMode tNextSceneMode = LoadSceneModeSelected;
-            bool tNextSceneAllRedayExist = false;
-            // If scene with this name allready exist I use the old instance
-            if (SceneManager.GetSceneByName(NextSceneName).isLoaded)
-            {
-                // active next scene basically 
-                tNextSceneAllRedayExist = true;
-            }
-            if (tNextSceneAllRedayExist == false)
-            {
-                //-------------------------------
-                // NEXT SCENE NEED TO BE LOADING
-                //-------------------------------
-                // load next scene async
-                if (IntermediateSceneStandBy.Interfaced != null)
-                {
-                    IntermediateSceneStandBy.Interfaced.OnLoadNextSceneStart(TransitionData, 0.0F);
-                }
-                AsyncOperation tAsynchroneloadNext;
-                tAsynchroneloadNext = SceneManager.LoadSceneAsync(NextSceneName, tNextSceneMode);
-                tAsynchroneloadNext.allowSceneActivation = false;
-                // load next scene async can send percent :-)
-                while (tAsynchroneloadNext.progress < 0.9f)
-                {
-                    if (IntermediateSceneStandBy.Interfaced != null)
-                    {
-                        IntermediateSceneStandBy.Interfaced.OnLoadingNextScenePercent(TransitionData, tAsynchroneloadNext.progress);
-
-                    }
-                    yield return null;
-                }
-                // need to send call back now (anticipate :-/ ) 
-                if (IntermediateSceneStandBy.Interfaced != null)
-                {
-                    IntermediateSceneStandBy.Interfaced.OnLoadNextSceneFinish(TransitionData, 1.0f);
-                }
-                // scene is loaded!
-                NextScene = SceneManager.GetSceneByName(NextSceneName);
-                NextSceneParams = GetTransitionsParams(NextScene, false);
-                if (NextSceneParams.Interfaced != null)
-                {
-                    NextSceneParams.Interfaced.OnTransitionSceneLoaded(TransitionData);
-                }
-                // when finish test if transition scene is allways in standby
-                if (string.IsNullOrEmpty(IntermediateSceneName) == false)
-                {
-                    //-------------------------------
-                    // INTERMEDIATE SCENE UNLOAD
-                    //-------------------------------
-                    EventSystemEnable(IntermediateScene, true);
-                    // continue standby if it's necessary
-                    while (StandByIsProgressing(IntermediateSceneStandBy))
-                    {
-                        yield return null;
-                    }
-                    // As soon as possible 
-                    if (IntermediateSceneStandBy.Interfaced != null)
-                    {
-                        IntermediateSceneStandBy.Interfaced.OnStandByFinish(IntermediateSceneStandBy);
-                    }
-                    // Waiting to load the next Scene
-                    while (WaitingToLauchNextScene(IntermediateSceneStandBy))
-                    {
-                        //Debug.Log ("StandByIsNotFinished loop");
-                        yield return null;
-                    }
-                    // stanby is finished And the next scene can be lauch
-                    // disable user interactions on the intermediate scene
-                    EventSystemEnable(IntermediateScene, false);
-                    if (IntermediateSceneParams.Interfaced != null)
-                    {
-                        IntermediateSceneParams.Interfaced.OnTransitionSceneDisable(TransitionData);
-                    }
-                    // intermediate scene Transition Out start 
-                    if (IntermediateSceneParams.Interfaced != null)
-                    {
-                        IntermediateSceneParams.Interfaced.OnTransitionEnterStart(TransitionData);
-                    }
-                    // intermediate scene Transition Out GO! 
-                    AnimationTransitionOut(IntermediateSceneParams);
-                    while (AnimationFinished() == false)
-                    {
-                        yield return null;
-                    }
-                    // intermediate scene Transition Out finished! 
-                    if (IntermediateSceneParams.Interfaced != null)
-                    {
-                        IntermediateSceneParams.Interfaced.OnTransitionExitFinish(TransitionData);
-                    }
-                    // fadeout is finish
-                    // will unloaded the intermediate scene
-                    if (IntermediateSceneParams.Interfaced != null)
-                    {
-                        IntermediateSceneParams.Interfaced.OnTransitionSceneWillUnloaded(TransitionData);
-                    }
-                }
-                tAsynchroneloadNext.allowSceneActivation = true;
-                while (!tAsynchroneloadNext.isDone)
-                {
-                    yield return null;
-                }
-                // remove actual scene 
-                if (LoadSceneModeSelected == LoadSceneMode.Single)
-                {
-                    // if m_SceneActual is allready loaded i need to unloaded it
-                    if (SceneManager.GetSceneByName(ActualScene.name).isLoaded)
-                    {
-                        if (ActualSceneParams.Interfaced != null)
-                        {
-                            ActualSceneParams.Interfaced.OnTransitionSceneWillUnloaded(TransitionData);
-                        }
-                        AsyncOperation tAsynchroneUnloadActualScene;
-                        tAsynchroneUnloadActualScene = SceneManager.UnloadSceneAsync(ActualScene.name);
-                        while (tAsynchroneUnloadActualScene.progress < 0.9f)
-                        {
-                            yield return null;
-                        }
-                        while (!tAsynchroneUnloadActualScene.isDone)
-                        {
-                            yield return null;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                //-------------------------------
-                // NEXT SCENE ALLREADY LOADED
-                //-------------------------------
-                // remove actual scene 
-                if (LoadSceneModeSelected == LoadSceneMode.Single)
-                {
-                    // if m_SceneActual is allready loaded i need to unloaded it
-                    if (SceneManager.GetSceneByName(ActualScene.name).isLoaded)
-                    {
-                        if (ActualSceneParams.Interfaced != null)
-                        {
-                            ActualSceneParams.Interfaced.OnTransitionSceneWillUnloaded(TransitionData);
-                        }
-                        AsyncOperation tAsynchroneUnloadActualScene;
-                        tAsynchroneUnloadActualScene = SceneManager.UnloadSceneAsync(ActualScene.name);
-                        while (tAsynchroneUnloadActualScene.progress < 0.9f)
-                        {
-                            yield return null;
-                        }
-                        while (!tAsynchroneUnloadActualScene.isDone)
-                        {
-                            yield return null;
-                        }
-                    }
-                }
-
-                NextScene = SceneManager.GetSceneByName(NextSceneName);
-                NextSceneParams = GetTransitionsParams(NextScene, false);
-                // when finish test if transition scene is allways in standby
-                if (string.IsNullOrEmpty(IntermediateSceneName) == false)
-                {
-                    //-------------------------------
-                    // INTERMEDIATE SCENE UNLOAD
-                    //-------------------------------
-                    // continue standby if it's necessary
-                    EventSystemEnable(IntermediateScene, true);
-                    while (StandByIsProgressing(IntermediateSceneStandBy))
-                    {
-                        yield return null;
-                    }
-                    // send call back for standby finished
-                    if (IntermediateSceneStandBy.Interfaced != null)
-                    {
-                        IntermediateSceneStandBy.Interfaced.OnStandByFinish(IntermediateSceneStandBy);
-                    }
-                    // Waiting to load the next Scene
-                    while (WaitingToLauchNextScene(IntermediateSceneStandBy))
-                    {
-                        //Debug.Log ("StandByIsNotFinished loop");
-                        yield return null;
-                    }
-                    // stanby is finish
-                    // disable user interactions on the transition scene
-                    EventSystemEnable(IntermediateScene, false);
-                    // disable the transition scene
-                    if (IntermediateSceneParams.Interfaced != null)
-                    {
-                        IntermediateSceneParams.Interfaced.OnTransitionSceneDisable(TransitionData);
-                    }
-                    // Transition scene disappear by fadeout 
-                    AnimationTransitionOut(IntermediateSceneParams);
-                    if (IntermediateSceneParams.Interfaced != null)
-                    {
-                        IntermediateSceneParams.Interfaced.OnTransitionExitStart(TransitionData);
-                    }
-                    while (AnimationFinished() == false)
-                    {
-                        yield return null;
-                    }
-                    if (IntermediateSceneParams.Interfaced != null)
-                    {
-                        IntermediateSceneParams.Interfaced.OnTransitionExitFinish(TransitionData);
-                    }
-                    // fadeout is finish
-                    if (IntermediateSceneParams.Interfaced != null)
-                    {
-                        IntermediateSceneParams.Interfaced.OnTransitionSceneWillUnloaded(TransitionData);
-                    }
-                }
-            }
-            NextScene = SceneManager.GetSceneByName(NextSceneName);
-            // unload Intermediate Scene anyway
-            if (LoadSceneModeSelected == LoadSceneMode.Additive && string.IsNullOrEmpty(IntermediateSceneName) == false)
-            {
-                AsyncOperation tAsynchroneUnloadTransition;
-                tAsynchroneUnloadTransition = SceneManager.UnloadSceneAsync(IntermediateSceneName);
-                while (tAsynchroneUnloadTransition.progress < 0.9f)
-                {
-                    yield return null;
-                }
-
-                while (!tAsynchroneUnloadTransition.isDone)
-                {
-                    yield return null;
-                }
-            }
-            ////remove preview scene (if not remove before)
-            //if (LoadSceneModeSelected == LoadSceneMode.Single)
-            //{
-            //    // if m_SceneActual is allready loaded i need to unloaded it
-            //    if (SceneManager.GetSceneByName(ActualScene.name).isLoaded)
-            //    {
-            //        AsyncOperation tAsynchroneUnloadActualScene;
-            //        tAsynchroneUnloadActualScene = SceneManager.UnloadSceneAsync(ActualScene.name);
-            //        if (ActualSceneParams.Interfaced != null)
-            //        {
-            //            ActualSceneParams.Interfaced.OnTransitionSceneWillUnloaded(TransitionData);
-            //        }
-            //        //foreach (STSTransitionInterface tParameters in ListPreviewScene)
-            //        //{
-            //        //    tParameters.OnTransitionSceneWillUnloaded(TransitionData);
-            //        //}
-            //        while (tAsynchroneUnloadActualScene.progress < 0.9f)
-            //        {
-            //            yield return null;
-            //        }
-
-            //        while (!tAsynchroneUnloadActualScene.isDone)
-            //        {
-            //            yield return null;
-            //        }
-            //    }
-            //    else
-            //    {
-            //        // Ok this scene allready unloading (perhaps in the intermediate scene)
-            //    }
-            //}
-            // Active the next scene as root scene 
-            SceneManager.SetActiveScene(NextScene);
+            Scene tNextActiveScene = SceneManager.GetSceneByName(sNextActiveScene);
+            SceneManager.SetActiveScene(tNextActiveScene);
             AudioListenerPrevent();
-            //// remove preview scene 
-            //if (LoadSceneModeSelected == LoadSceneMode.Single)
-            //{
-            //    // if m_SceneActual is allready loaded i need to unloaded it
-            //    if (ActualScene.isLoaded)
-            //    {
-            //        AsyncOperation tAsynchroneUnloadActualScene;
-            //        tAsynchroneUnloadActualScene = SceneManager.UnloadSceneAsync(ActualScene);
-            //        while (tAsynchroneUnloadActualScene.progress < 0.9f)
-            //        {
-            //            yield return null;
-            //        }
-            //        if (ActualSceneParams.Interfaced != null)
-            //        {
-            //            ActualSceneParams.Interfaced.OnTransitionSceneWillUnloaded(TransitionData);
-            //        }
-            //        //foreach (STSTransitionInterface tParameters in ListPreviewScene)
-            //        //{
-            //        //    tParameters.OnTransitionSceneWillUnloaded(TransitionData);
-            //        //}
-            //        while (!tAsynchroneUnloadActualScene.isDone)
-            //        {
-            //            yield return null;
-            //        }
-            //    }
-            //}
-
             // get params
-            NextSceneParams = GetTransitionsParams(NextScene, false);
-            //ListNextScene = GetTransitionInterface(NextScene);
-            //Debug.Log("ListNextScene count: =" + ListNextScene.Count);
-            //List<STSTransitionInterface> tListNextScene = GetTransitionInterface(NextScene);
-            // disable user interactions on the next scene
-            EventSystemEnable(NextScene, false);
-            // scene is loaded
-            //if (tNextSceneAllRedayExist == false)
-            //{
-            //    if (NextSceneParams.Interfaced != null)
-            //    {
-            //        NextSceneParams.Interfaced.OnTransitionSceneLoaded(TransitionData);
-            //    }
-            //    //foreach (STSTransitionInterface tParameters in ListNextScene)
-            //    //{
-            //    //    Debug.Log("try OnTransitionSceneLoaded");
-            //    //    tParameters.OnTransitionSceneLoaded(TransitionData);
-            //    //}
-            //}
-            // Next scene appear by fade in 
-            AnimationTransitionIn(NextSceneParams);
-            if (NextSceneParams.Interfaced != null)
+            STSTransition sNextSceneParams = GetTransitionsParams(tNextActiveScene, false);
+            EventSystemEnable(tNextActiveScene, false);
+            // Next scene appear by fade in
+            //-------------------------------
+            // INTERMEDIATE UNLOAD
+            //-------------------------------
+            AsyncOperation tAsyncOperationIntermediateUnload = SceneManager.UnloadSceneAsync(tIntermediateScene);
+            tAsyncOperationIntermediateUnload.allowSceneActivation = true; //? needed?
+            while (tAsyncOperationIntermediateUnload.progress < 0.9f)
             {
-                NextSceneParams.Interfaced.OnTransitionEnterStart(TransitionData);
+                yield return null;
+            }
+            while (!tAsyncOperationIntermediateUnload.isDone)
+            {
+                yield return null;
+            }
+
+            //-------------------------------
+            // NEXT SCENE ENABLE
+            //-------------------------------
+            AnimationTransitionIn(sNextSceneParams);
+            if (sNextSceneParams.Interfaced != null)
+            {
+                sNextSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData);
             }
             while (AnimationFinished() == false)
             {
                 yield return null;
             }
-            if (NextSceneParams.Interfaced != null)
+            if (sNextSceneParams.Interfaced != null)
             {
-                NextSceneParams.Interfaced.OnTransitionEnterFinish(TransitionData);
+                sNextSceneParams.Interfaced.OnTransitionEnterFinish(sTransitionData);
             }
             // fadein is finish
-            // next scene user interaction enable
             EventSystemPrevent(true);
             // next scene is enable
-            if (NextSceneParams.Interfaced != null)
+            if (sNextSceneParams.Interfaced != null)
             {
-                NextSceneParams.Interfaced.OnTransitionSceneEnable(TransitionData);
+                sNextSceneParams.Interfaced.OnTransitionSceneEnable(sTransitionData);
             }
-            NextSceneParams.CopyIn(OldSceneParams);
             // My transition is finish. I can do an another transition
             TransitionInProgress = false;
         }

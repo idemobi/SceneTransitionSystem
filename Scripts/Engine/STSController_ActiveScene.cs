@@ -67,7 +67,7 @@ namespace SceneTransitionSystem
                 tActualSceneParams.Interfaced.OnTransitionSceneDisable(sTransitionData);
             }
             AnimationTransitionOut(tActualSceneParams);
-            if (ActualSceneParams.Interfaced != null)
+            if (tActualSceneParams.Interfaced != null)
             {
                 tActualSceneParams.Interfaced.OnTransitionExitStart(sTransitionData);
             }
@@ -113,7 +113,7 @@ namespace SceneTransitionSystem
                 tActualSceneParams.Interfaced.OnTransitionSceneDisable(sTransitionData);
             }
             AnimationTransitionOut(tActualSceneParams);
-            if (ActualSceneParams.Interfaced != null)
+            if (tActualSceneParams.Interfaced != null)
             {
                 tActualSceneParams.Interfaced.OnTransitionExitStart(sTransitionData);
             }
@@ -210,12 +210,12 @@ namespace SceneTransitionSystem
             EventSystemEnable(tIntermediateScene, false);
             if (tIntermediateSceneParams.Interfaced != null)
             {
-                tIntermediateSceneParams.Interfaced.OnTransitionSceneDisable(TransitionData);
+                tIntermediateSceneParams.Interfaced.OnTransitionSceneDisable(sTransitionData);
             }
             // intermediate scene Transition Out start 
             if (tIntermediateSceneParams.Interfaced != null)
             {
-                tIntermediateSceneParams.Interfaced.OnTransitionEnterStart(TransitionData);
+                tIntermediateSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData);
             }
             // intermediate scene Transition Out GO! 
             AnimationTransitionOut(tIntermediateSceneParams);
@@ -226,13 +226,13 @@ namespace SceneTransitionSystem
             // intermediate scene Transition Out finished! 
             if (tIntermediateSceneParams.Interfaced != null)
             {
-                tIntermediateSceneParams.Interfaced.OnTransitionExitFinish(TransitionData);
+                tIntermediateSceneParams.Interfaced.OnTransitionExitFinish(sTransitionData);
             }
             // fadeout is finish
             // will unloaded the intermediate scene
             if (tIntermediateSceneParams.Interfaced != null)
             {
-                tIntermediateSceneParams.Interfaced.OnTransitionSceneWillUnloaded(TransitionData);
+                tIntermediateSceneParams.Interfaced.OnTransitionSceneWillUnloaded(sTransitionData);
             }
             AsyncOperation tAsynchroneUnloadTransition;
             tAsynchroneUnloadTransition = SceneManager.UnloadSceneAsync(sIntermediateSceneName);
