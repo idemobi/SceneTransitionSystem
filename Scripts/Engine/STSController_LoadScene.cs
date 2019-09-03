@@ -19,47 +19,47 @@ namespace SceneTransitionSystem
     public partial class STSController : MonoBehaviour, STSTransitionInterface, STSIntermediateInterface
     {
         //-------------------------------------------------------------------------------------------------------------
-        public static void AddSubScene(string sAdditionalSceneName, string sIntermediateSceneName = null, STSTransitionData sTransitionData = null)
+        public static void AddSubScene(string sAdditionalSceneName, string sIntermediateSceneName = null, STSTransitionData sTransitionData = null, string sKey = null)
         {
-            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, SceneManager.GetActiveScene().name, new List<string> { sAdditionalSceneName }, null, sIntermediateSceneName, sTransitionData);
+            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, SceneManager.GetActiveScene().name, new List<string> { sAdditionalSceneName }, null, sIntermediateSceneName, sTransitionData, true, sKey);
         }
         //-------------------------------------------------------------------------------------------------------------
-        public static void AddSubScenes(List<string> sAdditionalScenes, string sIntermediateScene = null, STSTransitionData sTransitionData = null)
+        public static void AddSubScenes(List<string> sAdditionalScenes, string sIntermediateScene = null, STSTransitionData sTransitionData = null, string sKey = null)
         {
-            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, SceneManager.GetActiveScene().name, sAdditionalScenes, null, sIntermediateScene, sTransitionData);
+            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, SceneManager.GetActiveScene().name, sAdditionalScenes, null, sIntermediateScene, sTransitionData, true, sKey);
         }
         //-------------------------------------------------------------------------------------------------------------
-        public static void AddScene(string sNextActiveScene, string sIntermediateScene = null, STSTransitionData sTransitionData = null)
+        public static void AddScene(string sNextActiveScene, string sIntermediateScene = null, STSTransitionData sTransitionData = null, string sKey = null)
         {
-            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, null, null, sIntermediateScene, sTransitionData);
+            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, null, null, sIntermediateScene, sTransitionData, true, sKey);
         }
         //-------------------------------------------------------------------------------------------------------------
-        public static void AddScenes(string sNextActiveScene, List<string> sScenesToAdd, string sIntermediateScene = null, STSTransitionData sTransitionData = null)
+        public static void AddScenes(string sNextActiveScene, List<string> sScenesToAdd, string sIntermediateScene = null, STSTransitionData sTransitionData = null, string sKey = null)
         {
-            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, sScenesToAdd, null, sIntermediateScene, sTransitionData);
+            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, sScenesToAdd, null, sIntermediateScene, sTransitionData, true, sKey);
         }
         //-------------------------------------------------------------------------------------------------------------
-        public static void RemoveSubScene(string sSceneToRemove, string sIntermediateScene = null, STSTransitionData sTransitionData = null)
+        public static void RemoveSubScene(string sSceneToRemove, string sIntermediateScene = null, STSTransitionData sTransitionData = null, string sKey = null)
         {
-            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, SceneManager.GetActiveScene().name, null, new List<string> { sSceneToRemove }, sIntermediateScene, sTransitionData);
+            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, SceneManager.GetActiveScene().name, null, new List<string> { sSceneToRemove }, sIntermediateScene, sTransitionData, true, sKey);
         }
         //-------------------------------------------------------------------------------------------------------------
-        public static void RemoveSubScenes(List<string> sScenesToRemove, string sIntermediateScene = null, STSTransitionData sTransitionData = null)
+        public static void RemoveSubScenes(List<string> sScenesToRemove, string sIntermediateScene = null, STSTransitionData sTransitionData = null, string sKey = null)
         {
-            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, SceneManager.GetActiveScene().name, null, sScenesToRemove, sIntermediateScene, sTransitionData);
+            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, SceneManager.GetActiveScene().name, null, sScenesToRemove, sIntermediateScene, sTransitionData, true, sKey);
         }
         //-------------------------------------------------------------------------------------------------------------
-        public static void RemoveScene(string sNextActiveScene, string sSceneToRemove, string sIntermediateScene = null, STSTransitionData sTransitionData = null)
+        public static void RemoveScene(string sNextActiveScene, string sSceneToRemove, string sIntermediateScene = null, STSTransitionData sTransitionData = null, string sKey = null)
         {
-            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, null, new List<string> { sSceneToRemove }, sIntermediateScene, sTransitionData);
+            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, null, new List<string> { sSceneToRemove }, sIntermediateScene, sTransitionData, true, sKey);
         }
         //-------------------------------------------------------------------------------------------------------------
-        public static void RemoveScenes(string sNextActiveScene, List<string> sScenesToRemove, string sIntermediateScene = null, STSTransitionData sTransitionData = null)
+        public static void RemoveScenes(string sNextActiveScene, List<string> sScenesToRemove, string sIntermediateScene = null, STSTransitionData sTransitionData = null, string sKey = null)
         {
-            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, null, sScenesToRemove, sIntermediateScene, sTransitionData);
+            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, null, sScenesToRemove, sIntermediateScene, sTransitionData, true, sKey);
         }
         //-------------------------------------------------------------------------------------------------------------
-        public static void ReplaceAllByScene(string sNextActiveScene, string sIntermediateScene = null, STSTransitionData sTransitionData = null)
+        public static void ReplaceAllByScene(string sNextActiveScene, string sIntermediateScene = null, STSTransitionData sTransitionData = null, string sKey = null)
         {
             List<string> tScenesToRemove = new List<string>();
             for (int tSceneIndex = 0; tSceneIndex < SceneManager.sceneCount; tSceneIndex++)
@@ -67,10 +67,10 @@ namespace SceneTransitionSystem
                 Scene tScene = SceneManager.GetSceneAt(tSceneIndex);
                 tScenesToRemove.Remove(tScene.name);
             }
-            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, null, tScenesToRemove, sIntermediateScene, sTransitionData);
+            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, null, tScenesToRemove, sIntermediateScene, sTransitionData, true, sKey);
         }
         //-------------------------------------------------------------------------------------------------------------
-        public static void ReplaceAllByScenes(string sNextActiveScene, List<string> sScenesToAdd, string sIntermediateScene = null, STSTransitionData sTransitionData = null)
+        public static void ReplaceAllByScenes(string sNextActiveScene, List<string> sScenesToAdd, string sIntermediateScene = null, STSTransitionData sTransitionData = null, string sKey = null)
         {
             List<string> tScenesToRemove = new List<string>();
             for (int tSceneIndex = 0; tSceneIndex < SceneManager.sceneCount; tSceneIndex++)
@@ -78,7 +78,7 @@ namespace SceneTransitionSystem
                 Scene tScene = SceneManager.GetSceneAt(tSceneIndex);
                 tScenesToRemove.Add(tScene.name);
             }
-            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, sScenesToAdd, tScenesToRemove, sIntermediateScene, sTransitionData);
+            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, sScenesToAdd, tScenesToRemove, sIntermediateScene, sTransitionData, true, sKey);
         }
         //-------------------------------------------------------------------------------------------------------------
         private void INTERNAL_ChangeScenes(
@@ -87,7 +87,8 @@ namespace SceneTransitionSystem
             List<string> sScenesToAdd,
             List<string> sScenesToRemove,
             string sIntermediateScene,
-            STSTransitionData sTransitionData)
+            STSTransitionData sTransitionData,
+            bool sHistorical, string sKey)
         {
             if (TransitionInProgress == false)
             {
@@ -142,6 +143,12 @@ namespace SceneTransitionSystem
                         tPossible = true;
                     }
                 }
+
+                if (sHistorical == true)
+                {
+                    INTERNAL_AddNavigation(sNextActiveScene, sScenesToAdd, sIntermediateScene, sTransitionData, sKey);
+                }
+
                 if (tPossible == true)
                 {
                     if (string.IsNullOrEmpty(sIntermediateScene))
@@ -307,22 +314,22 @@ namespace SceneTransitionSystem
             //-------------------------------
             // INTERMEDIATE UNLOAD
             //-------------------------------
-            if (tRemoveActual==true)
+            if (tRemoveActual == true)
             {
-            if (tActualSceneParams.Interfaced != null)
-            {
-                tActualSceneParams.Interfaced.OnTransitionSceneWillUnloaded(sTransitionData);
-            }
-            AsyncOperation tAsyncOperationIntermediateUnload = SceneManager.UnloadSceneAsync(sActualActiveScene);
-            tAsyncOperationIntermediateUnload.allowSceneActivation = true; //? needed?
-                                                                           //while (tAsyncOperationIntermediateUnload.progress < 0.9f)
-                                                                           //{
-                                                                           //    yield return null;
-                                                                           //}
-                                                                           //while (!tAsyncOperationIntermediateUnload.isDone)
-                                                                           //{
-                                                                           //    yield return null;
-                                                                           //}
+                if (tActualSceneParams.Interfaced != null)
+                {
+                    tActualSceneParams.Interfaced.OnTransitionSceneWillUnloaded(sTransitionData);
+                }
+                AsyncOperation tAsyncOperationIntermediateUnload = SceneManager.UnloadSceneAsync(sActualActiveScene);
+                tAsyncOperationIntermediateUnload.allowSceneActivation = true; //? needed?
+                                                                               //while (tAsyncOperationIntermediateUnload.progress < 0.9f)
+                                                                               //{
+                                                                               //    yield return null;
+                                                                               //}
+                                                                               //while (!tAsyncOperationIntermediateUnload.isDone)
+                                                                               //{
+                                                                               //    yield return null;
+                                                                               //}
             }
             //-------------------------------
             // NEXT SCENE ENABLE
