@@ -652,7 +652,8 @@ namespace SceneTransitionSystem
                 GUI.backgroundColor = Color.red;
                 if (GUI.Button(new Rect(position.x + position.width - kSizePreviewButton - kMarge - kSizePreview * 2, tY + 3 * (tPopupFieldStyle.fixedHeight + kMarge), kSizePreviewButton, tPopupFieldStyle.fixedHeight), STSConstants.K_ASSET_STORE, tMiniButtonStyle))
                 {
-                    AssetStore.Open(STSConstants.K_ASSET_STORE_URL);
+                    //AssetStore.Open(STSConstants.K_ASSET_STORE_URL);
+                    Application.OpenURL(STSConstants.K_ASSET_STORE_URL);
                 }
                 GUI.backgroundColor = tOldColor;
             }

@@ -73,7 +73,7 @@ namespace SceneTransitionSystem
         /// 
         /// </summary>
         //public static string K_ASSET_STORE_URL = string.Empty;
-        public static string K_ASSET_STORE_URL = "?q=STSEffect&orderBy=0";
+        public static string K_ASSET_STORE_URL = "https://assetstore.unity.com/?q=STSEffect&orderBy=0";
         //-------------------------------------------------------------------------------------------------------------
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
