@@ -28,16 +28,32 @@ namespace SceneTransitionSystem
             EditorGUI.BeginProperty(position, label, property);
             SerializedProperty tPath = property.FindPropertyRelative("ScenePath");
             List<string> tPathList = new List<string>();
-            foreach(EditorBuildSettingsScene tScene in EditorBuildSettings.scenes)
+            tPathList.Add("None");
+            foreach (EditorBuildSettingsScene tScene in EditorBuildSettings.scenes)
             {
                 tPathList.Add(tScene.path);
             }
             int tPathIndex = tPathList.IndexOf(tPath.stringValue);
             int tPathIndexNext = EditorGUI.Popup(position, property.displayName, tPathIndex, tPathList.ToArray());
-            if (tPathIndexNext >= 0 && tPathIndex != tPathIndexNext)
+            if (tPathIndex != tPathIndexNext)
             {
-                tPath.stringValue = EditorBuildSettings.scenes[tPathIndexNext].path;
+                if (tPathIndexNext > 0)
+                {
+                    tPath.stringValue = tPathList[tPathIndexNext];
+                }
+                else
+                {
+                    tPath.stringValue = string.Empty;
+                }
             }
+            //if (tPathIndexNext >0 && tPathIndex != tPathIndexNext)
+            //{
+            //    tPath.stringValue = EditorBuildSettings.scenes[tPathIndexNext].path;
+            //}
+            //else
+            //{
+            //    tPath.stringValue = string.Empty;
+            //}
             EditorGUI.EndProperty();
         }
         //-------------------------------------------------------------------------------------------------------------

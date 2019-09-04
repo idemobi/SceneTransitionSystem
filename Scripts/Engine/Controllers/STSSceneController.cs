@@ -16,47 +16,87 @@ using UnityEngine.SceneManagement;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    public enum STSSceneDebugColor
+    {
+        //-------------------------------------------------------------------------------------------------------------
+        black,
+        red,
+        green,
+        yellow,
+        blue,
+        gray,
+        //-------------------------------------------------------------------------------------------------------------
+    }
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     public class STSSceneController : MonoBehaviour, STSTransitionInterface
     {
         //-------------------------------------------------------------------------------------------------------------
+        [Header("Debug Mode")]
+        public bool ActiveLog = false;
+        public STSSceneDebugColor LogTagColor = STSSceneDebugColor.black;
+        //-------------------------------------------------------------------------------------------------------------
         public virtual void OnTransitionSceneLoaded(STSTransitionData sData)
         {
-            //throw new System.NotImplementedException();
+            if (ActiveLog == true)
+            {
+                Debug.Log("<color=" + LogTagColor.ToString() + ">" + this.gameObject.scene.name + "</color> OnTransitionSceneLoaded()");
+            }
         }
         //-------------------------------------------------------------------------------------------------------------
         public virtual void OnTransitionEnterFinish(STSTransitionData sData)
         {
-            //throw new System.NotImplementedException();
+            if (ActiveLog == true)
+            {
+                Debug.Log("<color=" + LogTagColor.ToString() + ">" + this.gameObject.scene.name + "</color> OnTransitionEnterFinish()");
+            }
         }
         //-------------------------------------------------------------------------------------------------------------
         public virtual void OnTransitionEnterStart(STSTransitionData sData)
         {
-            //throw new System.NotImplementedException();
+            if (ActiveLog == true)
+            {
+                Debug.Log("<color=" + LogTagColor.ToString() + ">" + this.gameObject.scene.name + "</color> OnTransitionEnterStart()");
+            }
         }
         //-------------------------------------------------------------------------------------------------------------
         public virtual void OnTransitionSceneEnable(STSTransitionData sData)
         {
-            //throw new System.NotImplementedException();
+            if (ActiveLog == true)
+            {
+                Debug.Log("<color=" + LogTagColor.ToString() + ">" + this.gameObject.scene.name + "</color> OnTransitionSceneEnable()");
+            }
         }
         //-------------------------------------------------------------------------------------------------------------
         public virtual void OnTransitionSceneDisable(STSTransitionData sData)
         {
-            //throw new System.NotImplementedException();
+            if (ActiveLog == true)
+            {
+                Debug.Log("<color=" + LogTagColor.ToString() + ">" + this.gameObject.scene.name + "</color> OnTransitionSceneDisable()");
+            }
         }
         //-------------------------------------------------------------------------------------------------------------
         public virtual void OnTransitionExitStart(STSTransitionData sData)
         {
-            //throw new System.NotImplementedException();
+            if (ActiveLog == true)
+            {
+                Debug.Log("<color=" + LogTagColor.ToString() + ">" + this.gameObject.scene.name + "</color> OnTransitionExitStart()");
+            }
         }
         //-------------------------------------------------------------------------------------------------------------
         public virtual void OnTransitionExitFinish(STSTransitionData sData)
         {
-            //throw new System.NotImplementedException();
+            if (ActiveLog == true)
+            {
+                Debug.Log("<color=" + LogTagColor.ToString() + ">" + this.gameObject.scene.name + "</color> OnTransitionExitFinish()");
+            }
         }
         //-------------------------------------------------------------------------------------------------------------
         public virtual void OnTransitionSceneWillUnloaded(STSTransitionData sData)
         {
-            //throw new System.NotImplementedException();
+            if (ActiveLog == true)
+            {
+                Debug.Log("<color=" + LogTagColor.ToString() + ">" + this.gameObject.scene.name + "</color> OnTransitionSceneWillUnloaded()");
+            }
         }
         //-------------------------------------------------------------------------------------------------------------
     }

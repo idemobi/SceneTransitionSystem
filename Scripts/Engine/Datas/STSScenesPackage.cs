@@ -22,9 +22,8 @@ namespace SceneTransitionSystem
         public List<string> ScenesNameList = new List<string>();
         public string IntermissionScene;
         public STSTransitionData Datas;
-        public string Key;
         //-------------------------------------------------------------------------------------------------------------
-        public STSScenesPackage(string sActiveSceneName, List<string> sScenesNameList, string sIntermissionScene, STSTransitionData sDatas, string sKey)
+        public STSScenesPackage(string sActiveSceneName, List<string> sScenesNameList, string sIntermissionScene, STSTransitionData sDatas)
         {
             ActiveSceneName = sActiveSceneName;
             ScenesNameList = sScenesNameList;

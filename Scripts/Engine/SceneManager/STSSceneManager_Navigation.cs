@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using UnityEngine;
-
 //=====================================================================================================================
 namespace SceneTransitionSystem
 {
@@ -90,10 +89,10 @@ namespace SceneTransitionSystem
             Historic.Clear();
         }
         //-------------------------------------------------------------------------------------------------------------
-        private void INTERNAL_AddNavigation(string sActiveSceneName, List<string> sScenesNameList, string sIntermissionScene, STSTransitionData sDatas, string sKey)
+        private void INTERNAL_AddNavigation(string sActiveSceneName, List<string> sScenesNameList, string sIntermissionScene, STSTransitionData sDatas)
         {
             INTERNAL_GetDefaultScenesPackage(); // create default
-            STSScenesPackage tScenePackage = new STSScenesPackage(sActiveSceneName, sScenesNameList, sIntermissionScene, sDatas, sKey);
+            STSScenesPackage tScenePackage = new STSScenesPackage(sActiveSceneName, sScenesNameList, sIntermissionScene, sDatas);
             Historic.Add(tScenePackage);
         }
         //-------------------------------------------------------------------------------------------------------------
@@ -101,7 +100,7 @@ namespace SceneTransitionSystem
         {
             if (DefaultScenesPackage == null)
             {
-                DefaultScenesPackage = new STSScenesPackage(SceneManager.GetActiveScene().name, null, null, null, null);
+                DefaultScenesPackage = new STSScenesPackage(SceneManager.GetActiveScene().name, null, null, null);
             }
             return DefaultScenesPackage;
         }
@@ -128,8 +127,7 @@ namespace SceneTransitionSystem
                 tScenesToRemove,
                 sPackage.IntermissionScene,
                 sNewData,
-                false,
-                null);
+                false);
         }
         //-------------------------------------------------------------------------------------------------------------
     }
