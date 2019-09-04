@@ -70,7 +70,7 @@ namespace SceneTransitionSystem
             {
                 tActualSceneParams.Interfaced.OnTransitionSceneDisable(sTransitionData);
             }
-            AnimationTransitionOut(tActualSceneParams);
+            AnimationTransitionOut(tActualSceneParams, sTransitionData);
             if (tActualSceneParams.Interfaced != null)
             {
                 tActualSceneParams.Interfaced.OnTransitionExitStart(sTransitionData);
@@ -85,7 +85,7 @@ namespace SceneTransitionSystem
             }
             SceneManager.SetActiveScene(SceneManager.GetSceneByName(sSceneNameToActive));
             AudioListenerPrevent();
-            AnimationTransitionIn(tNextSceneParams);
+            AnimationTransitionIn(tNextSceneParams, sTransitionData);
             if (tNextSceneParams.Interfaced != null)
             {
                 tNextSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData);
@@ -116,7 +116,7 @@ namespace SceneTransitionSystem
             {
                 tActualSceneParams.Interfaced.OnTransitionSceneDisable(sTransitionData);
             }
-            AnimationTransitionOut(tActualSceneParams);
+            AnimationTransitionOut(tActualSceneParams, sTransitionData);
             if (tActualSceneParams.Interfaced != null)
             {
                 tActualSceneParams.Interfaced.OnTransitionExitStart(sTransitionData);
@@ -166,7 +166,7 @@ namespace SceneTransitionSystem
                 tIntermissionSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData);
             }
             // animation in Go!
-            AnimationTransitionIn(tIntermissionSceneParams);
+            AnimationTransitionIn(tIntermissionSceneParams, sTransitionData);
             while (AnimationFinished() == false)
             {
                 yield return null;
@@ -222,7 +222,7 @@ namespace SceneTransitionSystem
                 tIntermissionSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData);
             }
             // Intermission scene Transition Out GO! 
-            AnimationTransitionOut(tIntermissionSceneParams);
+            AnimationTransitionOut(tIntermissionSceneParams, sTransitionData);
             while (AnimationFinished() == false)
             {
                 yield return null;
@@ -253,7 +253,7 @@ namespace SceneTransitionSystem
 
             SceneManager.SetActiveScene(SceneManager.GetSceneByName(sSceneNameToActive));
             AudioListenerPrevent();
-            AnimationTransitionIn(tNextSceneParams);
+            AnimationTransitionIn(tNextSceneParams, sTransitionData);
             if (tNextSceneParams.Interfaced != null)
             {
                 tNextSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData);

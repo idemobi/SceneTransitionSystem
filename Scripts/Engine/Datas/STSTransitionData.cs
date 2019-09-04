@@ -31,6 +31,8 @@ namespace SceneTransitionSystem
     public partial class STSTransitionData
     {
         //-------------------------------------------------------------------------------------------------------------
+        public STSEffectMoreInfos EffectMoreInfos;
+        //-------------------------------------------------------------------------------------------------------------
         public string InternalName;
         public string Title;
         public string Subtitle;

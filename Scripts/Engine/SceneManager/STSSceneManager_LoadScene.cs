@@ -211,7 +211,7 @@ namespace SceneTransitionSystem
                 tActualSceneParams.Interfaced.OnTransitionExitStart(sTransitionData);
             }
             // scene start effect transition out!
-            AnimationTransitionOut(tActualSceneParams);
+            AnimationTransitionOut(tActualSceneParams, sTransitionData);
             // waiting effect will finish
             while (AnimationFinished() == false)
             {
@@ -338,7 +338,7 @@ namespace SceneTransitionSystem
             //-------------------------------
             // NEXT SCENE ENABLE
             //-------------------------------
-            AnimationTransitionIn(sNextSceneParams);
+            AnimationTransitionIn(sNextSceneParams, sTransitionData);
             if (sNextSceneParams.Interfaced != null)
             {
                 sNextSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData);
@@ -394,7 +394,7 @@ namespace SceneTransitionSystem
                 tActualSceneParams.Interfaced.OnTransitionExitStart(sTransitionData);
             }
             // scene start effect transition out!
-            AnimationTransitionOut(tActualSceneParams);
+            AnimationTransitionOut(tActualSceneParams, sTransitionData);
             // waiting effect will finish
             while (AnimationFinished() == false)
             {
@@ -440,7 +440,7 @@ namespace SceneTransitionSystem
                 tIntermissionSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData);
             }
             // animation in Go!
-            AnimationTransitionIn(tIntermissionSceneParams);
+            AnimationTransitionIn(tIntermissionSceneParams, sTransitionData);
             while (AnimationFinished() == false)
             {
                 yield return null;
@@ -592,7 +592,7 @@ namespace SceneTransitionSystem
                 tIntermissionSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData);
             }
             // Intermission scene Transition Out GO! 
-            AnimationTransitionOut(tIntermissionSceneParams);
+            AnimationTransitionOut(tIntermissionSceneParams, sTransitionData);
             while (AnimationFinished() == false)
             {
                 yield return null;
@@ -661,7 +661,7 @@ namespace SceneTransitionSystem
             //-------------------------------
             // NEXT SCENE ENABLE
             //-------------------------------
-            AnimationTransitionIn(sNextSceneParams);
+            AnimationTransitionIn(sNextSceneParams, sTransitionData);
             if (sNextSceneParams.Interfaced != null)
             {
                 sNextSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData);

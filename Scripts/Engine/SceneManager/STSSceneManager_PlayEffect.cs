@@ -86,7 +86,7 @@ namespace SceneTransitionSystem
             {
                 sTransitionParams.Interfaced.OnTransitionSceneDisable(sTransitionData);
             }
-            AnimationTransitionOut(sTransitionParams);
+            AnimationTransitionOut(sTransitionParams, sTransitionData);
             if (sTransitionParams.Interfaced != null)
             {
                 sTransitionParams.Interfaced.OnTransitionExitStart(sTransitionData);
@@ -103,7 +103,7 @@ namespace SceneTransitionSystem
             {
                 sDelegate(sTransitionData);
             }
-            AnimationTransitionIn(sTransitionParams);
+            AnimationTransitionIn(sTransitionParams, sTransitionData);
             if (sTransitionParams.Interfaced != null)
             {
                 sTransitionParams.Interfaced.OnTransitionEnterStart(sTransitionData);

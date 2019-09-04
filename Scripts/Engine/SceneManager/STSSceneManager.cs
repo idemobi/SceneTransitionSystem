@@ -295,7 +295,7 @@ namespace SceneTransitionSystem
             return EffectType.AnimIsFinished;
         }
         //-------------------------------------------------------------------------------------------------------------
-        private void AnimationTransitionIn(STSTransition sThisSceneParameters)
+        private void AnimationTransitionIn(STSTransition sThisSceneParameters, STSTransitionData sDatas)
         {
             Color tOldColor = Color.black;
             float tInterlude = 0;
@@ -310,17 +310,27 @@ namespace SceneTransitionSystem
             {
                 EffectType = new STSEffectFade();
             }
-            EffectType.StartEffectEnter(new Rect(0, 0, Screen.width, Screen.height), tOldColor, tInterlude);
+            STSEffectMoreInfos sMoreInfos = null;
+            if (sDatas != null)
+            {
+                sMoreInfos = sDatas.EffectMoreInfos;
+            }
+            EffectType.StartEffectEnter(new Rect(0, 0, Screen.width, Screen.height), tOldColor, tInterlude, sMoreInfos);
         }
         //-------------------------------------------------------------------------------------------------------------
-        private void AnimationTransitionOut(STSTransition sThisSceneParameters)
+        private void AnimationTransitionOut(STSTransition sThisSceneParameters, STSTransitionData sDatas)
         {
             EffectType = sThisSceneParameters.EffectOnExit.GetEffect();
             if (EffectType == null)
             {
                 EffectType = new STSEffectFade();
             }
-            EffectType.StartEffectExit(new Rect(0, 0, Screen.width, Screen.height));
+            STSEffectMoreInfos sMoreInfos = null;
+            if (sDatas != null)
+            {
+                sMoreInfos = sDatas.EffectMoreInfos;
+            }
+            EffectType.StartEffectExit(new Rect(0, 0, Screen.width, Screen.height), sMoreInfos);
         }
         //-------------------------------------------------------------------------------------------------------------
         private void StandBy()

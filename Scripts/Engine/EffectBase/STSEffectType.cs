@@ -575,7 +575,7 @@ namespace SceneTransitionSystem
             //Debug.Log("STSEffect EstimatePurcent() => Purcent = " + Purcent.ToString("F3"));
         }
         //-------------------------------------------------------------------------------------------------------------
-        public void StartEffectEnter(Rect sRect, Color sOldColor, float sInterEffectDelay)
+        public void StartEffectEnter(Rect sRect, Color sOldColor, float sInterEffectDelay, STSEffectMoreInfos sEffectMoreInfos)
         {
             PrepareEffectEnter(sRect);
             ColorIsPlaying = false;
@@ -598,7 +598,7 @@ namespace SceneTransitionSystem
             AnimIsFinished = false;
         }
         //-------------------------------------------------------------------------------------------------------------
-        public void StartEffectExit(Rect sRect)
+        public void StartEffectExit(Rect sRect, STSEffectMoreInfos sEffectMoreInfos)
         {
             PrepareEffectExit(sRect);
             AnimPurcent = 0.0F;
