@@ -18,14 +18,14 @@ using UnityEditorInternal;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    [CustomEditor(typeof(STSIntermediate))]
-    public class STSIntermediateEditor : Editor
+    [CustomEditor(typeof(STSIntermission))]
+    public class STSIntermissionEditor : Editor
     {
         //-------------------------------------------------------------------------------------------------------------
         public override void OnInspectorGUI()
         {
-            STSIntermediate tTarget = (STSIntermediate)target;
-            if (tTarget.gameObject.GetComponent<STSIntermediateInterface>() != null)
+            STSIntermission tTarget = (STSIntermission)target;
+            if (tTarget.gameObject.GetComponent<STSIntermissionInterface>() != null)
             {
                 serializedObject.Update();
                 DrawDefaultInspector();

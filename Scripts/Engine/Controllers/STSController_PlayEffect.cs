@@ -16,7 +16,7 @@ using System;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public partial class STSController : MonoBehaviour, STSTransitionInterface, STSIntermediateInterface
+    public partial class STSController : MonoBehaviour, STSTransitionInterface, STSIntermissionInterface
     {
         //-------------------------------------------------------------------------------------------------------------
         public static void TransitionSimulate(STSTransitionData sTransitionData = null, STSDelegate sDelegate = null)

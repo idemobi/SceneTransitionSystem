@@ -11,20 +11,20 @@ using UnityEngine.SceneManagement;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public class STSSceneIntermediateController : STSSceneController, STSIntermediateInterface
+    public class STSSceneIntermissionController : STSSceneController, STSIntermissionInterface
     {
         //-------------------------------------------------------------------------------------------------------------
-        public virtual void OnLoadingNextScenePercent(STSTransitionData sData, string sSceneName, int SceneNumber, float sScenePercent, float sPercent)
+        public virtual void OnLoadingScenePercent(STSTransitionData sData, string sSceneName, int SceneNumber, float sScenePercent, float sPercent)
         {
             //throw new System.NotImplementedException();
         }
         //-------------------------------------------------------------------------------------------------------------
-        public virtual void OnLoadNextSceneFinish(STSTransitionData sData, string sSceneName, int SceneNumber, float sScenePercent, float sPercent)
+        public virtual void OnLoadingSceneFinish(STSTransitionData sData, string sSceneName, int SceneNumber, float sScenePercent, float sPercent)
         {
             //throw new System.NotImplementedException();
         }
         //-------------------------------------------------------------------------------------------------------------
-        public virtual void OnLoadNextSceneStart(STSTransitionData sData, string sSceneName, int SceneNumber, float sScenePercent, float sPercent)
+        public virtual void OnLoadingSceneStart(STSTransitionData sData, string sSceneName, int SceneNumber, float sScenePercent, float sPercent)
         {
             //throw new System.NotImplementedException();
         }
@@ -34,12 +34,12 @@ namespace SceneTransitionSystem
             //throw new System.NotImplementedException();
         }
         //-------------------------------------------------------------------------------------------------------------
-        public virtual void OnStandByFinish(STSIntermediate sStandBy)
+        public virtual void OnStandByFinish(STSIntermission sStandBy)
         {
             //throw new System.NotImplementedException();
         }
         //-------------------------------------------------------------------------------------------------------------
-        public virtual void OnStandByStart(STSIntermediate sStandBy)
+        public virtual void OnStandByStart(STSIntermission sStandBy)
         {
             //throw new System.NotImplementedException();
         }

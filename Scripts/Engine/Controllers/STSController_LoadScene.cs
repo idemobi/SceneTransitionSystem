@@ -16,50 +16,50 @@ using System;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public partial class STSController : MonoBehaviour, STSTransitionInterface, STSIntermediateInterface
+    public partial class STSController : MonoBehaviour, STSTransitionInterface, STSIntermissionInterface
     {
         //-------------------------------------------------------------------------------------------------------------
-        public static void AddSubScene(string sAdditionalSceneName, string sIntermediateSceneName = null, STSTransitionData sTransitionData = null, string sKey = null)
+        public static void AddSubScene(string sAdditionalSceneName, string sIntermissionSceneName = null, STSTransitionData sTransitionData = null, string sKey = null)
         {
-            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, SceneManager.GetActiveScene().name, new List<string> { sAdditionalSceneName }, null, sIntermediateSceneName, sTransitionData, true, sKey);
+            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, SceneManager.GetActiveScene().name, new List<string> { sAdditionalSceneName }, null, sIntermissionSceneName, sTransitionData, true, sKey);
         }
         //-------------------------------------------------------------------------------------------------------------
-        public static void AddSubScenes(List<string> sAdditionalScenes, string sIntermediateScene = null, STSTransitionData sTransitionData = null, string sKey = null)
+        public static void AddSubScenes(List<string> sAdditionalScenes, string sIntermissionScene = null, STSTransitionData sTransitionData = null, string sKey = null)
         {
-            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, SceneManager.GetActiveScene().name, sAdditionalScenes, null, sIntermediateScene, sTransitionData, true, sKey);
+            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, SceneManager.GetActiveScene().name, sAdditionalScenes, null, sIntermissionScene, sTransitionData, true, sKey);
         }
         //-------------------------------------------------------------------------------------------------------------
-        public static void AddScene(string sNextActiveScene, string sIntermediateScene = null, STSTransitionData sTransitionData = null, string sKey = null)
+        public static void AddScene(string sNextActiveScene, string sIntermissionScene = null, STSTransitionData sTransitionData = null, string sKey = null)
         {
-            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, null, null, sIntermediateScene, sTransitionData, true, sKey);
+            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, null, null, sIntermissionScene, sTransitionData, true, sKey);
         }
         //-------------------------------------------------------------------------------------------------------------
-        public static void AddScenes(string sNextActiveScene, List<string> sScenesToAdd, string sIntermediateScene = null, STSTransitionData sTransitionData = null, string sKey = null)
+        public static void AddScenes(string sNextActiveScene, List<string> sScenesToAdd, string sIntermissionScene = null, STSTransitionData sTransitionData = null, string sKey = null)
         {
-            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, sScenesToAdd, null, sIntermediateScene, sTransitionData, true, sKey);
+            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, sScenesToAdd, null, sIntermissionScene, sTransitionData, true, sKey);
         }
         //-------------------------------------------------------------------------------------------------------------
-        public static void RemoveSubScene(string sSceneToRemove, string sIntermediateScene = null, STSTransitionData sTransitionData = null, string sKey = null)
+        public static void RemoveSubScene(string sSceneToRemove, string sIntermissionScene = null, STSTransitionData sTransitionData = null, string sKey = null)
         {
-            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, SceneManager.GetActiveScene().name, null, new List<string> { sSceneToRemove }, sIntermediateScene, sTransitionData, true, sKey);
+            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, SceneManager.GetActiveScene().name, null, new List<string> { sSceneToRemove }, sIntermissionScene, sTransitionData, true, sKey);
         }
         //-------------------------------------------------------------------------------------------------------------
-        public static void RemoveSubScenes(List<string> sScenesToRemove, string sIntermediateScene = null, STSTransitionData sTransitionData = null, string sKey = null)
+        public static void RemoveSubScenes(List<string> sScenesToRemove, string sIntermissionScene = null, STSTransitionData sTransitionData = null, string sKey = null)
         {
-            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, SceneManager.GetActiveScene().name, null, sScenesToRemove, sIntermediateScene, sTransitionData, true, sKey);
+            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, SceneManager.GetActiveScene().name, null, sScenesToRemove, sIntermissionScene, sTransitionData, true, sKey);
         }
         //-------------------------------------------------------------------------------------------------------------
-        public static void RemoveScene(string sNextActiveScene, string sSceneToRemove, string sIntermediateScene = null, STSTransitionData sTransitionData = null, string sKey = null)
+        public static void RemoveScene(string sNextActiveScene, string sSceneToRemove, string sIntermissionScene = null, STSTransitionData sTransitionData = null, string sKey = null)
         {
-            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, null, new List<string> { sSceneToRemove }, sIntermediateScene, sTransitionData, true, sKey);
+            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, null, new List<string> { sSceneToRemove }, sIntermissionScene, sTransitionData, true, sKey);
         }
         //-------------------------------------------------------------------------------------------------------------
-        public static void RemoveScenes(string sNextActiveScene, List<string> sScenesToRemove, string sIntermediateScene = null, STSTransitionData sTransitionData = null, string sKey = null)
+        public static void RemoveScenes(string sNextActiveScene, List<string> sScenesToRemove, string sIntermissionScene = null, STSTransitionData sTransitionData = null, string sKey = null)
         {
-            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, null, sScenesToRemove, sIntermediateScene, sTransitionData, true, sKey);
+            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, null, sScenesToRemove, sIntermissionScene, sTransitionData, true, sKey);
         }
         //-------------------------------------------------------------------------------------------------------------
-        public static void ReplaceAllByScene(string sNextActiveScene, string sIntermediateScene = null, STSTransitionData sTransitionData = null, string sKey = null)
+        public static void ReplaceAllByScene(string sNextActiveScene, string sIntermissionScene = null, STSTransitionData sTransitionData = null, string sKey = null)
         {
             List<string> tScenesToRemove = new List<string>();
             for (int tSceneIndex = 0; tSceneIndex < SceneManager.sceneCount; tSceneIndex++)
@@ -67,10 +67,10 @@ namespace SceneTransitionSystem
                 Scene tScene = SceneManager.GetSceneAt(tSceneIndex);
                 tScenesToRemove.Remove(tScene.name);
             }
-            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, null, tScenesToRemove, sIntermediateScene, sTransitionData, true, sKey);
+            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, null, tScenesToRemove, sIntermissionScene, sTransitionData, true, sKey);
         }
         //-------------------------------------------------------------------------------------------------------------
-        public static void ReplaceAllByScenes(string sNextActiveScene, List<string> sScenesToAdd, string sIntermediateScene = null, STSTransitionData sTransitionData = null, string sKey = null)
+        public static void ReplaceAllByScenes(string sNextActiveScene, List<string> sScenesToAdd, string sIntermissionScene = null, STSTransitionData sTransitionData = null, string sKey = null)
         {
             List<string> tScenesToRemove = new List<string>();
             for (int tSceneIndex = 0; tSceneIndex < SceneManager.sceneCount; tSceneIndex++)
@@ -78,7 +78,7 @@ namespace SceneTransitionSystem
                 Scene tScene = SceneManager.GetSceneAt(tSceneIndex);
                 tScenesToRemove.Add(tScene.name);
             }
-            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, sScenesToAdd, tScenesToRemove, sIntermediateScene, sTransitionData, true, sKey);
+            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, sScenesToAdd, tScenesToRemove, sIntermissionScene, sTransitionData, true, sKey);
         }
         //-------------------------------------------------------------------------------------------------------------
         private void INTERNAL_ChangeScenes(
@@ -86,7 +86,7 @@ namespace SceneTransitionSystem
             string sNextActiveScene,
             List<string> sScenesToAdd,
             List<string> sScenesToRemove,
-            string sIntermediateScene,
+            string sIntermissionScene,
             STSTransitionData sTransitionData,
             bool sHistorical, string sKey)
         {
@@ -146,18 +146,18 @@ namespace SceneTransitionSystem
 
                 if (sHistorical == true)
                 {
-                    INTERNAL_AddNavigation(sNextActiveScene, sScenesToAdd, sIntermediateScene, sTransitionData, sKey);
+                    INTERNAL_AddNavigation(sNextActiveScene, sScenesToAdd, sIntermissionScene, sTransitionData, sKey);
                 }
 
                 if (tPossible == true)
                 {
-                    if (string.IsNullOrEmpty(sIntermediateScene))
+                    if (string.IsNullOrEmpty(sIntermissionScene))
                     {
-                        StartCoroutine(INTERNAL_ChangeScenesWithoutIntermediate(sActualActiveScene, sNextActiveScene, sScenesToAdd, sScenesToRemove, sTransitionData));
+                        StartCoroutine(INTERNAL_ChangeScenesWithoutIntermission(sActualActiveScene, sNextActiveScene, sScenesToAdd, sScenesToRemove, sTransitionData));
                     }
                     else
                     {
-                        StartCoroutine(INTERNAL_ChangeScenesWithIntermediate(sIntermediateScene, sActualActiveScene, sNextActiveScene, sScenesToAdd, sScenesToRemove, sTransitionData));
+                        StartCoroutine(INTERNAL_ChangeScenesWithIntermission(sIntermissionScene, sActualActiveScene, sNextActiveScene, sScenesToAdd, sScenesToRemove, sTransitionData));
                     }
                 }
                 else
@@ -171,7 +171,7 @@ namespace SceneTransitionSystem
             }
         }
         //-------------------------------------------------------------------------------------------------------------
-        private IEnumerator INTERNAL_ChangeScenesWithoutIntermediate(
+        private IEnumerator INTERNAL_ChangeScenesWithoutIntermission(
             string sActualActiveScene,
             string sNextActiveScene,
             List<string> sScenesToAdd,
@@ -312,7 +312,7 @@ namespace SceneTransitionSystem
             EventSystemEnable(tNextActiveScene, false);
             // Next scene appear by fade in
             //-------------------------------
-            // INTERMEDIATE UNLOAD
+            // Intermission UNLOAD
             //-------------------------------
             if (tRemoveActual == true)
             {
@@ -320,13 +320,13 @@ namespace SceneTransitionSystem
                 {
                     tActualSceneParams.Interfaced.OnTransitionSceneWillUnloaded(sTransitionData);
                 }
-                AsyncOperation tAsyncOperationIntermediateUnload = SceneManager.UnloadSceneAsync(sActualActiveScene);
-                tAsyncOperationIntermediateUnload.allowSceneActivation = true; //? needed?
-                                                                               //while (tAsyncOperationIntermediateUnload.progress < 0.9f)
+                AsyncOperation tAsyncOperationIntermissionUnload = SceneManager.UnloadSceneAsync(sActualActiveScene);
+                tAsyncOperationIntermissionUnload.allowSceneActivation = true; //? needed?
+                                                                               //while (tAsyncOperationIntermissionUnload.progress < 0.9f)
                                                                                //{
                                                                                //    yield return null;
                                                                                //}
-                                                                               //while (!tAsyncOperationIntermediateUnload.isDone)
+                                                                               //while (!tAsyncOperationIntermissionUnload.isDone)
                                                                                //{
                                                                                //    yield return null;
                                                                                //}
@@ -358,8 +358,8 @@ namespace SceneTransitionSystem
             TransitionInProgress = false;
         }
         //-------------------------------------------------------------------------------------------------------------
-        private IEnumerator INTERNAL_ChangeScenesWithIntermediate(
-            string sIntermediateScene,
+        private IEnumerator INTERNAL_ChangeScenesWithIntermission(
+            string sIntermissionScene,
             string sActualActiveScene,
             string sNextActiveScene,
             List<string> sScenesToAdd,
@@ -402,67 +402,67 @@ namespace SceneTransitionSystem
                 tActualSceneParams.Interfaced.OnTransitionExitFinish(sTransitionData);
             }
             //-------------------------------
-            // INTERMEDIATE SCENE LOAD AND ENABLE
+            // Intermission SCENE LOAD AND ENABLE
             //-------------------------------
             // load transition scene async
-            AsyncOperation tAsyncOperationIntermediate = SceneManager.LoadSceneAsync(sIntermediateScene, LoadSceneMode.Additive);
-            tAsyncOperationIntermediate.allowSceneActivation = true;
-            while (tAsyncOperationIntermediate.progress < 0.9f)
+            AsyncOperation tAsyncOperationIntermission = SceneManager.LoadSceneAsync(sIntermissionScene, LoadSceneMode.Additive);
+            tAsyncOperationIntermission.allowSceneActivation = true;
+            while (tAsyncOperationIntermission.progress < 0.9f)
             {
                 yield return null;
             }
-            while (!tAsyncOperationIntermediate.isDone)
+            while (!tAsyncOperationIntermission.isDone)
             {
                 yield return null;
             }
             // get Transition Scene
-            Scene tIntermediateScene = SceneManager.GetSceneByName(sIntermediateScene);
+            Scene tIntermissionScene = SceneManager.GetSceneByName(sIntermissionScene);
             // Active the next scene as root scene 
-            SceneManager.SetActiveScene(tIntermediateScene);
+            SceneManager.SetActiveScene(tIntermissionScene);
             // disable audiolistener of preview scene
             AudioListenerPrevent();
             // get params
-            STSTransition tIntermediateSceneParams = GetTransitionsParams(tIntermediateScene, false);
+            STSTransition tIntermissionSceneParams = GetTransitionsParams(tIntermissionScene, false);
             // disable the user interactions until fadein 
-            EventSystemEnable(tIntermediateScene, false);
-            // intermediate scene is loaded
-            if (tIntermediateSceneParams.Interfaced != null)
+            EventSystemEnable(tIntermissionScene, false);
+            // Intermission scene is loaded
+            if (tIntermissionSceneParams.Interfaced != null)
             {
-                tIntermediateSceneParams.Interfaced.OnTransitionSceneLoaded(sTransitionData);
+                tIntermissionSceneParams.Interfaced.OnTransitionSceneLoaded(sTransitionData);
             }
             // animation in
-            if (tIntermediateSceneParams.Interfaced != null)
+            if (tIntermissionSceneParams.Interfaced != null)
             {
-                tIntermediateSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData);
+                tIntermissionSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData);
             }
             // animation in Go!
-            AnimationTransitionIn(tIntermediateSceneParams);
+            AnimationTransitionIn(tIntermissionSceneParams);
             while (AnimationFinished() == false)
             {
                 yield return null;
             }
             // animation in Finish
-            if (tIntermediateSceneParams.Interfaced != null)
+            if (tIntermissionSceneParams.Interfaced != null)
             {
-                tIntermediateSceneParams.Interfaced.OnTransitionEnterFinish(sTransitionData);
+                tIntermissionSceneParams.Interfaced.OnTransitionEnterFinish(sTransitionData);
             }
             // enable the user interactions 
-            EventSystemEnable(tIntermediateScene, true);
+            EventSystemEnable(tIntermissionScene, true);
             // enable the user interactions 
-            if (tIntermediateSceneParams.Interfaced != null)
+            if (tIntermissionSceneParams.Interfaced != null)
             {
-                tIntermediateSceneParams.Interfaced.OnTransitionSceneEnable(sTransitionData);
+                tIntermissionSceneParams.Interfaced.OnTransitionSceneEnable(sTransitionData);
             }
 
             //-------------------------------
-            // INTERMEDIATE SCENE START STAND BY
+            // Intermission SCENE START STAND BY
             //-------------------------------
             // start stand by
 
-            STSIntermediate tIntermediateSceneStandBy = GetStandByParams(tIntermediateScene);
-            if (tIntermediateSceneStandBy.Interfaced != null)
+            STSIntermission tIntermissionSceneStandBy = GetStandByParams(tIntermissionScene);
+            if (tIntermissionSceneStandBy.Interfaced != null)
             {
-                tIntermediateSceneStandBy.Interfaced.OnStandByStart(tIntermediateSceneStandBy);
+                tIntermissionSceneStandBy.Interfaced.OnStandByStart(tIntermissionSceneStandBy);
             }
 
             StandBy();
@@ -483,17 +483,17 @@ namespace SceneTransitionSystem
                 //Debug.Log("tSceneToAdd :" + tSceneToAdd);
                 if (SceneManager.GetSceneByName(tSceneToAdd).isLoaded)
                 {
-                    if (tIntermediateSceneStandBy.Interfaced != null)
+                    if (tIntermissionSceneStandBy.Interfaced != null)
                     {
-                        tIntermediateSceneStandBy.Interfaced.OnSceneAllReadyLoaded(sTransitionData, tSceneToAdd, tSceneCounter, (tSceneCounter + 1.0F) / tSceneCount);
+                        tIntermissionSceneStandBy.Interfaced.OnSceneAllReadyLoaded(sTransitionData, tSceneToAdd, tSceneCounter, (tSceneCounter + 1.0F) / tSceneCount);
                     }
                     //Debug.Log("tSceneToAdd :" + tSceneToAdd + " allready finish!");
                 }
                 else
                 {
-                    if (tIntermediateSceneStandBy.Interfaced != null)
+                    if (tIntermissionSceneStandBy.Interfaced != null)
                     {
-                        tIntermediateSceneStandBy.Interfaced.OnLoadNextSceneStart(sTransitionData, tSceneToAdd, tSceneCounter, 0.0F, 0.0F);
+                        tIntermissionSceneStandBy.Interfaced.OnLoadingSceneStart(sTransitionData, tSceneToAdd, tSceneCounter, 0.0F, 0.0F);
                     }
 
                     AsyncOperation tAsyncOperationAdd = SceneManager.LoadSceneAsync(tSceneToAdd, LoadSceneMode.Additive);
@@ -501,15 +501,15 @@ namespace SceneTransitionSystem
                     tAsyncOperationAdd.allowSceneActivation = false;
                     while (tAsyncOperationAdd.progress < 0.9f)
                     {
-                        if (tIntermediateSceneStandBy.Interfaced != null)
+                        if (tIntermissionSceneStandBy.Interfaced != null)
                         {
-                            tIntermediateSceneStandBy.Interfaced.OnLoadingNextScenePercent(sTransitionData, tSceneToAdd, tSceneCounter, tAsyncOperationAdd.progress, (tSceneCounter + tAsyncOperationAdd.progress) / tSceneCount);
+                            tIntermissionSceneStandBy.Interfaced.OnLoadingScenePercent(sTransitionData, tSceneToAdd, tSceneCounter, tAsyncOperationAdd.progress, (tSceneCounter + tAsyncOperationAdd.progress) / tSceneCount);
                         }
                         yield return null;
                     }
-                    if (tIntermediateSceneStandBy.Interfaced != null)
+                    if (tIntermissionSceneStandBy.Interfaced != null)
                     {
-                        tIntermediateSceneStandBy.Interfaced.OnLoadNextSceneFinish(sTransitionData, tSceneToAdd, tSceneCounter, 1.0F, (tSceneCounter + 1.0F) / tSceneCount);
+                        tIntermissionSceneStandBy.Interfaced.OnLoadingSceneFinish(sTransitionData, tSceneToAdd, tSceneCounter, 1.0F, (tSceneCounter + 1.0F) / tSceneCount);
                     }
                     //Debug.Log("tSceneToAdd :" + tSceneToAdd + " 90%!");
                 }
@@ -535,9 +535,9 @@ namespace SceneTransitionSystem
                     tAsyncOperationRemove.allowSceneActivation = true; //? needed?
                     //while (tAsyncOperationRemove.progress < 0.9f)
                     //{
-                    //    if (tIntermediateSceneStandBy.Interfaced != null)
+                    //    if (tIntermissionSceneStandBy.Interfaced != null)
                     //    {
-                    //        tIntermediateSceneStandBy.Interfaced.OnLoadingNextScenePercent(sTransitionData, tSceneToRemove, tSceneCounter, tAsyncOperationRemove.progress, (tSceneCounter + tAsyncOperationRemove.progress) / tSceneCount);
+                    //        tIntermissionSceneStandBy.Interfaced.OnLoadingNextScenePercent(sTransitionData, tSceneToRemove, tSceneCounter, tAsyncOperationRemove.progress, (tSceneCounter + tAsyncOperationRemove.progress) / tSceneCount);
                     //    }
                     //    yield return null;
                     //}
@@ -546,63 +546,63 @@ namespace SceneTransitionSystem
                     //    yield return null;
                     //}
                 }
-                if (tIntermediateSceneStandBy.Interfaced != null)
+                if (tIntermissionSceneStandBy.Interfaced != null)
                 {
-                    tIntermediateSceneStandBy.Interfaced.OnUnloadScene(sTransitionData, tSceneToRemove, tSceneCounter, (tSceneCounter + 1.0F) / tSceneCount);
+                    tIntermissionSceneStandBy.Interfaced.OnUnloadScene(sTransitionData, tSceneToRemove, tSceneCounter, (tSceneCounter + 1.0F) / tSceneCount);
                 }
                 tSceneCounter++;
                 Debug.Log("tSceneToRemove :" + tSceneToRemove + " finish!");
             }
             //-------------------------------
-            // INTERMEDIATE STAND BY
+            // Intermission STAND BY
             //-------------------------------
-            while (StandByIsProgressing(tIntermediateSceneStandBy))
+            while (StandByIsProgressing(tIntermissionSceneStandBy))
             {
                 yield return null;
             }
             // As soon as possible 
-            if (tIntermediateSceneStandBy.Interfaced != null)
+            if (tIntermissionSceneStandBy.Interfaced != null)
             {
-                tIntermediateSceneStandBy.Interfaced.OnStandByFinish(tIntermediateSceneStandBy);
+                tIntermissionSceneStandBy.Interfaced.OnStandByFinish(tIntermissionSceneStandBy);
             }
             // Waiting to load the next Scene
-            while (WaitingToLauchNextScene(tIntermediateSceneStandBy))
+            while (WaitingToLauchNextScene(tIntermissionSceneStandBy))
             {
                 //Debug.Log ("StandByIsNotFinished loop");
                 yield return null;
             }
 
             //-------------------------------
-            // INTERMEDIATE GO TO NEXT SCENE PROCESS
+            // Intermission GO TO NEXT SCENE PROCESS
             //-------------------------------
             // stanby is finished And the next scene can be lauch
-            // disable user interactions on the intermediate scene
-            EventSystemEnable(tIntermediateScene, false);
-            if (tIntermediateSceneParams.Interfaced != null)
+            // disable user interactions on the Intermission scene
+            EventSystemEnable(tIntermissionScene, false);
+            if (tIntermissionSceneParams.Interfaced != null)
             {
-                tIntermediateSceneParams.Interfaced.OnTransitionSceneDisable(sTransitionData);
+                tIntermissionSceneParams.Interfaced.OnTransitionSceneDisable(sTransitionData);
             }
-            // intermediate scene Transition Out start 
-            if (tIntermediateSceneParams.Interfaced != null)
+            // Intermission scene Transition Out start 
+            if (tIntermissionSceneParams.Interfaced != null)
             {
-                tIntermediateSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData);
+                tIntermissionSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData);
             }
-            // intermediate scene Transition Out GO! 
-            AnimationTransitionOut(tIntermediateSceneParams);
+            // Intermission scene Transition Out GO! 
+            AnimationTransitionOut(tIntermissionSceneParams);
             while (AnimationFinished() == false)
             {
                 yield return null;
             }
-            // intermediate scene Transition Out finished! 
-            if (tIntermediateSceneParams.Interfaced != null)
+            // Intermission scene Transition Out finished! 
+            if (tIntermissionSceneParams.Interfaced != null)
             {
-                tIntermediateSceneParams.Interfaced.OnTransitionExitFinish(sTransitionData);
+                tIntermissionSceneParams.Interfaced.OnTransitionExitFinish(sTransitionData);
             }
             // fadeout is finish
-            // will unloaded the intermediate scene
-            if (tIntermediateSceneParams.Interfaced != null)
+            // will unloaded the Intermission scene
+            if (tIntermissionSceneParams.Interfaced != null)
             {
-                tIntermediateSceneParams.Interfaced.OnTransitionSceneWillUnloaded(sTransitionData);
+                tIntermissionSceneParams.Interfaced.OnTransitionSceneWillUnloaded(sTransitionData);
             }
 
             //-------------------------------
@@ -641,15 +641,15 @@ namespace SceneTransitionSystem
             EventSystemEnable(tNextActiveScene, false);
             // Next scene appear by fade in
             //-------------------------------
-            // INTERMEDIATE UNLOAD
+            // Intermission UNLOAD
             //-------------------------------
-            AsyncOperation tAsyncOperationIntermediateUnload = SceneManager.UnloadSceneAsync(tIntermediateScene);
-            tAsyncOperationIntermediateUnload.allowSceneActivation = true; //? needed?
-            while (tAsyncOperationIntermediateUnload.progress < 0.9f)
+            AsyncOperation tAsyncOperationIntermissionUnload = SceneManager.UnloadSceneAsync(tIntermissionScene);
+            tAsyncOperationIntermissionUnload.allowSceneActivation = true; //? needed?
+            while (tAsyncOperationIntermissionUnload.progress < 0.9f)
             {
                 yield return null;
             }
-            while (!tAsyncOperationIntermediateUnload.isDone)
+            while (!tAsyncOperationIntermissionUnload.isDone)
             {
                 yield return null;
             }

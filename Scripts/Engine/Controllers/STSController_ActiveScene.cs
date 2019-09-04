@@ -16,15 +16,15 @@ using System;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public partial class STSController : MonoBehaviour, STSTransitionInterface, STSIntermediateInterface
+    public partial class STSController : MonoBehaviour, STSTransitionInterface, STSIntermissionInterface
     {
         //-------------------------------------------------------------------------------------------------------------
-        public static void ActiveScene(string sSceneNameToActive, string sIntermediateSceneName = null, STSTransitionData sTransitionData = null)
+        public static void ActiveScene(string sSceneNameToActive, string sIntermissionSceneName = null, STSTransitionData sTransitionData = null)
         {
-            Singleton().INTERNAL_ActiveScene(SceneManager.GetActiveScene().name, sSceneNameToActive, sIntermediateSceneName, sTransitionData);
+            Singleton().INTERNAL_ActiveScene(SceneManager.GetActiveScene().name, sSceneNameToActive, sIntermissionSceneName, sTransitionData);
         }
         //-------------------------------------------------------------------------------------------------------------
-        private void INTERNAL_ActiveScene(string sActualActiveSceneName, string sSceneNameToActive, string sIntermediateSceneName = null, STSTransitionData sTransitionData = null)
+        private void INTERNAL_ActiveScene(string sActualActiveSceneName, string sSceneNameToActive, string sIntermissionSceneName = null, STSTransitionData sTransitionData = null)
         {
             if (TransitionInProgress == false)
             {
@@ -36,13 +36,13 @@ namespace SceneTransitionSystem
                 }
                 if (tScenes.Contains(sActualActiveSceneName) && tScenes.Contains(sSceneNameToActive))
                 {
-                    if (string.IsNullOrEmpty(sIntermediateSceneName))
+                    if (string.IsNullOrEmpty(sIntermissionSceneName))
                     {
-                        StartCoroutine(INTERNAL_ActiveSceneWithoutIntermediateAsync(sTransitionData, sActualActiveSceneName, sSceneNameToActive));
+                        StartCoroutine(INTERNAL_ActiveSceneWithoutIntermissionAsync(sTransitionData, sActualActiveSceneName, sSceneNameToActive));
                     }
                     else
                     {
-                        StartCoroutine(INTERNAL_ActiveSceneWithIntermediateAsync(sTransitionData, sActualActiveSceneName, sSceneNameToActive, sIntermediateSceneName));
+                        StartCoroutine(INTERNAL_ActiveSceneWithIntermissionAsync(sTransitionData, sActualActiveSceneName, sSceneNameToActive, sIntermissionSceneName));
                     }
                 }
                 else
@@ -56,7 +56,7 @@ namespace SceneTransitionSystem
             }
         }
         //-------------------------------------------------------------------------------------------------------------
-        private IEnumerator INTERNAL_ActiveSceneWithoutIntermediateAsync(STSTransitionData sTransitionData, string sActualActiveSceneName, string sSceneNameToActive)
+        private IEnumerator INTERNAL_ActiveSceneWithoutIntermissionAsync(STSTransitionData sTransitionData, string sActualActiveSceneName, string sSceneNameToActive)
         {
             TransitionInProgress = true;
             STSTransition tActualSceneParams = GetTransitionsParams(SceneManager.GetSceneByName(sActualActiveSceneName), true);
@@ -102,7 +102,7 @@ namespace SceneTransitionSystem
             TransitionInProgress = false;
         }
         //-------------------------------------------------------------------------------------------------------------
-        private IEnumerator INTERNAL_ActiveSceneWithIntermediateAsync(STSTransitionData sTransitionData, string sActualActiveSceneName, string sSceneNameToActive, string sIntermediateSceneName)
+        private IEnumerator INTERNAL_ActiveSceneWithIntermissionAsync(STSTransitionData sTransitionData, string sActualActiveSceneName, string sSceneNameToActive, string sIntermissionSceneName)
         {
             TransitionInProgress = true;
             STSTransition tActualSceneParams = GetTransitionsParams(SceneManager.GetSceneByName(sActualActiveSceneName), true);
@@ -128,114 +128,114 @@ namespace SceneTransitionSystem
 
             //TODO: load intermedite scene 
             // load transition scene async
-            AsyncOperation tAsynchroneLoadIntermediateOperation;
-            tAsynchroneLoadIntermediateOperation = SceneManager.LoadSceneAsync(sIntermediateSceneName, LoadSceneMode.Additive);
-            tAsynchroneLoadIntermediateOperation.allowSceneActivation = false;
-            while (tAsynchroneLoadIntermediateOperation.progress < 0.9f)
+            AsyncOperation tAsynchroneLoadIntermissionOperation;
+            tAsynchroneLoadIntermissionOperation = SceneManager.LoadSceneAsync(sIntermissionSceneName, LoadSceneMode.Additive);
+            tAsynchroneLoadIntermissionOperation.allowSceneActivation = false;
+            while (tAsynchroneLoadIntermissionOperation.progress < 0.9f)
             {
                 yield return null;
             }
-            // Intermediate scene will be active
-            tAsynchroneLoadIntermediateOperation.allowSceneActivation = true;
-            while (!tAsynchroneLoadIntermediateOperation.isDone)
+            // Intermission scene will be active
+            tAsynchroneLoadIntermissionOperation.allowSceneActivation = true;
+            while (!tAsynchroneLoadIntermissionOperation.isDone)
             {
                 yield return null;
             }
             // get Transition Scene
-            Scene tIntermediateScene = SceneManager.GetSceneByName(sIntermediateSceneName);
+            Scene tIntermissionScene = SceneManager.GetSceneByName(sIntermissionSceneName);
             // Active the next scene as root scene 
-            SceneManager.SetActiveScene(tIntermediateScene);
+            SceneManager.SetActiveScene(tIntermissionScene);
             // disable audiolistener of preview scene
             AudioListenerPrevent();
             // get params
-            STSTransition tIntermediateSceneParams = GetTransitionsParams(tIntermediateScene, false);
+            STSTransition tIntermissionSceneParams = GetTransitionsParams(tIntermissionScene, false);
             // disable the user interactions until fadein 
-            EventSystemEnable(tIntermediateScene, false);
-            // intermediate scene is loaded
-            if (tIntermediateSceneParams.Interfaced != null)
+            EventSystemEnable(tIntermissionScene, false);
+            // Intermission scene is loaded
+            if (tIntermissionSceneParams.Interfaced != null)
             {
-                tIntermediateSceneParams.Interfaced.OnTransitionSceneLoaded(sTransitionData);
+                tIntermissionSceneParams.Interfaced.OnTransitionSceneLoaded(sTransitionData);
             }
             // animation in
-            if (tIntermediateSceneParams.Interfaced != null)
+            if (tIntermissionSceneParams.Interfaced != null)
             {
-                tIntermediateSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData);
+                tIntermissionSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData);
             }
             // animation in Go!
-            AnimationTransitionIn(tIntermediateSceneParams);
+            AnimationTransitionIn(tIntermissionSceneParams);
             while (AnimationFinished() == false)
             {
                 yield return null;
             }
             // animation in Finish
-            if (tIntermediateSceneParams.Interfaced != null)
+            if (tIntermissionSceneParams.Interfaced != null)
             {
-                tIntermediateSceneParams.Interfaced.OnTransitionEnterFinish(sTransitionData);
+                tIntermissionSceneParams.Interfaced.OnTransitionEnterFinish(sTransitionData);
             }
             // enable the user interactions 
-            EventSystemEnable(tIntermediateScene, true);
+            EventSystemEnable(tIntermissionScene, true);
             // enable the user interactions 
-            if (tIntermediateSceneParams.Interfaced != null)
+            if (tIntermissionSceneParams.Interfaced != null)
             {
-                tIntermediateSceneParams.Interfaced.OnTransitionSceneEnable(sTransitionData);
+                tIntermissionSceneParams.Interfaced.OnTransitionSceneEnable(sTransitionData);
             }
             // start stand by
-            STSIntermediate tIntermediateSceneStandBy = GetStandByParams(tIntermediateScene);
-            if (tIntermediateSceneStandBy.Interfaced != null)
+            STSIntermission tIntermissionSceneStandBy = GetStandByParams(tIntermissionScene);
+            if (tIntermissionSceneStandBy.Interfaced != null)
             {
-                tIntermediateSceneStandBy.Interfaced.OnStandByStart(tIntermediateSceneStandBy);
+                tIntermissionSceneStandBy.Interfaced.OnStandByStart(tIntermissionSceneStandBy);
             }
             StandBy();
-            while (StandByIsProgressing(tIntermediateSceneStandBy))
+            while (StandByIsProgressing(tIntermissionSceneStandBy))
             {
                 yield return null;
             }
             // send call back for standby finished
-            if (tIntermediateSceneStandBy.Interfaced != null)
+            if (tIntermissionSceneStandBy.Interfaced != null)
             {
-                tIntermediateSceneStandBy.Interfaced.OnStandByFinish(tIntermediateSceneStandBy);
+                tIntermissionSceneStandBy.Interfaced.OnStandByFinish(tIntermissionSceneStandBy);
             }
             // Waiting to load the next Scene
-            while (WaitingToLauchNextScene(tIntermediateSceneStandBy))
+            while (WaitingToLauchNextScene(tIntermissionSceneStandBy))
             {
                 //Debug.Log ("StandByIsNotFinished loop");
                 yield return null;
             }
             // stanby is finish
             // disable user interactions on the transition scene
-            EventSystemEnable(tIntermediateScene, false);
+            EventSystemEnable(tIntermissionScene, false);
 
 
-            // disable user interactions on the intermediate scene
-            EventSystemEnable(tIntermediateScene, false);
-            if (tIntermediateSceneParams.Interfaced != null)
+            // disable user interactions on the Intermission scene
+            EventSystemEnable(tIntermissionScene, false);
+            if (tIntermissionSceneParams.Interfaced != null)
             {
-                tIntermediateSceneParams.Interfaced.OnTransitionSceneDisable(sTransitionData);
+                tIntermissionSceneParams.Interfaced.OnTransitionSceneDisable(sTransitionData);
             }
-            // intermediate scene Transition Out start 
-            if (tIntermediateSceneParams.Interfaced != null)
+            // Intermission scene Transition Out start 
+            if (tIntermissionSceneParams.Interfaced != null)
             {
-                tIntermediateSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData);
+                tIntermissionSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData);
             }
-            // intermediate scene Transition Out GO! 
-            AnimationTransitionOut(tIntermediateSceneParams);
+            // Intermission scene Transition Out GO! 
+            AnimationTransitionOut(tIntermissionSceneParams);
             while (AnimationFinished() == false)
             {
                 yield return null;
             }
-            // intermediate scene Transition Out finished! 
-            if (tIntermediateSceneParams.Interfaced != null)
+            // Intermission scene Transition Out finished! 
+            if (tIntermissionSceneParams.Interfaced != null)
             {
-                tIntermediateSceneParams.Interfaced.OnTransitionExitFinish(sTransitionData);
+                tIntermissionSceneParams.Interfaced.OnTransitionExitFinish(sTransitionData);
             }
             // fadeout is finish
-            // will unloaded the intermediate scene
-            if (tIntermediateSceneParams.Interfaced != null)
+            // will unloaded the Intermission scene
+            if (tIntermissionSceneParams.Interfaced != null)
             {
-                tIntermediateSceneParams.Interfaced.OnTransitionSceneWillUnloaded(sTransitionData);
+                tIntermissionSceneParams.Interfaced.OnTransitionSceneWillUnloaded(sTransitionData);
             }
             AsyncOperation tAsynchroneUnloadTransition;
-            tAsynchroneUnloadTransition = SceneManager.UnloadSceneAsync(sIntermediateSceneName);
+            tAsynchroneUnloadTransition = SceneManager.UnloadSceneAsync(sIntermissionSceneName);
             while (tAsynchroneUnloadTransition.progress < 0.9f)
             {
                 yield return null;

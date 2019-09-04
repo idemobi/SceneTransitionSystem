@@ -11,18 +11,6 @@ using UnityEngine.SceneManagement;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public interface STSTransitionInterface
-    {
-        void OnTransitionEnterStart(STSTransitionData sData);
-        void OnTransitionEnterFinish(STSTransitionData sData);
-        void OnTransitionExitStart(STSTransitionData sData);
-        void OnTransitionExitFinish(STSTransitionData sData);
-        void OnTransitionSceneLoaded(STSTransitionData sData);
-        void OnTransitionSceneEnable(STSTransitionData sData);
-        void OnTransitionSceneDisable(STSTransitionData sData);
-        void OnTransitionSceneWillUnloaded(STSTransitionData sData);
-    }
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     public class STSTransition : MonoBehaviour
     {
         //-------------------------------------------------------------------------------------------------------------

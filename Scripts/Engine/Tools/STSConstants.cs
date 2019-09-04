@@ -24,9 +24,9 @@ namespace SceneTransitionSystem
         /// </summary>
         public static string K_TRANSITION_DEFAULT_OBJECT_NAME = "STSTransitionDefault";
         /// <summary>
-        /// the name for default object intermediate
+        /// the name for default object Intermission
         /// </summary>
-        public static string K_TRANSITION_INTERMEDIATE_OBJECT_NAME = "STSIntermediateDefault";
+        public static string K_TRANSITION_Intermission_OBJECT_NAME = "STSIntermissionDefault";
         /// <summary>
         /// The scene name key use in payload as dictionary key.
         /// </summary>
@@ -34,7 +34,7 @@ namespace SceneTransitionSystem
         /// <summary>
         /// The scene name key use in payload as dictionary key.
         /// </summary>
-        public static string K_INTERMEDIATE_SCENE_NAME_KEY = "IntermediateSceneNameKey_88jk7fe";
+        public static string K_Intermission_SCENE_NAME_KEY = "IntermissionSceneNameKey_88jk7fe";
         /// <summary>
         /// The load mode key use in payload as dictionary key.
         /// </summary>
@@ -45,19 +45,19 @@ namespace SceneTransitionSystem
         public static string K_PAYLOAD_DATA_KEY = "PayloadDataKey_33h52fe";
         //-------------------------------------------------------------------------------------------------------------
         /// <summary>
-        /// 
+        /// editor infos if no little preview
         /// </summary>
         public static string K_NO_LITTLE_PREVIEW = "No little preview";
         /// <summary>
-        /// 
+        /// editor infos if no big preview
         /// </summary>
         public static string K_NO_BIG_PREVIEW = "No big preview";
         /// <summary>
-        /// 
+        /// editor infos big preview
         /// </summary>
         public static string K_SHOW_BIG_PREVIEW = "Big preview";
         /// <summary>
-        /// 
+        /// editor infos run big preview
         /// </summary>
         public static string K_RUN_BIG_PREVIEW = "Run big preview";
         //-------------------------------------------------------------------------------------------------------------

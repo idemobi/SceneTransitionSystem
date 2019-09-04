@@ -14,15 +14,15 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         public string ActiveSceneName;
         public List<string> ScenesNameList = new List<string>();
-        public string IntermediateScene;
+        public string IntermissionScene;
         public STSTransitionData Datas;
         public string Key;
         //-------------------------------------------------------------------------------------------------------------
-        public STSScenesPackage(string sActiveSceneName, List<string> sScenesNameList, string sIntermediateScene, STSTransitionData sDatas,string sKey)
+        public STSScenesPackage(string sActiveSceneName, List<string> sScenesNameList, string sIntermissionScene, STSTransitionData sDatas,string sKey)
         {
             ActiveSceneName = sActiveSceneName;
             ScenesNameList = sScenesNameList;
-            IntermediateScene = sIntermediateScene;
+            IntermissionScene = sIntermissionScene;
             Datas = sDatas;
         }
         //-------------------------------------------------------------------------------------------------------------

@@ -15,7 +15,7 @@ using UnityEngine;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public partial class STSController : MonoBehaviour, STSTransitionInterface, STSIntermediateInterface
+    public partial class STSController : MonoBehaviour, STSTransitionInterface, STSIntermissionInterface
     {
         //-------------------------------------------------------------------------------------------------------------
         private List<STSScenesPackage> Historic = new List<STSScenesPackage>();
@@ -86,10 +86,10 @@ namespace SceneTransitionSystem
             Historic.Clear();
         }
         //-------------------------------------------------------------------------------------------------------------
-        private void INTERNAL_AddNavigation(string sActiveSceneName, List<string> sScenesNameList, string sIntermediateScene, STSTransitionData sDatas, string sKey)
+        private void INTERNAL_AddNavigation(string sActiveSceneName, List<string> sScenesNameList, string sIntermissionScene, STSTransitionData sDatas, string sKey)
         {
             INTERNAL_GetDefaultScenesPackage(); // create default
-            STSScenesPackage tScenePackage = new STSScenesPackage(sActiveSceneName, sScenesNameList, sIntermediateScene, sDatas, sKey);
+            STSScenesPackage tScenePackage = new STSScenesPackage(sActiveSceneName, sScenesNameList, sIntermissionScene, sDatas, sKey);
             Historic.Add(tScenePackage);
         }
         //-------------------------------------------------------------------------------------------------------------
@@ -122,7 +122,7 @@ namespace SceneTransitionSystem
                 sPackage.ActiveSceneName,
                 sPackage.ScenesNameList,
                 tScenesToRemove,
-                sPackage.IntermediateScene,
+                sPackage.IntermissionScene,
                 sNewData,
                 false,
                 null);

@@ -15,15 +15,14 @@ using UnityEngine;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public delegate void STSDelegate(STSTransitionData sTransitionData);
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public partial class STSController : MonoBehaviour, STSTransitionInterface, STSIntermediateInterface
+    public partial class STSController : MonoBehaviour, STSTransitionInterface, STSIntermissionInterface
     {
         //-------------------------------------------------------------------------------------------------------------
-        const string K_SCENE_MUST_BY_LOADED = "K_SCENE_MUST_BY_LOADED";
-        const string K_TRANSITION_IN_PROGRESS = "K_TRANSITION_IN_PROGRESS";
+        const string K_SCENE_MUST_BY_LOADED = "Scene must be loaded!";
+        const string K_TRANSITION_IN_PROGRESS = "Transition in progress";
         //-------------------------------------------------------------------------------------------------------------
         private static STSController kSingleton = null;
+        //-------------------------------------------------------------------------------------------------------------
         // initialized or not?
         private bool Initialized = false;
         // prevent multi transition
@@ -58,7 +57,7 @@ namespace SceneTransitionSystem
                 // memorize the init instance
                 kSingleton.Initialized = true;
                 tObjToSpawn.AddComponent<STSTransition>();
-                tObjToSpawn.AddComponent<STSIntermediate>();
+                tObjToSpawn.AddComponent<STSIntermission>();
 
             }
             return kSingleton;
@@ -239,17 +238,17 @@ namespace SceneTransitionSystem
             return tTransitionParametersScript;
         }
         //-------------------------------------------------------------------------------------------------------------
-        private STSIntermediate GetStandByParams(Scene sScene)
+        private STSIntermission GetStandByParams(Scene sScene)
         {
             //Debug.Log("STSTransitionController GetStandByParams()");
-            STSIntermediate tTransitionStandByScript = null;
+            STSIntermission tTransitionStandByScript = null;
             GameObject[] tAllRootObjects = sScene.GetRootGameObjects();
             // quick solution?!
             foreach (GameObject tObject in tAllRootObjects)
             {
-                if (tObject.GetComponent<STSIntermediate>() != null)
+                if (tObject.GetComponent<STSIntermission>() != null)
                 {
-                    tTransitionStandByScript = tObject.GetComponent<STSIntermediate>();
+                    tTransitionStandByScript = tObject.GetComponent<STSIntermission>();
                     break;
                 }
             }
@@ -258,9 +257,9 @@ namespace SceneTransitionSystem
             {
                 foreach (GameObject tObject in tAllRootObjects)
                 {
-                    if (tObject.GetComponentInChildren<STSIntermediate>() != null)
+                    if (tObject.GetComponentInChildren<STSIntermission>() != null)
                     {
-                        tTransitionStandByScript = tObject.GetComponent<STSIntermediate>();
+                        tTransitionStandByScript = tObject.GetComponent<STSIntermission>();
                         break;
                     }
                 }
@@ -270,9 +269,9 @@ namespace SceneTransitionSystem
             {
                 Scene tActual = SceneManager.GetActiveScene();
                 SceneManager.SetActiveScene(sScene);
-                GameObject tObjToSpawn = new GameObject(STSConstants.K_TRANSITION_INTERMEDIATE_OBJECT_NAME);
-                tObjToSpawn.AddComponent<STSSceneIntermediateController>();
-                tTransitionStandByScript = tObjToSpawn.AddComponent<STSIntermediate>();
+                GameObject tObjToSpawn = new GameObject(STSConstants.K_TRANSITION_Intermission_OBJECT_NAME);
+                tObjToSpawn.AddComponent<STSSceneIntermissionController>();
+                tTransitionStandByScript = tObjToSpawn.AddComponent<STSIntermission>();
                 tTransitionStandByScript.StandBySeconds = 5.0f;
                 tTransitionStandByScript.AutoLoadNextScene = true;
                 SceneManager.SetActiveScene(tActual);
@@ -327,19 +326,19 @@ namespace SceneTransitionSystem
             LauchNextScene = false;
         }
         //-------------------------------------------------------------------------------------------------------------
-        private bool StandByIsProgressing(STSIntermediate sIntermediateSceneStandBy)
+        private bool StandByIsProgressing(STSIntermission sIntermissionSceneStandBy)
         {
             StandByTimer += Time.deltaTime;
-            if (StandByTimer >= sIntermediateSceneStandBy.StandBySeconds)
+            if (StandByTimer >= sIntermissionSceneStandBy.StandBySeconds)
             {
                 StandByInProgress = false;
             }
             return StandByInProgress;
         }
         //-------------------------------------------------------------------------------------------------------------
-        private bool WaitingToLauchNextScene(STSIntermediate sIntermediateSceneStandBy)
+        private bool WaitingToLauchNextScene(STSIntermission sIntermissionSceneStandBy)
         {
-            if (sIntermediateSceneStandBy.AutoLoadNextScene == true)
+            if (sIntermissionSceneStandBy.AutoLoadNextScene == true)
             {
                 LauchNextScene = true;
             }
@@ -415,27 +414,27 @@ namespace SceneTransitionSystem
             //throw new System.NotImplementedException();
         }
         //-------------------------------------------------------------------------------------------------------------
-        public void OnStandByStart(STSIntermediate sStandBy)
+        public void OnStandByStart(STSIntermission sStandBy)
         {
             //throw new System.NotImplementedException();
         }
         //-------------------------------------------------------------------------------------------------------------
-        public void OnStandByFinish(STSIntermediate sStandBy)
+        public void OnStandByFinish(STSIntermission sStandBy)
         {
             //throw new System.NotImplementedException();
         }
         //-------------------------------------------------------------------------------------------------------------
-        public void OnLoadNextSceneStart(STSTransitionData sData, string sSceneName, int SceneNumber, float sScenePercent, float sPercent)
+        public void OnLoadingSceneStart(STSTransitionData sData, string sSceneName, int SceneNumber, float sScenePercent, float sPercent)
         {
             //throw new System.NotImplementedException();
         }
         //-------------------------------------------------------------------------------------------------------------
-        public void OnLoadingNextScenePercent(STSTransitionData sData, string sSceneName, int SceneNumber, float sScenePercent, float sPercent)
+        public void OnLoadingScenePercent(STSTransitionData sData, string sSceneName, int SceneNumber, float sScenePercent, float sPercent)
         {
             //throw new System.NotImplementedException();
         }
         //-------------------------------------------------------------------------------------------------------------
-        public void OnLoadNextSceneFinish(STSTransitionData sData, string sSceneName, int SceneNumber, float sScenePercent, float sPercent)
+        public void OnLoadingSceneFinish(STSTransitionData sData, string sSceneName, int SceneNumber, float sScenePercent, float sPercent)
         {
             //throw new System.NotImplementedException();
         }
