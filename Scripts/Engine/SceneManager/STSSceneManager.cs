@@ -15,13 +15,13 @@ using UnityEngine;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public partial class STSController : MonoBehaviour, STSTransitionInterface, STSIntermissionInterface
+    public partial class STSSceneManager : MonoBehaviour, STSTransitionInterface, STSIntermissionInterface
     {
         //-------------------------------------------------------------------------------------------------------------
         const string K_SCENE_MUST_BY_LOADED = "Scene must be loaded!";
         const string K_TRANSITION_IN_PROGRESS = "Transition in progress";
         //-------------------------------------------------------------------------------------------------------------
-        private static STSController kSingleton = null;
+        private static STSSceneManager kSingleton = null;
         //-------------------------------------------------------------------------------------------------------------
         // initialized or not?
         private bool Initialized = false;
@@ -39,7 +39,7 @@ namespace SceneTransitionSystem
         private bool StandByInProgress = false;
         //-------------------------------------------------------------------------------------------------------------
         // Singleton
-        public static STSController Singleton()
+        public static STSSceneManager Singleton()
         {
             //Debug.Log ("STSTransitionController Singleton()");
             if (kSingleton == null)
@@ -49,9 +49,9 @@ namespace SceneTransitionSystem
                 //spawn object
                 tObjToSpawn = new GameObject(STSConstants.K_TRANSITION_CONTROLLER_OBJECT_NAME);
                 //Add Components
-                tObjToSpawn.AddComponent<STSController>();
+                tObjToSpawn.AddComponent<STSSceneManager>();
                 // keep k_Singleton
-                kSingleton = tObjToSpawn.GetComponent<STSController>();
+                kSingleton = tObjToSpawn.GetComponent<STSSceneManager>();
                 // Init Instance
                 kSingleton.InitInstance();
                 // memorize the init instance

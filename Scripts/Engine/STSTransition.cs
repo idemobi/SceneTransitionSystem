@@ -34,7 +34,7 @@ namespace SceneTransitionSystem
         void Awake()
         {
             // test if Transition controller exist
-            STSController.Singleton();
+            STSSceneManager.Singleton();
         }
         //-------------------------------------------------------------------------------------------------------------
         void Start()

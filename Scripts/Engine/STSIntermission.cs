@@ -34,7 +34,7 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         public void FinishStandByAction()
         {
-            STSController.Singleton().FinishStandBy();
+            STSSceneManager.Singleton().FinishStandBy();
         }
         //-------------------------------------------------------------------------------------------------------------
         void Start()
