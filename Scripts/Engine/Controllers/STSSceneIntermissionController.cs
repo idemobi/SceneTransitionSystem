@@ -40,7 +40,7 @@ namespace SceneTransitionSystem
             }
             if (ActiveLog == true)
             {
-                Debug.Log("<color=" + LogTagColor.ToString() + ">" + this.gameObject.scene.name + "</color> OnSceneAllReadyLoaded() " + sSceneName + "(" + SceneNumber + ") Total loading " + sPercent.ToString("P"));
+                Debug.Log("<color=" + LogTagColor.ToString() + ">" + this.gameObject.scene.name + "</color> OnSceneAllReadyLoaded() " + sSceneName + " (n°" + SceneNumber + ") Total loading " + sPercent.ToString("P"));
             }
         }
         //-------------------------------------------------------------------------------------------------------------
@@ -53,7 +53,7 @@ namespace SceneTransitionSystem
             }
             if (ActiveLog == true)
             {
-                Debug.Log("<color=" + LogTagColor.ToString() + ">" + this.gameObject.scene.name + "</color> OnLoadingSceneStart() " + sSceneName + "(" + SceneNumber + " loading " + sScenePercent.ToString("P") + ") Total loading " + sPercent.ToString("P"));
+                Debug.Log("<color=" + LogTagColor.ToString() + ">" + this.gameObject.scene.name + "</color> OnLoadingSceneStart() " + sSceneName + " (n°" + SceneNumber + " loading " + sScenePercent.ToString("P") + ") Total loading " + sPercent.ToString("P"));
             }
         }
         //-------------------------------------------------------------------------------------------------------------
@@ -66,7 +66,7 @@ namespace SceneTransitionSystem
             }
             if (ActiveLog == true)
             {
-                Debug.Log("<color=" + LogTagColor.ToString() + ">" + this.gameObject.scene.name + "</color> OnLoadingScenePercent() " + sSceneName + "(" + SceneNumber + " loading " + sScenePercent.ToString("P") + ") Total loading " + sPercent.ToString("P"));
+                Debug.Log("<color=" + LogTagColor.ToString() + ">" + this.gameObject.scene.name + "</color> OnLoadingScenePercent() " + sSceneName + " (n°" + SceneNumber + " loading " + sScenePercent.ToString("P") + ") Total loading " + sPercent.ToString("P"));
             }
         }
         //-------------------------------------------------------------------------------------------------------------
@@ -79,7 +79,7 @@ namespace SceneTransitionSystem
             }
             if (ActiveLog == true)
             {
-                Debug.Log("<color=" + LogTagColor.ToString() + ">" + this.gameObject.scene.name + "</color> OnLoadingSceneFinish() " + sSceneName + "(" + SceneNumber + " loading " + sScenePercent.ToString("P") + ") Total loading " + sPercent.ToString("P"));
+                Debug.Log("<color=" + LogTagColor.ToString() + ">" + this.gameObject.scene.name + "</color> OnLoadingSceneFinish() " + sSceneName + " (n°" + SceneNumber + " loading " + sScenePercent.ToString("P") + ") Total loading " + sPercent.ToString("P"));
             }
         }
         //-------------------------------------------------------------------------------------------------------------
@@ -92,7 +92,7 @@ namespace SceneTransitionSystem
             }
             if (ActiveLog == true)
             {
-                Debug.Log("<color=" + LogTagColor.ToString() + ">" + this.gameObject.scene.name + "</color> OnUnloadScene() " + sSceneName + "(" + SceneNumber + ") Total loading " + sPercent.ToString("P"));
+                Debug.Log("<color=" + LogTagColor.ToString() + ">" + this.gameObject.scene.name + "</color> OnUnloadScene() " + sSceneName + " (n°" + SceneNumber + ") Total loading " + sPercent.ToString("P"));
             }
         }
         //-------------------------------------------------------------------------------------------------------------
