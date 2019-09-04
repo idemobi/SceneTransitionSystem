@@ -65,6 +65,15 @@ namespace SceneTransitionSystem
         /// editor infos run big preview
         /// </summary>
         public static string K_RUN_BIG_PREVIEW = "Run big preview";
+        /// <summary>
+        /// Button text to get more effects
+        /// </summary>
+        public static string K_ASSET_STORE = "GET MORE EFFECTS";
+        /// <summary>
+        /// 
+        /// </summary>
+        //public static string K_ASSET_STORE_URL = string.Empty;
+        public static string K_ASSET_STORE_URL = "?q=STSEffect&orderBy=0";
         //-------------------------------------------------------------------------------------------------------------
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

@@ -34,7 +34,7 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         public float kSizePreview = 80.0F;
         public float kSizePreviewPopup = 30.0F;
-        public float kSizePreviewButton = 60.0F;
+        public float kSizePreviewButton = 120.0F;
         //-------------------------------------------------------------------------------------------------------------
         static GUIStyle tMiniButtonStyle;
         static GUIStyle tPopupFieldStyle;
@@ -644,6 +644,19 @@ namespace SceneTransitionSystem
                 STSEffectPreview.kEffectPreview.EffectPrepare();
                 STSEffectPreview.kEffectPreview.EffectRun(tDuration.floatValue);
             }
+
+            if (string.IsNullOrEmpty(STSConstants.K_ASSET_STORE_URL) == false)
+            {
+                // Get More effects
+                Color tOldColor = GUI.contentColor;
+                GUI.backgroundColor = Color.red;
+                if (GUI.Button(new Rect(position.x + position.width - kSizePreviewButton - kMarge - kSizePreview * 2, tY + 3 * (tPopupFieldStyle.fixedHeight + kMarge), kSizePreviewButton, tPopupFieldStyle.fixedHeight), STSConstants.K_ASSET_STORE, tMiniButtonStyle))
+                {
+                    AssetStore.Open(STSConstants.K_ASSET_STORE_URL);
+                }
+                GUI.backgroundColor = tOldColor;
+            }
+
             // If AutoInstallPreview?
             if (tAutoInstallPreview == true)
             {
