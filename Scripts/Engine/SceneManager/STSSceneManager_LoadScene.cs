@@ -415,93 +415,16 @@ namespace SceneTransitionSystem
             SceneManager.SetActiveScene(tIntermissionScene);
             // disable audiolistener of preview scene
             AudioListenerPrevent();
-            // get params
-            STSTransition tIntermissionSceneParams = GetTransitionsParams(tIntermissionScene, false);
             // disable the user interactions until fadein 
             EventSystemEnable(tIntermissionScene, false);
-            // Intermission scene is loaded
-            if (tIntermissionSceneParams.Interfaced != null)
-            {
-                tIntermissionSceneParams.Interfaced.OnTransitionSceneLoaded(sTransitionData);
-            }
-            // animation in
-            if (tIntermissionSceneParams.Interfaced != null)
-            {
-                tIntermissionSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData);
-            }
-            // animation in Go!
-            AnimationTransitionIn(tIntermissionSceneParams, sTransitionData);
-            while (AnimationFinished() == false)
-            {
-                yield return null;
-            }
-            // animation in Finish
-            if (tIntermissionSceneParams.Interfaced != null)
-            {
-                tIntermissionSceneParams.Interfaced.OnTransitionEnterFinish(sTransitionData);
-            }
-            // enable the user interactions 
-            EventSystemEnable(tIntermissionScene, true);
-            // enable the user interactions 
-            if (tIntermissionSceneParams.Interfaced != null)
-            {
-                tIntermissionSceneParams.Interfaced.OnTransitionSceneEnable(sTransitionData);
-            }
-            //-------------------------------
-            // Intermission SCENE START STAND BY
-            //-------------------------------
-            // start stand by
+            // get params
+            STSTransition tIntermissionSceneParams = GetTransitionsParams(tIntermissionScene, false);
             STSIntermission tIntermissionSceneStandBy = GetStandByParams(tIntermissionScene);
-            if (tIntermissionSceneStandBy.Interfaced != null)
-            {
-                tIntermissionSceneStandBy.Interfaced.OnStandByStart(tIntermissionSceneStandBy);
-            }
-            StandBy();
             //-------------------------------
             // COUNT SCENES TO REMOVE OR ADD
             //-------------------------------
             float tSceneCount = sScenesToAdd.Count + sScenesToRemove.Count;
             int tSceneCounter = 0;
-            //-------------------------------
-            // LOADED SCENES ADDED
-            //-------------------------------
-            foreach (string tSceneToAdd in sScenesToAdd)
-            {
-                //Debug.Log("tSceneToAdd :" + tSceneToAdd);
-                if (SceneManager.GetSceneByName(tSceneToAdd).isLoaded)
-                {
-                    if (tIntermissionSceneStandBy.Interfaced != null)
-                    {
-                        tIntermissionSceneStandBy.Interfaced.OnSceneAllReadyLoaded(sTransitionData, tSceneToAdd, tSceneCounter, (tSceneCounter + 1.0F) / tSceneCount);
-                    }
-                    //Debug.Log("tSceneToAdd :" + tSceneToAdd + " allready finish!");
-                }
-                else
-                {
-                    if (tIntermissionSceneStandBy.Interfaced != null)
-                    {
-                        tIntermissionSceneStandBy.Interfaced.OnLoadingSceneStart(sTransitionData, tSceneToAdd, tSceneCounter, 0.0F, 0.0F);
-                    }
-
-                    AsyncOperation tAsyncOperationAdd = SceneManager.LoadSceneAsync(tSceneToAdd, LoadSceneMode.Additive);
-                    tAsyncOperationList.Add(tSceneToAdd, tAsyncOperationAdd);
-                    tAsyncOperationAdd.allowSceneActivation = false;
-                    while (tAsyncOperationAdd.progress < 0.9f)
-                    {
-                        if (tIntermissionSceneStandBy.Interfaced != null)
-                        {
-                            tIntermissionSceneStandBy.Interfaced.OnLoadingScenePercent(sTransitionData, tSceneToAdd, tSceneCounter, tAsyncOperationAdd.progress, (tSceneCounter + tAsyncOperationAdd.progress) / tSceneCount);
-                        }
-                        yield return null;
-                    }
-                    if (tIntermissionSceneStandBy.Interfaced != null)
-                    {
-                        tIntermissionSceneStandBy.Interfaced.OnLoadingSceneFinish(sTransitionData, tSceneToAdd, tSceneCounter, 1.0F, (tSceneCounter + 1.0F) / tSceneCount);
-                    }
-                    //Debug.Log("tSceneToAdd :" + tSceneToAdd + " 90%!");
-                }
-                tSceneCounter++;
-            }
             //-------------------------------
             // UNLOADED SCENES REMOVED
             //-------------------------------
@@ -547,6 +470,87 @@ namespace SceneTransitionSystem
                 }
                 tSceneCounter++;
                 Debug.Log("tSceneToRemove :" + tSceneToRemove + " finish!");
+            }
+            //-------------------------------
+            // Intermission start enter animation
+            //-------------------------------
+            // get params
+            // Intermission scene is loaded
+            if (tIntermissionSceneParams.Interfaced != null)
+            {
+                tIntermissionSceneParams.Interfaced.OnTransitionSceneLoaded(sTransitionData);
+            }
+            // animation in
+            if (tIntermissionSceneParams.Interfaced != null)
+            {
+                tIntermissionSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData);
+            }
+            // animation in Go!
+            AnimationTransitionIn(tIntermissionSceneParams, sTransitionData);
+            while (AnimationFinished() == false)
+            {
+                yield return null;
+            }
+            // animation in Finish
+            if (tIntermissionSceneParams.Interfaced != null)
+            {
+                tIntermissionSceneParams.Interfaced.OnTransitionEnterFinish(sTransitionData);
+            }
+            // enable the user interactions 
+            EventSystemEnable(tIntermissionScene, true);
+            // enable the user interactions 
+            if (tIntermissionSceneParams.Interfaced != null)
+            {
+                tIntermissionSceneParams.Interfaced.OnTransitionSceneEnable(sTransitionData);
+            }
+            //-------------------------------
+            // Intermission SCENE START STAND BY
+            //-------------------------------
+            // start stand by
+            if (tIntermissionSceneStandBy.Interfaced != null)
+            {
+                tIntermissionSceneStandBy.Interfaced.OnStandByStart(tIntermissionSceneStandBy);
+            }
+            StandBy();
+            //-------------------------------
+            // LOADED SCENES ADDED
+            //-------------------------------
+            foreach (string tSceneToAdd in sScenesToAdd)
+            {
+                //Debug.Log("tSceneToAdd :" + tSceneToAdd);
+                if (SceneManager.GetSceneByName(tSceneToAdd).isLoaded)
+                {
+                    if (tIntermissionSceneStandBy.Interfaced != null)
+                    {
+                        tIntermissionSceneStandBy.Interfaced.OnSceneAllReadyLoaded(sTransitionData, tSceneToAdd, tSceneCounter, (tSceneCounter + 1.0F) / tSceneCount);
+                    }
+                    //Debug.Log("tSceneToAdd :" + tSceneToAdd + " allready finish!");
+                }
+                else
+                {
+                    if (tIntermissionSceneStandBy.Interfaced != null)
+                    {
+                        tIntermissionSceneStandBy.Interfaced.OnLoadingSceneStart(sTransitionData, tSceneToAdd, tSceneCounter, 0.0F, 0.0F);
+                    }
+
+                    AsyncOperation tAsyncOperationAdd = SceneManager.LoadSceneAsync(tSceneToAdd, LoadSceneMode.Additive);
+                    tAsyncOperationList.Add(tSceneToAdd, tAsyncOperationAdd);
+                    tAsyncOperationAdd.allowSceneActivation = false;
+                    while (tAsyncOperationAdd.progress < 0.9f)
+                    {
+                        if (tIntermissionSceneStandBy.Interfaced != null)
+                        {
+                            tIntermissionSceneStandBy.Interfaced.OnLoadingScenePercent(sTransitionData, tSceneToAdd, tSceneCounter, tAsyncOperationAdd.progress, (tSceneCounter + tAsyncOperationAdd.progress) / tSceneCount);
+                        }
+                        yield return null;
+                    }
+                    if (tIntermissionSceneStandBy.Interfaced != null)
+                    {
+                        tIntermissionSceneStandBy.Interfaced.OnLoadingSceneFinish(sTransitionData, tSceneToAdd, tSceneCounter, 1.0F, (tSceneCounter + 1.0F) / tSceneCount);
+                    }
+                    //Debug.Log("tSceneToAdd :" + tSceneToAdd + " 90%!");
+                }
+                tSceneCounter++;
             }
             //-------------------------------
             // Intermission STAND BY
