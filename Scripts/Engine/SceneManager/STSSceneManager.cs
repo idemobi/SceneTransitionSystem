@@ -45,7 +45,7 @@ namespace SceneTransitionSystem
         // Singleton
         public static STSSceneManager Singleton()
         {
-            //Debug.Log ("STSTransitionController Singleton()");
+            //Debug.Log ("STSSceneManager Singleton()");
             if (kSingleton == null)
             {
                 // I need to create singleton
@@ -70,7 +70,7 @@ namespace SceneTransitionSystem
         // Memory managment
         private void InitInstance()
         {
-            //Debug.Log("STSTransitionController InitInstance()");
+            //Debug.Log("STSSceneManager InitInstance()");
         }
         //-------------------------------------------------------------------------------------------------------------
         //Awake is always called before any Start functions
@@ -100,13 +100,13 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         private void OnDestroy()
         {
-            //Debug.Log("STSTransitionController OnDestroy()");
+            //Debug.Log("STSSceneManager OnDestroy()");
         }
         //-------------------------------------------------------------------------------------------------------------
         // toolbox method
         private void AudioListenerPrevent()
         {
-            Debug.Log("STSTransitionController AudioListenerPrevent()");
+            Debug.Log("STSSceneManager AudioListenerPrevent()");
             for (int i = 0; i < SceneManager.sceneCount; i++)
             {
                 Scene tScene = SceneManager.GetSceneAt(i);
@@ -120,7 +120,7 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         private void AudioListenerEnable(Scene sScene, bool sEnable)
         {
-            //Debug.Log("STSTransitionController AudioListenerEnable()");
+            //Debug.Log("STSSceneManager AudioListenerEnable()");
             if (sScene.isLoaded)
             {
                 AudioListener tAudioListener = null;
@@ -145,7 +145,7 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         private void EventSystemPrevent(bool sEnable)
         {
-            //Debug.Log("STSTransitionController EventSystemPrevent()");
+            //Debug.Log("STSSceneManager EventSystemPrevent()");
             for (int i = 0; i < SceneManager.sceneCount; i++)
             {
                 Scene tScene = SceneManager.GetSceneAt(i);
@@ -159,7 +159,7 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         private void EventSystemEnable(Scene sScene, bool sEnable)
         {
-            //Debug.Log("STSTransitionController EventSystemEnable()");
+            //Debug.Log("STSSceneManager EventSystemEnable()");
             if (PreventUserInteractions == true)
             {
                 EventSystem tEventSystem = null;
@@ -187,7 +187,7 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         private STSTransition GetTransitionsParams(Scene sScene, bool sStartTransition) //TODO remove sStartTransition
         {
-            //Debug.Log("STSTransitionController GetTransitionsParams()");
+            //Debug.Log("STSSceneManager GetTransitionsParams()");
             STSTransition tTransitionParametersScript = null;
             GameObject[] tAllRootObjects = sScene.GetRootGameObjects();
             // quick solution?!
@@ -244,7 +244,7 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         private STSIntermission GetStandByParams(Scene sScene)
         {
-            //Debug.Log("STSTransitionController GetStandByParams()");
+            //Debug.Log("STSSceneManager GetStandByParams()");
             STSIntermission tTransitionStandByScript = null;
             GameObject[] tAllRootObjects = sScene.GetRootGameObjects();
             // quick solution?!
