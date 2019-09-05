@@ -41,6 +41,7 @@ namespace SceneTransitionSystem
 		private float StandByTimer;
 		private bool LauchNextScene = false;
 		private bool StandByInProgress = false;
+        public STSScene OriginalScene;
 		//-------------------------------------------------------------------------------------------------------------
 		// Singleton
 		public static STSSceneManager Singleton()
@@ -97,8 +98,22 @@ namespace SceneTransitionSystem
 			DontDestroyOnLoad(gameObject);
 			//Call the InitGame function to initialize the first level 
 		}
-		//-------------------------------------------------------------------------------------------------------------
-		private void OnDestroy()
+        //-------------------------------------------------------------------------------------------------------------
+        private void Start()
+        {
+            Debug.Log("<color=red>START</color>");
+            if (OriginalScene==null)
+            {
+                OriginalScene = new STSScene();
+                Scene tScene = SceneManager.GetActiveScene();
+                if (tScene.path !=null)
+                {
+                    OriginalScene.ScenePath = tScene.path;
+                }
+            }
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        private void OnDestroy()
 		{
 			//Debug.Log("STSSceneManager OnDestroy()");
 		}

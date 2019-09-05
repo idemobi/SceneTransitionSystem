@@ -40,21 +40,25 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         public static void GoBack()
         {
+            Debug.Log("GoBack()");
             GoBack(1, null);
         }
         //-------------------------------------------------------------------------------------------------------------
         public static void GoBack(STSTransitionData sNewData)
         {
+            Debug.Log("GoBack()");
             GoBack(1, sNewData);
         }
         //-------------------------------------------------------------------------------------------------------------
         public static void GoBack(int sUnstack)
         {
+            Debug.Log("GoBack()");
             GoBack(sUnstack, null);
         }
         //-------------------------------------------------------------------------------------------------------------
         public static void GoBack(int sUnstack, STSTransitionData sNewData)
         {
+            Debug.Log("GoBack()");
             for (int ti = 0; ti < sUnstack; ti++)
             {
                 if (Singleton().Historic.Count > 0)
@@ -67,19 +71,20 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         public static void GoTo(int sHistoricIndex)
         {
+            Debug.Log("GoTo()");
             GoTo(sHistoricIndex, null);
         }
         //-------------------------------------------------------------------------------------------------------------
         public static void GoTo(int sHistoricIndex, STSTransitionData sNewData)
         {
-            Debug.Log("GoTo (" + sHistoricIndex + ")");
+            Debug.Log("###### GoTo (" + sHistoricIndex + ")");
             if (sHistoricIndex >= 0 && sHistoricIndex < Singleton().Historic.Count)
             {
                 Singleton().INTERNAL_Go(Singleton().Historic[sHistoricIndex], sNewData);
             }
             else
             {
-                Debug.LogWarning("No scene in historic");
+                Debug.LogWarning("###### No scene in historic");
                 Singleton().INTERNAL_Go(null, null);
             }
         }
@@ -100,7 +105,7 @@ namespace SceneTransitionSystem
         {
             if (DefaultScenesPackage == null)
             {
-                DefaultScenesPackage = new STSScenesPackage(SceneManager.GetActiveScene().name, null, null, null);
+                DefaultScenesPackage = new STSScenesPackage(OriginalScene.GetSceneShortName(), null, null, null);
             }
             return DefaultScenesPackage;
         }
