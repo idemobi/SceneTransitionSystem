@@ -142,6 +142,22 @@ namespace SceneTransitionSystem
                     }
                 }
 
+                List<string> tAllScenesList = new List<string>();
+
+                tAllScenesList.Add(sActualActiveScene);
+                tAllScenesList.Add(sNextActiveScene);
+                tAllScenesList.Add(sIntermissionScene);
+                tAllScenesList.AddRange(sScenesToAdd);
+                tAllScenesList.AddRange(sScenesToRemove);
+                if (ScenesAreAllInBuild(tAllScenesList) == false)
+                {
+                    Debug.LogWarning("SOME SCENES ARE NOT IN BUILD !!! STOP THE TRAIN!");
+                    return;
+                }
+
+
+
+
                 if (sHistorical == true)
                 {
                     INTERNAL_AddNavigation(sNextActiveScene, sScenesToAdd, sIntermissionScene, sTransitionData);
