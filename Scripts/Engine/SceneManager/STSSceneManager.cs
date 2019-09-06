@@ -24,6 +24,7 @@ namespace SceneTransitionSystem
     {
         //-------------------------------------------------------------------------------------------------------------
         const string K_SCENE_MUST_BY_LOADED = "Scene must be loaded!";
+        const string K_SCENE_UNKNOW = "Some scenes are not in build!";
         const string K_TRANSITION_IN_PROGRESS = "Transition in progress";
         //-------------------------------------------------------------------------------------------------------------
         private static STSSceneManager kSingleton = null;

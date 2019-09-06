@@ -43,6 +43,13 @@ namespace SceneTransitionSystem
         {
             if (TransitionInProgress == false)
             {
+                List<string> tAllScenesList = new List<string>();
+                tAllScenesList.Add(sSceneName);
+                if (ScenesAreAllInBuild(tAllScenesList) == false)
+                {
+                    Debug.LogWarning(K_SCENE_UNKNOW);
+                    return;
+                }
                 List<string> tScenes = new List<string>();
                 for (int tSceneIndex = 0; tSceneIndex < SceneManager.sceneCount; tSceneIndex++)
                 {

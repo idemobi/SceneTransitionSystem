@@ -143,7 +143,6 @@ namespace SceneTransitionSystem
                 }
 
                 List<string> tAllScenesList = new List<string>();
-
                 tAllScenesList.Add(sActualActiveScene);
                 tAllScenesList.Add(sNextActiveScene);
                 tAllScenesList.Add(sIntermissionScene);
@@ -151,12 +150,9 @@ namespace SceneTransitionSystem
                 tAllScenesList.AddRange(sScenesToRemove);
                 if (ScenesAreAllInBuild(tAllScenesList) == false)
                 {
-                    Debug.LogWarning("SOME SCENES ARE NOT IN BUILD !!! STOP THE TRAIN!");
+                    Debug.LogWarning(K_SCENE_UNKNOW);
                     return;
                 }
-
-
-
 
                 if (sHistorical == true)
                 {
