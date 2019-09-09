@@ -96,7 +96,7 @@ namespace SceneTransitionSystem
             AnimationTransitionOut(sTransitionParams, sTransitionData);
             if (sTransitionParams.Interfaced != null)
             {
-                sTransitionParams.Interfaced.OnTransitionExitStart(sTransitionData);
+                sTransitionParams.Interfaced.OnTransitionExitStart(sTransitionData, sTransitionParams.EffectOnExit);
             }
             while (AnimationFinished() == false)
             {
@@ -113,7 +113,7 @@ namespace SceneTransitionSystem
             AnimationTransitionIn(sTransitionParams, sTransitionData);
             if (sTransitionParams.Interfaced != null)
             {
-                sTransitionParams.Interfaced.OnTransitionEnterStart(sTransitionData);
+                sTransitionParams.Interfaced.OnTransitionEnterStart(sTransitionData, sTransitionParams.EffectOnEnter,sTransitionParams.InterEffectDuration);
             }
             while (AnimationFinished() == false)
             {

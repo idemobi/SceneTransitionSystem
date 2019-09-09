@@ -51,7 +51,7 @@ namespace SceneTransitionSystem
             }
         }
         //-------------------------------------------------------------------------------------------------------------
-        public virtual void OnTransitionEnterStart(STSTransitionData sData)
+        public virtual void OnTransitionEnterStart(STSTransitionData sData, STSEffectType sEffect, float sInterludeDuration)
         {
             if (ActiveLog == true)
             {
@@ -75,7 +75,7 @@ namespace SceneTransitionSystem
             }
         }
         //-------------------------------------------------------------------------------------------------------------
-        public virtual void OnTransitionExitStart(STSTransitionData sData)
+        public virtual void OnTransitionExitStart(STSTransitionData sData, STSEffectType sEffect)
         {
             if (ActiveLog == true)
             {

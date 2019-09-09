@@ -412,7 +412,7 @@ namespace SceneTransitionSystem
             return rReturn;
         }
         //-------------------------------------------------------------------------------------------------------------
-        public void OnTransitionEnterStart(STSTransitionData sData)
+        public void OnTransitionEnterStart(STSTransitionData sData, STSEffectType sEffect, float sInterludeDuration)
         {
             //throw new System.NotImplementedException();
         }
@@ -422,7 +422,7 @@ namespace SceneTransitionSystem
             //throw new System.NotImplementedException();
         }
         //-------------------------------------------------------------------------------------------------------------
-        public void OnTransitionExitStart(STSTransitionData sData)
+        public void OnTransitionExitStart(STSTransitionData sData, STSEffectType sEffect)
         {
             //throw new System.NotImplementedException();
         }

@@ -82,7 +82,7 @@ namespace SceneTransitionSystem
             AnimationTransitionOut(tActualSceneParams, sTransitionData);
             if (tActualSceneParams.Interfaced != null)
             {
-                tActualSceneParams.Interfaced.OnTransitionExitStart(sTransitionData);
+                tActualSceneParams.Interfaced.OnTransitionExitStart(sTransitionData, tActualSceneParams.EffectOnExit);
             }
             while (AnimationFinished() == false)
             {
@@ -97,7 +97,7 @@ namespace SceneTransitionSystem
             AnimationTransitionIn(tNextSceneParams, sTransitionData);
             if (tNextSceneParams.Interfaced != null)
             {
-                tNextSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData);
+                tNextSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData, tNextSceneParams.EffectOnEnter, tNextSceneParams.InterEffectDuration);
             }
             while (AnimationFinished() == false)
             {
@@ -128,7 +128,7 @@ namespace SceneTransitionSystem
             AnimationTransitionOut(tActualSceneParams, sTransitionData);
             if (tActualSceneParams.Interfaced != null)
             {
-                tActualSceneParams.Interfaced.OnTransitionExitStart(sTransitionData);
+                tActualSceneParams.Interfaced.OnTransitionExitStart(sTransitionData, tActualSceneParams.EffectOnExit);
             }
             while (AnimationFinished() == false)
             {
@@ -169,13 +169,13 @@ namespace SceneTransitionSystem
             {
                 tIntermissionSceneParams.Interfaced.OnTransitionSceneLoaded(sTransitionData);
             }
+            // animation in Go!
+            AnimationTransitionIn(tIntermissionSceneParams, sTransitionData);
             // animation in
             if (tIntermissionSceneParams.Interfaced != null)
             {
-                tIntermissionSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData);
+                tIntermissionSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData, tIntermissionSceneParams.EffectOnEnter,tIntermissionSceneParams.InterEffectDuration);
             }
-            // animation in Go!
-            AnimationTransitionIn(tIntermissionSceneParams, sTransitionData);
             while (AnimationFinished() == false)
             {
                 yield return null;
@@ -225,13 +225,13 @@ namespace SceneTransitionSystem
             {
                 tIntermissionSceneParams.Interfaced.OnTransitionSceneDisable(sTransitionData);
             }
+            // Intermission scene Transition Out GO! 
+            AnimationTransitionOut(tIntermissionSceneParams, sTransitionData);
             // Intermission scene Transition Out start 
             if (tIntermissionSceneParams.Interfaced != null)
             {
-                tIntermissionSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData);
+                tIntermissionSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData,tIntermissionSceneParams.EffectOnExit ,tIntermissionSceneParams.InterEffectDuration);
             }
-            // Intermission scene Transition Out GO! 
-            AnimationTransitionOut(tIntermissionSceneParams, sTransitionData);
             while (AnimationFinished() == false)
             {
                 yield return null;
@@ -265,7 +265,7 @@ namespace SceneTransitionSystem
             AnimationTransitionIn(tNextSceneParams, sTransitionData);
             if (tNextSceneParams.Interfaced != null)
             {
-                tNextSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData);
+                tNextSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData, tNextSceneParams.EffectOnEnter,tNextSceneParams.InterEffectDuration);
             }
             while (AnimationFinished() == false)
             {
