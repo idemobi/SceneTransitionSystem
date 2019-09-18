@@ -404,7 +404,7 @@ namespace SceneTransitionSystem
             {
                 if (tScenesInBuildList.Contains(tScene) == false)
                 {
-                    Debug.LogWarning(tScene + " NOT IN BUILD! STOP THE TRAIN?");
+                    Debug.LogWarning("Scene '" + tScene + "' NOT IN BUILD! STOP THE TRAIN? (array is '" + string.Join("','", sScenesList) + "'");
                     rReturn = false;
                     break;
                 }

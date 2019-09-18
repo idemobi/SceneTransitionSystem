@@ -142,12 +142,24 @@ namespace SceneTransitionSystem
                     }
                 }
 
+                List<string> tAllScenesListS = new List<string>();
+                tAllScenesListS.Add(sNextActiveScene);
+                tAllScenesListS.Add(sIntermissionScene);
+                tAllScenesListS.AddRange(sScenesToAdd);
+                tAllScenesListS.AddRange(sScenesToRemove);
+
                 List<string> tAllScenesList = new List<string>();
-                tAllScenesList.Add(sActualActiveScene);
-                tAllScenesList.Add(sNextActiveScene);
-                tAllScenesList.Add(sIntermissionScene);
-                tAllScenesList.AddRange(sScenesToAdd);
-                tAllScenesList.AddRange(sScenesToRemove);
+                foreach (string tScen in tAllScenesListS)
+                {
+                    if (string.IsNullOrEmpty(tScen) == false)
+                    {
+                        if (tAllScenesList.Contains(tScen) == false)
+                        {
+                            tAllScenesList.Add(tScen);
+                        }
+                    }
+                }
+
                 if (ScenesAreAllInBuild(tAllScenesList) == false)
                 {
                     Debug.LogWarning(K_SCENE_UNKNOW);
@@ -602,7 +614,7 @@ namespace SceneTransitionSystem
             // Intermission scene Transition Out start 
             if (tIntermissionSceneParams.Interfaced != null)
             {
-                tIntermissionSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData,tIntermissionSceneParams.EffectOnExit, tIntermissionSceneParams.InterEffectDuration);
+                tIntermissionSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData, tIntermissionSceneParams.EffectOnExit, tIntermissionSceneParams.InterEffectDuration);
             }
             while (AnimationFinished() == false)
             {
