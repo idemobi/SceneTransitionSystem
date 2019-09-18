@@ -170,12 +170,12 @@ namespace SceneTransitionSystem
                 {
                     INTERNAL_AddNavigation(sNextActiveScene, sScenesToAdd, sIntermissionScene, sTransitionData);
                 }
-                Debug.Log("sActualActiveScene : " + sActualActiveScene +
-                    "sNextActiveScene : " + sNextActiveScene +
-                    "sScenesToAdd : " + sScenesToAdd.ToString() +
-                    "sScenesToRemove : " + sScenesToRemove.ToString() +
-                    "sIntermissionScene : " + sIntermissionScene +
-                    "");
+                //Debug.Log("sActualActiveScene : " + sActualActiveScene +
+                //    "sNextActiveScene : " + sNextActiveScene +
+                //    "sScenesToAdd : " + sScenesToAdd.ToString() +
+                //    "sScenesToRemove : " + sScenesToRemove.ToString() +
+                //    "sIntermissionScene : " + sIntermissionScene +
+                //    "");
                 if (tPossible == true)
                 {
                     if (string.IsNullOrEmpty(sIntermissionScene))
