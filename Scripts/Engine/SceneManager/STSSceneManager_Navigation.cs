@@ -105,6 +105,15 @@ namespace SceneTransitionSystem
         {
             if (DefaultScenesPackage == null)
             {
+                if (OriginalScene == null)
+                {
+                    OriginalScene = new STSScene();
+                    Scene tScene = SceneManager.GetActiveScene();
+                    if (tScene.path != null)
+                    {
+                        OriginalScene.ScenePath = tScene.path;
+                    }
+                }
                 DefaultScenesPackage = new STSScenesPackage(OriginalScene.GetSceneShortName(), null, null, null);
             }
             return DefaultScenesPackage;
