@@ -14,7 +14,7 @@ using UnityEngine;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public class STSIntermission : MonoBehaviour
+    public class STSIntermission : SharedInstanceUnity<STSIntermission>
     {
         //-------------------------------------------------------------------------------------------------------------
         [Header("Intermission Scene Parameters")]

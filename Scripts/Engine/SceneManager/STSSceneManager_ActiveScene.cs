@@ -32,10 +32,21 @@ namespace SceneTransitionSystem
         {
             if (TransitionInProgress == false)
             {
+                List<string> tAllScenesListS = new List<string>();
+                tAllScenesListS.Add(sActualActiveSceneName);
+                tAllScenesListS.Add(sSceneNameToActive);
+                tAllScenesListS.Add(sIntermissionSceneName);
                 List<string> tAllScenesList = new List<string>();
-                tAllScenesList.Add(sActualActiveSceneName);
-                tAllScenesList.Add(sSceneNameToActive);
-                tAllScenesList.Add(sIntermissionSceneName);
+                foreach (string tScen in tAllScenesListS)
+                {
+                    if (string.IsNullOrEmpty(tScen) == false)
+                    {
+                        if (tAllScenesList.Contains(tScen) == false)
+                        {
+                            tAllScenesList.Add(tScen);
+                        }
+                    }
+                }
                 if (ScenesAreAllInBuild(tAllScenesList) == false)
                 {
                     Debug.LogWarning(K_SCENE_UNKNOW);

@@ -10,13 +10,11 @@
 //
 //=====================================================================================================================
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 //=====================================================================================================================
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public class STSTransition : MonoBehaviour
+    public class STSTransition : SharedInstanceUnity<STSTransition>
     {
         //-------------------------------------------------------------------------------------------------------------
         [Header("On enter scene effect")]
@@ -32,8 +30,9 @@ namespace SceneTransitionSystem
         private STSEffect EffectOnEnterDup;
         private STSEffect EffectOnExitDup;
         //-------------------------------------------------------------------------------------------------------------
-        void Awake()
+        public override void InitInstance()
         {
+            base.InitInstance();
             STSSceneManager.Singleton();
         }
         //-------------------------------------------------------------------------------------------------------------

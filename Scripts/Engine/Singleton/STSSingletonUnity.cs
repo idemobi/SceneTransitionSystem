@@ -9,10 +9,6 @@
 //  All rights reserved by ideMobi
 //
 //=====================================================================================================================
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.SceneManagement;
-using UnityEngine.EventSystems;
 using UnityEngine;
 //=====================================================================================================================
 namespace SceneTransitionSystem
@@ -36,16 +32,16 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         private void Awake()
         {
-            Debug.Log("STSSingleton<K> Awake() for gameobject named '" + gameObject.name + "'");
+            //Debug.Log("STSSingleton<K> Awake() for gameobject named '" + gameObject.name + "'");
             //Check if there is already an instance of K
             if (kSingleton == null)
             {
-                Debug.Log("STSSingleton<K> Awake() case kSingleton == null for gameobject named '" + gameObject.name + "'");
+                //Debug.Log("STSSingleton<K> Awake() case kSingleton == null for gameobject named '" + gameObject.name + "'");
                 //if not, set it to this.
                 kSingleton = this as K;
                 if (Initialized == false)
                 {
-                    Debug.Log("STSSingleton<K> Awake() case kSingleton.Initialized == false for gameobject named '" + gameObject.name + "'");
+                    //Debug.Log("STSSingleton<K> Awake() case kSingleton.Initialized == false for gameobject named '" + gameObject.name + "'");
                     // Init Instance
                     InitInstance();
                     // memorize the init instance
@@ -57,19 +53,25 @@ namespace SceneTransitionSystem
             //If instance already exists:
             if (kSingleton != this)
             {
-                Debug.Log("STSSingleton<K> Awake() case kSingleton != this for gameobject named '" + gameObject.name + "'");
+                //Debug.Log("STSSingleton<K> Awake() case kSingleton != this for gameobject named '" + gameObject.name + "'");
                 //Destroy this, this enforces our singleton pattern so there can only be one instance of SoundManager.
-                Debug.Log("singleton prevent destruction gameobject named '" + gameObject.name + "'");
+                //Debug.Log("singleton prevent destruction gameobject named '" + gameObject.name + "'");
                 Destroy(this);
             }
         }
         //-------------------------------------------------------------------------------------------------------------
+        public static bool SingletonExists()
+        {
+            bool rReturn = kSingleton == null;
+            return rReturn;
+        }
+        //-------------------------------------------------------------------------------------------------------------
         public static K Singleton()
         {
-            Debug.Log("STSSingleton<K> Singleton()");
+            //Debug.Log("STSSingleton<K> Singleton()");
             if (kSingleton == null)
             {
-                Debug.Log("STSSingleton<K> Singleton() case kSingleton == null");
+                //Debug.Log("STSSingleton<K> Singleton() case kSingleton == null");
                 // I need to create singleton
                 GameObject tObjToSpawn;
                 //spawn object
@@ -81,20 +83,20 @@ namespace SceneTransitionSystem
             }
             else
             {
-                Debug.Log("STSSingleton<K> Singleton() case kSingleton != null (exist in gameobject named '" + kSingleton.gameObject.name + "')");
+                //Debug.Log("STSSingleton<K> Singleton() case kSingleton != null (exist in gameobject named '" + kSingleton.gameObject.name + "')");
             }
             return kSingleton;
         }
         //-------------------------------------------------------------------------------------------------------------
         public override void InitInstance()
         {
-            Debug.Log("STSSingleton<K> InitInstance() for gameobject named '" + gameObject.name + "'");
+            //Debug.Log("STSSingleton<K> InitInstance() for gameobject named '" + gameObject.name + "'");
             // do something by override
         }
         //-------------------------------------------------------------------------------------------------------------
         public void OnDestroy()
         {
-            Debug.Log("STSSingleton<K> OnDestroy() for gameobject named '" + gameObject.name + "'");
+            //Debug.Log("STSSingleton<K> OnDestroy() for gameobject named '" + gameObject.name + "'");
             if (kSingleton == this)
             {
                 kSingleton = null;
