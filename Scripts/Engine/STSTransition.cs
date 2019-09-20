@@ -31,14 +31,9 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         private STSEffect EffectOnEnterDup;
         private STSEffect EffectOnExitDup;
-        //private bool ExitInProgress = false;
-        //private bool EnterInProgress = false;
-        //private bool ExitAndEnterInProgress = false;
-        //private bool PlayInProgress = false;
         //-------------------------------------------------------------------------------------------------------------
         void Awake()
         {
-            // test if Transition controller exist
             STSSceneManager.Singleton();
         }
         //-------------------------------------------------------------------------------------------------------------
@@ -46,127 +41,6 @@ namespace SceneTransitionSystem
         {
             Interfaced = GetComponent<STSTransitionInterface>();
         }
-        //-------------------------------------------------------------------------------------------------------------
-        void Update()
-        {
-
-        }
-        //-------------------------------------------------------------------------------------------------------------
-        private void OnGUI()
-        {
-            //if (PlayInProgress == true)
-            //{
-            //    if (ExitInProgress == true)
-            //    {
-            //        if (EffectOnExitDup.AnimIsFinished == false)
-            //        {
-            //            EffectOnExitDup.DrawMaster(new Rect(0, Screen.height, Screen.width, -Screen.height));
-            //        }
-            //        else
-            //        {
-            //            ExitInProgress = false;
-            //            if (Interfaced != null)
-            //            {
-            //                Interfaced.OnTransitionExitFinish(null);
-            //            }
-            //            if (ExitAndEnterInProgress == true)
-            //            {
-            //                PlayEnterNow(null);
-            //            }
-            //            else
-            //            {
-            //                PlayInProgress = false;
-            //            }
-            //        }
-            //    }
-            //    if (EnterInProgress == true)
-            //    {
-            //        if (EffectOnEnterDup.AnimIsFinished == false)
-            //        {
-            //            EffectOnEnterDup.DrawMaster(new Rect(0, Screen.height, Screen.width, -Screen.height));
-            //        }
-            //        else
-            //        {
-            //            EnterInProgress = false;
-            //            ExitAndEnterInProgress = false;
-            //            if (Interfaced != null)
-            //            {
-            //                Interfaced.OnTransitionEnterFinish(null);
-            //            }
-            //        }
-            //    }
-            //}
-        }
-        //-------------------------------------------------------------------------------------------------------------
-        //public void PlayExitNow(STSTransitionData sDatas)
-        //{
-        //    if (Interfaced != null)
-        //    {
-        //        Interfaced.OnTransitionExitStart(null);
-        //    }
-        //    ExitInProgress = true;
-        //    PlayInProgress = true;
-        //    EffectOnExitDup = EffectOnExit.GetEffect();
-        //    EffectOnExitDup.StartEffectExit(new Rect(0, Screen.height, Screen.width, -Screen.height),sDatas.EffectMoreInfos);
-        //}
-        ////-------------------------------------------------------------------------------------------------------------
-        //public void PlayEnterNow(STSTransitionData sDatas)
-        //{
-        //    if (Interfaced != null)
-        //    {
-        //        Interfaced.OnTransitionEnterStart(null);
-        //    }
-        //    EnterInProgress = true;
-        //    PlayInProgress = true;
-        //    EffectOnExitDup = EffectOnExit.GetEffect();
-        //    EffectOnEnterDup = EffectOnEnter.GetEffect();
-        //    EffectOnEnterDup.StartEffectEnter(new Rect(0, Screen.height, Screen.width, -Screen.height), EffectOnExitDup.TintPrimary, InterEffectDuration, sDatas.EffectMoreInfos);
-        //}
-        ////-------------------------------------------------------------------------------------------------------------
-        //public void PlayExitAndEnterNow(STSTransitionData sDatas)
-        //{
-        //    ExitAndEnterInProgress = true;
-        //    PlayExitNow(sDatas);
-        //}
-        //-------------------------------------------------------------------------------------------------------------
-        //private bool PreventUserInteractions = true;
-        ////-------------------------------------------------------------------------------------------------------------
-        //private void EventSystemPrevent(bool sEnable)
-        //{
-        //    for (int i = 0; i < SceneManager.sceneCount; i++)
-        //    {
-        //        Scene tScene = SceneManager.GetSceneAt(i);
-        //        if (tScene.isLoaded)
-        //        {
-        //            EventSystemEnable(tScene, false);
-        //        }
-        //    }
-        //    EventSystemEnable(SceneManager.GetActiveScene(), sEnable);
-        //}
-        ////-------------------------------------------------------------------------------------------------------------
-        //private void EventSystemEnable(Scene sScene, bool sEnable)
-        //{
-        //    if (PreventUserInteractions == true)
-        //    {
-        //        EventSystem tEventSystem = null;
-        //        GameObject[] tAllRootObjects = sScene.GetRootGameObjects();
-        //        foreach (GameObject tObject in tAllRootObjects)
-        //        {
-        //            if (tObject.GetComponent<EventSystem>() != null)
-        //            {
-        //                tEventSystem = tObject.GetComponent<EventSystem>();
-        //            }
-        //        }
-        //        if (tEventSystem != null)
-        //        {
-        //            tEventSystem.enabled = sEnable;
-        //        }
-        //        else
-        //        {
-        //            //Debug.Log ("No <EventSystem> type component found in the root Objects. Becarefull!");
-        //        }
-        //    }
-        //}
         //-------------------------------------------------------------------------------------------------------------
         public void CopyIn(STSTransition sDestination)
         {

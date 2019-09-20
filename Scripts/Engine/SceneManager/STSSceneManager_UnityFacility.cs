@@ -20,7 +20,7 @@ using UnityEngine.Events;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public partial class STSSceneManager : MonoBehaviour, STSTransitionInterface, STSIntermissionInterface
+	public partial class STSSceneManager : STSSingletonUnity<STSSceneManager>, STSTransitionInterface, STSIntermissionInterface
     {
         //-------------------------------------------------------------------------------------------------------------
         public static Scene GetActiveScene()

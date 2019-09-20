@@ -18,7 +18,7 @@ using UnityEngine;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public partial class STSSceneManager : MonoBehaviour, STSTransitionInterface, STSIntermissionInterface
+	public partial class STSSceneManager : STSSingletonUnity<STSSceneManager>, STSTransitionInterface, STSIntermissionInterface
     {
         //-------------------------------------------------------------------------------------------------------------
         private List<STSScenesPackage> Historic = new List<STSScenesPackage>();
