@@ -10,16 +10,32 @@
 //
 //=====================================================================================================================
 using UnityEngine;
+using UnityEngine.SceneManagement;
 //=====================================================================================================================
 namespace SceneTransitionSystem
 {
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    public enum STSSingletonRoot
+    {
+        GameObject,
+        Component,
+    }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     public class STSSingletonBasis : MonoBehaviour
     {
         //-------------------------------------------------------------------------------------------------------------
         public bool Initialized = false;
         //-------------------------------------------------------------------------------------------------------------
+        public virtual STSSingletonRoot DestroyRoot()
+        {
+            return STSSingletonRoot.Component;
+        }
+        //-------------------------------------------------------------------------------------------------------------
         public virtual void InitInstance()
+        {
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public virtual void OnSceneLoaded(Scene sScene, LoadSceneMode sMode)
         {
         }
         //-------------------------------------------------------------------------------------------------------------
@@ -29,6 +45,11 @@ namespace SceneTransitionSystem
     {
         //-------------------------------------------------------------------------------------------------------------
         private static K kSingleton = null;
+        //-------------------------------------------------------------------------------------------------------------
+        public override STSSingletonRoot DestroyRoot()
+        {
+            return STSSingletonRoot.Component;
+        }
         //-------------------------------------------------------------------------------------------------------------
         private void Awake()
         {
@@ -44,6 +65,10 @@ namespace SceneTransitionSystem
                     //Debug.Log("STSSingleton<K> Awake() case kSingleton.Initialized == false for gameobject named '" + gameObject.name + "'");
                     // Init Instance
                     InitInstance();
+                    // scene is use on laded new scene
+                    SceneManager.sceneLoaded += OnSceneLoaded;
+                    // first install in first scene
+                    OnSceneLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);
                     // memorize the init instance
                     Initialized = true;
                 }
@@ -56,7 +81,14 @@ namespace SceneTransitionSystem
                 //Debug.Log("STSSingleton<K> Awake() case kSingleton != this for gameobject named '" + gameObject.name + "'");
                 //Destroy this, this enforces our singleton pattern so there can only be one instance of SoundManager.
                 //Debug.Log("singleton prevent destruction gameobject named '" + gameObject.name + "'");
-                Destroy(this);
+                if (DestroyRoot() == STSSingletonRoot.Component)
+                {
+                    Destroy(this);
+                }
+                else
+                {
+                    Destroy(gameObject);
+                }
             }
         }
         //-------------------------------------------------------------------------------------------------------------
@@ -91,6 +123,12 @@ namespace SceneTransitionSystem
         public override void InitInstance()
         {
             //Debug.Log("STSSingleton<K> InitInstance() for gameobject named '" + gameObject.name + "'");
+            // do something by override
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public override void OnSceneLoaded(Scene sScene, LoadSceneMode sMode)
+        {
+            //Debug.Log("STSSingleton<K> OnSceneLoaded() for gameobject named '" + gameObject.name + "'");
             // do something by override
         }
         //-------------------------------------------------------------------------------------------------------------
