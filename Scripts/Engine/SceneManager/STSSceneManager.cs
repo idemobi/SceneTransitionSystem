@@ -45,14 +45,14 @@ namespace SceneTransitionSystem
         public override void InitInstance()
         {
             //Debug.Log("STSSceneManager InitInstance()");
-            if (gameObject.GetComponent<STSTransition>() == null)
-            {
-                gameObject.AddComponent<STSTransition>();
-            }
-            if (gameObject.GetComponent<STSIntermission>() == null)
-            {
-                gameObject.AddComponent<STSIntermission>();
-            }
+            //if (gameObject.GetComponent<STSTransition>() == null)
+            //{
+            //    gameObject.AddComponent<STSTransition>();
+            //}
+            //if (gameObject.GetComponent<STSIntermission>() == null)
+            //{
+            //    gameObject.AddComponent<STSIntermission>();
+            //}
         }
         //-------------------------------------------------------------------------------------------------------------
         private void Start()
@@ -156,10 +156,12 @@ namespace SceneTransitionSystem
             STSTransition tTransitionParametersScript;
             if (STSTransition.SharedInstanceExists(sScene))
             {
+                //Debug.LogWarning("tTransitionParametersScript exists");
                 tTransitionParametersScript = STSTransition.SharedInstance(sScene);
             }
             else
             {
+                //Debug.LogWarning("tTransitionParametersScript not exists");
                 tTransitionParametersScript = STSTransition.SharedInstance(sScene);
                 if (DefaultEffectOnEnter != null)
                 {
