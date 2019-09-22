@@ -9,76 +9,65 @@
 //  All rights reserved by ideMobi
 //
 //=====================================================================================================================
-using System;
-using System.Collections;
+
 using System.Collections.Generic;
-using UnityEngine;
+
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.Build;
+
 //=====================================================================================================================
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    [InitializeOnLoad]
-    public class STSMacroDefine : IActiveBuildTargetChanged
-    {
+	[InitializeOnLoad]
+	public class STSMacroDefine :  IActiveBuildTargetChanged
+	{
+		//-------------------------------------------------------------------------------------------------------------
+		static STSMacroDefine kSharedInstance = new STSMacroDefine("SCENE_TRANSITION_SYSTEM", false);
         //-------------------------------------------------------------------------------------------------------------
-        const string kMacro = "SCENE_TRANSITION_SYSTEM";
-        static STSMacroDefine kSharedInstance;
-        //-------------------------------------------------------------------------------------------------------------
-        static STSMacroDefine()
-        {
-            if (kSharedInstance == null)
-            {
-                kSharedInstance = new STSMacroDefine();
-                kSharedInstance.OnChangedPlatform();
-            }
-        }
-        //-------------------------------------------------------------------------------------------------------------
-        public int callbackOrder
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        //-------------------------------------------------------------------------------------------------------------
-        public void OnActiveBuildTargetChanged(BuildTarget previousTarget, BuildTarget newTarget)
-        {
+        string Macro;
+        bool Install;
+		//-------------------------------------------------------------------------------------------------------------
+		public STSMacroDefine (string sMacro, bool sInstall)
+		{
+            Macro = sMacro;
+            Install = sInstall;
             OnChangedPlatform();
-        }
-        //-------------------------------------------------------------------------------------------------------------
-        public void OnChangedPlatform()
-        {
-            InstallMacro(EditorUserBuildSettings.selectedBuildTargetGroup);
-        }
-        //-------------------------------------------------------------------------------------------------------------
-        public void InstallMacro(BuildTargetGroup sBuildTarget)
-        {
-            if (PlayerSettings.GetScriptingDefineSymbolsForGroup(sBuildTarget).Contains(kMacro) == false)
+		}
+		//-------------------------------------------------------------------------------------------------------------
+		public int callbackOrder { get { return 0; } }
+		//-------------------------------------------------------------------------------------------------------------
+		public void OnActiveBuildTargetChanged (BuildTarget previousTarget, BuildTarget newTarget)
+		{
+			OnChangedPlatform ();
+		}
+		//-------------------------------------------------------------------------------------------------------------
+		public void OnChangedPlatform ()
+		{
+			InstallMacro (EditorUserBuildSettings.selectedBuildTargetGroup);
+		}
+		//-------------------------------------------------------------------------------------------------------------
+		public void InstallMacro (BuildTargetGroup sBuildTarget)
+		{
+            List<string> tMacroList = new List<string>(PlayerSettings.GetScriptingDefineSymbolsForGroup(sBuildTarget).Split(new char[] { ';' }));
+            if (Install == true)
             {
-                Debug.Log("Install macro " + kMacro + " in " + sBuildTarget + " player settings");
-                PlayerSettings.SetScriptingDefineSymbolsForGroup(sBuildTarget, PlayerSettings.GetScriptingDefineSymbolsForGroup(sBuildTarget) + ";" + kMacro);
-                if (PlayerSettings.GetScriptingDefineSymbolsForGroup(sBuildTarget).Contains(kMacro) == false)
+               if (tMacroList.Contains(Macro)==false)
                 {
-                    Debug.LogError("Fail to install macro " + kMacro + " in " + sBuildTarget + " player settings!");
+                    tMacroList.Add(Macro);
                 }
             }
-        }
-        //-------------------------------------------------------------------------------------------------------------
-        public void InstallMacroAll()
-        {
-            Array BuildTargetGroupsArray = Enum.GetValues(typeof(BuildTargetGroup));
-            foreach (BuildTargetGroup tBuildTarget in BuildTargetGroupsArray)
+            else
             {
-                if (tBuildTarget != BuildTargetGroup.Unknown)
+                if (tMacroList.Contains(Macro)==true)
                 {
-                    InstallMacro(tBuildTarget);
+                    tMacroList.Remove(Macro);
                 }
             }
-        }
-        //-------------------------------------------------------------------------------------------------------------
+            PlayerSettings.SetScriptingDefineSymbolsForGroup(sBuildTarget,string.Join(";",tMacroList));
+		}
+		//-------------------------------------------------------------------------------------------------------------
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 }
