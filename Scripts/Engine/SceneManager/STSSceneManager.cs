@@ -76,7 +76,7 @@ namespace SceneTransitionSystem
             for (int i = 0; i < SceneManager.sceneCount; i++)
             {
                 Scene tScene = SceneManager.GetSceneAt(i);
-                if (tScene.isLoaded)
+                //if (tScene.isLoaded)
                 {
                     AudioListenerEnable(tScene, false);
                 }
@@ -87,7 +87,7 @@ namespace SceneTransitionSystem
         private void AudioListenerEnable(Scene sScene, bool sEnable)
         {
             //Debug.Log("STSSceneManager AudioListenerEnable()");
-            if (sScene.isLoaded)
+           // if (sScene.isLoaded)
             {
                 AudioListener tAudioListener = null;
                 GameObject[] tAllRootObjects = sScene.GetRootGameObjects();
