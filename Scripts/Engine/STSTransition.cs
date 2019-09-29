@@ -10,6 +10,7 @@
 //
 //=====================================================================================================================
 using UnityEngine;
+using System.Linq;
 //=====================================================================================================================
 namespace SceneTransitionSystem
 {
@@ -17,18 +18,18 @@ namespace SceneTransitionSystem
     public class STSTransition : SharedInstanceUnity<STSTransition>
     {
         //-------------------------------------------------------------------------------------------------------------
-        [Header("On enter scene effect")]
+        //[Header("On enter scene effect")]
         public STSEffectType EffectOnEnter;
-        [Header("Between effects fade transition")]
+        //[Header("Between effects fade transition")]
         [Range(0.0F, 5.0F)]
         public float InterEffectDuration = 0.50F;
-        [Header("On exit scene effect")]
+        //[Header("On exit scene effect")]
         public STSEffectType EffectOnExit;
         //-------------------------------------------------------------------------------------------------------------
-        public STSTransitionInterface Interfaced;
+        //public STSTransitionInterface Interfaced;
         //-------------------------------------------------------------------------------------------------------------
-        private STSEffect EffectOnEnterDup;
-        private STSEffect EffectOnExitDup;
+        //private STSEffect EffectOnEnterDup;
+        //private STSEffect EffectOnExitDup;
         //-------------------------------------------------------------------------------------------------------------
         public override void InitInstance()
         {
@@ -38,7 +39,24 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         void Start()
         {
-            Interfaced = GetComponent<STSTransitionInterface>();
+            //Interfaced = GetComponent<STSTransitionInterface>();
+            //if (Interfaced == null)
+            //{
+            //    Interfaced = FindObjectsOfType<MonoBehaviour>().OfType<STSTransitionInterface>() as STSTransitionInterface;
+
+            //    if (Interfaced == null)
+            //    {
+            //        Debug.Log("Interfaced is null : " + transform.name + " for scene " + transform.gameObject.scene.name);
+            //    }
+            //    else
+            //    {
+            //        Debug.Log("Interfaced is OK : " + transform.name + " for scene " + transform.gameObject.scene.name);
+            //    }
+            //}
+            //else
+            //{
+            //    Debug.Log("Interfaced is OK : " + transform.name + " for scene " + transform.gameObject.scene.name);
+            //}
         }
         //-------------------------------------------------------------------------------------------------------------
         public void CopyIn(STSTransition sDestination)
@@ -46,7 +64,7 @@ namespace SceneTransitionSystem
             sDestination.EffectOnEnter = this.EffectOnEnter.Dupplicate();
             sDestination.InterEffectDuration = this.InterEffectDuration;
             sDestination.EffectOnExit = this.EffectOnExit.Dupplicate();
-            sDestination.Interfaced = this.Interfaced;
+            //sDestination.Interfaced = this.Interfaced;
         }
         //--------------------------------------------------------------------------------------------------------------
     }

@@ -20,7 +20,7 @@ using System;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	public partial class STSSceneManager : STSSingletonUnity<STSSceneManager>, STSTransitionInterface, STSIntermissionInterface
+    public partial class STSSceneManager : STSSingletonUnity<STSSceneManager>, STSTransitionInterface, STSIntermissionInterface
     {
         //-------------------------------------------------------------------------------------------------------------
         public static void AddSubScene(string sAdditionalSceneName, string sIntermissionSceneName = null, STSTransitionData sTransitionData = null)
@@ -220,20 +220,29 @@ namespace SceneTransitionSystem
             //-------------------------------
             Scene tActualScene = SceneManager.GetSceneByName(sActualActiveScene);
             //-------------------------------
-            STSTransition tActualSceneParams = GetTransitionsParams(tActualScene, true);
+            STSTransition tActualSceneParams = GetTransitionsParams(tActualScene);
+            STSTransitionInterface[] tActualSceneInterfaced = GetTransitionInterface(tActualScene);
             // disable the user interactions
             EventSystemPrevent(false);
             // post scene is disable!
-            if (tActualSceneParams.Interfaced != null)
+            //if (tActualSceneParams.Interfaced != null)
+            //{
+            //    tActualSceneParams.Interfaced.OnTransitionSceneDisable(sTransitionData);
+            //}
+            foreach (STSTransitionInterface tInterfaced in tActualSceneInterfaced)
             {
-                tActualSceneParams.Interfaced.OnTransitionSceneDisable(sTransitionData);
+                tInterfaced.OnTransitionSceneDisable(sTransitionData);
             }
             // scene start effect transition out!
             AnimationTransitionOut(tActualSceneParams, sTransitionData);
             // post scene start effect transition out!
-            if (tActualSceneParams.Interfaced != null)
+            //if (tActualSceneParams.Interfaced != null)
+            //{
+            //    tActualSceneParams.Interfaced.OnTransitionExitStart(sTransitionData, tActualSceneParams.EffectOnExit);
+            //}
+            foreach (STSTransitionInterface tInterfaced in tActualSceneInterfaced)
             {
-                tActualSceneParams.Interfaced.OnTransitionExitStart(sTransitionData, tActualSceneParams.EffectOnExit);
+                tInterfaced.OnTransitionExitStart(sTransitionData, tActualSceneParams.EffectOnExit);
             }
             // waiting effect will finish
             while (AnimationFinished() == false)
@@ -241,9 +250,13 @@ namespace SceneTransitionSystem
                 yield return null;
             }
             // post scene finish effcet transition out
-            if (tActualSceneParams.Interfaced != null)
+            //if (tActualSceneParams.Interfaced != null)
+            //{
+            //    tActualSceneParams.Interfaced.OnTransitionExitFinish(sTransitionData);
+            //}
+            foreach (STSTransitionInterface tInterfaced in tActualSceneInterfaced)
             {
-                tActualSceneParams.Interfaced.OnTransitionExitFinish(sTransitionData);
+                tInterfaced.OnTransitionExitFinish(sTransitionData);
             }
             //-------------------------------
             // COUNT SCENES TO REMOVE OR ADD
@@ -278,10 +291,15 @@ namespace SceneTransitionSystem
                 // fadeout is finish
                 // will unloaded the  scene
                 Scene tSceneToDelete = SceneManager.GetSceneByName(tSceneToRemove);
-                STSTransition tSceneToDeleteParams = GetTransitionsParams(tSceneToDelete, false);
-                if (tSceneToDeleteParams.Interfaced != null)
+                STSTransitionInterface[] tSceneToDeleteInterfaced = GetTransitionInterface(tSceneToDelete);
+                //STSTransition tSceneToDeleteParams = GetTransitionsParams(tSceneToDelete, false);
+                //if (tSceneToDeleteParams.Interfaced != null)
+                //{
+                //    tSceneToDeleteParams.Interfaced.OnTransitionSceneWillUnloaded(sTransitionData);
+                //}
+                foreach (STSTransitionInterface tInterfaced in tSceneToDeleteInterfaced)
                 {
-                    tSceneToDeleteParams.Interfaced.OnTransitionSceneWillUnloaded(sTransitionData);
+                    tInterfaced.OnTransitionSceneWillUnloaded(sTransitionData);
                 }
                 if (SceneManager.GetSceneByName(tSceneToRemove).isLoaded)
                 {
@@ -313,11 +331,16 @@ namespace SceneTransitionSystem
                     {
                         yield return null;
                     }
-                    Scene tNextScene = SceneManager.GetSceneByName(tSceneToAdd);
-                    STSTransition tNextSceneParams = GetTransitionsParams(tNextScene, false);
-                    if (tNextSceneParams.Interfaced != null)
+                    Scene tSceneToLoad = SceneManager.GetSceneByName(tSceneToAdd);
+                    STSTransitionInterface[] tSceneToLoadInterfaced = GetTransitionInterface(tSceneToLoad);
+                    //STSTransition tNextSceneParams = GetTransitionsParams(tSceneToLoad, false);
+                    //if (tNextSceneParams.Interfaced != null)
+                    //{
+                    //    tNextSceneParams.Interfaced.OnTransitionSceneLoaded(sTransitionData);
+                    //}
+                    foreach (STSTransitionInterface tInterfaced in tSceneToLoadInterfaced)
                     {
-                        tNextSceneParams.Interfaced.OnTransitionSceneLoaded(sTransitionData);
+                        tInterfaced.OnTransitionSceneLoaded(sTransitionData);
                     }
                     EventSystemPrevent(false);
                     AudioListenerPrevent();
@@ -331,7 +354,8 @@ namespace SceneTransitionSystem
             SceneManager.SetActiveScene(tNextActiveScene);
             AudioListenerPrevent();
             // get params
-            STSTransition sNextSceneParams = GetTransitionsParams(tNextActiveScene, false);
+            STSTransition sNextSceneParams = GetTransitionsParams(tNextActiveScene);
+            STSTransitionInterface[] tNextSceneInterfaced = GetTransitionInterface(tNextActiveScene);
             EventSystemEnable(tNextActiveScene, false);
             // Next scene appear by fade in
             //-------------------------------
@@ -339,9 +363,13 @@ namespace SceneTransitionSystem
             //-------------------------------
             if (tRemoveActual == true)
             {
-                if (tActualSceneParams.Interfaced != null)
+                //if (tActualSceneParams.Interfaced != null)
+                //{
+                //    tActualSceneParams.Interfaced.OnTransitionSceneWillUnloaded(sTransitionData);
+                //}
+                foreach (STSTransitionInterface tInterfaced in tActualSceneInterfaced)
                 {
-                    tActualSceneParams.Interfaced.OnTransitionSceneWillUnloaded(sTransitionData);
+                    tInterfaced.OnTransitionSceneWillUnloaded(sTransitionData);
                 }
                 AsyncOperation tAsyncOperationIntermissionUnload = SceneManager.UnloadSceneAsync(sActualActiveScene);
                 tAsyncOperationIntermissionUnload.allowSceneActivation = true; //? needed?
@@ -358,24 +386,36 @@ namespace SceneTransitionSystem
             // NEXT SCENE ENABLE
             //-------------------------------
             AnimationTransitionIn(sNextSceneParams, sTransitionData);
-            if (sNextSceneParams.Interfaced != null)
+            //if (sNextSceneParams.Interfaced != null)
+            //{
+            //    sNextSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData, sNextSceneParams.EffectOnEnter, sNextSceneParams.InterEffectDuration);
+            //}
+            foreach (STSTransitionInterface tInterfaced in tNextSceneInterfaced)
             {
-                sNextSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData, sNextSceneParams.EffectOnEnter, sNextSceneParams.InterEffectDuration);
+                tInterfaced.OnTransitionEnterStart(sTransitionData, sNextSceneParams.EffectOnEnter, sNextSceneParams.InterEffectDuration);
             }
             while (AnimationFinished() == false)
             {
                 yield return null;
             }
-            if (sNextSceneParams.Interfaced != null)
+            //if (sNextSceneParams.Interfaced != null)
+            //{
+            //    sNextSceneParams.Interfaced.OnTransitionEnterFinish(sTransitionData);
+            //}
+            foreach (STSTransitionInterface tInterfaced in tNextSceneInterfaced)
             {
-                sNextSceneParams.Interfaced.OnTransitionEnterFinish(sTransitionData);
+                tInterfaced.OnTransitionEnterFinish(sTransitionData);
             }
             // fadein is finish
             EventSystemPrevent(true);
             // next scene is enable
-            if (sNextSceneParams.Interfaced != null)
+            //if (sNextSceneParams.Interfaced != null)
+            //{
+            //    sNextSceneParams.Interfaced.OnTransitionSceneEnable(sTransitionData);
+            //}
+            foreach (STSTransitionInterface tInterfaced in tNextSceneInterfaced)
             {
-                sNextSceneParams.Interfaced.OnTransitionSceneEnable(sTransitionData);
+                tInterfaced.OnTransitionSceneEnable(sTransitionData);
             }
             // My transition is finish. I can do an another transition
             TransitionInProgress = false;
@@ -399,20 +439,29 @@ namespace SceneTransitionSystem
             //-------------------------------
             Scene tActualScene = SceneManager.GetSceneByName(sActualActiveScene);
             //-------------------------------
-            STSTransition tActualSceneParams = GetTransitionsParams(tActualScene, true);
+            STSTransition tActualSceneParams = GetTransitionsParams(tActualScene);
+            STSTransitionInterface[] tActualSceneInterfaced = GetTransitionInterface(tActualScene);
             // disable the user interactions
             EventSystemPrevent(false);
             // post scene is disable!
-            if (tActualSceneParams.Interfaced != null)
+            //if (tActualSceneParams.Interfaced != null)
+            //{
+            //    tActualSceneParams.Interfaced.OnTransitionSceneDisable(sTransitionData);
+            //}
+            foreach (STSTransitionInterface tInterfaced in tActualSceneInterfaced)
             {
-                tActualSceneParams.Interfaced.OnTransitionSceneDisable(sTransitionData);
+                tInterfaced.OnTransitionSceneDisable(sTransitionData);
             }
             // scene start effect transition out!
             AnimationTransitionOut(tActualSceneParams, sTransitionData);
             // post scene start effect transition out!
-            if (tActualSceneParams.Interfaced != null)
+            //if (tActualSceneParams.Interfaced != null)
+            //{
+            //    tActualSceneParams.Interfaced.OnTransitionExitStart(sTransitionData, tActualSceneParams.EffectOnExit);
+            //}
+            foreach (STSTransitionInterface tInterfaced in tActualSceneInterfaced)
             {
-                tActualSceneParams.Interfaced.OnTransitionExitStart(sTransitionData, tActualSceneParams.EffectOnExit);
+                tInterfaced.OnTransitionExitStart(sTransitionData, tActualSceneParams.EffectOnExit);
             }
             // waiting effect will finish
             while (AnimationFinished() == false)
@@ -420,9 +469,13 @@ namespace SceneTransitionSystem
                 yield return null;
             }
             // post scene finish effcet transition out
-            if (tActualSceneParams.Interfaced != null)
+            //if (tActualSceneParams.Interfaced != null)
+            //{
+            //    tActualSceneParams.Interfaced.OnTransitionExitFinish(sTransitionData);
+            //}
+            foreach (STSTransitionInterface tInterfaced in tActualSceneInterfaced)
             {
-                tActualSceneParams.Interfaced.OnTransitionExitFinish(sTransitionData);
+                tInterfaced.OnTransitionExitFinish(sTransitionData);
             }
             //-------------------------------
             // Intermission SCENE LOAD AND ENABLE
@@ -447,7 +500,9 @@ namespace SceneTransitionSystem
             // disable the user interactions until fadein 
             EventSystemEnable(tIntermissionScene, false);
             // get params
-            STSTransition tIntermissionSceneParams = GetTransitionsParams(tIntermissionScene, false);
+            STSTransition tIntermissionSceneParams = GetTransitionsParams(tIntermissionScene);
+            STSTransitionInterface[] tIntermissionSceneInterfaced = GetTransitionInterface(tIntermissionScene);
+                STSIntermissionInterface[] tIntermissionInterfaced = GetIntermissionInterface(tIntermissionScene);
             STSIntermission tIntermissionSceneStandBy = GetStandByParams(tIntermissionScene);
             //-------------------------------
             // COUNT SCENES TO REMOVE OR ADD
@@ -463,10 +518,15 @@ namespace SceneTransitionSystem
                 // fadeout is finish
                 // will unloaded the  scene
                 Scene tSceneToDelete = SceneManager.GetSceneByName(tSceneToRemove);
-                STSTransition tSceneToDeleteParams = GetTransitionsParams(tSceneToDelete, false);
-                if (tSceneToDeleteParams.Interfaced != null)
+                STSTransition tSceneToDeleteParams = GetTransitionsParams(tSceneToDelete);
+                STSTransitionInterface[] tSceneToDeleteInterfaced = GetTransitionInterface(tSceneToDelete);
+                //if (tSceneToDeleteParams.Interfaced != null)
+                //{
+                //    tSceneToDeleteParams.Interfaced.OnTransitionSceneWillUnloaded(sTransitionData);
+                //}
+                foreach (STSTransitionInterface tInterfaced in tSceneToDeleteInterfaced)
                 {
-                    tSceneToDeleteParams.Interfaced.OnTransitionSceneWillUnloaded(sTransitionData);
+                    tInterfaced.OnTransitionSceneWillUnloaded(sTransitionData);
                 }
                 if (SceneManager.GetSceneByName(tSceneToRemove).isLoaded)
                 {
@@ -493,9 +553,10 @@ namespace SceneTransitionSystem
                         Debug.LogWarning("UnloadSceneAsync is not possible for " + tSceneToRemove);
                     }
                 }
-                if (tIntermissionSceneStandBy.Interfaced != null)
+
+            foreach (STSIntermissionInterface tInterfaced in tIntermissionInterfaced)
                 {
-                    tIntermissionSceneStandBy.Interfaced.OnUnloadScene(sTransitionData, tSceneToRemove, tSceneCounter, (tSceneCounter + 1.0F) / tSceneCount);
+                    tInterfaced.OnUnloadScene(sTransitionData, tSceneToRemove, tSceneCounter, (tSceneCounter + 1.0F) / tSceneCount);
                 }
                 tSceneCounter++;
                 Debug.Log("tSceneToRemove :" + tSceneToRemove + " finish!");
@@ -505,40 +566,56 @@ namespace SceneTransitionSystem
             //-------------------------------
             // get params
             // Intermission scene is loaded
-            if (tIntermissionSceneParams.Interfaced != null)
+            //if (tIntermissionSceneParams.Interfaced != null)
+            //{
+            //    tIntermissionSceneParams.Interfaced.OnTransitionSceneLoaded(sTransitionData);
+            //}
+            foreach (STSTransitionInterface tInterfaced in tIntermissionSceneInterfaced)
             {
-                tIntermissionSceneParams.Interfaced.OnTransitionSceneLoaded(sTransitionData);
+                tInterfaced.OnTransitionSceneLoaded(sTransitionData);
             }
             // animation in Go!
             AnimationTransitionIn(tIntermissionSceneParams, sTransitionData);
             // animation in
-            if (tIntermissionSceneParams.Interfaced != null)
+            //if (tIntermissionSceneParams.Interfaced != null)
+            //{
+            //    tIntermissionSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData, tIntermissionSceneParams.EffectOnEnter, tIntermissionSceneParams.InterEffectDuration);
+            //}
+            foreach (STSTransitionInterface tInterfaced in tIntermissionSceneInterfaced)
             {
-                tIntermissionSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData, tIntermissionSceneParams.EffectOnEnter, tIntermissionSceneParams.InterEffectDuration);
+                tInterfaced.OnTransitionEnterStart(sTransitionData, tIntermissionSceneParams.EffectOnEnter, tIntermissionSceneParams.InterEffectDuration);
             }
             while (AnimationFinished() == false)
             {
                 yield return null;
             }
             // animation in Finish
-            if (tIntermissionSceneParams.Interfaced != null)
+            //if (tIntermissionSceneParams.Interfaced != null)
+            //{
+            //    tIntermissionSceneParams.Interfaced.OnTransitionEnterFinish(sTransitionData);
+            //}
+            foreach (STSTransitionInterface tInterfaced in tIntermissionSceneInterfaced)
             {
-                tIntermissionSceneParams.Interfaced.OnTransitionEnterFinish(sTransitionData);
+                tInterfaced.OnTransitionEnterFinish(sTransitionData);
             }
             // enable the user interactions 
             EventSystemEnable(tIntermissionScene, true);
             // enable the user interactions 
-            if (tIntermissionSceneParams.Interfaced != null)
+            //if (tIntermissionSceneParams.Interfaced != null)
+            //{
+            //    tIntermissionSceneParams.Interfaced.OnTransitionSceneEnable(sTransitionData);
+            //}
+            foreach (STSTransitionInterface tInterfaced in tIntermissionSceneInterfaced)
             {
-                tIntermissionSceneParams.Interfaced.OnTransitionSceneEnable(sTransitionData);
+                tInterfaced.OnTransitionSceneEnable(sTransitionData);
             }
             //-------------------------------
             // Intermission SCENE START STAND BY
             //-------------------------------
             // start stand by
-            if (tIntermissionSceneStandBy.Interfaced != null)
+            foreach (STSIntermissionInterface tInterfaced in tIntermissionInterfaced)
             {
-                tIntermissionSceneStandBy.Interfaced.OnStandByStart(tIntermissionSceneStandBy);
+                tInterfaced.OnStandByStart(tIntermissionSceneStandBy);
             }
             StandBy();
             //-------------------------------
@@ -549,17 +626,17 @@ namespace SceneTransitionSystem
                 //Debug.Log("tSceneToAdd :" + tSceneToAdd);
                 if (SceneManager.GetSceneByName(tSceneToAdd).isLoaded)
                 {
-                    if (tIntermissionSceneStandBy.Interfaced != null)
+            foreach (STSIntermissionInterface tInterfaced in tIntermissionInterfaced)
                     {
-                        tIntermissionSceneStandBy.Interfaced.OnSceneAllReadyLoaded(sTransitionData, tSceneToAdd, tSceneCounter, (tSceneCounter + 1.0F) / tSceneCount);
+                        tInterfaced.OnSceneAllReadyLoaded(sTransitionData, tSceneToAdd, tSceneCounter, (tSceneCounter + 1.0F) / tSceneCount);
                     }
                     //Debug.Log("tSceneToAdd :" + tSceneToAdd + " allready finish!");
                 }
                 else
                 {
-                    if (tIntermissionSceneStandBy.Interfaced != null)
+            foreach (STSIntermissionInterface tInterfaced in tIntermissionInterfaced)
                     {
-                        tIntermissionSceneStandBy.Interfaced.OnLoadingSceneStart(sTransitionData, tSceneToAdd, tSceneCounter, 0.0F, 0.0F);
+                        tInterfaced.OnLoadingSceneStart(sTransitionData, tSceneToAdd, tSceneCounter, 0.0F, 0.0F);
                     }
 
                     AsyncOperation tAsyncOperationAdd = SceneManager.LoadSceneAsync(tSceneToAdd, LoadSceneMode.Additive);
@@ -567,15 +644,15 @@ namespace SceneTransitionSystem
                     tAsyncOperationAdd.allowSceneActivation = false;
                     while (tAsyncOperationAdd.progress < 0.9f)
                     {
-                        if (tIntermissionSceneStandBy.Interfaced != null)
+            foreach (STSIntermissionInterface tInterfaced in tIntermissionInterfaced)
                         {
-                            tIntermissionSceneStandBy.Interfaced.OnLoadingScenePercent(sTransitionData, tSceneToAdd, tSceneCounter, tAsyncOperationAdd.progress, (tSceneCounter + tAsyncOperationAdd.progress) / tSceneCount);
+                            tInterfaced.OnLoadingScenePercent(sTransitionData, tSceneToAdd, tSceneCounter, tAsyncOperationAdd.progress, (tSceneCounter + tAsyncOperationAdd.progress) / tSceneCount);
                         }
                         yield return null;
                     }
-                    if (tIntermissionSceneStandBy.Interfaced != null)
+            foreach (STSIntermissionInterface tInterfaced in tIntermissionInterfaced)
                     {
-                        tIntermissionSceneStandBy.Interfaced.OnLoadingSceneFinish(sTransitionData, tSceneToAdd, tSceneCounter, 1.0F, (tSceneCounter + 1.0F) / tSceneCount);
+                        tInterfaced.OnLoadingSceneFinish(sTransitionData, tSceneToAdd, tSceneCounter, 1.0F, (tSceneCounter + 1.0F) / tSceneCount);
                     }
                     //Debug.Log("tSceneToAdd :" + tSceneToAdd + " 90%!");
                 }
@@ -589,9 +666,9 @@ namespace SceneTransitionSystem
                 yield return null;
             }
             // As soon as possible 
-            if (tIntermissionSceneStandBy.Interfaced != null)
+            foreach (STSIntermissionInterface tInterfaced in tIntermissionInterfaced)
             {
-                tIntermissionSceneStandBy.Interfaced.OnStandByFinish(tIntermissionSceneStandBy);
+                tInterfaced.OnStandByFinish(tIntermissionSceneStandBy);
             }
             // Waiting to load the next Scene
             while (WaitingToLauchNextScene(tIntermissionSceneStandBy))
@@ -605,31 +682,47 @@ namespace SceneTransitionSystem
             // stanby is finished And the next scene can be lauch
             // disable user interactions on the Intermission scene
             EventSystemEnable(tIntermissionScene, false);
-            if (tIntermissionSceneParams.Interfaced != null)
+            //if (tIntermissionSceneParams.Interfaced != null)
+            //{
+            //    tIntermissionSceneParams.Interfaced.OnTransitionSceneDisable(sTransitionData);
+            //}
+            foreach (STSTransitionInterface tInterfaced in tIntermissionSceneInterfaced)
             {
-                tIntermissionSceneParams.Interfaced.OnTransitionSceneDisable(sTransitionData);
+                tInterfaced.OnTransitionSceneDisable(sTransitionData);
             }
             // Intermission scene Transition Out GO! 
             AnimationTransitionOut(tIntermissionSceneParams, sTransitionData);
             // Intermission scene Transition Out start 
-            if (tIntermissionSceneParams.Interfaced != null)
+            //if (tIntermissionSceneParams.Interfaced != null)
+            //{
+            //    tIntermissionSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData, tIntermissionSceneParams.EffectOnExit, tIntermissionSceneParams.InterEffectDuration);
+            //}
+            foreach (STSTransitionInterface tInterfaced in tIntermissionSceneInterfaced)
             {
-                tIntermissionSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData, tIntermissionSceneParams.EffectOnExit, tIntermissionSceneParams.InterEffectDuration);
+                tInterfaced.OnTransitionEnterStart(sTransitionData, tIntermissionSceneParams.EffectOnExit, tIntermissionSceneParams.InterEffectDuration);
             }
             while (AnimationFinished() == false)
             {
                 yield return null;
             }
             // Intermission scene Transition Out finished! 
-            if (tIntermissionSceneParams.Interfaced != null)
+            //if (tIntermissionSceneParams.Interfaced != null)
+            //{
+            //    tIntermissionSceneParams.Interfaced.OnTransitionExitFinish(sTransitionData);
+            //}
+            foreach (STSTransitionInterface tInterfaced in tIntermissionSceneInterfaced)
             {
-                tIntermissionSceneParams.Interfaced.OnTransitionExitFinish(sTransitionData);
+                tInterfaced.OnTransitionExitFinish(sTransitionData);
             }
             // fadeout is finish
             // will unloaded the Intermission scene
-            if (tIntermissionSceneParams.Interfaced != null)
+            //if (tIntermissionSceneParams.Interfaced != null)
+            //{
+            //    tIntermissionSceneParams.Interfaced.OnTransitionSceneWillUnloaded(sTransitionData);
+            //}
+            foreach (STSTransitionInterface tInterfaced in tIntermissionSceneInterfaced)
             {
-                tIntermissionSceneParams.Interfaced.OnTransitionSceneWillUnloaded(sTransitionData);
+                tInterfaced.OnTransitionSceneWillUnloaded(sTransitionData);
             }
             //-------------------------------
             // ACTIVE ADDED SCENES
@@ -645,11 +738,16 @@ namespace SceneTransitionSystem
                     {
                         yield return null;
                     }
-                    Scene tNextScene = SceneManager.GetSceneByName(tSceneToAdd);
-                    STSTransition tNextSceneParams = GetTransitionsParams(tNextScene, false);
-                    if (tNextSceneParams.Interfaced != null)
+                    Scene tSceneToLoad = SceneManager.GetSceneByName(tSceneToAdd);
+                    //STSTransition tNextSceneParams = GetTransitionsParams(tSceneToLoad, false);
+                    STSTransitionInterface[] tSceneToLoadInterfaced = GetTransitionInterface(tSceneToLoad);
+                    //if (tNextSceneParams.Interfaced != null)
+                    //{
+                    //    tNextSceneParams.Interfaced.OnTransitionSceneLoaded(sTransitionData);
+                    //}
+                    foreach (STSTransitionInterface tInterfaced in tSceneToLoadInterfaced)
                     {
-                        tNextSceneParams.Interfaced.OnTransitionSceneLoaded(sTransitionData);
+                        tInterfaced.OnTransitionSceneLoaded(sTransitionData);
                     }
                     EventSystemPrevent(false);
                     AudioListenerPrevent();
@@ -663,7 +761,8 @@ namespace SceneTransitionSystem
             SceneManager.SetActiveScene(tNextActiveScene);
             AudioListenerPrevent();
             // get params
-            STSTransition sNextSceneParams = GetTransitionsParams(tNextActiveScene, false);
+            STSTransition sNextSceneParams = GetTransitionsParams(tNextActiveScene);
+            STSTransitionInterface[] tNextSceneInterfaced = GetTransitionInterface(tNextActiveScene);
             EventSystemEnable(tNextActiveScene, false);
             // Next scene appear by fade in
             //-------------------------------
@@ -690,24 +789,36 @@ namespace SceneTransitionSystem
             // NEXT SCENE ENABLE
             //-------------------------------
             AnimationTransitionIn(sNextSceneParams, sTransitionData);
-            if (sNextSceneParams.Interfaced != null)
+            //if (sNextSceneParams.Interfaced != null)
+            //{
+            //    sNextSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData, sNextSceneParams.EffectOnEnter, sNextSceneParams.InterEffectDuration);
+            //}
+            foreach (STSTransitionInterface tInterfaced in tNextSceneInterfaced)
             {
-                sNextSceneParams.Interfaced.OnTransitionEnterStart(sTransitionData, sNextSceneParams.EffectOnEnter, sNextSceneParams.InterEffectDuration);
+                tInterfaced.OnTransitionEnterStart(sTransitionData, sNextSceneParams.EffectOnEnter, sNextSceneParams.InterEffectDuration);
             }
             while (AnimationFinished() == false)
             {
                 yield return null;
             }
-            if (sNextSceneParams.Interfaced != null)
+            //if (sNextSceneParams.Interfaced != null)
+            //{
+            //    sNextSceneParams.Interfaced.OnTransitionEnterFinish(sTransitionData);
+            //}
+            foreach (STSTransitionInterface tInterfaced in tNextSceneInterfaced)
             {
-                sNextSceneParams.Interfaced.OnTransitionEnterFinish(sTransitionData);
+                tInterfaced.OnTransitionEnterFinish(sTransitionData);
             }
             // fadein is finish
             EventSystemPrevent(true);
             // next scene is enable
-            if (sNextSceneParams.Interfaced != null)
+            //if (sNextSceneParams.Interfaced != null)
+            //{
+            //    sNextSceneParams.Interfaced.OnTransitionSceneEnable(sTransitionData);
+            //}
+            foreach (STSTransitionInterface tInterfaced in tNextSceneInterfaced)
             {
-                sNextSceneParams.Interfaced.OnTransitionSceneEnable(sTransitionData);
+                tInterfaced.OnTransitionSceneEnable(sTransitionData);
             }
             // My transition is finish. I can do an another transition
             TransitionInProgress = false;

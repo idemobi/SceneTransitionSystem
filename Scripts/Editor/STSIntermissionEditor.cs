@@ -27,19 +27,31 @@ namespace SceneTransitionSystem
     public class STSIntermissionEditor : Editor
     {
         //-------------------------------------------------------------------------------------------------------------
+        SerializedProperty SPStandBySeconds;
+        SerializedProperty SPActiveLoadNextScene;
+        //-------------------------------------------------------------------------------------------------------------
+        private void OnEnable()
+        {
+            SPStandBySeconds = serializedObject.FindProperty("StandBySeconds");
+            SPActiveLoadNextScene = serializedObject.FindProperty("AutoActiveNextScene");
+        }
+        //-------------------------------------------------------------------------------------------------------------
         public override void OnInspectorGUI()
         {
             STSIntermission tTarget = (STSIntermission)target;
-            if (tTarget.gameObject.GetComponent<STSIntermissionInterface>() != null)
-            {
-                serializedObject.Update();
-                DrawDefaultInspector();
-                serializedObject.ApplyModifiedProperties();
-            }
-            else
-            {
-                EditorGUILayout.HelpBox("Need component with interface ISTSTransitionStandBy!", MessageType.Error);
-            }
+            //if (tTarget.gameObject.GetComponent<STSIntermissionInterface>() != null)
+            //{
+            serializedObject.Update();
+            //DrawDefaultInspector();
+            //EditorGUILayout.HelpBox("Determine the intermission scene parameters.", MessageType.Info);
+            EditorGUILayout.PropertyField(SPStandBySeconds);
+            EditorGUILayout.PropertyField(SPActiveLoadNextScene);
+            serializedObject.ApplyModifiedProperties();
+            //}
+            //else
+            //{
+            //    EditorGUILayout.HelpBox("Need component with interface ISTSTransitionStandBy!", MessageType.Error);
+            //}
         }
         //-------------------------------------------------------------------------------------------------------------
     }

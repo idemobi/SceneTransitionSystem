@@ -25,18 +25,12 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         public static void TransitionSimulate(STSTransitionData sTransitionData = null, STSDelegate sDelegate = null)
         {
-            STSTransition tTransitionParams = Singleton().GetTransitionsParams(SceneManager.GetActiveScene(), true);
-            Singleton().INTERNAL_PlayEffectWithCallBackTransition(tTransitionParams, sTransitionData, sDelegate);
+            Singleton().INTERNAL_PlayEffectWithCallBackTransition(SceneManager.GetActiveScene(), sTransitionData, sDelegate);
         }
         //-------------------------------------------------------------------------------------------------------------
         public static void TransitionSimulate(string sSceneName, STSTransitionData sTransitionData = null, STSDelegate sDelegate = null)
         {
             Singleton().INTERNAL_PlayEffectWithCallBackScene(sSceneName, sTransitionData, sDelegate);
-        }
-        //-------------------------------------------------------------------------------------------------------------
-        public static void INTERNAL_TransitionSimulate(STSTransition sTransitionParams, STSTransitionData sTransitionData = null, STSDelegate sDelegate = null)
-        {
-            Singleton().INTERNAL_PlayEffectWithCallBackTransition(sTransitionParams, sTransitionData, sDelegate);
         }
         //-------------------------------------------------------------------------------------------------------------
         private void INTERNAL_PlayEffectWithCallBackScene(string sSceneName, STSTransitionData sTransitionData = null, STSDelegate sDelegate = null)
@@ -58,26 +52,26 @@ namespace SceneTransitionSystem
                 }
                 if (tScenes.Contains(sSceneName))
                 {
-                    STSTransition tTransitionParams = GetTransitionsParams(SceneManager.GetSceneByName(sSceneName), true);
-                    StartCoroutine(INTERNAL_PlayEffectWithCallBackSceneAsync(tTransitionParams, sTransitionData, sDelegate));
+                    Scene tScene = SceneManager.GetSceneByName(sSceneName);
+                    StartCoroutine(INTERNAL_PlayEffectWithCallBackSceneAsync(tScene, sTransitionData, sDelegate));
                 }
                 else
                 {
                     Debug.LogWarning(K_SCENE_MUST_BY_LOADED);
                 }
             }
-            else
+            else 
             {
                 Debug.LogWarning(K_TRANSITION_IN_PROGRESS);
             }
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        private void INTERNAL_PlayEffectWithCallBackTransition(STSTransition sTransitionParams, STSTransitionData sTransitionData = null, STSDelegate sDelegate = null)
+        private void INTERNAL_PlayEffectWithCallBackTransition(Scene sScene, STSTransitionData sTransitionData = null, STSDelegate sDelegate = null)
         {
             if (TransitionInProgress == false)
             {
-                StartCoroutine(INTERNAL_PlayEffectWithCallBackSceneAsync(sTransitionParams, sTransitionData, sDelegate));
+                StartCoroutine(INTERNAL_PlayEffectWithCallBackSceneAsync(sScene, sTransitionData, sDelegate));
             }
             else
             {
@@ -85,48 +79,50 @@ namespace SceneTransitionSystem
             }
         }
         //-------------------------------------------------------------------------------------------------------------
-        private IEnumerator INTERNAL_PlayEffectWithCallBackSceneAsync(STSTransition sTransitionParams, STSTransitionData sTransitionData = null, STSDelegate sDelegate = null)
+        private IEnumerator INTERNAL_PlayEffectWithCallBackSceneAsync(Scene sScene, STSTransitionData sTransitionData = null, STSDelegate sDelegate = null)
         {
             TransitionInProgress = true;
             EventSystemPrevent(false);
-            if (sTransitionParams.Interfaced != null)
+            STSTransition tTransitionParams = GetTransitionsParams(sScene);
+            STSTransitionInterface[] tActualSceneInterfaced = GetTransitionInterface(sScene);
+            foreach (STSTransitionInterface tInterfaced in tActualSceneInterfaced)
             {
-                sTransitionParams.Interfaced.OnTransitionSceneDisable(sTransitionData);
+                tInterfaced.OnTransitionSceneDisable(sTransitionData);
             }
-            AnimationTransitionOut(sTransitionParams, sTransitionData);
-            if (sTransitionParams.Interfaced != null)
+            AnimationTransitionOut(tTransitionParams, sTransitionData);
+            foreach (STSTransitionInterface tInterfaced in tActualSceneInterfaced)
             {
-                sTransitionParams.Interfaced.OnTransitionExitStart(sTransitionData, sTransitionParams.EffectOnExit);
+                tInterfaced.OnTransitionExitStart(sTransitionData, tTransitionParams.EffectOnExit);
             }
             while (AnimationFinished() == false)
             {
                 yield return null;
             }
-            if (sTransitionParams.Interfaced != null)
+            foreach (STSTransitionInterface tInterfaced in tActualSceneInterfaced)
             {
-                sTransitionParams.Interfaced.OnTransitionExitFinish(sTransitionData);
+                tInterfaced.OnTransitionExitFinish(sTransitionData);
             }
             if (sDelegate != null)
             {
                 sDelegate(sTransitionData);
             }
-            AnimationTransitionIn(sTransitionParams, sTransitionData);
-            if (sTransitionParams.Interfaced != null)
+            AnimationTransitionIn(tTransitionParams, sTransitionData);
+            foreach (STSTransitionInterface tInterfaced in tActualSceneInterfaced)
             {
-                sTransitionParams.Interfaced.OnTransitionEnterStart(sTransitionData, sTransitionParams.EffectOnEnter,sTransitionParams.InterEffectDuration);
+                tInterfaced.OnTransitionEnterStart(sTransitionData, tTransitionParams.EffectOnEnter,tTransitionParams.InterEffectDuration);
             }
             while (AnimationFinished() == false)
             {
                 yield return null;
             }
-            if (sTransitionParams.Interfaced != null)
+            foreach (STSTransitionInterface tInterfaced in tActualSceneInterfaced)
             {
-                sTransitionParams.Interfaced.OnTransitionEnterFinish(sTransitionData);
+                tInterfaced.OnTransitionEnterFinish(sTransitionData);
             }
             EventSystemPrevent(true);
-            if (sTransitionParams.Interfaced != null)
+            foreach (STSTransitionInterface tInterfaced in tActualSceneInterfaced)
             {
-                sTransitionParams.Interfaced.OnTransitionSceneEnable(sTransitionData);
+                tInterfaced.OnTransitionSceneEnable(sTransitionData);
             }
             TransitionInProgress = false;
         }

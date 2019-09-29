@@ -17,13 +17,13 @@ namespace SceneTransitionSystem
     public class STSIntermission : SharedInstanceUnity<STSIntermission>
     {
         //-------------------------------------------------------------------------------------------------------------
-        [Header("Intermission Scene Parameters")]
+        //[Header("Intermission Scene Parameters")]
         [Tooltip("Minimum stand by on transition scene in seconds")]
         public float StandBySeconds = 0.0f;
         [Tooltip("The next scene must be active automatically?")]
-        public bool AutoLoadNextScene = true;
+        public bool AutoActiveNextScene = true;
         //-------------------------------------------------------------------------------------------------------------
-        public STSIntermissionInterface Interfaced;
+        //public STSIntermissionInterface Interfaced;
         //-------------------------------------------------------------------------------------------------------------
         public void CopyFrom(STSIntermission sDestination)
         {
@@ -33,8 +33,8 @@ namespace SceneTransitionSystem
         public void CopyIn(STSIntermission sDestination)
         {
             sDestination.StandBySeconds = this.StandBySeconds;
-            sDestination.AutoLoadNextScene = this.AutoLoadNextScene;
-            sDestination.Interfaced = this.Interfaced;
+            sDestination.AutoActiveNextScene = this.AutoActiveNextScene;
+            //sDestination.Interfaced = this.Interfaced;
         }
         //-------------------------------------------------------------------------------------------------------------
         public void FinishStandByAction()
@@ -44,7 +44,7 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         void Start()
         {
-            Interfaced = GetComponent<STSIntermissionInterface>();
+            //Interfaced = GetComponent<STSIntermissionInterface>();
         }
         //-------------------------------------------------------------------------------------------------------------
     }

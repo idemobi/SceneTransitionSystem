@@ -151,7 +151,39 @@ namespace SceneTransitionSystem
             }
         }
         //-------------------------------------------------------------------------------------------------------------
-        private STSTransition GetTransitionsParams(Scene sScene, bool sStartTransition) //TODO remove sStartTransition
+        private STSIntermissionInterface[] GetIntermissionInterface(Scene sScene)
+        {
+            List<STSIntermissionInterface> rReturn = new List<STSIntermissionInterface>();
+            GameObject[] tAllRootObjects = sScene.GetRootGameObjects();
+            foreach (GameObject tObject in tAllRootObjects)
+            {
+                STSIntermissionInterface tScript = tObject.GetComponent<STSIntermissionInterface>();
+                if (tScript != null)
+                {
+                    rReturn.Add(tScript);
+                }
+            }
+            return rReturn.ToArray();
+            //return FindObjectsOfType(typeof(STSIntermissionInterface)) as STSIntermissionInterface[];
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        private STSTransitionInterface[] GetTransitionInterface(Scene sScene)
+        {
+            List<STSTransitionInterface> rReturn = new List<STSTransitionInterface>();
+            GameObject[] tAllRootObjects = sScene.GetRootGameObjects();
+            foreach (GameObject tObject in tAllRootObjects)
+            {
+                STSTransitionInterface tScript = tObject.GetComponent<STSTransitionInterface>();
+                if (tScript != null)
+                {
+                    rReturn.Add(tScript);
+                }
+            }
+            return rReturn.ToArray();
+            //return FindObjectsOfType(typeof(STSTransitionInterface)) as STSTransitionInterface[];
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        private STSTransition GetTransitionsParams(Scene sScene)
         {
             STSTransition tTransitionParametersScript;
             if (STSTransition.SharedInstanceExists(sScene))
@@ -248,7 +280,7 @@ namespace SceneTransitionSystem
             {
                 tTransitionStandByScript = STSIntermission.SharedInstance(sScene);
                 tTransitionStandByScript.StandBySeconds = 5.0f;
-                tTransitionStandByScript.AutoLoadNextScene = true;
+                tTransitionStandByScript.AutoActiveNextScene = true;
             }
             /*
             //Debug.Log("STSSceneManager GetStandByParams()");
@@ -359,7 +391,7 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         private bool WaitingToLauchNextScene(STSIntermission sIntermissionSceneStandBy)
         {
-            if (sIntermissionSceneStandBy.AutoLoadNextScene == true)
+            if (sIntermissionSceneStandBy.AutoActiveNextScene == true)
             {
                 LauchNextScene = true;
             }

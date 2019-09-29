@@ -27,19 +27,34 @@ namespace SceneTransitionSystem
     public class STSTransitionEditor : Editor
     {
         //-------------------------------------------------------------------------------------------------------------
+        SerializedProperty SPEffectOnEnter;
+        SerializedProperty SPInterEffectDuration;
+        SerializedProperty SPEffectOnExit;
+        //-------------------------------------------------------------------------------------------------------------
+        private void OnEnable()
+        {
+            SPEffectOnEnter= serializedObject.FindProperty("EffectOnEnter");
+            SPInterEffectDuration = serializedObject.FindProperty("InterEffectDuration");
+            SPEffectOnExit= serializedObject.FindProperty("EffectOnExit");
+        }
+        //-------------------------------------------------------------------------------------------------------------
         public override void OnInspectorGUI()
         {
-            STSTransition  tTarget = (STSTransition)target;
-            if (tTarget.gameObject.GetComponent<STSTransitionInterface>() != null)
-            {
-                serializedObject.Update();
-                DrawDefaultInspector();
-                serializedObject.ApplyModifiedProperties();
-            }
-            else
-            {
-                EditorGUILayout.HelpBox("Need component with interface ISTSTransitionParameters!", MessageType.Error);
-            }
+            STSTransition tTarget = (STSTransition)target;
+            //if (tTarget.gameObject.GetComponent<STSTransitionInterface>() != null)
+            //{
+            serializedObject.Update();
+            //DrawDefaultInspector();
+            //EditorGUILayout.HelpBox("Determine effects scene parameters.", MessageType.Info);
+            EditorGUILayout.PropertyField(SPEffectOnEnter);
+            EditorGUILayout.PropertyField(SPEffectOnExit);
+            EditorGUILayout.PropertyField(SPInterEffectDuration);
+            serializedObject.ApplyModifiedProperties();
+            //}
+            //else
+            //{
+            //    EditorGUILayout.HelpBox("Need component with interface ISTSTransitionParameters!", MessageType.Error);
+            //}
         }
         //-------------------------------------------------------------------------------------------------------------
     }
