@@ -324,26 +324,25 @@ namespace SceneTransitionSystem
                 // scene is loaded!
                 if (tAsyncOperationList.ContainsKey(tSceneToAdd))
                 {
+                    Scene tSceneToLoad = SceneManager.GetSceneByName(tSceneToAdd);
                     AsyncOperation tAsyncOperationAdd = tAsyncOperationList[tSceneToAdd];
                     tAsyncOperationAdd.allowSceneActivation = true;
-                    while (!tAsyncOperationAdd.isDone)
+                    while (tAsyncOperationAdd.progress < 0.9f)
                     {
                         yield return null;
                     }
-                    Scene tSceneToLoad = SceneManager.GetSceneByName(tSceneToAdd);
+                    while (!tAsyncOperationAdd.isDone)
+                    {
+                        AudioListenerEnable(tSceneToLoad, false);
+                        yield return null;
+                    }
+                    CameraPreventEnable(tSceneToLoad, false);
+                    EventSystemEnable(tSceneToLoad, false);
                     STSTransitionInterface[] tSceneToLoadInterfaced = GetTransitionInterface(tSceneToLoad);
-                    //STSTransition tNextSceneParams = GetTransitionsParams(tSceneToLoad, false);
-                    //if (tNextSceneParams.Interfaced != null)
-                    //{
-                    //    tNextSceneParams.Interfaced.OnTransitionSceneLoaded(sTransitionData);
-                    //}
                     foreach (STSTransitionInterface tInterfaced in tSceneToLoadInterfaced)
                     {
                         tInterfaced.OnTransitionSceneLoaded(sTransitionData);
                     }
-                    AudioListenerEnable(tSceneToLoad, false);
-                    CameraPreventEnable(tSceneToLoad, false);
-                    EventSystemEnable(tSceneToLoad, false);
                     //Debug.Log("tSceneToAdd :" + tSceneToAdd + " finish!");
                 }
             }
@@ -470,10 +469,12 @@ namespace SceneTransitionSystem
             // Intermission SCENE LOAD AND ENABLE
             //-------------------------------
             // load transition scene async
+            Scene tIntermissionScene = SceneManager.GetSceneByName(sIntermissionScene);
             AsyncOperation tAsyncOperationIntermission = SceneManager.LoadSceneAsync(sIntermissionScene, LoadSceneMode.Additive);
             tAsyncOperationIntermission.allowSceneActivation = true;
             while (tAsyncOperationIntermission.progress < 0.9f)
             {
+                AudioListenerEnable(tIntermissionScene, false);
                 yield return null;
             }
             while (!tAsyncOperationIntermission.isDone)
@@ -481,7 +482,6 @@ namespace SceneTransitionSystem
                 yield return null;
             }
             // get Transition Scene
-            Scene tIntermissionScene = SceneManager.GetSceneByName(sIntermissionScene);
             // Active the next scene as root scene 
             SceneManager.SetActiveScene(tIntermissionScene);
             // disable audiolistener of preview scene
@@ -622,6 +622,9 @@ namespace SceneTransitionSystem
                         tInterfaced.OnSceneAllReadyLoaded(sTransitionData, tSceneToLoad, tSceneCounter, (tSceneCounter + 1.0F) / tSceneCount);
                     }
                     //Debug.Log("tSceneToAdd :" + tSceneToAdd + " allready finish!");
+                    AudioListenerEnable(tSceneToAdd, false);
+                    CameraPreventEnable(tSceneToAdd, false);
+                    EventSystemEnable(tSceneToAdd, false);
                 }
                 else
                 {
@@ -641,15 +644,19 @@ namespace SceneTransitionSystem
                         }
                         yield return null;
                     }
+                    while (!tAsyncOperationAdd.isDone)
+                    {
+                        AudioListenerEnable(tSceneToAdd, false);
+                        yield return null;
+                    }
+                    CameraPreventEnable(tSceneToAdd, false);
+                    EventSystemEnable(tSceneToAdd, false);
                     foreach (STSIntermissionInterface tInterfaced in tIntermissionInterfaced)
                     {
                         tInterfaced.OnLoadingSceneFinish(sTransitionData, tSceneToLoad, tSceneCounter, 1.0F, (tSceneCounter + 1.0F) / tSceneCount);
                     }
                     //Debug.Log("tSceneToAdd :" + tSceneToAdd + " 90%!");
                 }
-                    AudioListenerEnable(tSceneToAdd, false);
-                    CameraPreventEnable(tSceneToAdd, false);
-                    EventSystemEnable(tSceneToAdd, false);
                 tSceneCounter++;
             }
             //-------------------------------
