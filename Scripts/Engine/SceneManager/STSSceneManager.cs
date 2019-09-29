@@ -57,7 +57,7 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         private void Start()
         {
-            Debug.Log("<color=red>START</color>");
+            //Debug.Log("<color=red>START</color>");
             if (OriginalScene == null)
             {
                 OriginalScene = new STSScene();
@@ -70,9 +70,9 @@ namespace SceneTransitionSystem
         }
         //-------------------------------------------------------------------------------------------------------------
         // toolbox method
-        private void AudioListenerPrevent()
+        private void AudioListenerPrevent(bool sEnable)
         {
-            Debug.Log("STSSceneManager AudioListenerPrevent()");
+            //Debug.Log("STSSceneManager AudioListenerPrevent()");
             for (int i = 0; i < SceneManager.sceneCount; i++)
             {
                 Scene tScene = SceneManager.GetSceneAt(i);
@@ -81,7 +81,7 @@ namespace SceneTransitionSystem
                     AudioListenerEnable(tScene, false);
                 }
             }
-            AudioListenerEnable(SceneManager.GetActiveScene(), true);
+            AudioListenerEnable(SceneManager.GetActiveScene(), sEnable);
         }
         //-------------------------------------------------------------------------------------------------------------
         private void AudioListenerEnable(Scene sScene, bool sEnable)
@@ -147,6 +147,48 @@ namespace SceneTransitionSystem
                 else
                 {
                     Debug.LogWarning("EventSystemEnable() - Scene is null");
+                }
+            }
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        private void CameraPrevent(bool sEnable)
+        {
+            //Debug.Log("STSSceneManager EventSystemPrevent()");
+            for (int i = 0; i < SceneManager.sceneCount; i++)
+            {
+                Scene tScene = SceneManager.GetSceneAt(i);
+                if (tScene.isLoaded)
+                {
+                    CameraPreventEnable(tScene, false);
+                }
+            }
+            CameraPreventEnable(SceneManager.GetActiveScene(), sEnable);
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        private void CameraPreventEnable(Scene sScene, bool sEnable)
+        {
+            //Debug.Log("STSSceneManager EventSystemEnable()");
+            if (PreventUserInteractions == true)
+            {
+                Camera tCameraSystem = null;
+                if (string.IsNullOrEmpty(sScene.name) == false)
+                {
+                    GameObject[] tAllRootObjects = sScene.GetRootGameObjects();
+                    foreach (GameObject tObject in tAllRootObjects)
+                    {
+                        if (tObject.GetComponent<Camera>() != null)
+                        {
+                            tCameraSystem = tObject.GetComponent<Camera>();
+                        }
+                    }
+                    if (tCameraSystem != null)
+                    {
+                        tCameraSystem.enabled = sEnable;
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning("CameraEnable() - Scene is null");
                 }
             }
         }

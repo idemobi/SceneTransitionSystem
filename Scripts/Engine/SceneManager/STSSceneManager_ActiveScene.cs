@@ -106,7 +106,8 @@ namespace SceneTransitionSystem
                 tInterfaced.OnTransitionExitFinish(sTransitionData);
             }
             SceneManager.SetActiveScene(SceneManager.GetSceneByName(sSceneNameToActive));
-            AudioListenerPrevent();
+            CameraPrevent(true);
+            AudioListenerPrevent(true);
             AnimationTransitionIn(tNextSceneParams, sTransitionData);
             foreach (STSTransitionInterface tInterfaced in tNextSceneInterfaced)
             {
@@ -172,7 +173,8 @@ namespace SceneTransitionSystem
             // Active the next scene as root scene 
             SceneManager.SetActiveScene(tIntermissionScene);
             // disable audiolistener of preview scene
-            AudioListenerPrevent();
+            CameraPrevent(true);
+            AudioListenerPrevent(true);
             // get params
             STSTransition tIntermissionSceneParams = GetTransitionsParams(tIntermissionScene);
             STSTransitionInterface[] tIntermissionSceneInterfaced = GetTransitionInterface(tIntermissionScene);
@@ -235,7 +237,6 @@ namespace SceneTransitionSystem
 
 
             // disable user interactions on the Intermission scene
-            EventSystemEnable(tIntermissionScene, false);
             foreach (STSTransitionInterface tInterfaced in tIntermissionSceneInterfaced)
             {
                 tInterfaced.OnTransitionSceneDisable(sTransitionData);
@@ -272,11 +273,9 @@ namespace SceneTransitionSystem
             {
                 yield return null;
             }
-
-
-
+            CameraPrevent(true);
+            AudioListenerPrevent(true);
             SceneManager.SetActiveScene(SceneManager.GetSceneByName(sSceneNameToActive));
-            AudioListenerPrevent();
             AnimationTransitionIn(tNextSceneParams, sTransitionData);
             foreach (STSTransitionInterface tInterfaced in tNextSceneInterfaced)
             {

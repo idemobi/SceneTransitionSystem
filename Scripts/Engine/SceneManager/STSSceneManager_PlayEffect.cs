@@ -20,7 +20,7 @@ using System;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	public partial class STSSceneManager : STSSingletonUnity<STSSceneManager>, STSTransitionInterface, STSIntermissionInterface
+    public partial class STSSceneManager : STSSingletonUnity<STSSceneManager>, STSTransitionInterface, STSIntermissionInterface
     {
         //-------------------------------------------------------------------------------------------------------------
         public static void TransitionSimulate(STSTransitionData sTransitionData = null, STSDelegate sDelegate = null)
@@ -60,7 +60,7 @@ namespace SceneTransitionSystem
                     Debug.LogWarning(K_SCENE_MUST_BY_LOADED);
                 }
             }
-            else 
+            else
             {
                 Debug.LogWarning(K_TRANSITION_IN_PROGRESS);
             }
@@ -109,7 +109,7 @@ namespace SceneTransitionSystem
             AnimationTransitionIn(tTransitionParams, sTransitionData);
             foreach (STSTransitionInterface tInterfaced in tActualSceneInterfaced)
             {
-                tInterfaced.OnTransitionEnterStart(sTransitionData, tTransitionParams.EffectOnEnter,tTransitionParams.InterEffectDuration);
+                tInterfaced.OnTransitionEnterStart(sTransitionData, tTransitionParams.EffectOnEnter, tTransitionParams.InterEffectDuration);
             }
             while (AnimationFinished() == false)
             {
@@ -120,6 +120,8 @@ namespace SceneTransitionSystem
                 tInterfaced.OnTransitionEnterFinish(sTransitionData);
             }
             EventSystemPrevent(true);
+            CameraPrevent(true);
+            AudioListenerPrevent(true);
             foreach (STSTransitionInterface tInterfaced in tActualSceneInterfaced)
             {
                 tInterfaced.OnTransitionSceneEnable(sTransitionData);

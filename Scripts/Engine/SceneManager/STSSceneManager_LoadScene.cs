@@ -147,7 +147,6 @@ namespace SceneTransitionSystem
                 tAllScenesListS.Add(sIntermissionScene);
                 tAllScenesListS.AddRange(sScenesToAdd);
                 tAllScenesListS.AddRange(sScenesToRemove);
-
                 List<string> tAllScenesList = new List<string>();
                 foreach (string tScen in tAllScenesListS)
                 {
@@ -315,7 +314,7 @@ namespace SceneTransitionSystem
                                                                        //}
                 }
                 tSceneCounter++;
-                Debug.Log("tSceneToRemove :" + tSceneToRemove + " finish!");
+                //Debug.Log("tSceneToRemove :" + tSceneToRemove + " finish!");
             }
             //-------------------------------
             // ACTIVE ADDED SCENES
@@ -342,8 +341,9 @@ namespace SceneTransitionSystem
                     {
                         tInterfaced.OnTransitionSceneLoaded(sTransitionData);
                     }
-                    EventSystemPrevent(false);
-                    AudioListenerPrevent();
+                    AudioListenerEnable(tSceneToLoad, false);
+                    CameraPreventEnable(tSceneToLoad, false);
+                    EventSystemEnable(tSceneToLoad, false);
                     //Debug.Log("tSceneToAdd :" + tSceneToAdd + " finish!");
                 }
             }
@@ -352,7 +352,8 @@ namespace SceneTransitionSystem
             //-------------------------------
             Scene tNextActiveScene = SceneManager.GetSceneByName(sNextActiveScene);
             SceneManager.SetActiveScene(tNextActiveScene);
-            AudioListenerPrevent();
+            CameraPrevent(true);
+            AudioListenerPrevent(true);
             // get params
             STSTransition sNextSceneParams = GetTransitionsParams(tNextActiveScene);
             STSTransitionInterface[] tNextSceneInterfaced = GetTransitionInterface(tNextActiveScene);
@@ -363,24 +364,12 @@ namespace SceneTransitionSystem
             //-------------------------------
             if (tRemoveActual == true)
             {
-                //if (tActualSceneParams.Interfaced != null)
-                //{
-                //    tActualSceneParams.Interfaced.OnTransitionSceneWillUnloaded(sTransitionData);
-                //}
                 foreach (STSTransitionInterface tInterfaced in tActualSceneInterfaced)
                 {
                     tInterfaced.OnTransitionSceneWillUnloaded(sTransitionData);
                 }
                 AsyncOperation tAsyncOperationIntermissionUnload = SceneManager.UnloadSceneAsync(sActualActiveScene);
-                tAsyncOperationIntermissionUnload.allowSceneActivation = true; //? needed?
-                                                                               //while (tAsyncOperationIntermissionUnload.progress < 0.9f)
-                                                                               //{
-                                                                               //    yield return null;
-                                                                               //}
-                                                                               //while (!tAsyncOperationIntermissionUnload.isDone)
-                                                                               //{
-                                                                               //    yield return null;
-                                                                               //}
+                tAsyncOperationIntermissionUnload.allowSceneActivation = true;
             }
             //-------------------------------
             // NEXT SCENE ENABLE
@@ -496,13 +485,14 @@ namespace SceneTransitionSystem
             // Active the next scene as root scene 
             SceneManager.SetActiveScene(tIntermissionScene);
             // disable audiolistener of preview scene
-            AudioListenerPrevent();
+            CameraPrevent(true);
+            AudioListenerPrevent(true);
             // disable the user interactions until fadein 
             EventSystemEnable(tIntermissionScene, false);
             // get params
             STSTransition tIntermissionSceneParams = GetTransitionsParams(tIntermissionScene);
             STSTransitionInterface[] tIntermissionSceneInterfaced = GetTransitionInterface(tIntermissionScene);
-                STSIntermissionInterface[] tIntermissionInterfaced = GetIntermissionInterface(tIntermissionScene);
+            STSIntermissionInterface[] tIntermissionInterfaced = GetIntermissionInterface(tIntermissionScene);
             STSIntermission tIntermissionSceneStandBy = GetStandByParams(tIntermissionScene);
             //-------------------------------
             // COUNT SCENES TO REMOVE OR ADD
@@ -554,7 +544,7 @@ namespace SceneTransitionSystem
                     }
                 }
 
-            foreach (STSIntermissionInterface tInterfaced in tIntermissionInterfaced)
+                foreach (STSIntermissionInterface tInterfaced in tIntermissionInterfaced)
                 {
                     tInterfaced.OnUnloadScene(sTransitionData, tSceneToRemove, tSceneCounter, (tSceneCounter + 1.0F) / tSceneCount);
                 }
@@ -621,41 +611,45 @@ namespace SceneTransitionSystem
             //-------------------------------
             // LOADED SCENES ADDED
             //-------------------------------
-            foreach (string tSceneToAdd in sScenesToAdd)
+            foreach (string tSceneToLoad in sScenesToAdd)
             {
                 //Debug.Log("tSceneToAdd :" + tSceneToAdd);
-                if (SceneManager.GetSceneByName(tSceneToAdd).isLoaded)
+                Scene tSceneToAdd = SceneManager.GetSceneByName(tSceneToLoad);
+                if (SceneManager.GetSceneByName(tSceneToLoad).isLoaded)
                 {
-            foreach (STSIntermissionInterface tInterfaced in tIntermissionInterfaced)
+                    foreach (STSIntermissionInterface tInterfaced in tIntermissionInterfaced)
                     {
-                        tInterfaced.OnSceneAllReadyLoaded(sTransitionData, tSceneToAdd, tSceneCounter, (tSceneCounter + 1.0F) / tSceneCount);
+                        tInterfaced.OnSceneAllReadyLoaded(sTransitionData, tSceneToLoad, tSceneCounter, (tSceneCounter + 1.0F) / tSceneCount);
                     }
                     //Debug.Log("tSceneToAdd :" + tSceneToAdd + " allready finish!");
                 }
                 else
                 {
-            foreach (STSIntermissionInterface tInterfaced in tIntermissionInterfaced)
+                    foreach (STSIntermissionInterface tInterfaced in tIntermissionInterfaced)
                     {
-                        tInterfaced.OnLoadingSceneStart(sTransitionData, tSceneToAdd, tSceneCounter, 0.0F, 0.0F);
+                        tInterfaced.OnLoadingSceneStart(sTransitionData, tSceneToLoad, tSceneCounter, 0.0F, 0.0F);
                     }
 
-                    AsyncOperation tAsyncOperationAdd = SceneManager.LoadSceneAsync(tSceneToAdd, LoadSceneMode.Additive);
-                    tAsyncOperationList.Add(tSceneToAdd, tAsyncOperationAdd);
+                    AsyncOperation tAsyncOperationAdd = SceneManager.LoadSceneAsync(tSceneToLoad, LoadSceneMode.Additive);
+                    tAsyncOperationList.Add(tSceneToLoad, tAsyncOperationAdd);
                     tAsyncOperationAdd.allowSceneActivation = false;
                     while (tAsyncOperationAdd.progress < 0.9f)
                     {
-            foreach (STSIntermissionInterface tInterfaced in tIntermissionInterfaced)
+                        foreach (STSIntermissionInterface tInterfaced in tIntermissionInterfaced)
                         {
-                            tInterfaced.OnLoadingScenePercent(sTransitionData, tSceneToAdd, tSceneCounter, tAsyncOperationAdd.progress, (tSceneCounter + tAsyncOperationAdd.progress) / tSceneCount);
+                            tInterfaced.OnLoadingScenePercent(sTransitionData, tSceneToLoad, tSceneCounter, tAsyncOperationAdd.progress, (tSceneCounter + tAsyncOperationAdd.progress) / tSceneCount);
                         }
                         yield return null;
                     }
-            foreach (STSIntermissionInterface tInterfaced in tIntermissionInterfaced)
+                    foreach (STSIntermissionInterface tInterfaced in tIntermissionInterfaced)
                     {
-                        tInterfaced.OnLoadingSceneFinish(sTransitionData, tSceneToAdd, tSceneCounter, 1.0F, (tSceneCounter + 1.0F) / tSceneCount);
+                        tInterfaced.OnLoadingSceneFinish(sTransitionData, tSceneToLoad, tSceneCounter, 1.0F, (tSceneCounter + 1.0F) / tSceneCount);
                     }
                     //Debug.Log("tSceneToAdd :" + tSceneToAdd + " 90%!");
                 }
+                    AudioListenerEnable(tSceneToAdd, false);
+                    CameraPreventEnable(tSceneToAdd, false);
+                    EventSystemEnable(tSceneToAdd, false);
                 tSceneCounter++;
             }
             //-------------------------------
@@ -749,8 +743,8 @@ namespace SceneTransitionSystem
                     {
                         tInterfaced.OnTransitionSceneLoaded(sTransitionData);
                     }
-                    EventSystemPrevent(false);
-                    AudioListenerPrevent();
+                    //EventSystemPrevent(false);
+                    //AudioListenerPrevent(true);
                     //Debug.Log("tSceneToAdd :" + tSceneToAdd + " finish!");
                 }
             }
@@ -759,7 +753,8 @@ namespace SceneTransitionSystem
             //-------------------------------
             Scene tNextActiveScene = SceneManager.GetSceneByName(sNextActiveScene);
             SceneManager.SetActiveScene(tNextActiveScene);
-            AudioListenerPrevent();
+            AudioListenerPrevent(true);
+            CameraPrevent(true);
             // get params
             STSTransition sNextSceneParams = GetTransitionsParams(tNextActiveScene);
             STSTransitionInterface[] tNextSceneInterfaced = GetTransitionInterface(tNextActiveScene);

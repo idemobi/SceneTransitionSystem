@@ -22,6 +22,16 @@ namespace SceneTransitionSystem
         [Header("Gauge")]
         public STSScreenGauge Gauge;
         //-------------------------------------------------------------------------------------------------------------
+        public override void OnTransitionEnterStart(STSTransitionData sData, STSEffectType sEffect, float sInterludeDuration)
+        {
+            base.OnTransitionEnterStart(sData, sEffect, sInterludeDuration);
+            if (Gauge != null)
+            {
+                Gauge.SetHidden(true);
+                Gauge.HorizontalValue = 0.0F;
+            }
+        }
+        //-------------------------------------------------------------------------------------------------------------
         private void Start()
         {
             if (Gauge != null)
