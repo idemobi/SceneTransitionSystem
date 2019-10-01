@@ -68,6 +68,16 @@ namespace SceneTransitionSystem
             ReplaceAllByScenes(sNextActiveScene, null, sIntermissionScene, sTransitionData);
         }
         //-------------------------------------------------------------------------------------------------------------
+        public static void ReplaceAllByScenes(STSScene sNextActiveScene, STSScene[] sScenesToAdd, STSScene sIntermissionScene, STSTransitionData sTransitionData = null)
+        {
+            List<string> tScenesToAdd = new List<string>();
+            foreach (STSScene tScene in sScenesToAdd)
+            {
+                tScenesToAdd.Add(tScene.GetSceneShortName());
+            }
+            ReplaceAllByScenes(sNextActiveScene.GetSceneShortName(), tScenesToAdd, sIntermissionScene.GetSceneShortName(), sTransitionData);
+        }
+        //-------------------------------------------------------------------------------------------------------------
         public static void ReplaceAllByScenes(string sNextActiveScene, List<string> sScenesToAdd, string sIntermissionScene = null, STSTransitionData sTransitionData = null)
         {
             List<string> tScenesToRemove = new List<string>();
