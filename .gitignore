@@ -1,5 +1,5 @@
 ###################
-## IDEMOBI ©2017 ##
+## IDEMOBI ©2020 ##
 ###################
 
 ###################
@@ -9,10 +9,22 @@
 */.DS_Store
 
 ###################
-## Unity gitignore
+## NetWorkedData
+###################
+*.prp
+*/*.prp
+Assets/StreamingAssets/*.prp
+Assets/*.prp
+
+Assets/_NotGit/*
+
+###################
+## Distribution
 ###################
 
-# final distributions
+ProjectIOS.app
+ProjectAndroid.apk
+ProjectOSX.apk
 
 /ios/*
 /appletv/*
@@ -23,6 +35,10 @@
 /drm/*
 /android/*
 /facebook/*
+
+###################
+## Unity gitignore
+###################
 
 # Temporary Folder
 
@@ -73,6 +89,14 @@ sysinfo.txt
 */export/web/
 
 ###################
+## Visual Studio
+###################
+
+/.vs/*
+.vs/*
+/.vs
+
+###################
 ## Xcode
 ###################
 
@@ -103,32 +127,15 @@ xcuserdata
 *.dSYM
 
 ###################
-
 # CocoaPods
-#
-# We recommend against adding the Pods directory to your .gitignore. However
-# you should judge for yourself, the pros and cons are mentioned at:
-# https://guides.cocoapods.org/using/using-cocoapods.html#should-i-check-the-pods-directory-into-source-control
-#
-# Pods/
-
-# Carthage
-#
-# Add this line if you want to avoid checking in source code from Carthage dependencies.
-# Carthage/Checkouts
+###################
 
 Carthage/Build
-
-# fastlane
-#
-# It is recommended to not store the screenshots in the git repo. Instead, use fastlane to re-generate the 
-# screenshots whenever they are needed.
-# For more information about the recommended setup visit:
-# https://github.com/fastlane/fastlane/blob/master/docs/Gitignore.md
 
 fastlane/report.xml
 fastlane/screenshots
 fastlane/Preview.html
 fastlane/screenshots
 fastlane/test_output
+
 
