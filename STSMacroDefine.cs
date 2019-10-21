@@ -24,10 +24,12 @@ namespace SceneTransitionSystem
 	public class STSMacroDefine :  IActiveBuildTargetChanged
 	{
 		//-------------------------------------------------------------------------------------------------------------
-		static STSMacroDefine kSharedInstance = new STSMacroDefine("SCENE_TRANSITION_SYSTEM", false);
+		private static STSMacroDefine kSharedInstance = new STSMacroDefine("SCENE_TRANSITION_SYSTEM", false);
         //-------------------------------------------------------------------------------------------------------------
-        string Macro;
-        bool Install;
+        private string Macro;
+        private bool Install;
+		//-------------------------------------------------------------------------------------------------------------
+		public STSMacroDefine() {}
 		//-------------------------------------------------------------------------------------------------------------
 		public STSMacroDefine (string sMacro, bool sInstall)
 		{
