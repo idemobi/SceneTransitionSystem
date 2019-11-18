@@ -24,6 +24,8 @@ namespace SceneTransitionSystem
     public partial class STSSceneManager : STSSingletonUnity<STSSceneManager>, STSTransitionInterface, STSIntermissionInterface
     {
         //-------------------------------------------------------------------------------------------------------------
+        // ADD Additive Scene
+        //-------------------------------------------------------------------------------------------------------------
         public static void AddSubScene(string sAdditionalSceneName, string sIntermissionSceneName = null, STSTransitionData sTransitionData = null)
         {
             Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, SceneManager.GetActiveScene().name, new List<string> { sAdditionalSceneName }, null, sIntermissionSceneName, sTransitionData, true);
@@ -44,6 +46,8 @@ namespace SceneTransitionSystem
             Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, sScenesToAdd, null, sIntermissionScene, sTransitionData, true);
         }
         //-------------------------------------------------------------------------------------------------------------
+        // REMOVE Additive Scene
+        //-------------------------------------------------------------------------------------------------------------
         public static void RemoveSubScene(string sSceneToRemove, string sIntermissionScene = null, STSTransitionData sTransitionData = null)
         {
             Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, SceneManager.GetActiveScene().name, null, new List<string> { sSceneToRemove }, sIntermissionScene, sTransitionData, true);
@@ -63,6 +67,8 @@ namespace SceneTransitionSystem
         {
             Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, null, sScenesToRemove, sIntermissionScene, sTransitionData, true);
         }
+        //-------------------------------------------------------------------------------------------------------------
+        // ADD a new Scene
         //-------------------------------------------------------------------------------------------------------------
         public static void ReplaceAllByScene(string sNextActiveScene, string sIntermissionScene = null, STSTransitionData sTransitionData = null)
         {
