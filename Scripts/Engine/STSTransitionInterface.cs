@@ -16,12 +16,12 @@ namespace SceneTransitionSystem
     {
         //-------------------------------------------------------------------------------------------------------------
         void OnTransitionSceneLoaded(STSTransitionData sData);
-        void OnTransitionEnterStart(STSTransitionData sData, STSEffectType sEffect, float sInterludeDuration);
-        void OnTransitionEnterFinish(STSTransitionData sData);
+        void OnTransitionEnterStart(STSTransitionData sData, STSEffectType sEffect, float sInterludeDuration, bool sActiveScene);
+        void OnTransitionEnterFinish(STSTransitionData sData, bool sActiveScene);
         void OnTransitionSceneEnable(STSTransitionData sData);
         void OnTransitionSceneDisable(STSTransitionData sData);
-        void OnTransitionExitStart(STSTransitionData sData, STSEffectType sEffect);
-        void OnTransitionExitFinish(STSTransitionData sData);
+        void OnTransitionExitStart(STSTransitionData sData, STSEffectType sEffect, bool sActiveScene);
+        void OnTransitionExitFinish(STSTransitionData sData, bool sActiveScene);
         void OnTransitionSceneWillUnloaded(STSTransitionData sData);
         //-------------------------------------------------------------------------------------------------------------
     }

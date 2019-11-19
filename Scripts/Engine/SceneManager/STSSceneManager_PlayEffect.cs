@@ -92,7 +92,7 @@ namespace SceneTransitionSystem
             AnimationTransitionOut(tTransitionParams, sTransitionData);
             foreach (STSTransitionInterface tInterfaced in tActualSceneInterfaced)
             {
-                tInterfaced.OnTransitionExitStart(sTransitionData, tTransitionParams.EffectOnExit);
+                tInterfaced.OnTransitionExitStart(sTransitionData, tTransitionParams.EffectOnExit, true);
             }
             while (AnimationFinished() == false)
             {
@@ -100,7 +100,7 @@ namespace SceneTransitionSystem
             }
             foreach (STSTransitionInterface tInterfaced in tActualSceneInterfaced)
             {
-                tInterfaced.OnTransitionExitFinish(sTransitionData);
+                tInterfaced.OnTransitionExitFinish(sTransitionData, true);
             }
             if (sDelegate != null)
             {
@@ -109,7 +109,7 @@ namespace SceneTransitionSystem
             AnimationTransitionIn(tTransitionParams, sTransitionData);
             foreach (STSTransitionInterface tInterfaced in tActualSceneInterfaced)
             {
-                tInterfaced.OnTransitionEnterStart(sTransitionData, tTransitionParams.EffectOnEnter, tTransitionParams.InterEffectDuration);
+                tInterfaced.OnTransitionEnterStart(sTransitionData, tTransitionParams.EffectOnEnter, tTransitionParams.InterEffectDuration, true);
             }
             while (AnimationFinished() == false)
             {
@@ -117,7 +117,7 @@ namespace SceneTransitionSystem
             }
             foreach (STSTransitionInterface tInterfaced in tActualSceneInterfaced)
             {
-                tInterfaced.OnTransitionEnterFinish(sTransitionData);
+                tInterfaced.OnTransitionEnterFinish(sTransitionData, true);
             }
             EventSystemPrevent(true);
             CameraPrevent(true);

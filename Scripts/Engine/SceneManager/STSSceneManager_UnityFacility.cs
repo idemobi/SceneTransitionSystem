@@ -20,7 +20,7 @@ using UnityEngine.Events;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	public partial class STSSceneManager : STSSingletonUnity<STSSceneManager>, STSTransitionInterface, STSIntermissionInterface
+    public partial class STSSceneManager : STSSingletonUnity<STSSceneManager>, STSTransitionInterface, STSIntermissionInterface
     {
         //-------------------------------------------------------------------------------------------------------------
         public static Scene GetActiveScene()
@@ -142,13 +142,27 @@ namespace SceneTransitionSystem
                     {
                         AddScene(sSceneName, sSceneIntermission, sDatas);
                     }
-                break;
+                    break;
             }
         }
         //-------------------------------------------------------------------------------------------------------------
         private static void INTERNAL_UnloadScene(string sSceneName, string sSceneIntermission = null, STSTransitionData sDatas = null)
         {
             RemoveScene(SceneManager.GetActiveScene().name, sSceneName, sSceneIntermission, sDatas);
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public List<Scene> GetAllLoadedScenes()
+        {
+            List<Scene> tSceneList = new List<Scene>();
+            for (int tSceneIndex = 0; tSceneIndex < SceneManager.sceneCount; tSceneIndex++)
+            {
+                Scene tScene = SceneManager.GetSceneAt(tSceneIndex);
+                if (tScene.isLoaded == true)
+                {
+                    tSceneList.Add(tScene);
+                }
+            }
+            return tSceneList;
         }
         //-------------------------------------------------------------------------------------------------------------
     }

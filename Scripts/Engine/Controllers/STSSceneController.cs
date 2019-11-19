@@ -43,7 +43,7 @@ namespace SceneTransitionSystem
             }
         }
         //-------------------------------------------------------------------------------------------------------------
-        public virtual void OnTransitionEnterFinish(STSTransitionData sData)
+        public virtual void OnTransitionEnterFinish(STSTransitionData sData, bool sActiveScene)
         {
             if (ActiveLog == true)
             {
@@ -51,7 +51,7 @@ namespace SceneTransitionSystem
             }
         }
         //-------------------------------------------------------------------------------------------------------------
-        public virtual void OnTransitionEnterStart(STSTransitionData sData, STSEffectType sEffect, float sInterludeDuration)
+        public virtual void OnTransitionEnterStart(STSTransitionData sData, STSEffectType sEffect, float sInterludeDuration, bool sActiveScene)
         {
             if (ActiveLog == true)
             {
@@ -75,7 +75,7 @@ namespace SceneTransitionSystem
             }
         }
         //-------------------------------------------------------------------------------------------------------------
-        public virtual void OnTransitionExitStart(STSTransitionData sData, STSEffectType sEffect)
+        public virtual void OnTransitionExitStart(STSTransitionData sData, STSEffectType sEffect, bool sActiveScene)
         {
             if (ActiveLog == true)
             {
@@ -83,7 +83,7 @@ namespace SceneTransitionSystem
             }
         }
         //-------------------------------------------------------------------------------------------------------------
-        public virtual void OnTransitionExitFinish(STSTransitionData sData)
+        public virtual void OnTransitionExitFinish(STSTransitionData sData, bool sActiveScene)
         {
             if (ActiveLog == true)
             {

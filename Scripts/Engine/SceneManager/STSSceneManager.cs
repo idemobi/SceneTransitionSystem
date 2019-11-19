@@ -87,7 +87,7 @@ namespace SceneTransitionSystem
         private void AudioListenerEnable(Scene sScene, bool sEnable)
         {
             //Debug.Log("STSSceneManager AudioListenerEnable()");
-           // if (sScene.isLoaded)
+            // if (sScene.isLoaded)
             {
                 AudioListener tAudioListener = null;
                 GameObject[] tAllRootObjects = sScene.GetRootGameObjects();
@@ -219,6 +219,28 @@ namespace SceneTransitionSystem
                 if (tScript != null)
                 {
                     rReturn.Add(tScript);
+                }
+            }
+            return rReturn.ToArray();
+            //return FindObjectsOfType(typeof(STSTransitionInterface)) as STSTransitionInterface[];
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        private STSTransitionInterface[] GetOtherTransitionInterface(Scene sExceptScene)
+        {
+            List<STSTransitionInterface> rReturn = new List<STSTransitionInterface>();
+            foreach (Scene tScene in GetAllLoadedScenes())
+            {
+                if (tScene != sExceptScene)
+                {
+                    GameObject[] tAllRootObjects = tScene.GetRootGameObjects();
+                    foreach (GameObject tObject in tAllRootObjects)
+                    {
+                        STSTransitionInterface tScript = tObject.GetComponent<STSTransitionInterface>();
+                        if (tScript != null)
+                        {
+                            rReturn.Add(tScript);
+                        }
+                    }
                 }
             }
             return rReturn.ToArray();
@@ -477,22 +499,22 @@ namespace SceneTransitionSystem
             return rReturn;
         }
         //-------------------------------------------------------------------------------------------------------------
-        public void OnTransitionEnterStart(STSTransitionData sData, STSEffectType sEffect, float sInterludeDuration)
+        public void OnTransitionEnterStart(STSTransitionData sData, STSEffectType sEffect, float sInterludeDuration, bool sActiveScene)
         {
             //throw new System.NotImplementedException();
         }
         //-------------------------------------------------------------------------------------------------------------
-        public void OnTransitionEnterFinish(STSTransitionData sData)
+        public void OnTransitionEnterFinish(STSTransitionData sData, bool sActiveScene)
         {
             //throw new System.NotImplementedException();
         }
         //-------------------------------------------------------------------------------------------------------------
-        public void OnTransitionExitStart(STSTransitionData sData, STSEffectType sEffect)
+        public void OnTransitionExitStart(STSTransitionData sData, STSEffectType sEffect, bool sActiveScene)
         {
             //throw new System.NotImplementedException();
         }
         //-------------------------------------------------------------------------------------------------------------
-        public void OnTransitionExitFinish(STSTransitionData sData)
+        public void OnTransitionExitFinish(STSTransitionData sData, bool sActiveScene)
         {
             //throw new System.NotImplementedException();
         }
