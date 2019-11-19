@@ -126,7 +126,7 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         public static void SetActiveScene(Scene sScene)
         {
-            ActiveScene(sScene.name);
+            SceneManager.SetActiveScene(sScene);
         }
         //-------------------------------------------------------------------------------------------------------------
         private static void INTERNAL_LoadScene(string sSceneName, LoadSceneMode sLoadSceneMode, string sSceneIntermission = null, STSTransitionData sDatas = null)
