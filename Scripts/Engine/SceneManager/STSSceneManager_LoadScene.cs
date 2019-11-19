@@ -108,6 +108,8 @@ namespace SceneTransitionSystem
             }
             Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, sScenesToAdd, tScenesToRemove, sIntermissionScene, sTransitionData, true);
         }
+        //=============================================================================================================
+        // PRIVATE METHOD
         //-------------------------------------------------------------------------------------------------------------
         private void INTERNAL_ChangeScenes(
             string sActualActiveScene,
