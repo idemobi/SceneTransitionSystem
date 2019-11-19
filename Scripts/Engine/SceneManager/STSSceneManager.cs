@@ -247,7 +247,7 @@ namespace SceneTransitionSystem
             //return FindObjectsOfType(typeof(STSTransitionInterface)) as STSTransitionInterface[];
         }
         //-------------------------------------------------------------------------------------------------------------
-        private STSTransition GetTransitionsParams(Scene sScene)
+        public STSTransition GetTransitionsParams(Scene sScene)
         {
             STSTransition tTransitionParametersScript;
             if (STSTransition.SharedInstanceExists(sScene))
@@ -333,7 +333,7 @@ namespace SceneTransitionSystem
             return tTransitionParametersScript;
         }
         //-------------------------------------------------------------------------------------------------------------
-        private STSIntermission GetStandByParams(Scene sScene)
+        public STSIntermission GetStandByParams(Scene sScene)
         {
             STSIntermission tTransitionStandByScript;
             if (STSIntermission.SharedInstanceExists(sScene))
