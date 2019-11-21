@@ -60,7 +60,6 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         public static void RemoveScene(string sNextActiveScene, string sSceneToRemove, string sIntermissionScene = null, STSTransitionData sTransitionData = null)
         {
-            SetActiveScene(GetSceneByName(sSceneToRemove));
             Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, null, new List<string> { sSceneToRemove }, sIntermissionScene, sTransitionData, true);
         }
         //-------------------------------------------------------------------------------------------------------------
