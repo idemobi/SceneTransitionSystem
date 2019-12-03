@@ -9,10 +9,11 @@
 //  All rights reserved by ideMobi
 //
 //=====================================================================================================================
+
 using System;
 using System.IO;
-using UnityEngine;
 using UnityEngine.SceneManagement;
+
 //=====================================================================================================================
 namespace SceneTransitionSystem
 {

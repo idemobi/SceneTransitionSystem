@@ -9,13 +9,9 @@
 //  All rights reserved by ideMobi
 //
 //=====================================================================================================================
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.IO;
-using System.Reflection;
+
 using UnityEngine;
+
 //=====================================================================================================================
 namespace SceneTransitionSystem
 {
@@ -34,7 +30,6 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         public void Prepare(Rect sRect)
         {
-            //Debug.Log("STSEffectFadeLine Prepare()");
             if (ParameterOne < 1)
             {
                 ParameterOne = 1;
@@ -49,21 +44,18 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         public override void PrepareEffectEnter(Rect sRect)
         {
-            //Debug.Log("STSEffectFadeLine PrepareEffectEnter()");
             // Prepare your datas to draw
             Prepare(sRect);
         }
         //-------------------------------------------------------------------------------------------------------------
         public override void PrepareEffectExit(Rect sRect)
         {
-            //Debug.Log("STSEffectFadeLine PrepareEffectExit()");
             // Prepare your datas to draw
             Prepare(sRect);
         }
         //-------------------------------------------------------------------------------------------------------------
         public override void Draw(Rect sRect)
         {
-            //STSBenchmark.Start();
             if (Purcent > 0)
             {
                 float tPurcent = Purcent * 2;
@@ -75,7 +67,6 @@ namespace SceneTransitionSystem
                     STSDrawQuad.DrawRectCenterGradient(tTile.Rectangle, tFadeColorAlpha, tColorLerp);
                 }
             }
-            //STSBenchmark.Finish();
         }
         //-------------------------------------------------------------------------------------------------------------
     }
