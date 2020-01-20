@@ -27,8 +27,29 @@ namespace SceneTransitionSystem
         const string K_SCENE_UNKNOW = "Some scenes are not in build!";
         const string K_TRANSITION_IN_PROGRESS = "Transition in progress";
         //-------------------------------------------------------------------------------------------------------------
-        // prevent multi transition
+        /// <summary>
+        /// Prevent multi transition by using this state
+        /// </summary>
         private bool TransitionInProgress = false;
+        //-------------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Return if transition is in progress or not. 
+        /// </summary>
+        /// <returns></returns>
+        static public bool InTransition()
+        {
+            bool rReturn = Singleton().TransitionInProgress;
+            if (rReturn == false)
+            {
+                Debug.Log("#### STSSceneManager NOT IN TRANSITION");
+            }
+            else
+            {
+                Debug.Log("#### STSSceneManager IN TRANSITION");
+            }
+            return rReturn;
+        }
+        //-------------------------------------------------------------------------------------------------------------
         // prevent user actions during the transition
         private bool PreventUserInteractions = true;
         //-------------------------------------------------------------------------------------------------------------
