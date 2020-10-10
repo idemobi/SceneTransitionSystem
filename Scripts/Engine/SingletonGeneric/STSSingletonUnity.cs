@@ -39,6 +39,10 @@ namespace SceneTransitionSystem
         {
         }
         //-------------------------------------------------------------------------------------------------------------
+        public virtual void OnSceneUnLoaded(Scene sScene)
+        {
+        }
+        //-------------------------------------------------------------------------------------------------------------
     }
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     public class STSSingletonUnity<K> : STSSingletonBasis where K : STSSingletonBasis, new()
@@ -129,6 +133,12 @@ namespace SceneTransitionSystem
         public override void OnSceneLoaded(Scene sScene, LoadSceneMode sMode)
         {
             //Debug.Log("STSSingleton<K> OnSceneLoaded() for gameobject named '" + gameObject.name + "'");
+            // do something by override
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public override void OnSceneUnLoaded(Scene sScene)
+        {
+            //Debug.Log("STSSingleton<K> OnSceneUnLoaded() for gameobject named '" + gameObject.name + "'");
             // do something by override
         }
         //-------------------------------------------------------------------------------------------------------------
