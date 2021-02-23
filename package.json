@@ -6,8 +6,5 @@
     "unity": "2018.1",
     "description": "Scene Transition System can create transition effect easily!",
     "keywords": ["Scene", "Transition", "effect"],
-    "category": "System",
-    "dependencies": {
-    "com.idemobi.scenetransitionsystem": "git@github.com:SceneTransitionSystem/SceneTransitionSystem.git"
-  }
+    "category": "System"
 }
