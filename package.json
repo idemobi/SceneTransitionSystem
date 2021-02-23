@@ -1,6 +1,7 @@
 {
     "name": "com.idemobi.scenetransitionsystem",
     "displayName": "Scene Transition System",
+    "license" : "SEE LICENSE IN LICENSE",
     "version": "1.0.1",
     "unity": "2018.1",
     "description": "Scene Transition System can create transition effect easily!",
