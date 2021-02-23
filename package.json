@@ -7,9 +7,9 @@
     "description": "Scene Transition System can create transition effect easily!",
     "keywords": ["Scene", "Transition", "effect"],
     "category": "System",
-  "author": {
-    "name": "idéMobi",
-    "email": "sts@idemobi.com",
-    "url": "https://github.com/SceneTransitionSystem/SceneTransitionSystem/"
-  }
+    "author": {
+        "name": "idéMobi",
+        "email": "sts@idemobi.com",
+        "url": "https://github.com/SceneTransitionSystem/SceneTransitionSystem/"
+    }
 }
