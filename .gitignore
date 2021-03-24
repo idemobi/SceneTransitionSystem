@@ -7,6 +7,10 @@
 ###################
 .DS_Store
 */.DS_Store
+Icon\?
+*/Icon\?
+Icon
+*/Icon
 
 ###################
 ## NetWorkedData
