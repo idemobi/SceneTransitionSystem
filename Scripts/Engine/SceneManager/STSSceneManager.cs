@@ -33,7 +33,8 @@ namespace SceneTransitionSystem
         private bool TransitionInProgress = false;
         //-------------------------------------------------------------------------------------------------------------
         /// <summary>
-        /// Return if transition is in progress or not. 
+        /// Return if transition is in progress or not.
+        /// This method also logs the result of the method.
         /// </summary>
         /// <returns>true if transition is running, false otherwise.</returns>
         static public bool InTransition()
@@ -49,6 +50,12 @@ namespace SceneTransitionSystem
             }
             return rReturn;
         }
+
+        /// <summary>
+        /// Return if transition is in progress or not. 
+        /// </summary>
+        /// <returns>true if transition is running, false otherwise.</returns>
+        static public bool inTransition => Singleton().TransitionInProgress;
         //-------------------------------------------------------------------------------------------------------------
         // prevent user actions during the transition
         private bool PreventUserInteractions = true;
