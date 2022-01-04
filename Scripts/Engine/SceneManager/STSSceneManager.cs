@@ -35,7 +35,7 @@ namespace SceneTransitionSystem
         /// <summary>
         /// Return if transition is in progress or not. 
         /// </summary>
-        /// <returns></returns>
+        /// <returns>true if transition is running, false otherwise.</returns>
         static public bool InTransition()
         {
             bool rReturn = Singleton().TransitionInProgress;
