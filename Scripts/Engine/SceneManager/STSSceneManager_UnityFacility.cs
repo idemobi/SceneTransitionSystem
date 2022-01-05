@@ -59,6 +59,17 @@ namespace SceneTransitionSystem
             INTERNAL_LoadScene(sSceneName, sLoadSceneMode, sSceneIntermission, sDatas);
         }
         //-------------------------------------------------------------------------------------------------------------
+        public static void LoadScene(int sSceneBuildIndex, bool sAllowCyclic, LoadSceneMode sLoadSceneMode = LoadSceneMode.Single, string sSceneIntermission = null, STSTransitionData sDatas = null)
+        {
+            string tSceneName = SceneManager.GetSceneByBuildIndex(sSceneBuildIndex).name;
+            INTERNAL_LoadScene(tSceneName, sLoadSceneMode, sSceneIntermission, sDatas, sAllowCyclic);
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public static void LoadScene(string sSceneName, bool sAllowCyclic, LoadSceneMode sLoadSceneMode = LoadSceneMode.Single, string sSceneIntermission = null, STSTransitionData sDatas = null)
+        {
+            INTERNAL_LoadScene(sSceneName, sLoadSceneMode, sSceneIntermission, sDatas, sAllowCyclic);
+        }
+        //-------------------------------------------------------------------------------------------------------------
         public static AsyncOperation LoadSceneAsync(string sSceneName, LoadSceneMode sLoadSceneMode = LoadSceneMode.Single, string sSceneIntermission = null, STSTransitionData sDatas = null)
         {
             INTERNAL_LoadScene(sSceneName, sLoadSceneMode, sSceneIntermission, sDatas);
@@ -83,6 +94,33 @@ namespace SceneTransitionSystem
             LoadSceneMode tLoadSceneMode = sParameters.loadSceneMode;
             string tSceneName = SceneManager.GetSceneByBuildIndex(sSceneBuildIndex).name;
             INTERNAL_LoadScene(tSceneName, tLoadSceneMode, sSceneIntermission, sDatas);
+            return null;
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public static AsyncOperation LoadSceneAsync(string sSceneName, bool sAllowCyclic, LoadSceneMode sLoadSceneMode = LoadSceneMode.Single, string sSceneIntermission = null, STSTransitionData sDatas = null)
+        {
+            INTERNAL_LoadScene(sSceneName, sLoadSceneMode, sSceneIntermission, sDatas, sAllowCyclic);
+            return null;
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public static AsyncOperation LoadSceneAsync(int sSceneBuildIndex, bool sAllowCyclic, LoadSceneMode sLoadSceneMode = LoadSceneMode.Single, string sSceneIntermission = null, STSTransitionData sDatas = null)
+        {
+            string tSceneName = SceneManager.GetSceneByBuildIndex(sSceneBuildIndex).name;
+            return null;
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public static AsyncOperation LoadSceneAsync(string sSceneName, bool sAllowCyclic, LoadSceneParameters sParameters, string sSceneIntermission = null, STSTransitionData sDatas = null)
+        {
+            LoadSceneMode tLoadSceneMode = sParameters.loadSceneMode;
+            INTERNAL_LoadScene(sSceneName, tLoadSceneMode, sSceneIntermission, sDatas, sAllowCyclic);
+            return null;
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        public static AsyncOperation LoadSceneAsync(int sSceneBuildIndex, bool sAllowCyclic, LoadSceneParameters sParameters, string sSceneIntermission = null, STSTransitionData sDatas = null)
+        {
+            LoadSceneMode tLoadSceneMode = sParameters.loadSceneMode;
+            string tSceneName = SceneManager.GetSceneByBuildIndex(sSceneBuildIndex).name;
+            INTERNAL_LoadScene(tSceneName, tLoadSceneMode, sSceneIntermission, sDatas, sAllowCyclic);
             return null;
         }
         //-------------------------------------------------------------------------------------------------------------
@@ -129,18 +167,18 @@ namespace SceneTransitionSystem
             SceneManager.SetActiveScene(sScene);
         }
         //-------------------------------------------------------------------------------------------------------------
-        private static void INTERNAL_LoadScene(string sSceneName, LoadSceneMode sLoadSceneMode, string sSceneIntermission = null, STSTransitionData sDatas = null)
+        private static void INTERNAL_LoadScene(string sSceneName, LoadSceneMode sLoadSceneMode, string sSceneIntermission = null, STSTransitionData sDatas = null, bool sAllowCyclic = false)
         {
             switch (sLoadSceneMode)
             {
                 case LoadSceneMode.Single:
                     {
-                        ReplaceAllByScene(sSceneName, sSceneIntermission, sDatas);
+                        ReplaceAllByScene(sSceneName, sSceneIntermission, sDatas, sAllowCyclic);
                     }
                     break;
                 case LoadSceneMode.Additive:
                     {
-                        AddScene(sSceneName, sSceneIntermission, sDatas);
+                        AddScene(sSceneName, sSceneIntermission, sDatas, sAllowCyclic);
                     }
                     break;
             }
