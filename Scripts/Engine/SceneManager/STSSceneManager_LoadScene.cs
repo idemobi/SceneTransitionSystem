@@ -26,56 +26,56 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         // ADD Additive Scene
         //-------------------------------------------------------------------------------------------------------------
-        public static void AddSubScene(string sAdditionalSceneName, string sIntermissionSceneName = null, STSTransitionData sTransitionData = null)
+        public static void AddSubScene(string sAdditionalSceneName, string sIntermissionSceneName = null, STSTransitionData sTransitionData = null, bool sAllowCyclic = false)
         {
-            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, SceneManager.GetActiveScene().name, new List<string> { sAdditionalSceneName }, null, sIntermissionSceneName, sTransitionData, true);
+            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, SceneManager.GetActiveScene().name, new List<string> { sAdditionalSceneName }, null, sIntermissionSceneName, sTransitionData, true, sAllowCyclic);
         }
         //-------------------------------------------------------------------------------------------------------------
-        public static void AddSubScenes(List<string> sAdditionalScenes, string sIntermissionScene = null, STSTransitionData sTransitionData = null)
+        public static void AddSubScenes(List<string> sAdditionalScenes, string sIntermissionScene = null, STSTransitionData sTransitionData = null, bool sAllowCyclic = false)
         {
-            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, SceneManager.GetActiveScene().name, sAdditionalScenes, null, sIntermissionScene, sTransitionData, true);
+            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, SceneManager.GetActiveScene().name, sAdditionalScenes, null, sIntermissionScene, sTransitionData, true, sAllowCyclic);
         }
         //-------------------------------------------------------------------------------------------------------------
-        public static void AddScene(string sNextActiveScene, string sIntermissionScene = null, STSTransitionData sTransitionData = null)
+        public static void AddScene(string sNextActiveScene, string sIntermissionScene = null, STSTransitionData sTransitionData = null, bool sAllowCyclic = false)
         {
-            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, null, null, sIntermissionScene, sTransitionData, true);
+            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, null, null, sIntermissionScene, sTransitionData, true, sAllowCyclic);
         }
         //-------------------------------------------------------------------------------------------------------------
-        public static void AddScenes(string sNextActiveScene, List<string> sScenesToAdd, string sIntermissionScene = null, STSTransitionData sTransitionData = null)
+        public static void AddScenes(string sNextActiveScene, List<string> sScenesToAdd, string sIntermissionScene = null, STSTransitionData sTransitionData = null, bool sAllowCyclic = false)
         {
-            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, sScenesToAdd, null, sIntermissionScene, sTransitionData, true);
+            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, sScenesToAdd, null, sIntermissionScene, sTransitionData, true, sAllowCyclic);
         }
         //-------------------------------------------------------------------------------------------------------------
         // REMOVE Additive Scene
         //-------------------------------------------------------------------------------------------------------------
-        public static void RemoveSubScene(string sSceneToRemove, string sIntermissionScene = null, STSTransitionData sTransitionData = null)
+        public static void RemoveSubScene(string sSceneToRemove, string sIntermissionScene = null, STSTransitionData sTransitionData = null, bool sAllowCyclic = false)
         {
-            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, SceneManager.GetActiveScene().name, null, new List<string> { sSceneToRemove }, sIntermissionScene, sTransitionData, true);
+            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, SceneManager.GetActiveScene().name, null, new List<string> { sSceneToRemove }, sIntermissionScene, sTransitionData, true, sAllowCyclic);
         }
         //-------------------------------------------------------------------------------------------------------------
-        public static void RemoveSubScenes(List<string> sScenesToRemove, string sIntermissionScene = null, STSTransitionData sTransitionData = null)
+        public static void RemoveSubScenes(List<string> sScenesToRemove, string sIntermissionScene = null, STSTransitionData sTransitionData = null, bool sAllowCyclic = false)
         {
-            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, SceneManager.GetActiveScene().name, null, sScenesToRemove, sIntermissionScene, sTransitionData, true);
+            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, SceneManager.GetActiveScene().name, null, sScenesToRemove, sIntermissionScene, sTransitionData, true, sAllowCyclic);
         }
         //-------------------------------------------------------------------------------------------------------------
-        public static void RemoveScene(string sNextActiveScene, string sSceneToRemove, string sIntermissionScene = null, STSTransitionData sTransitionData = null)
+        public static void RemoveScene(string sNextActiveScene, string sSceneToRemove, string sIntermissionScene = null, STSTransitionData sTransitionData = null, bool sAllowCyclic = false)
         {
-            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, null, new List<string> { sSceneToRemove }, sIntermissionScene, sTransitionData, true);
+            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, null, new List<string> { sSceneToRemove }, sIntermissionScene, sTransitionData, true, sAllowCyclic);
         }
         //-------------------------------------------------------------------------------------------------------------
-        public static void RemoveScenes(string sNextActiveScene, List<string> sScenesToRemove, string sIntermissionScene = null, STSTransitionData sTransitionData = null)
+        public static void RemoveScenes(string sNextActiveScene, List<string> sScenesToRemove, string sIntermissionScene = null, STSTransitionData sTransitionData = null, bool sAllowCyclic = false)
         {
-            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, null, sScenesToRemove, sIntermissionScene, sTransitionData, true);
+            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, null, sScenesToRemove, sIntermissionScene, sTransitionData, true, sAllowCyclic);
         }
         //-------------------------------------------------------------------------------------------------------------
         // ADD a new Scene
         //-------------------------------------------------------------------------------------------------------------
-        public static void ReplaceAllByScene(string sNextActiveScene, string sIntermissionScene = null, STSTransitionData sTransitionData = null)
+        public static void ReplaceAllByScene(string sNextActiveScene, string sIntermissionScene = null, STSTransitionData sTransitionData = null, bool sAllowCyclic = false)
         {
-            ReplaceAllByScenes(sNextActiveScene, null, sIntermissionScene, sTransitionData);
+            ReplaceAllByScenes(sNextActiveScene, null, sIntermissionScene, sTransitionData, sAllowCyclic);
         }
         //-------------------------------------------------------------------------------------------------------------
-        public static void ReplaceAllByScenes(STSScene sNextActiveScene, STSScene[] sScenesToAdd, STSScene sIntermissionScene, STSTransitionData sTransitionData = null)
+        public static void ReplaceAllByScenes(STSScene sNextActiveScene, STSScene[] sScenesToAdd, STSScene sIntermissionScene, STSTransitionData sTransitionData = null, bool sAllowCyclic = false)
         {
             List<string> tScenesToAdd = new List<string>();
             if (sScenesToAdd != null)
@@ -95,10 +95,10 @@ namespace SceneTransitionSystem
             {
                 tIntermissionScene = sIntermissionScene.GetSceneShortName();
             }
-            ReplaceAllByScenes(tNextActiveScene, tScenesToAdd, tIntermissionScene, sTransitionData);
+            ReplaceAllByScenes(tNextActiveScene, tScenesToAdd, tIntermissionScene, sTransitionData, sAllowCyclic);
         }
         //-------------------------------------------------------------------------------------------------------------
-        public static void ReplaceAllByScenes(string sNextActiveScene, List<string> sScenesToAdd, string sIntermissionScene = null, STSTransitionData sTransitionData = null)
+        public static void ReplaceAllByScenes(string sNextActiveScene, List<string> sScenesToAdd, string sIntermissionScene = null, STSTransitionData sTransitionData = null, bool sAllowCyclic = false)
         {
             List<string> tScenesToRemove = new List<string>();
             for (int tSceneIndex = 0; tSceneIndex < SceneManager.sceneCount; tSceneIndex++)
@@ -106,7 +106,7 @@ namespace SceneTransitionSystem
                 Scene tScene = SceneManager.GetSceneAt(tSceneIndex);
                 tScenesToRemove.Add(tScene.name);
             }
-            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, sScenesToAdd, tScenesToRemove, sIntermissionScene, sTransitionData, true);
+            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, sScenesToAdd, tScenesToRemove, sIntermissionScene, sTransitionData, true, sAllowCyclic);
         }
         //=============================================================================================================
         // PRIVATE METHOD
@@ -118,7 +118,8 @@ namespace SceneTransitionSystem
             List<string> sScenesToRemove,
             string sIntermissionScene,
             STSTransitionData sTransitionData,
-            bool sHistorical)
+            bool sHistorical,
+            bool sAllowCyclic = false)
         {
             if (TransitionInProgress == false)
             {
@@ -160,6 +161,7 @@ namespace SceneTransitionSystem
                         sScenesToRemove.Remove(tSceneName);
                     }
                 }
+
                 // test possibilities
                 bool tPossible = false;
                 List<Scene> tScenes = new List<Scene>();
@@ -197,7 +199,19 @@ namespace SceneTransitionSystem
                     return;
                 }
 
-                if (sHistorical == true)
+                if (sAllowCyclic == true && sNextActiveScene == sActualActiveScene)
+                {
+                    if (sScenesToAdd.Contains(sActualActiveScene) == false)
+                    {
+                        sScenesToAdd.Add(sActualActiveScene);
+                    }
+
+                    if (sScenesToRemove.Contains(sActualActiveScene) == false)
+                    {
+                        sScenesToRemove.Add(sActualActiveScene);
+                    }
+                }
+                else if (sHistorical == true) // Never add a navigation for a cycled scene changed
                 {
                     INTERNAL_AddNavigation(sNextActiveScene, sScenesToAdd, sIntermissionScene, sTransitionData);
                 }
@@ -304,25 +318,6 @@ namespace SceneTransitionSystem
             float tSceneCount = sScenesToAdd.Count + sScenesToRemove.Count;
             int tSceneCounter = 0;
             //-------------------------------
-            // LOADED SCENES ADDED
-            //-------------------------------
-            foreach (string tSceneToAdd in sScenesToAdd)
-            {
-                //Debug.Log("tSceneToAdd :" + tSceneToAdd);
-                if (SceneManager.GetSceneByName(tSceneToAdd).isLoaded)
-                {
-                    //Debug.Log("tSceneToAdd :" + tSceneToAdd + " allready finish!");
-                }
-                else
-                {
-                    AsyncOperation tAsyncOperationAdd = SceneManager.LoadSceneAsync(tSceneToAdd, LoadSceneMode.Additive);
-                    tAsyncOperationList.Add(tSceneToAdd, tAsyncOperationAdd);
-                    tAsyncOperationAdd.allowSceneActivation = false;
-                    //Debug.Log("tSceneToAdd :" + tSceneToAdd + " 90%!");
-                }
-                tSceneCounter++;
-            }
-            //-------------------------------
             // UNLOADED SCENES REMOVED
             //-------------------------------
             foreach (string tSceneToRemove in sScenesToRemove)
@@ -359,6 +354,25 @@ namespace SceneTransitionSystem
                 }
                 tSceneCounter++;
                 //Debug.Log("tSceneToRemove :" + tSceneToRemove + " finish!");
+            }
+            //-------------------------------
+            // LOADED SCENES ADDED
+            //-------------------------------
+            foreach (string tSceneToAdd in sScenesToAdd)
+            {
+                //Debug.Log("tSceneToAdd :" + tSceneToAdd);
+                if (SceneManager.GetSceneByName(tSceneToAdd).isLoaded)
+                {
+                    //Debug.Log("tSceneToAdd :" + tSceneToAdd + " allready finish!");
+                }
+                else
+                {
+                    AsyncOperation tAsyncOperationAdd = SceneManager.LoadSceneAsync(tSceneToAdd, LoadSceneMode.Additive);
+                    tAsyncOperationList.Add(tSceneToAdd, tAsyncOperationAdd);
+                    tAsyncOperationAdd.allowSceneActivation = false;
+                    //Debug.Log("tSceneToAdd :" + tSceneToAdd + " 90%!");
+                }
+                tSceneCounter++;
             }
             //-------------------------------
             // ACTIVE ADDED SCENES
