@@ -295,7 +295,7 @@ namespace SceneTransitionSystem
                 {
                     tTransitionParametersScript.EffectOnEnter = STSEffectType.Default.Dupplicate();
                 }
-                if (DefaultEffectOnEnter != null)
+                if (DefaultEffectOnExit != null)
                 {
                     tTransitionParametersScript.EffectOnExit = DefaultEffectOnExit.Dupplicate();
                 }
