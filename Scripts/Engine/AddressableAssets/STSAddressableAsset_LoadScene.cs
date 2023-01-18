@@ -206,7 +206,6 @@ namespace SceneTransitionSystem
             STSTransitionData sTransitionData)
         {
             TransitionInProgress = true;
-
             Dictionary<string, SceneInstance> tOperationList = new Dictionary<string, SceneInstance>();
 
             bool tRemoveActual = false;
@@ -269,40 +268,9 @@ namespace SceneTransitionSystem
             //-------------------------------
             // ACTIVE ADDED SCENES
             //-------------------------------
-            await Task.Delay(1000);
-            foreach(Task<SceneInstance> j in tTasks)
-            {
-                SceneInstance tInstance = j.Result;
-                tInstance.ActivateAsync();
-
-                AudioListenerEnable(tInstance.Scene, false);
-                CameraPreventEnable(tInstance.Scene, false);
-                EventSystemEnable(tInstance.Scene, false);
-                STSTransitionInterface[] tSceneToLoadInterfaced = GetTransitionInterface(tInstance.Scene);
-                foreach (STSTransitionInterface tInterfaced in tSceneToLoadInterfaced)
-                {
-                    tInterfaced.OnTransitionSceneLoaded(sTransitionData);
-                }
-            }
-            await Task.Delay(1000);
-            /*foreach (string tSceneToAdd in sScenesToAdd)
-            {
-                // scene is loaded!
-                if (tOperationList.ContainsKey(tSceneToAdd))
-                {
-                    SceneInstance tSceneInstance = tOperationList[tSceneToAdd];
-                    tSceneInstance.ActivateAsync();
-
-                    AudioListenerEnable(tSceneInstance.Scene, false);
-                    CameraPreventEnable(tSceneInstance.Scene, false);
-                    EventSystemEnable(tSceneInstance.Scene, false);
-                    STSTransitionInterface[] tSceneToLoadInterfaced = GetTransitionInterface(tSceneInstance.Scene);
-                    foreach (STSTransitionInterface tInterfaced in tSceneToLoadInterfaced)
-                    {
-                        tInterfaced.OnTransitionSceneLoaded(sTransitionData);
-                    }
-                }
-            }*/
+            await Task.Delay(500);
+            ActiveAddedScenes(tTasks, sTransitionData);
+            await Task.Delay(500);
             //-------------------------------
             // NEXT SCENE PROCESS
             //-------------------------------
@@ -343,14 +311,17 @@ namespace SceneTransitionSystem
         {
             TransitionInProgress = true;
             Dictionary<string, SceneInstance> tOperationList = new Dictionary<string, SceneInstance>();
+            float tSceneCount = sScenesToAdd.Count + sScenesToRemove.Count;
+            int tSceneCounter = 0;
+
             //-------------------------------
             // ACTUAL SCENE DISABLE
             //-------------------------------
             ActualSceneDisable(sActiveScene, sTransitionData);
+
             //-------------------------------
             // Intermission SCENE LOAD AND ENABLE
             //-------------------------------
-            // load transition scene async
             SceneInstance tLoadedScene = new SceneInstance();
             Task<SceneInstance> tSceneInstance = LoadSceneAsync(sIntermissionScene, LoadSceneMode.Additive, bProgressCallBack: (p) =>
             {
@@ -358,43 +329,36 @@ namespace SceneTransitionSystem
             });
             tLoadedScene = await tSceneInstance;
             Scene tIntermissionScene = tLoadedScene.Scene;
+
             AudioListenerEnable(tIntermissionScene, false);
-            // get Transition Scene
-            // Active the next scene as root scene 
-            SceneManager.SetActiveScene(tIntermissionScene);
-            // disable audiolistener of preview scene
             CameraPrevent(true);
             AudioListenerPrevent(true);
-            // disable the user interactions until fadein 
             EventSystemEnable(tIntermissionScene, false);
+
             // get params
             STSTransition tIntermissionSceneParams = GetTransitionsParams(tIntermissionScene);
             STSTransitionInterface[] tIntermissionSceneInterfaced = GetTransitionInterface(tIntermissionScene);
             STSIntermissionInterface[] tIntermissionInterfaced = GetIntermissionInterface(tIntermissionScene);
             STSIntermission tIntermissionSceneStandBy = GetStandByParams(tIntermissionScene);
-            //-------------------------------
-            // COUNT SCENES TO REMOVE OR ADD
-            //-------------------------------
-            float tSceneCount = sScenesToAdd.Count + sScenesToRemove.Count;
-            int tSceneCounter = 0;
+
             //-------------------------------
             // UNLOADED SCENES REMOVED
             //-------------------------------
             foreach (string tSceneToRemove in sScenesToRemove)
             {
-                // fadeout is finish
-                // will unloaded the  scene
                 Scene tSceneToDelete = SceneManager.GetSceneByName(tSceneToRemove);
                 STSTransition tSceneToDeleteParams = GetTransitionsParams(tSceneToDelete);
                 STSTransitionInterface[] tSceneToDeleteInterfaced = GetTransitionInterface(tSceneToDelete);
+                
                 foreach (STSTransitionInterface tInterfaced in tSceneToDeleteInterfaced)
                 {
                     tInterfaced.OnTransitionSceneWillUnloaded(sTransitionData);
                 }
+
                 if (tSceneToDelete.isLoaded)
                 {
-                    SceneManager.UnloadSceneAsync(tSceneToRemove);
-                    //await UnloadSceneAsync(tSceneToRemove); // need a SceneInstance
+                    SceneManager.UnloadSceneAsync(tSceneToDelete);
+                    //await UnloadSceneAsync(tSceneToDelete); // need a SceneInstance
                 }
 
                 foreach (STSIntermissionInterface tInterfaced in tIntermissionInterfaced)
@@ -403,18 +367,15 @@ namespace SceneTransitionSystem
                 }
                 tSceneCounter++;
             }
+
             //-------------------------------
             // Intermission start enter animation
             //-------------------------------
-            // get params
-            // Intermission scene is loaded
             foreach (STSTransitionInterface tInterfaced in tIntermissionSceneInterfaced)
             {
                 tInterfaced.OnTransitionSceneLoaded(sTransitionData);
             }
-            // animation in Go!
             AnimationTransitionIn(tIntermissionSceneParams, sTransitionData);
-            // animation in
             foreach (STSTransitionInterface tInterfaced in tIntermissionSceneInterfaced)
             {
                 tInterfaced.OnTransitionEnterStart(sTransitionData, tIntermissionSceneParams.EffectOnEnter, tIntermissionSceneParams.InterEffectDuration, true);
@@ -423,27 +384,25 @@ namespace SceneTransitionSystem
             {
                 break;
             }
-            // animation in Finish
             foreach (STSTransitionInterface tInterfaced in tIntermissionSceneInterfaced)
             {
                 tInterfaced.OnTransitionEnterFinish(sTransitionData, true);
             }
-            // enable the user interactions 
             EventSystemEnable(tIntermissionScene, true);
-            // enable the user interactions 
             foreach (STSTransitionInterface tInterfaced in tIntermissionSceneInterfaced)
             {
                 tInterfaced.OnTransitionSceneEnable(sTransitionData);
             }
+
             //-------------------------------
             // Intermission SCENE START STAND BY
             //-------------------------------
-            // start stand by
             foreach (STSIntermissionInterface tInterfaced in tIntermissionInterfaced)
             {
                 tInterfaced.OnStandByStart(tIntermissionSceneStandBy);
             }
             StandBy();
+
             //-------------------------------
             // LOADED SCENES ADDED
             //-------------------------------
@@ -465,6 +424,7 @@ namespace SceneTransitionSystem
                 }
                 else
                 {
+                    Debug.LogWarning("OnLoadingSceneStart: (" + tSceneCounter + ", 0.0F, 0.0F)");
                     foreach (STSIntermissionInterface tInterfaced in tIntermissionInterfaced)
                     {
                         tInterfaced.OnLoadingSceneStart(sTransitionData, tSceneToLoad, tSceneCounter, 0.0F, 0.0F);
@@ -472,14 +432,15 @@ namespace SceneTransitionSystem
 
                     Task<SceneInstance> k = LoadSceneAsync(tSceneToLoad, LoadSceneMode.Additive, false,  bProgressCallBack: (p) =>
                     {
-                        Debug.LogWarning(p + ", (" + tSceneCounter + " + " + p + ") /" + tSceneCount);
+                        Debug.LogWarning("OnLoadingScenePercent: (" + tSceneCounter + ", " + p + ", " + (tSceneCounter + p) / tSceneCount + ")");
                         foreach (STSIntermissionInterface tInterfaced in tIntermissionInterfaced)
                         {
                             tInterfaced.OnLoadingScenePercent(sTransitionData, tSceneToLoad, tSceneCounter, p, (tSceneCounter + p) / tSceneCount);
                         }
                     });
                     tTasks[tTaskCounter] = k;
-                                        
+                    
+                    Debug.LogWarning("OnLoadingSceneFinish: (" + tSceneCounter + ", 1.0F, " + (tSceneCounter + 1.0F) / tSceneCount + ")");
                     foreach (STSIntermissionInterface tInterfaced in tIntermissionInterfaced)
                     {
                         tInterfaced.OnLoadingSceneFinish(sTransitionData, tSceneToLoad, tSceneCounter, 1.0F, (tSceneCounter + 1.0F) / tSceneCount);
@@ -490,6 +451,7 @@ namespace SceneTransitionSystem
             }
             await Task.WhenAll(tTasks);
             STSPerformance.EndTimer();
+
             //-------------------------------
             // Intermission STAND BY
             //-------------------------------
@@ -507,6 +469,7 @@ namespace SceneTransitionSystem
             {
                 break;
             }
+
             //-------------------------------
             // Intermission GO TO NEXT SCENE PROCESS
             //-------------------------------
@@ -539,39 +502,29 @@ namespace SceneTransitionSystem
             {
                 tInterfaced.OnTransitionSceneWillUnloaded(sTransitionData);
             }
+
             //-------------------------------
             // ACTIVE ADDED SCENES
             //-------------------------------
-            await Task.Delay(1000);
-            foreach(Task<SceneInstance> j in tTasks)
-            {
-                SceneInstance tInstance = j.Result;
-                tInstance.ActivateAsync();
+            await Task.Delay(500);
+            ActiveAddedScenes(tTasks, sTransitionData);
+            await Task.Delay(500);
 
-                AudioListenerEnable(tInstance.Scene, false);
-                CameraPreventEnable(tInstance.Scene, false);
-                EventSystemEnable(tInstance.Scene, false);
-                STSTransitionInterface[] tSceneToLoadInterfaced = GetTransitionInterface(tInstance.Scene);
-                foreach (STSTransitionInterface tInterfaced in tSceneToLoadInterfaced)
-                {
-                    tInterfaced.OnTransitionSceneLoaded(sTransitionData);
-                }
-            }
-            await Task.Delay(1000);
             //-------------------------------
             // NEXT SCENE PROCESS
             //-------------------------------
             Scene tNextActiveScene = SceneManager.GetSceneByName(sNextActiveScene);
             SceneManager.SetActiveScene(tNextActiveScene);
-            AudioListenerPrevent(true);
             CameraPrevent(true);
+            AudioListenerPrevent(true);
             EventSystemEnable(tNextActiveScene, false);
-            // Next scene appear by fade in
+
             //-------------------------------
             // Intermission UNLOAD
             //-------------------------------
             SceneManager.UnloadSceneAsync(tIntermissionScene);
             //await UnloadSceneAsync(tIntermissionScene); // need a SceneInstance
+            
             //-------------------------------
             // NEXT SCENE ENABLE
             //-------------------------------
@@ -659,6 +612,27 @@ namespace SceneTransitionSystem
             foreach (STSTransitionInterface tInterfaced in tNextSceneInterfaced)
             {
                 tInterfaced.OnTransitionSceneEnable(sTransitionData);
+            }
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        private void ActiveAddedScenes(Task[] sTasks, STSTransitionData sTransitionData)
+        {
+            //-------------------------------
+            // ACTIVE ADDED SCENES
+            //-------------------------------
+            foreach(Task<SceneInstance> j in sTasks)
+            {
+                SceneInstance tInstance = j.Result;
+                tInstance.ActivateAsync();
+
+                AudioListenerEnable(tInstance.Scene, false);
+                CameraPreventEnable(tInstance.Scene, false);
+                EventSystemEnable(tInstance.Scene, false);
+                STSTransitionInterface[] tSceneToLoadInterfaced = GetTransitionInterface(tInstance.Scene);
+                foreach (STSTransitionInterface tInterfaced in tSceneToLoadInterfaced)
+                {
+                    tInterfaced.OnTransitionSceneLoaded(sTransitionData);
+                }
             }
         }
         //-------------------------------------------------------------------------------------------------------------
