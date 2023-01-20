@@ -24,7 +24,7 @@ using UnityEngine.Events;
 namespace SceneTransitionSystem
 {
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public partial class STSSceneManagerAddressableAssets : STSSingletonUnity<STSSceneManagerAddressableAssets>, STSTransitionInterface, STSIntermissionInterface
+    public partial class STSAddressableAssets : STSSingletonUnity<STSAddressableAssets>, STSTransitionInterface, STSIntermissionInterface
     {
         //-------------------------------------------------------------------------------------------------------------
         public static Scene GetActiveScene()
@@ -114,7 +114,7 @@ namespace SceneTransitionSystem
             {
                 case LoadSceneMode.Single:
                     {
-                        ReplaceAllByScene(SceneManager.GetActiveScene().name, sSceneName, sSceneIntermission, sDatas, sAllowCyclic);
+                        ReplaceAllByScene(sSceneName, sSceneIntermission, sDatas, sAllowCyclic);
                     }
                     break;
                 case LoadSceneMode.Additive:
