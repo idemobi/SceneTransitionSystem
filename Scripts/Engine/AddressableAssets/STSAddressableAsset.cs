@@ -30,11 +30,13 @@ namespace SceneTransitionSystem
         const string K_SCENE_MUST_BY_LOADED = "Scene must be loaded!";
         const string K_SCENE_UNKNOW = "Some scenes are not in build!";
         const string K_TRANSITION_IN_PROGRESS = "Transition in progress";
-        //-------------------------------------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------------------------------------        
         /// <summary>
         /// Prevent multi transition by using this state
         /// </summary>
         private bool TransitionInProgress = false;
+        //-------------------------------------------------------------------------------------------------------------        
+        static private Dictionary<string, SceneInstance> SceneInstanceLoaded = new Dictionary<string, SceneInstance>();
         //-------------------------------------------------------------------------------------------------------------
         /// <summary>
         /// Return if transition is in progress or not.
@@ -61,17 +63,15 @@ namespace SceneTransitionSystem
         /// <returns>true if transition is running, false otherwise.</returns>
         static public bool inTransition => Singleton().TransitionInProgress;
         //-------------------------------------------------------------------------------------------------------------
-        // prevent user actions during the transition
-        private bool PreventUserInteractions = true;
-        //-------------------------------------------------------------------------------------------------------------
         public STSEffectType DefaultEffectOnEnter;
         public STSEffectType DefaultEffectOnExit;
-        private STSEffect EffectType;
+        public STSScene OriginalScene;
         //-------------------------------------------------------------------------------------------------------------
+        private STSEffect EffectType;
         private float StandByTimer;
         private bool LauchNextScene = false;
         private bool StandByInProgress = false;
-        public STSScene OriginalScene;
+        private bool PreventUserInteractions = true;
         //-------------------------------------------------------------------------------------------------------------
         public STSTransition GetTransitionsParams(Scene sScene)
         {
