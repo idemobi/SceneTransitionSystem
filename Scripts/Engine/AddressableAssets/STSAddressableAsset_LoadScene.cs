@@ -260,19 +260,21 @@ namespace SceneTransitionSystem
                 }
                 tSceneCounter++;
             }
+
             //-------------------------------
             // LOADED SCENES ADDED
             //-------------------------------
             int tTaskCounter = 0;
-            STSPerformance.StartTimer();
+            //STSPerformance.StartTimer();
             Task[] tTasks = new Task[sScenesToAdd.Count];
             foreach (string tSceneToAdd in sScenesToAdd)
             {
                 if (!SceneManager.GetSceneByName(tSceneToAdd).isLoaded)
                 {
+                    Debug.LogWarning("> loading: " + tSceneToAdd);
                     Task<SceneInstance> k = LoadSceneAsync(tSceneToAdd, LoadSceneMode.Additive, false, bProgressCallBack: (p) =>
                     {
-                        Debug.LogWarning("pourcent: " + p);
+                        Debug.LogWarning("> pourcent: " + p);
                     });
                     tTasks[tTaskCounter] = k;
                 }
@@ -280,7 +282,8 @@ namespace SceneTransitionSystem
                 tTaskCounter++;
             }
             await Task.WhenAll(tTasks);
-            STSPerformance.EndTimer();
+            await Task.Yield();
+            //STSPerformance.EndTimer();
 
             //-------------------------------
             // ACTIVE ADDED SCENES
@@ -413,7 +416,7 @@ namespace SceneTransitionSystem
             // LOADED SCENES ADDED
             //-------------------------------
             int tTaskCounter = 0;
-            STSPerformance.StartTimer();
+            //STSPerformance.StartTimer();
             Task[] tTasks = new Task[sScenesToAdd.Count];
             foreach (string tSceneToLoad in sScenesToAdd)
             {
@@ -456,7 +459,8 @@ namespace SceneTransitionSystem
                 tTaskCounter++;
             }
             await Task.WhenAll(tTasks);
-            STSPerformance.EndTimer();
+            await Task.Yield();
+            //STSPerformance.EndTimer();
 
             //-------------------------------
             // Intermission STAND BY
