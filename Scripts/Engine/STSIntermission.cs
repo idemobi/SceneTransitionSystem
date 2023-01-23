@@ -9,7 +9,9 @@
 //  All rights reserved by ideMobi
 //
 //=====================================================================================================================
+
 using UnityEngine;
+
 //=====================================================================================================================
 namespace SceneTransitionSystem
 {
@@ -17,13 +19,10 @@ namespace SceneTransitionSystem
     public class STSIntermission : SharedInstanceUnity<STSIntermission>
     {
         //-------------------------------------------------------------------------------------------------------------
-        //[Header("Intermission Scene Parameters")]
         [Tooltip("Minimum stand by on transition scene in seconds")]
         public float StandBySeconds = 0.0f;
         [Tooltip("The next scene must be active automatically?")]
         public bool AutoActiveNextScene = true;
-        //-------------------------------------------------------------------------------------------------------------
-        //public STSIntermissionInterface Interfaced;
         //-------------------------------------------------------------------------------------------------------------
         public void CopyFrom(STSIntermission sDestination)
         {
@@ -34,17 +33,12 @@ namespace SceneTransitionSystem
         {
             sDestination.StandBySeconds = this.StandBySeconds;
             sDestination.AutoActiveNextScene = this.AutoActiveNextScene;
-            //sDestination.Interfaced = this.Interfaced;
         }
         //-------------------------------------------------------------------------------------------------------------
         public void FinishStandByAction()
         {
             STSSceneManager.Singleton().FinishStandBy();
-        }
-        //-------------------------------------------------------------------------------------------------------------
-        void Start()
-        {
-            //Interfaced = GetComponent<STSIntermissionInterface>();
+            STSAddressableAssets.Singleton().FinishStandBy();
         }
         //-------------------------------------------------------------------------------------------------------------
     }
