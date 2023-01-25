@@ -229,6 +229,7 @@ namespace SceneTransitionSystem
             float tSceneCount = sScenesToAdd.Count + sScenesToRemove.Count;
             int tSceneCounter = 0;
 
+            bool tSceneActivated = false;
             bool tRemoveActual = false;
             if (sScenesToRemove.Contains(sActiveScene))
             {
@@ -289,13 +290,23 @@ namespace SceneTransitionSystem
             // ACTIVE ADDED SCENES
             //-------------------------------
             ActiveAddedScenes(tTasks, sTransitionData);
-            await Task.Yield();
 
             //-------------------------------
             // NEXT SCENE PROCESS
             //-------------------------------
             Scene tNextActiveScene = SceneManager.GetSceneByName(sNextActiveScene);
-            SceneManager.SetActiveScene(tNextActiveScene);
+            while (!tSceneActivated) // Mandatory piece of code preventing from trying to activate an unloaded scene.
+            {
+                try
+                {
+                    SceneManager.SetActiveScene(tNextActiveScene);
+                    tSceneActivated = true;
+                }
+                catch (Exception)
+                {
+                    await Task.Yield();
+                }
+            }
             CameraPrevent(true);
             AudioListenerPrevent(true);
             EventSystemEnable(tNextActiveScene, false);
