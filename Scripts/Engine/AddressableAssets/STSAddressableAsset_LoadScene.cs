@@ -240,7 +240,7 @@ namespace SceneTransitionSystem
             //-------------------------------
             // ACTUAL SCENE DISABLE
             //-------------------------------
-            ActualSceneDisable(sActiveScene, sTransitionData);
+            await ActualSceneDisable(sActiveScene, sTransitionData);
 
             //-------------------------------
             // UNLOADED SCENES REMOVED
@@ -272,11 +272,7 @@ namespace SceneTransitionSystem
             {
                 if (!SceneManager.GetSceneByName(tSceneToAdd).isLoaded)
                 {
-                    Debug.LogWarning("> loading: " + tSceneToAdd);
-                    Task<SceneInstance> k = LoadSceneAsync(tSceneToAdd, LoadSceneMode.Additive, false, bProgressCallBack: (p) =>
-                    {
-                        Debug.LogWarning("> pourcent: " + p);
-                    });
+                    Task<SceneInstance> k = LoadSceneAsync(tSceneToAdd, LoadSceneMode.Additive, false);
                     tTasks[tTaskCounter] = k;
                 }
                 tSceneCounter++;
@@ -294,23 +290,7 @@ namespace SceneTransitionSystem
             //-------------------------------
             // NEXT SCENE PROCESS
             //-------------------------------
-            Scene tNextActiveScene = SceneManager.GetSceneByName(sNextActiveScene);
-            while (!tSceneActivated) // Mandatory piece of code preventing from trying to activate an unloaded scene.
-            {
-                try
-                {
-                    SceneManager.SetActiveScene(tNextActiveScene);
-                    tSceneActivated = true;
-                }
-                catch (Exception)
-                {
-                    await Task.Yield();
-                }
-            }
-            CameraPrevent(true);
-            AudioListenerPrevent(true);
-            EventSystemEnable(tNextActiveScene, false);
-
+            Scene tNextActiveScene = await ActivateNextScene(sNextActiveScene);
             //-------------------------------
             // Intermission UNLOAD
             //-------------------------------
@@ -324,7 +304,7 @@ namespace SceneTransitionSystem
             //-------------------------------
             // NEXT SCENE ENABLE
             //-------------------------------
-            NextSceneEnable(tNextActiveScene, sTransitionData);
+            await NextSceneEnable(tNextActiveScene, sTransitionData);
 
             // My transition is finish. I can do an another transition
             TransitionInProgress = false;
@@ -346,16 +326,13 @@ namespace SceneTransitionSystem
             //-------------------------------
             // ACTUAL SCENE DISABLE
             //-------------------------------
-            ActualSceneDisable(sActiveScene, sTransitionData);
+            await ActualSceneDisable(sActiveScene, sTransitionData);
 
             //-------------------------------
             // Intermission SCENE LOAD AND ENABLE
             //-------------------------------
             SceneInstance tLoadedScene = new SceneInstance();
-            Task<SceneInstance> tSceneInstance = LoadSceneAsync(sIntermissionScene, LoadSceneMode.Additive, bProgressCallBack: (p) =>
-            {
-                Debug.LogWarning("pourcent: " + p);
-            });
+            Task<SceneInstance> tSceneInstance = LoadSceneAsync(sIntermissionScene, LoadSceneMode.Additive);
             tLoadedScene = await tSceneInstance;
             AddLoadedScene(tLoadedScene);
             Scene tIntermissionScene = tLoadedScene.Scene;
@@ -523,12 +500,7 @@ namespace SceneTransitionSystem
             //-------------------------------
             // NEXT SCENE PROCESS
             //-------------------------------
-            Scene tNextActiveScene = SceneManager.GetSceneByName(sNextActiveScene);
-            SceneManager.SetActiveScene(tNextActiveScene);
-            CameraPrevent(true);
-            AudioListenerPrevent(true);
-            EventSystemEnable(tNextActiveScene, false);
-
+            Scene tNextActiveScene = await ActivateNextScene (sNextActiveScene);
             //-------------------------------
             // Intermission UNLOAD
             //-------------------------------
@@ -537,14 +509,14 @@ namespace SceneTransitionSystem
             //-------------------------------
             // NEXT SCENE ENABLE
             //-------------------------------
-            NextSceneEnable(tNextActiveScene, sTransitionData);
+            await NextSceneEnable(tNextActiveScene, sTransitionData);
             
             // My transition is finish. I can do an another transition
             TransitionInProgress = false;
             await Task.Yield();
         }
         //-------------------------------------------------------------------------------------------------------------
-        private async void ActualSceneDisable(string sActiveScene, STSTransitionData sTransitionData)
+        private async Task ActualSceneDisable(string sActiveScene, STSTransitionData sTransitionData)
         {
             //-------------------------------
             // ACTUAL SCENE DISABLE
@@ -572,7 +544,28 @@ namespace SceneTransitionSystem
             OnTransitionExitFinish(tOtherSceneInterfaced, sTransitionData, false);
         }
         //-------------------------------------------------------------------------------------------------------------
-        private async void NextSceneEnable(Scene sNextActiveScene, STSTransitionData sTransitionData)
+        public async Task<Scene> ActivateNextScene(string sNextActiveScene)
+        {
+            Scene tNextActiveScene = SceneManager.GetSceneByName(sNextActiveScene);
+            while (true) // Mandatory piece of code preventing from trying to activate an unloaded scene.
+            {
+                try
+                {
+                    SceneManager.SetActiveScene(tNextActiveScene);
+                    break;
+                }
+                catch (Exception)
+                {
+                    await Task.Yield();
+                }
+            }
+            CameraPrevent(true);
+            AudioListenerPrevent(true);
+            EventSystemEnable(tNextActiveScene, false);
+            return tNextActiveScene;
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        private async Task NextSceneEnable(Scene sNextActiveScene, STSTransitionData sTransitionData)
         {
             //-------------------------------
             // NEXT SCENE ENABLE
