@@ -35,6 +35,7 @@ namespace SceneTransitionSystem
         {
             base.InitInstance();
             STSSceneManager.Singleton();
+            STSAddressableAssets.Singleton();
         }
         //-------------------------------------------------------------------------------------------------------------
         void Start()

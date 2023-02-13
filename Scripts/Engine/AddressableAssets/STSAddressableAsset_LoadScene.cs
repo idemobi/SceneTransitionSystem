@@ -229,7 +229,6 @@ namespace SceneTransitionSystem
             float tSceneCount = sScenesToAdd.Count + sScenesToRemove.Count;
             int tSceneCounter = 0;
 
-            bool tSceneActivated = false;
             bool tRemoveActual = false;
             if (sScenesToRemove.Contains(sActiveScene))
             {
@@ -291,6 +290,7 @@ namespace SceneTransitionSystem
             // NEXT SCENE PROCESS
             //-------------------------------
             Scene tNextActiveScene = await ActivateNextScene(sNextActiveScene);
+
             //-------------------------------
             // Intermission UNLOAD
             //-------------------------------
@@ -501,6 +501,7 @@ namespace SceneTransitionSystem
             // NEXT SCENE PROCESS
             //-------------------------------
             Scene tNextActiveScene = await ActivateNextScene (sNextActiveScene);
+            
             //-------------------------------
             // Intermission UNLOAD
             //-------------------------------
