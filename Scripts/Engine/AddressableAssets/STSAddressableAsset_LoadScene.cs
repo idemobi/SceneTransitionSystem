@@ -421,7 +421,7 @@ namespace SceneTransitionSystem
                 }
                 else
                 {
-                    Debug.LogWarning("OnLoadingSceneStart: (" + tSceneCounter + ", 0.0F, 0.0F)");
+                    //Debug.LogWarning("OnLoadingSceneStart: (" + tSceneCounter + ", 0.0F, 0.0F)");
                     foreach (STSIntermissionInterface tInterfaced in tIntermissionInterfaced)
                     {
                         tInterfaced.OnLoadingSceneStart(sTransitionData, tSceneToLoad, tSceneCounter, 0.0F, 0.0F);
@@ -429,7 +429,7 @@ namespace SceneTransitionSystem
 
                     Task<SceneInstance> k = LoadSceneAsync(tSceneToLoad, LoadSceneMode.Additive, false,  bProgressCallBack: (p) =>
                     {
-                        Debug.LogWarning("OnLoadingScenePercent: (" + tSceneCounter + ", " + p + ", " + (tSceneCounter + p) / tSceneCount + ")");
+                        //Debug.LogWarning("OnLoadingScenePercent: (" + tSceneCounter + ", " + p + ", " + (tSceneCounter + p) / tSceneCount + ")");
                         foreach (STSIntermissionInterface tInterfaced in tIntermissionInterfaced)
                         {
                             tInterfaced.OnLoadingScenePercent(sTransitionData, tSceneToLoad, tSceneCounter, p, (tSceneCounter + p) / tSceneCount);
@@ -437,7 +437,7 @@ namespace SceneTransitionSystem
                     });
                     tTasks[tTaskCounter] = k;
                     
-                    Debug.LogWarning("OnLoadingSceneFinish: (" + tSceneCounter + ", 1.0F, " + (tSceneCounter + 1.0F) / tSceneCount + ")");
+                    //Debug.LogWarning("OnLoadingSceneFinish: (" + tSceneCounter + ", 1.0F, " + (tSceneCounter + 1.0F) / tSceneCount + ")");
                     foreach (STSIntermissionInterface tInterfaced in tIntermissionInterfaced)
                     {
                         tInterfaced.OnLoadingSceneFinish(sTransitionData, tSceneToLoad, tSceneCounter, 1.0F, (tSceneCounter + 1.0F) / tSceneCount);
@@ -724,13 +724,13 @@ namespace SceneTransitionSystem
         private void UnloadSceneAsync(string sSceneName)
         {
             AsyncOperation tOperation = SceneManager.UnloadSceneAsync(sSceneName);
-            tOperation.completed += (asyncOperation) =>
+            /*tOperation.completed += (asyncOperation) =>
             {
                 Debug.LogWarning("-----------");
                 Debug.LogWarning("completed unload! " + sSceneName);
                 Debug.LogWarning("isdone: " + tOperation.isDone);
                 Debug.LogWarning("-----------");
-            };
+            };*/
         }
         //-------------------------------------------------------------------------------------------------------------
         private void UnloadScene(string sSceneName)
@@ -742,10 +742,10 @@ namespace SceneTransitionSystem
             }
             else
             {
-                Task<bool> tDone = UnloadSceneAsync(tInstance, bProgressCallBack: (p) =>
+                Task<bool> tDone = UnloadSceneAsync(tInstance/*, bProgressCallBack: (p) =>
                 {
                     Debug.LogWarning("pourcent: " + p);
-                });
+                }*/);
             }
         }
         //-------------------------------------------------------------------------------------------------------------
