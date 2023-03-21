@@ -256,7 +256,7 @@ namespace SceneTransitionSystem
 
                 if (tSceneToDelete.isLoaded)
                 {
-                    UnloadSceneAsync(tSceneToDelete.name);
+                    await UnloadSceneAsync(tSceneToDelete.name);
                 }
                 tSceneCounter++;
             }
@@ -284,7 +284,7 @@ namespace SceneTransitionSystem
             //-------------------------------
             // ACTIVE ADDED SCENES
             //-------------------------------
-            ActiveAddedScenes(tTasks, sTransitionData);
+            await ActiveAddedScenes(tTasks, sTransitionData);
 
             //-------------------------------
             // NEXT SCENE PROCESS
@@ -298,7 +298,7 @@ namespace SceneTransitionSystem
             {
                 OnTransitionSceneWillUnloaded(GetInterface(sActiveScene), sTransitionData);
 
-                UnloadSceneAsync(sActiveScene);
+                await UnloadSceneAsync(sActiveScene);
             }
             
             //-------------------------------
@@ -361,7 +361,7 @@ namespace SceneTransitionSystem
 
                 if (tSceneToDelete.isLoaded)
                 {
-                    UnloadSceneAsync(tSceneToDelete.name);
+                    await UnloadSceneAsync(tSceneToDelete.name);
                 }
 
                 foreach (STSIntermissionInterface tInterfaced in tIntermissionInterfaced)
@@ -375,9 +375,7 @@ namespace SceneTransitionSystem
             // Intermission start enter animation
             //-------------------------------
             OnTransitionSceneLoaded(tIntermissionSceneInterfaced, sTransitionData);
-
             AnimationTransitionIn(tIntermissionSceneParams, sTransitionData);
-
             OnTransitionEnterStart(tIntermissionSceneInterfaced, sTransitionData, tIntermissionSceneParams);
 
             while (AnimationFinished() == false)
@@ -386,9 +384,7 @@ namespace SceneTransitionSystem
             }
 
             OnTransitionEnterFinish(tIntermissionSceneInterfaced, sTransitionData);
-
             EventSystemEnable(tIntermissionScene, true);
-
             OnTransitionSceneEnable(tIntermissionSceneInterfaced, sTransitionData);
 
             //-------------------------------
@@ -476,11 +472,8 @@ namespace SceneTransitionSystem
             // stanby is finished And the next scene can be lauch
             // disable user interactions on the Intermission scene
             EventSystemEnable(tIntermissionScene, false);
-            
             OnTransitionSceneDisable(tIntermissionSceneInterfaced, sTransitionData);
-            
             AnimationTransitionOut(tIntermissionSceneParams, sTransitionData);
-            
             OnTransitionEnterStart(tIntermissionSceneInterfaced, sTransitionData, tIntermissionSceneParams);
 
             while (AnimationFinished() == false)
@@ -494,7 +487,7 @@ namespace SceneTransitionSystem
             //-------------------------------
             // ACTIVE ADDED SCENES
             //-------------------------------
-            ActiveAddedScenes(tTasks, sTransitionData);
+            await ActiveAddedScenes(tTasks, sTransitionData);
             await Task.Yield();
 
             //-------------------------------
@@ -505,8 +498,8 @@ namespace SceneTransitionSystem
             //-------------------------------
             // Intermission UNLOAD
             //-------------------------------
-            UnloadSceneAsync(tIntermissionScene.name);
-            
+            await UnloadSceneAsync(tIntermissionScene.name);
+
             //-------------------------------
             // NEXT SCENE ENABLE
             //-------------------------------
@@ -526,13 +519,10 @@ namespace SceneTransitionSystem
             STSTransition tActualSceneParams = GetTransitionsParams(tActualScene);
             STSTransitionInterface[] tActualSceneInterfaced = GetTransitionInterface(tActualScene);
             STSTransitionInterface[] tOtherSceneInterfaced = GetOtherTransitionInterface(tActualScene);
-            //-------------------------------
+            
             EventSystemPrevent(false);
-
             OnTransitionSceneDisable(tActualSceneInterfaced, sTransitionData);
-
             AnimationTransitionOut(tActualSceneParams, sTransitionData);
-
             OnTransitionExitStart(tActualSceneInterfaced, sTransitionData, tActualSceneParams);
             OnTransitionExitStart(tOtherSceneInterfaced, sTransitionData, tActualSceneParams, false);
 
@@ -574,9 +564,8 @@ namespace SceneTransitionSystem
             STSTransition tNextSceneParams = GetTransitionsParams(sNextActiveScene);
             STSTransitionInterface[] tNextSceneInterfaced = GetTransitionInterface(sNextActiveScene);
             STSTransitionInterface[] tOtherNextSceneInterfaced = GetOtherTransitionInterface(sNextActiveScene);
-            //-------------------------------
+            
             AnimationTransitionIn(tNextSceneParams, sTransitionData);
-
             OnTransitionEnterStart(tNextSceneInterfaced, sTransitionData, tNextSceneParams);
             OnTransitionEnterStart(tOtherNextSceneInterfaced, sTransitionData, tNextSceneParams, false);
 
@@ -587,13 +576,11 @@ namespace SceneTransitionSystem
             
             OnTransitionEnterFinish(tNextSceneInterfaced, sTransitionData);
             OnTransitionEnterFinish(tOtherNextSceneInterfaced, sTransitionData, false);
-
             EventSystemPrevent(true);
-            
             OnTransitionSceneEnable(tNextSceneInterfaced, sTransitionData);
         }
         //-------------------------------------------------------------------------------------------------------------
-        private void ActiveAddedScenes(Task[] sTasks, STSTransitionData sTransitionData)
+        private async Task ActiveAddedScenes(Task[] sTasks, STSTransitionData sTransitionData)
         {
             //-------------------------------
             // ACTIVE ADDED SCENES
@@ -601,8 +588,13 @@ namespace SceneTransitionSystem
             foreach(Task<SceneInstance> j in sTasks)
             {
                 SceneInstance tInstance = j.Result;
-                tInstance.ActivateAsync();
+                AsyncOperation tAsyncOperation = tInstance.ActivateAsync();
                 
+                while (!tAsyncOperation.isDone)
+                {
+                    await Task.Yield();
+                }
+
                 AddLoadedScene(tInstance);
 
                 AudioListenerEnable(tInstance.Scene, false);
@@ -613,12 +605,111 @@ namespace SceneTransitionSystem
             }
         }
         //-------------------------------------------------------------------------------------------------------------
+        private async Task<SceneInstance> LoadSceneAsync(string sReference, LoadSceneMode sMode = LoadSceneMode.Single, bool sActivatedOnLoad = true, Action<float> bProgressCallBack = null)
+        {
+            SceneInstance rScene = new SceneInstance();
+            AssetReference tReference = new AssetReference(sReference);
+            AsyncOperationHandle<SceneInstance> tHandle = Addressables.LoadSceneAsync(tReference, sMode, sActivatedOnLoad);
+            while (!tHandle.IsDone)
+            {
+                bProgressCallBack?.Invoke(tHandle.PercentComplete);
+                await Task.Yield();
+            }
+            await tHandle.Task;
+            if(tHandle.Status == AsyncOperationStatus.Succeeded)
+            {
+                rScene = tHandle.Result;
+            }
+            else
+            {
+                Debug.LogWarning("Addressable " + tHandle.DebugName + " load error");
+            }
+            return rScene;
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        private async Task<bool> UnloadSceneAsync(SceneInstance sScene, Action<float> bProgressCallBack = null)
+        {
+            AsyncOperationHandle<SceneInstance> tHandle = Addressables.UnloadSceneAsync(sScene);
+            while (!tHandle.IsDone)
+            {
+                bProgressCallBack?.Invoke(tHandle.PercentComplete);
+                await Task.Yield();
+            }
+            await tHandle.Task;
+
+            SceneInstanceLoaded.Remove(sScene.Scene.name);
+
+            return tHandle.IsDone;
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        private async Task UnloadSceneAsync(string sSceneName)
+        {
+            AsyncOperation tAsyncOperation = SceneManager.UnloadSceneAsync(sSceneName);
+            /*tAsyncOperation.completed += (asyncOperation) =>
+            {
+                Debug.LogWarning("-----------");
+                Debug.LogWarning("completed unload! " + sSceneName);
+                Debug.LogWarning("isdone: " + tAsyncOperation.isDone);
+                Debug.LogWarning("-----------");
+            };*/
+            while (!tAsyncOperation.isDone)
+            {
+                await Task.Yield();
+            }
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        private async Task UnloadSceneInstance(string sSceneName)
+        {
+            SceneInstance tInstance = GetInstance(sSceneName);
+            if(string.IsNullOrEmpty(tInstance.Scene.name))
+            {
+                await UnloadSceneAsync(sSceneName);
+            }
+            else
+            {
+                await UnloadSceneAsync(tInstance);
+                /*Task<bool> tDone = UnloadSceneAsync(tInstance, bProgressCallBack: (p) =>
+                {
+                    Debug.LogWarning("pourcent: " + p);
+                });*/
+            }
+        }
+        //-------------------------------------------------------------------------------------------------------------
         private STSTransitionInterface[] GetInterface(string sSceneName)
         {
             Scene tActualScene = SceneManager.GetSceneByName(sSceneName);
             STSTransition tActualSceneParams = GetTransitionsParams(tActualScene);
             return GetTransitionInterface(tActualScene);
         }
+        //-------------------------------------------------------------------------------------------------------------
+        private SceneInstance GetInstance(string sSceneName)
+        {
+            SceneInstance rInstance = new SceneInstance();
+            foreach(KeyValuePair<string, SceneInstance> k in SceneInstanceLoaded)
+            {
+                if (k.Key.Equals(sSceneName))
+                {
+                    rInstance = k.Value;
+                    break;
+                }
+            }
+
+            return rInstance;
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        private void AddLoadedScene(SceneInstance sInstance)
+        {
+            if(!SceneInstanceLoaded.ContainsKey(sInstance.Scene.name))
+            {
+                SceneInstanceLoaded.Add(sInstance.Scene.name, sInstance);
+            }
+            else
+            {
+                Debug.LogWarning(sInstance.Scene.name + " already be added in SceneInstanceLoaded!");
+            }
+        }
+        //-------------------------------------------------------------------------------------------------------------
+        // Transition Status
         //-------------------------------------------------------------------------------------------------------------
         private void OnTransitionEnterStart(STSTransitionInterface[] sInterface, STSTransitionData sData, STSTransition sParams, bool sActiveScene = true)
         {
@@ -681,98 +772,6 @@ namespace SceneTransitionSystem
             foreach (STSTransitionInterface k in sInterface)
             {
                 k.OnTransitionSceneLoaded(sData);
-            }
-        }
-        //-------------------------------------------------------------------------------------------------------------
-        private async Task<SceneInstance> LoadSceneAsync(string sReference, LoadSceneMode sMode = LoadSceneMode.Single, bool sActivatedOnLoad = true, Action<float> bProgressCallBack = null)
-        {
-            SceneInstance rScene = new SceneInstance();
-            AssetReference tReference = new AssetReference(sReference);
-            AsyncOperationHandle<SceneInstance> tHandle = Addressables.LoadSceneAsync(tReference, sMode, sActivatedOnLoad);
-            while (!tHandle.IsDone)
-            {
-                bProgressCallBack?.Invoke(tHandle.PercentComplete);
-                await Task.Yield();
-            }
-            await tHandle.Task;
-            if(tHandle.Status == AsyncOperationStatus.Succeeded)
-            {
-                rScene = tHandle.Result;
-            }
-            else
-            {
-                Debug.LogWarning("Addressable " + tHandle.DebugName + " load error");
-            }
-            return rScene;
-        }
-        //-------------------------------------------------------------------------------------------------------------
-        private async Task<bool> UnloadSceneAsync(SceneInstance sScene, Action<float> bProgressCallBack = null)
-        {
-            AsyncOperationHandle<SceneInstance> tHandle = Addressables.UnloadSceneAsync(sScene);
-            while (!tHandle.IsDone)
-            {
-                bProgressCallBack?.Invoke(tHandle.PercentComplete);
-                await Task.Yield();
-            }
-            await tHandle.Task;
-
-            SceneInstanceLoaded.Remove(sScene.Scene.name);
-
-            return tHandle.IsDone;
-        }
-        //-------------------------------------------------------------------------------------------------------------
-        private void UnloadSceneAsync(string sSceneName)
-        {
-            AsyncOperation tOperation = SceneManager.UnloadSceneAsync(sSceneName);
-            /*tOperation.completed += (asyncOperation) =>
-            {
-                Debug.LogWarning("-----------");
-                Debug.LogWarning("completed unload! " + sSceneName);
-                Debug.LogWarning("isdone: " + tOperation.isDone);
-                Debug.LogWarning("-----------");
-            };*/
-        }
-        //-------------------------------------------------------------------------------------------------------------
-        private void UnloadScene(string sSceneName)
-        {
-            SceneInstance tInstance = GetInstance(sSceneName);
-            if(string.IsNullOrEmpty(tInstance.Scene.name))
-            {
-                UnloadSceneAsync(sSceneName);
-            }
-            else
-            {
-                Task<bool> tDone = UnloadSceneAsync(tInstance/*, bProgressCallBack: (p) =>
-                {
-                    Debug.LogWarning("pourcent: " + p);
-                }*/);
-            }
-        }
-        //-------------------------------------------------------------------------------------------------------------
-        private SceneInstance GetInstance(string sSceneName)
-        {
-            SceneInstance rInstance = new SceneInstance();
-            foreach(KeyValuePair<string, SceneInstance> k in SceneInstanceLoaded)
-            {
-                if (k.Key.Equals(sSceneName))
-                {
-                    rInstance = k.Value;
-                    break;
-                }
-            }
-
-            return rInstance;
-        }
-        //-------------------------------------------------------------------------------------------------------------
-        private void AddLoadedScene(SceneInstance sInstance)
-        {
-            if(!SceneInstanceLoaded.ContainsKey(sInstance.Scene.name))
-            {
-                SceneInstanceLoaded.Add(sInstance.Scene.name, sInstance);
-            }
-            else
-            {
-                Debug.LogWarning(sInstance.Scene.name + " already be added in SceneInstanceLoaded!");
             }
         }
         //-------------------------------------------------------------------------------------------------------------

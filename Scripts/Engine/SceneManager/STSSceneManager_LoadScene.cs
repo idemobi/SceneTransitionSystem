@@ -810,7 +810,7 @@ namespace SceneTransitionSystem
                     tAsyncOperationAdd.allowSceneActivation = true;
                     while (!tAsyncOperationAdd.isDone)
                     {
-                        AudioListenerEnable(tSceneToLoad, false);
+                        //AudioListenerEnable(tSceneToLoad, false);
                         yield return null;
                     }
                     AudioListenerEnable(tSceneToLoad, false);
