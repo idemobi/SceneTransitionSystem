@@ -24,7 +24,7 @@ namespace SceneTransitionSystem
     {
         //-------------------------------------------------------------------------------------------------------------
         AudioListener SharedAudioListener;
-        GameObject AudioFollowObject;
+        public GameObject AudioFollowObject;
         Camera DefaultCamera;
         //-------------------------------------------------------------------------------------------------------------
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
