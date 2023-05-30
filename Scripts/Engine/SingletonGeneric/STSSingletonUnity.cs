@@ -98,7 +98,7 @@ namespace SceneTransitionSystem
         //-------------------------------------------------------------------------------------------------------------
         public static bool SingletonExists()
         {
-            bool rReturn = kSingleton == null;
+            bool rReturn = kSingleton != null;
             return rReturn;
         }
         //-------------------------------------------------------------------------------------------------------------
