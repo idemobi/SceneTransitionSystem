@@ -372,7 +372,6 @@ namespace SceneTransitionSystem
             {
                 tTransitionStandByScript = STSIntermission.SharedInstance(sScene);
                 tTransitionStandByScript.StandBySeconds = 5.0f;
-                tTransitionStandByScript.AutoActiveNextScene = true;
             }
             /*
             //Debug.Log("STSSceneManager GetStandByParams()");
