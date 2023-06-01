@@ -24,6 +24,9 @@ namespace SceneTransitionSystem
         [Tooltip("The next scene must be active automatically?")]
         public bool AutoActiveNextScene = true;
         //-------------------------------------------------------------------------------------------------------------
+        public bool IsLoaded { get; internal set; } = false;
+        public bool IsReadyToActivate { get; internal set; } = false;
+        //-------------------------------------------------------------------------------------------------------------
         public void CopyFrom(STSIntermission sDestination)
         {
             sDestination.CopyIn(this);

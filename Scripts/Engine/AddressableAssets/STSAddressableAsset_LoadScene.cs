@@ -444,6 +444,7 @@ namespace SceneTransitionSystem
             }
             await Task.WhenAll(tTasks);
             await Task.Yield();
+            tIntermissionSceneStandBy.IsLoaded = true;
             //STSPerformance.EndTimer();
 
             //-------------------------------
@@ -460,6 +461,7 @@ namespace SceneTransitionSystem
                 tInterfaced.OnStandByFinish(tIntermissionSceneStandBy);
             }
 
+            tIntermissionSceneStandBy.IsReadyToActivate = true;
             // Waiting to load the next Scene
             while (WaitingToLauchNextScene(tIntermissionSceneStandBy))
             {

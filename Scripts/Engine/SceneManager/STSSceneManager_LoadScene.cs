@@ -730,7 +730,8 @@ namespace SceneTransitionSystem
                     //Debug.Log("tSceneToAdd :" + tSceneToAdd + " 90%!");
                 }
                 tSceneCounter++;
-            }
+            };
+            tIntermissionSceneStandBy.IsLoaded = true;
             //-------------------------------
             // Intermission STAND BY
             //-------------------------------
@@ -743,6 +744,7 @@ namespace SceneTransitionSystem
             {
                 tInterfaced.OnStandByFinish(tIntermissionSceneStandBy);
             }
+            tIntermissionSceneStandBy.IsReadyToActivate = true;
             // Waiting to load the next Scene
             while (WaitingToLauchNextScene(tIntermissionSceneStandBy))
             {
