@@ -39,6 +39,8 @@ namespace SceneTransitionSystem
             if (kMaterialUI == null)
             {
                 kMaterialUI = new Material(Shader.Find(kShaderNameUI));
+                Debug.Log(SystemInfo.graphicsDeviceType);
+                Debug.Log(kMaterialUI.shader.name);
             }
             if (kTexture == null)
             {
@@ -53,6 +55,7 @@ namespace SceneTransitionSystem
 #if UNITY_EDITOR
                 Initialize();
 #endif
+                GL.Clear(true, false, Color.magenta);
                 GL.PushMatrix();
                 kMaterialUI.SetPass(0);
                 GL.LoadPixelMatrix();
@@ -74,6 +77,7 @@ namespace SceneTransitionSystem
 #if UNITY_EDITOR
                 Initialize();
 #endif
+                GL.Clear(true, false, Color.magenta);
                 GL.PushMatrix();
                 kMaterialUI.SetPass(0);
                 GL.LoadPixelMatrix();
@@ -101,6 +105,7 @@ namespace SceneTransitionSystem
 #if UNITY_EDITOR
                 Initialize();
 #endif
+                GL.Clear(true, false, Color.magenta);
                 GL.PushMatrix();
                 kMaterialUI.SetPass(0);
                 GL.LoadPixelMatrix();
@@ -131,6 +136,7 @@ namespace SceneTransitionSystem
 #if UNITY_EDITOR
                 Initialize();
 #endif
+                GL.Clear(true, false, Color.magenta);
                 GL.PushMatrix();
                 kMaterialUI.SetPass(0);
                 GL.LoadPixelMatrix();

@@ -299,6 +299,7 @@ namespace SceneTransitionSystem
             // Use GL matrix and Graphics.DrawTexture rather than GUI.matrix and GUI.DrawTexture,
             // for better performance. (Setting GUI.matrix is slow, and GUI.DrawTexture is just a
             // wrapper on Graphics.DrawTexture.)
+            GL.Clear(true, false, Color.magenta);
             GL.PushMatrix();
             GL.MultMatrix(matrix);
             //Graphics.DrawTexture(lineRect, tex, lineRect, 0, 0, 0, 0, color, mat);

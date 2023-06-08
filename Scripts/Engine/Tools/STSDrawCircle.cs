@@ -88,6 +88,7 @@ namespace SceneTransitionSystem
 #if UNITY_EDITOR
             Initialize();
 #endif
+            GL.Clear(true, false, Color.magenta);
             GL.PushMatrix();
             kMaterialUI.SetPass(0);
             GL.LoadPixelMatrix();
