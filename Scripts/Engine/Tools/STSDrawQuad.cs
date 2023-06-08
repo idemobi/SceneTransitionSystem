@@ -39,8 +39,6 @@ namespace SceneTransitionSystem
             if (kMaterialUI == null)
             {
                 kMaterialUI = new Material(Shader.Find(kShaderNameUI));
-                Debug.Log(SystemInfo.graphicsDeviceType);
-                Debug.Log(kMaterialUI.shader.name);
             }
             if (kTexture == null)
             {
