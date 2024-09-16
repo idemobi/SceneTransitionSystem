@@ -1,15 +1,4 @@
-﻿//=====================================================================================================================
-//
-//  ideMobi 2019©
-//
-//  Author		Kortex (Jean-François CONTART) 
-//  Email		jfcontart@idemobi.com
-//  Project 	SceneTransitionSystem for Unity3D
-//
-//  All rights reserved by ideMobi
-//
-//=====================================================================================================================
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
@@ -18,23 +7,63 @@ using System.Reflection;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-//=====================================================================================================================
+
 namespace SceneTransitionSystem
 {
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    /// <summary>
+    /// STSDrawing provides various static methods for drawing shapes
+    /// and lines within a Unity scene. It includes capabilities for drawing
+    /// lines, circles, and Bezier curves.
+    /// </summary>
     public class STSDrawing
     {
-        //-------------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// A texture used for drawing anti-aliased lines.
+        /// </summary>
         private static Texture2D aaLineTex = null;
+
+        /// <summary>
+        /// Draws a line between two points with specified color, width, and anti-aliasing option.
+        /// </summary>
         private static Texture2D lineTex = null;
+
+        /// <summary>
+        /// A private static Material used for performing low-level pixel operations
+        /// such as blitting, which is the process of transferring blocks of data from
+        /// one place in memory to another.
+        /// </summary>
         private static Material blitMaterial = null;
+
+        /// <summary>
+        /// A private static <see cref="Material"/> used in the <see cref="STSDrawing"/> class to handle blending operations when drawing.
+        /// </summary>
         private static Material blendMaterial = null;
+
+        /// <summary>
+        /// Defines the rectangle used for drawing lines.
+        /// </summary>
         private static Rect lineRect = new Rect(0, 0, 1, 1);
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// A static Texture2D utilized by the SceneTransitionSystem for drawing operations.
+        /// Initialized in the static constructor of the <see cref="STSDrawing"/> class.
+        /// </summary>
         static Texture2D kTexture;
+
+        /// <summary>
+        /// A static Material instance used for rendering with a specific shader in the Scene Transition System.
+        /// </summary>
         static Material tMat;
+
+        /// <summary>
+        /// The name of the shader used to create the Material in <c>STSDrawing</c>.
+        /// Defaults to "UI/Default".
+        /// </summary>
         static string ShaderName = "UI/Default";
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Provides utility functions for drawing lines, circles, and Bezier curves in Unity.
+        /// </summary>
         static STSDrawing()
         {
             Initialize();
@@ -44,245 +73,39 @@ namespace SceneTransitionSystem
                 kTexture = new Texture2D(1, 1);
             }
         }
-        //-------------------------------------------------------------------------------------------------------------
-        //public static void DrawCircle(Vector2 sCenter, float sRadius, uint sSegmentPerQuarter, Color sColor)
-        //{
-        //    if (sSegmentPerQuarter < 1)
-        //    {
-        //        sSegmentPerQuarter = 1;
-        //    }
-        //    uint tTriangles = (sSegmentPerQuarter+1) * 4 * 3;
-        //    Vector2[] tList = new Vector2[tTriangles];
-        //    // Create Circle points triangles around this center
-        //    // Put in DrawTriangles methods
-        //    int tCounter = 0;
-        //    float tRadIncrement = Mathf.PI / (2.0F * (float)sSegmentPerQuarter);
-        //    //Debug.Log("tRadIncrement " + tRadIncrement);
-        //    //Debug.Log("cos " + Mathf.Cos(tRadIncrement));
-        //    //Debug.Log("sin " + Mathf.Sin(tRadIncrement));
-        //    // Add First Segment
-        //    tList[tCounter++] = sCenter;
-        //    tList[tCounter++] = new Vector2(sCenter.x +sRadius, sCenter.y );
-        //    Vector2 tOriginalPoint= new Vector2(sCenter.x + Mathf.Cos(tRadIncrement) * sRadius, sCenter.y - Mathf.Sin(tRadIncrement) * sRadius);
-        //    Vector2 tNextPoint = tOriginalPoint;
-        //    tList[tCounter++] = tNextPoint;
-        //    uint tSeg = (sSegmentPerQuarter * 4)-1;
-        //    for (int i = 1; i <= tSeg; i++)
-        //    {
-        //        float tR = tRadIncrement * i;
-        //        //Debug.Log("tRadIncrement <" +i+">"+ tR.ToString());
-        //        //Debug.Log("cos " + Mathf.Cos(tR));
-        //        //Debug.Log("sin " + Mathf.Sin(tR));
-        //        // Add next Segment
-        //        tList[tCounter++] = sCenter;
-        //        tList[tCounter++] = tNextPoint;
-        //        tNextPoint = new Vector2(sCenter.x + Mathf.Cos(tR) * sRadius, sCenter.y - Mathf.Sin(tR) * sRadius);
-        //        tList[tCounter++] = tNextPoint;
-        //    }
-        //    tList[tCounter++] = sCenter;
-        //    tList[tCounter++] = tNextPoint;
-        //    tList[tCounter++] = new Vector2(sCenter.x + sRadius, sCenter.y);
-        //    STSDrawTriangle.DrawTriangles(tList, sColor);
-        //}
-        //-------------------------------------------------------------------------------------------------------------
-        //public static void DrawTriangles(Vector2[] sPoints, Color sColor)
-        //{
-        //    if (Event.current.type.Equals(EventType.Repaint))
-        //    {
-        //        if (tMat == null)
-        //        {
-        //            tMat = new Material(Shader.Find(ShaderName));
-        //        }
-        //        GL.PushMatrix();
-        //        tMat.SetPass(0);
-        //        GL.LoadPixelMatrix();
-        //        GL.Begin(GL.TRIANGLES);
-        //        GL.Color(sColor);
-        //        foreach (Vector2 tV in sPoints)
-        //        {
-        //            GL.Vertex3(tV.x, tV.y, 0);
-        //        }
-        //        GL.End();
-        //        GL.PopMatrix();
-        //    }
-        //}
-        ////-------------------------------------------------------------------------------------------------------------
-        //public static void DrawTriangle(Vector2 sA, Vector2 sB, Vector2 sC, Color sColor)
-        //{
-        //    if (Event.current.type.Equals(EventType.Repaint))
-        //    {
-        //        if (tMat == null)
-        //        {
-        //            tMat = new Material(Shader.Find(ShaderName));
-        //        }
-        //        GL.PushMatrix();
-        //        tMat.SetPass(0);
-        //        GL.LoadPixelMatrix();
-        //        GL.Begin(GL.TRIANGLES);
-        //        GL.Color(sColor);
-        //        GL.Vertex3(sA.x, sA.y, 0);
-        //        GL.Vertex3(sB.x, sB.y, 0);
-        //        GL.Vertex3(sC.x, sC.y, 0);
-        //        GL.End();
-        //        GL.PopMatrix();
-        //    }
-        //}
-        //-------------------------------------------------------------------------------------------------------------
-        //public static void DrawQuad(Vector2 sA, Vector2 sB, Vector2 sC, Vector2 sD, Color sColor)
-        //{
-        //    if (Event.current.type.Equals(EventType.Repaint))
-        //    {
-        //        if (tMat == null)
-        //        {
-        //            tMat = new Material(Shader.Find(ShaderName));
-        //        }
-        //        GL.PushMatrix();
-        //        tMat.SetPass(0);
-        //        GL.LoadPixelMatrix();
-        //        GL.Begin(GL.QUADS);
-        //        GL.Color(sColor);
-        //        GL.Vertex3(sA.x, sA.y, 0);
-        //        GL.Vertex3(sB.x, sB.y, 0);
-        //        GL.Vertex3(sC.x, sC.y, 0);
-        //        GL.Vertex3(sD.x, sD.y, 0);
-        //        GL.End();
-        //        GL.PopMatrix();
-        //    }
-        //}
-        //-------------------------------------------------------------------------------------------------------------
-        //public static void DrawRect(Rect sRect, Color sColor)
-        //{
 
-        //    //DrawQuad(new Vector2(sRect.x, sRect.y),
-        //    //new Vector2(sRect.x, sRect.y + sRect.height),
-        //    //new Vector2(sRect.x + sRect.width, sRect.y + sRect.height),
-        //    //new Vector2(sRect.x + sRect.width, sRect.y), sColor);
-        //    if (Event.current.type.Equals(EventType.Repaint))
-        //    {
-        //        if (tMat == null)
-        //        {
-        //            tMat = new Material(Shader.Find(ShaderName));
-        //        }
-        //        GL.PushMatrix();
-        //        tMat.SetPass(0);
-        //        GL.LoadPixelMatrix();
-        //        // TRIANGLES Method
-        //        //GL.Begin(GL.TRIANGLES);
-        //        //GL.Color(sColor);
-        //        ///*A*/
-        //        //GL.Vertex3(sRect.x, sRect.y, 0);
-        //        ///*B*/
-        //        //GL.Vertex3(sRect.x, sRect.y + sRect.height, 0);
-        //        ///*C*/
-        //        //GL.Vertex3(sRect.x + sRect.width, sRect.y + sRect.height, 0);
-        //        ///*D*/
-        //        //GL.Vertex3(sRect.x + sRect.width, sRect.y, 0);
-        //        ///*C*/
-        //        //GL.Vertex3(sRect.x + sRect.width, sRect.y + sRect.height, 0);
-        //        ///*A*/
-        //        //GL.Vertex3(sRect.x, sRect.y, 0);
-        //        // QUADS Method
-        //        GL.Begin(GL.QUADS);
-        //        GL.Color(sColor);
-        //        /*A*/
-        //        GL.Vertex3(sRect.x, sRect.y, 0);
-        //        /*B*/
-        //        GL.Vertex3(sRect.x, sRect.y + sRect.height, 0);
-        //        /*C*/
-        //        GL.Vertex3(sRect.x + sRect.width, sRect.y + sRect.height, 0);
-        //        /*D*/
-        //        GL.Vertex3(sRect.x + sRect.width, sRect.y, 0);
-        //        GL.End();
-        //        GL.PopMatrix();
-        //    }
-        //}
-        //-------------------------------------------------------------------------------------------------------------
-        //public static void DrawRect(Rect sRect, Color sColor)
-        //{
-        //#if UNITY_EDITOR
-        //            //EditorGUI.DrawRect(position, color); // replace by Graphics.DrawTexture
-        //#endif
-        //if (kTexture == null)
-        //{
-        //    kTexture = new Texture2D(1, 1);
-        //}
-        //if (tMat == null)
-        //{
-        //    tMat = new Material(Shader.Find(ShaderName));
-        //}
-        ////Texture2D tTexture = new Texture2D(1, 1);
-        //kTexture.SetPixel(0, 0, color);
-        //kTexture.Apply();
-        ////GUI.DrawTexture(position, kTexture);
-        //if (Event.current.type.Equals(EventType.Repaint)) /// move in draw master
-        //{
-        //    //Graphics.DrawTexture(position, kTexture);
-
-        //    //GL.PushMatrix();
-        //    //tMat.SetPass(0);
-        //    //GL.LoadPixelMatrix();
-        //    //GL.Begin(GL.QUADS);
-        //    //GL.Color(color);
-        //    //GL.Vertex3(position.x, position.y, 0);
-        //    //GL.Vertex3(position.x, position.y + position.height, 0);
-        //    //GL.Vertex3(position.x + position.width, position.y + position.height, 0);
-        //    //GL.Vertex3(position.x + position.width, position.y, 0);
-        //    //GL.End();
-        //    //GL.PopMatrix();
-
-        //    GL.PushMatrix();
-        //    tMat.SetPass(0);
-        //    GL.LoadPixelMatrix();
-        //    GL.Begin(GL.TRIANGLES);
-        //    GL.Color(color);
-        //    GL.Vertex3(position.x, position.y, 0);
-        //    GL.Vertex3(position.x, position.y + position.height, 0);
-        //    GL.Vertex3(position.x + position.width, position.y + position.height, 0);
-        //    //GL.Vertex3(position.x + position.width, position.y, 0);
-        //    GL.End();
-        //    GL.PopMatrix();
-        //}
-        //}
-        //-------------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Draws a line between two points with the specified color, width, and anti-aliasing option.
+        /// </summary>
+        /// <param name="pointA">The starting point of the line.</param>
+        /// <param name="pointB">The ending point of the line.</param>
+        /// <param name="color">The color of the line.</param>
+        /// <param name="width">The width of the line.</param>
+        /// <param name="antiAlias">Specifies whether the line should be anti-aliased.</param>
         public static void DrawLine(Vector2 pointA, Vector2 pointB, Color color, float width, bool antiAlias)
         {
-            // Normally the static initializer does this, but to handle texture reinitialization
-            // after editor play mode stops we need this check in the Editor.
 #if UNITY_EDITOR
             if (!lineTex)
             {
                 Initialize();
             }
 #endif
-
-            // Note that theta = atan2(dy, dx) is the angle we want to rotate by, but instead
-            // of calculating the angle we just use the sine (dy/len) and cosine (dx/len).
             float dx = pointB.x - pointA.x;
             float dy = pointB.y - pointA.y;
             float len = Mathf.Sqrt(dx * dx + dy * dy);
-
-            // Early out on tiny lines to avoid divide by zero.
-            // Plus what's the point of drawing a line 1/1000th of a pixel long??
             if (len < 0.001f)
             {
                 return;
             }
-
-            // Pick texture and material (and tweak width) based on anti-alias setting.
             Texture2D tex;
-            // Material mat;
             if (antiAlias)
             {
-                // Multiplying by three is fine for anti-aliasing width-1 lines, but make a wide "fringe"
-                // for thicker lines, which may or may not be desirable.
                 width = width * 3.0f;
                 tex = aaLineTex;
-                //   mat = blendMaterial;
             }
             else
             {
                 tex = lineTex;
-                //  mat = blitMaterial;
             }
 
             float wdx = width * dy / len;
@@ -295,26 +118,36 @@ namespace SceneTransitionSystem
             matrix.m10 = dy;
             matrix.m11 = wdy;
             matrix.m13 = pointA.y - 0.5f * wdy;
-
-            // Use GL matrix and Graphics.DrawTexture rather than GUI.matrix and GUI.DrawTexture,
-            // for better performance. (Setting GUI.matrix is slow, and GUI.DrawTexture is just a
-            // wrapper on Graphics.DrawTexture.)
             GL.Clear(true, false, Color.magenta);
             GL.PushMatrix();
             GL.MultMatrix(matrix);
-            //Graphics.DrawTexture(lineRect, tex, lineRect, 0, 0, 0, 0, color, mat);
-            //Replaced by:
-            GUI.color = color;//this and...
-            GUI.DrawTexture(lineRect, tex);//this
-
+            GUI.color = color;
+            GUI.DrawTexture(lineRect, tex);
             GL.PopMatrix();
         }
 
+        /// <summary>
+        /// Draws a circle with the specified parameters.
+        /// </summary>
+        /// <param name="center">The center position of the circle.</param>
+        /// <param name="radius">The radius of the circle.</param>
+        /// <param name="color">The color of the circle.</param>
+        /// <param name="width">The width of the circle outline.</param>
+        /// <param name="segmentsPerQuarter">The number of segments used to draw one quarter of the circle.</param>
         public static void DrawCircle(Vector2 center, int radius, Color color, float width, int segmentsPerQuarter)
         {
             DrawCircle(center, radius, color, width, false, segmentsPerQuarter);
         }
 
+        /// <summary>
+        /// Draws a circle using Bezier curves.
+        /// </summary>
+        /// <param name="center">The center point of the circle.</param>
+        /// <param name="radius">The radius of the circle.</param>
+        /// <param name="color">The color of the circle.</param>
+        /// <param name="width">The width of the circle's line.</param>
+        /// <param name="antiAlias">Determines whether to apply anti-aliasing to the circle.</param>
+        /// <param name="segmentsPerQuarter">The number of segments per quarter of the circle.</param>
         public static void DrawCircle(Vector2 center, int radius, Color color, float width, bool antiAlias, int segmentsPerQuarter)
         {
             float rh = (float)radius / 2;
@@ -341,7 +174,17 @@ namespace SceneTransitionSystem
             DrawBezierLine(p4, p4_tan_a, p1, p1_tan_a, color, width, antiAlias, segmentsPerQuarter);
         }
 
-        // Other than method name, DrawBezierLine is unchanged from Linusmartensson's original implementation.
+        /// <summary>
+        /// Draws a Bezier curve line between specified points with tangents.
+        /// </summary>
+        /// <param name="start">The starting point of the Bezier curve.</param>
+        /// <param name="startTangent">Tangent vector at the starting point.</param>
+        /// <param name="end">The ending point of the Bezier curve.</param>
+        /// <param name="endTangent">Tangent vector at the ending point.</param>
+        /// <param name="color">Color of the Bezier curve.</param>
+        /// <param name="width">Width of the Bezier curve.</param>
+        /// <param name="antiAlias">If set to true, the line will be anti-aliased.</param>
+        /// <param name="segments">Number of segments to divide the Bezier curve into.</param>
         public static void DrawBezierLine(Vector2 start, Vector2 startTangent, Vector2 end, Vector2 endTangent, Color color, float width, bool antiAlias, int segments)
         {
             Vector2 lastV = CubeBezier(start, startTangent, end, endTangent, 0);
@@ -354,15 +197,31 @@ namespace SceneTransitionSystem
         }
 
 
+        /// <summary>
+        /// Calculates the position of a point along a cubic Bezier curve given the control points and the parameter t.
+        /// </summary>
+        /// <param name="s">The start point of the Bezier curve.</param>
+        /// <param name="st">The first control point of the Bezier curve.</param>
+        /// <param name="e">The end point of the Bezier curve.</param>
+        /// <param name="et">The second control point of the Bezier curve.</param>
+        /// <param name="t">The parameter along the Bezier curve, typically between 0 and 1.</param>
+        /// <returns>The position of the point at parameter t on the cubic Bezier curve.</returns>
         private static Vector2 CubeBezier(Vector2 s, Vector2 st, Vector2 e, Vector2 et, float t)
         {
             float rt = 1 - t;
             return rt * rt * rt * s + 3 * rt * rt * t * st + 3 * rt * t * t * et + t * t * t * e;
         }
 
-        // This static initializer works for runtime, but apparently isn't called when
-        // Editor play mode stops, so DrawLine will re-initialize if needed.
-
+        /// <summary>
+        /// Initializes necessary resources like textures and materials
+        /// used for drawing operations.
+        /// </summary>
+        /// <remarks>
+        /// Should be called before any drawing operations to ensure
+        /// that all resources are ready and available. This method sets up
+        /// the line texture, anti-aliasing line texture, and required materials
+        /// for blitting and blending.
+        /// </remarks>
         private static void Initialize()
         {
             if (lineTex == null)
@@ -371,6 +230,7 @@ namespace SceneTransitionSystem
                 lineTex.SetPixel(0, 1, Color.white);
                 lineTex.Apply();
             }
+
             if (aaLineTex == null)
             {
                 // TODO: better anti-aliasing of wide lines with a larger texture? or use Graphics.DrawTexture with border settings
@@ -380,14 +240,8 @@ namespace SceneTransitionSystem
                 aaLineTex.SetPixel(0, 2, new Color(1, 1, 1, 0));
                 aaLineTex.Apply();
             }
-
-            // GUI.blitMaterial and GUI.blendMaterial are used internally by GUI.DrawTexture,
-            // depending on the alphaBlend parameter. Use reflection to "borrow" these references.
             blitMaterial = (Material)typeof(GUI).GetMethod("get_blitMaterial", BindingFlags.NonPublic | BindingFlags.Static).Invoke(null, null);
             blendMaterial = (Material)typeof(GUI).GetMethod("get_blendMaterial", BindingFlags.NonPublic | BindingFlags.Static).Invoke(null, null);
         }
-        //-------------------------------------------------------------------------------------------------------------
     }
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 }
-//=====================================================================================================================

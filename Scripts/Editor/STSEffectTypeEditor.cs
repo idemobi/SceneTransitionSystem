@@ -1,15 +1,4 @@
-﻿//=====================================================================================================================
-//
-//  ideMobi 2019©
-//
-//  Author		Kortex (Jean-François CONTART) 
-//  Email		jfcontart@idemobi.com
-//  Project 	SceneTransitionSystem for Unity3D
-//
-//  All rights reserved by ideMobi
-//
-//=====================================================================================================================
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,39 +8,134 @@ using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditorInternal;
-//=====================================================================================================================
+
 namespace SceneTransitionSystem
 {
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    /// <summary>
+    /// Custom property drawer for STSEffectType, providing a visual interface in the Unity Editor.
+    /// </summary>
     [CustomPropertyDrawer(typeof(STSEffectType))]
     public class STSEffectTypeEditor : PropertyDrawer
     {
-        ////-------------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// A static reference to the texture asset used for previewing the A variation of
+        /// an image effect in the Scene Transition System's effect type editor.
+        /// </summary>
         public static Texture2D kImagePreviewA = AssetDatabase.LoadAssetAtPath<Texture2D>(STSFindPackage.PathOfPackage("/Scripts/Editor/Resources/STSPreviewA.png"));
+
+        /// <summary>
+        /// Static reference to the texture resource file located at "/Scripts/Editor/Resources/STSPreviewB.png".
+        /// Used within the STSEffectTypeEditor to display the image as a preview.
+        /// </summary>
         public static Texture2D kImagePreviewB = AssetDatabase.LoadAssetAtPath<Texture2D>(STSFindPackage.PathOfPackage("/Scripts/Editor/Resources/STSPreviewB.png"));
+
+        /// <summary>
+        /// A static reference to an image preview resource used in the editor for visual display purposes.
+        /// This texture is loaded from the "Resources" folder within the "Scripts/Editor" directory
+        /// using the specified asset path and is utilized within the STSEffectTypeEditor drawer.
+        /// </summary>
         public static Texture2D kImagePreviewC = AssetDatabase.LoadAssetAtPath<Texture2D>(STSFindPackage.PathOfPackage("/Scripts/Editor/Resources/STSPreviewC.png"));
+
+        /// <summary>
+        /// Represents the texture used for the fourth image preview in the Scene Transition System editor.
+        /// This variable holds a Texture2D asset loaded from the specified path and is utilized for drawing
+        /// the corresponding texture in the custom property drawer for <see cref="STSEffectType"/>.
+        /// </summary>
         public static Texture2D kImagePreviewD = AssetDatabase.LoadAssetAtPath<Texture2D>(STSFindPackage.PathOfPackage("/Scripts/Editor/Resources/STSPreviewD.png"));
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Represents the fixed size for the preview element in the property drawer.
+        /// </summary>
         public float kSizePreview = 80.0F;
+
+        /// <summary>
+        /// The height of the preview popup window in the scene transition system editor, measured in pixels.
+        /// </summary>
         public float kSizePreviewPopup = 30.0F;
+
+        /// <summary>
+        /// Represents the size of the preview button for effects in the Scene Transition System.
+        /// </summary>
         public float kSizePreviewButton = 120.0F;
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// A static GUIStyle used to define the style for mini buttons within the STSEffectTypeEditor.
+        /// </summary>
         static GUIStyle tMiniButtonStyle;
+
+        /// <summary>
+        /// Represents the GUI style for popup fields used in the STSEffectTypeEditor.
+        /// </summary>
         static GUIStyle tPopupFieldStyle;
+
+        /// <summary>
+        /// A static GUIStyle for rendering color fields in the custom property drawer for STSEffectType.
+        /// </summary>
         static GUIStyle tColorFieldStyle;
+
+        /// <summary>
+        /// Represents the text field style used in the Scene Transition System editor.
+        /// This static GUIStyle is initialized using Unity's built-in textField style
+        /// and has a fixed height calculated based on the height of a sample content ("A").
+        /// </summary>
         static GUIStyle tTextfieldStyle;
+
+        /// <summary>
+        /// Represents the style for object fields in the Unity Editor.
+        /// </summary>
+        /// <remarks>
+        /// This style is customized from the default `EditorStyles.objectField` and
+        /// is used to maintain a consistent appearance and fixed height for object fields
+        /// in the Scene Transition System's custom property drawers.
+        /// </remarks>
         static GUIStyle tObjectFieldStyle;
+
+        /// <summary>
+        /// A GUIStyle used for rendering numeric fields within the STSEffectTypeEditor.
+        /// </summary>
         static GUIStyle tNumberFieldStyle;
+
+        /// <summary>
+        /// Defines the GUI style for a label indicating that there is no preview available.
+        /// This style configures the label to have centered text alignment and sets the
+        /// text color to red.
+        /// </summary>
         static GUIStyle tNoPreviewFieldStyle;
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Defines the margin size used for layout calculations inside the property drawer in the SceneTransitionSystem.
+        /// </summary>
         const float kMarge = 4.0F;
-        //-------------------------------------------------------------------------------------------------------------
-        //float LocalPurcent = 0.0F;
+
+        /// <summary>
+        /// Represents a small preview of an STS effect used within the STSEffectTypeEditor.
+        /// </summary>
         STSEffect rSmallPreview = null;
+
+        /// <summary>
+        /// Represents the primary preview effect for the scene transition system's effect type editor.
+        /// </summary>
         STSEffect rBigPreview = null;
+
+        /// <summary>
+        /// Stores the previous rectangle dimensions for GUI elements.
+        /// Used to track and update the layout of UI components within the custom property drawer in Unity's SceneTransitionSystem.
+        /// </summary>
         Rect OldRect;
+
+        /// <summary>
+        /// Index representing the currently selected preview image.
+        /// This value determines which preview texture (e.g., kImagePreviewA, kImagePreviewB, etc.)
+        /// is displayed within the editor for the STSEffectType.
+        /// </summary>
         int SelectedPreview = 0;
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Custom property drawer for the STSEffectType class, used in the Unity Editor to
+        /// display and edit the properties of an STSEffectType object in the Inspector.
+        /// This drawer provides custom GUI elements and styling to enhance the user
+        /// experience when editing STSEffectType properties.
+        /// </summary>
         static STSEffectTypeEditor()
         {
             tMiniButtonStyle = new GUIStyle(EditorStyles.miniButton);
@@ -76,7 +160,13 @@ namespace SceneTransitionSystem
             tNoPreviewFieldStyle.alignment = TextAnchor.MiddleCenter;
             tNoPreviewFieldStyle.normal.textColor = Color.red;
         }
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Calculates the height of the property field based on various attributes of the serialized property.
+        /// </summary>
+        /// <param name="property">The serialized property whose height is to be calculated.</param>
+        /// <param name="label">The label of the serialized property.</param>
+        /// <returns>Returns the height required for the property field including additional fields based on attributes.</returns>
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             float tH = 0.0F;
@@ -88,6 +178,7 @@ namespace SceneTransitionSystem
             {
                 tIndex = 0;
             }
+
             Type tEffectType = STSEffectType.kEffectTypeList[tIndex];
 
             // Effet selectio by popup
@@ -195,7 +286,13 @@ namespace SceneTransitionSystem
 
             return tH;
         }
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Draws the GUI for the STSEffectType property.
+        /// </summary>
+        /// <param name="position">The position in the inspector to render the property.</param>
+        /// <param name="property">The SerializedProperty to be drawn.</param>
+        /// <param name="label">The label of the property.</param>
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             float tY = position.y;
@@ -212,6 +309,7 @@ namespace SceneTransitionSystem
             {
                 tIndex = 0;
             }
+
             int tIndexNew = EditorGUI.Popup(tRect, new GUIContent(property.displayName), tIndex, STSEffectType.kEffectContentList.ToArray());
             if (EditorGUI.EndChangeCheck() == true)
             {
@@ -223,8 +321,10 @@ namespace SceneTransitionSystem
                     rSmallPreview = null;
                     rBigPreview = null;
                 }
+
                 tAutoInstallPreview = true;
             }
+
             tY += tPopupFieldStyle.fixedHeight + kMarge;
             //bool tNewReturn = false;
             if (rSmallPreview == null)
@@ -242,6 +342,7 @@ namespace SceneTransitionSystem
                 }
                 //tNewReturn = true;
             }
+
             if (rBigPreview == null)
             {
                 string tName = tEffectName.stringValue;
@@ -257,6 +358,7 @@ namespace SceneTransitionSystem
                 }
                 //tNewReturn = true;
             }
+
             Type tEffectType = STSEffectType.kEffectTypeList[tIndexNew];
 
             EditorGUI.indentLevel++;
@@ -273,6 +375,7 @@ namespace SceneTransitionSystem
                 {
                     tEntitlement = new GUIContent(tAtt.Entitlement);
                 }
+
                 Rect tRectTintPrimary = new Rect(position.x, tY, position.width, tColorFieldStyle.fixedHeight);
                 SerializedProperty tTintPrimary = property.FindPropertyRelative("TintPrimary");
                 EditorGUI.PropertyField(tRectTintPrimary, tTintPrimary, tEntitlement, false);
@@ -289,6 +392,7 @@ namespace SceneTransitionSystem
                 {
                     tEntitlement = new GUIContent(tAtt.Entitlement);
                 }
+
                 Rect tRectTintSecondary = new Rect(position.x, tY, position.width, tColorFieldStyle.fixedHeight);
                 SerializedProperty tTintSecondary = property.FindPropertyRelative("TintSecondary");
                 EditorGUI.PropertyField(tRectTintSecondary, tTintSecondary, tEntitlement, false);
@@ -305,6 +409,7 @@ namespace SceneTransitionSystem
                 {
                     tEntitlement = new GUIContent(tAtt.Entitlement);
                 }
+
                 Rect tRectTexturePrimary = new Rect(position.x, tY, position.width, tObjectFieldStyle.fixedHeight);
                 SerializedProperty tTexturePrimary = property.FindPropertyRelative("TexturePrimary");
                 EditorGUI.PropertyField(tRectTexturePrimary, tTexturePrimary, tEntitlement, false);
@@ -321,6 +426,7 @@ namespace SceneTransitionSystem
                 {
                     tEntitlement = new GUIContent(tAtt.Entitlement);
                 }
+
                 Rect tRectTextureSecondary = new Rect(position.x, tY, position.width, tObjectFieldStyle.fixedHeight);
                 SerializedProperty tTextureSecondary = property.FindPropertyRelative("TextureSecondary");
                 EditorGUI.PropertyField(tRectTextureSecondary, tTextureSecondary, tEntitlement, false);
@@ -360,6 +466,7 @@ namespace SceneTransitionSystem
                     tSliderMin = tAtt.Min;
                     tSliderMax = tAtt.Max;
                 }
+
                 if (tSlider == true)
                 {
                     Rect tRectParameterOne = new Rect(position.x, tY, position.width, tPopupFieldStyle.fixedHeight);
@@ -368,10 +475,12 @@ namespace SceneTransitionSystem
                     {
                         tParameterOne.intValue = tSliderMax;
                     }
+
                     if (tParameterOne.intValue < tSliderMin)
                     {
                         tParameterOne.intValue = tSliderMin;
                     }
+
                     EditorGUI.IntSlider(tRectParameterOne, tParameterOne, tSliderMin, tSliderMax, tEntitlement);
                     tY += tPopupFieldStyle.fixedHeight + kMarge;
                     rSmallPreview.ParameterOne = tParameterOne.intValue;
@@ -402,6 +511,7 @@ namespace SceneTransitionSystem
                     tSliderMin = tAtt.Min;
                     tSliderMax = tAtt.Max;
                 }
+
                 if (tSlider == true)
                 {
                     Rect tRectParameterTwo = new Rect(position.x, tY, position.width, tPopupFieldStyle.fixedHeight);
@@ -410,10 +520,12 @@ namespace SceneTransitionSystem
                     {
                         tParameterTwo.intValue = tSliderMax;
                     }
+
                     if (tParameterTwo.intValue < tSliderMin)
                     {
                         tParameterTwo.intValue = tSliderMin;
                     }
+
                     EditorGUI.IntSlider(tRectParameterTwo, tParameterTwo, tSliderMin, tSliderMax, tEntitlement);
                     tY += tPopupFieldStyle.fixedHeight + kMarge;
                     rSmallPreview.ParameterTwo = tParameterTwo.intValue;
@@ -444,6 +556,7 @@ namespace SceneTransitionSystem
                     tSliderMin = tAtt.Min;
                     tSliderMax = tAtt.Max;
                 }
+
                 if (tSlider == true)
                 {
                     Rect tRectParameterThree = new Rect(position.x, tY, position.width, tPopupFieldStyle.fixedHeight);
@@ -452,10 +565,12 @@ namespace SceneTransitionSystem
                     {
                         tParameterThree.intValue = tSliderMax;
                     }
+
                     if (tParameterThree.intValue < tSliderMin)
                     {
                         tParameterThree.intValue = tSliderMin;
                     }
+
                     EditorGUI.IntSlider(tRectParameterThree, tParameterThree, tSliderMin, tSliderMax, tEntitlement);
                     tY += tPopupFieldStyle.fixedHeight + kMarge;
                     rSmallPreview.ParameterThree = tParameterThree.intValue;
@@ -480,6 +595,7 @@ namespace SceneTransitionSystem
                 {
                     tEntitlement = new GUIContent(tAtt.Entitlement);
                 }
+
                 Rect tRectOffset = new Rect(position.x, tY, position.width, tNumberFieldStyle.fixedHeight);
                 SerializedProperty tOffset = property.FindPropertyRelative("Offset");
                 EditorGUI.PropertyField(tRectOffset, tOffset, tEntitlement, false);
@@ -496,6 +612,7 @@ namespace SceneTransitionSystem
                 {
                     tEntitlement = new GUIContent(tAtt.Entitlement);
                 }
+
                 Rect tRectTwoCross = new Rect(position.x, tY, position.width, tPopupFieldStyle.fixedHeight);
                 SerializedProperty tTwoCross = property.FindPropertyRelative("TwoCross");
                 EditorGUI.PropertyField(tRectTwoCross, tTwoCross, tEntitlement, false);
@@ -512,6 +629,7 @@ namespace SceneTransitionSystem
                 {
                     tEntitlement = new GUIContent(tAtt.Entitlement);
                 }
+
                 Rect tRectFourCross = new Rect(position.x, tY, position.width, tPopupFieldStyle.fixedHeight);
                 SerializedProperty tFourCross = property.FindPropertyRelative("FourCross");
                 EditorGUI.PropertyField(tRectFourCross, tFourCross, tEntitlement, false);
@@ -528,6 +646,7 @@ namespace SceneTransitionSystem
                 {
                     tEntitlement = new GUIContent(tAtt.Entitlement);
                 }
+
                 Rect tRectFiveCross = new Rect(position.x, tY, position.width, tPopupFieldStyle.fixedHeight);
                 SerializedProperty tFiveCross = property.FindPropertyRelative("FiveCross");
                 EditorGUI.PropertyField(tRectFiveCross, tFiveCross, tEntitlement, false);
@@ -544,6 +663,7 @@ namespace SceneTransitionSystem
                 {
                     tEntitlement = new GUIContent(tAtt.Entitlement);
                 }
+
                 Rect tRectEightCross = new Rect(position.x, tY, position.width, tPopupFieldStyle.fixedHeight);
                 SerializedProperty tEightCross = property.FindPropertyRelative("EightCross");
                 EditorGUI.PropertyField(tRectEightCross, tEightCross, tEntitlement, false);
@@ -560,6 +680,7 @@ namespace SceneTransitionSystem
                 {
                     tEntitlement = new GUIContent(tAtt.Entitlement);
                 }
+
                 Rect tRectNineCross = new Rect(position.x, tY, position.width, tPopupFieldStyle.fixedHeight);
                 SerializedProperty tNineCross = property.FindPropertyRelative("NineCross");
                 EditorGUI.PropertyField(tRectNineCross, tNineCross, tEntitlement, false);
@@ -576,6 +697,7 @@ namespace SceneTransitionSystem
                 {
                     tEntitlement = new GUIContent(tAtt.Entitlement);
                 }
+
                 Rect tRectClockwise = new Rect(position.x, tY, position.width, tPopupFieldStyle.fixedHeight);
                 SerializedProperty tClockwise = property.FindPropertyRelative("Clockwise");
                 EditorGUI.PropertyField(tRectClockwise, tClockwise, tEntitlement, false);
@@ -590,6 +712,7 @@ namespace SceneTransitionSystem
                 tAutoInstallPreview = true;
                 tAutoPreparePreview = true;
             }
+
             EditorGUI.BeginChangeCheck();
             // Duration
             Rect tRectDuration = new Rect(position.x, tY, position.width, tNumberFieldStyle.fixedHeight);
@@ -612,7 +735,7 @@ namespace SceneTransitionSystem
 
             // Select the small background
             SelectedPreview = EditorGUI.IntPopup(new Rect(position.x + position.width - kSizePreviewPopup - kMarge - kSizePreview * 2, tY, kSizePreviewPopup, tPopupFieldStyle.fixedHeight),
-            SelectedPreview, new string[] { "A", "B", "C", "D", "…" }, new int[] { 0, 1, 2, 3, 999 });
+                SelectedPreview, new string[] { "A", "B", "C", "D", "…" }, new int[] { 0, 1, 2, 3, 999 });
 
             if (EditorGUI.EndChangeCheck() == true)
             {
@@ -627,6 +750,7 @@ namespace SceneTransitionSystem
             {
                 rSmallPreview.PrepareEffectExit(tPreviewRect);
             }
+
             OldRect = tPreviewRect;
 
             // button for big preview
@@ -636,6 +760,7 @@ namespace SceneTransitionSystem
                 STSEffectPreview.kEffectPreview.SetEffect(rBigPreview);
                 STSEffectPreview.kEffectPreview.EffectPrepare();
             }
+
             // button to run in big preview
             if (GUI.Button(new Rect(position.x + position.width - kSizePreviewButton - kMarge - kSizePreview * 2, tY + 2 * (tPopupFieldStyle.fixedHeight + kMarge), kSizePreviewButton, tPopupFieldStyle.fixedHeight), STSConstants.K_RUN_BIG_PREVIEW, tMiniButtonStyle))
             {
@@ -655,6 +780,7 @@ namespace SceneTransitionSystem
                     //AssetStore.Open(STSConstants.K_ASSET_STORE_URL);
                     Application.OpenURL(STSConstants.K_ASSET_STORE_URL);
                 }
+
                 GUI.backgroundColor = tOldColor;
             }
 
@@ -667,6 +793,7 @@ namespace SceneTransitionSystem
                     STSEffectPreview.kEffectPreview.SetEffect(rBigPreview);
                 }
             }
+
             if (tAutoPreparePreview == true)
             {
                 if (STSEffectPreview.kEffectPreview != null)
@@ -674,6 +801,7 @@ namespace SceneTransitionSystem
                     STSEffectPreview.kEffectPreview.EffectPrepare();
                 }
             }
+
             // Draw big preview 
             if (STSEffectPreview.kEffectPreview != null)
             {
@@ -687,6 +815,7 @@ namespace SceneTransitionSystem
                     STSEffectPreview.kEffectPreview.NoPreview = true;
                 }
             }
+
             //Draw local small preview
             if (SelectedPreview == 0)
             {
@@ -714,7 +843,6 @@ namespace SceneTransitionSystem
 
             if (tEffectType.GetCustomAttributes(typeof(STSNoSmallPreviewAttribute), true).Length == 0)
             {
-
                 rSmallPreview.EstimateCurvePurcent();
                 rSmallPreview.Draw(tPreviewRect);
             }
@@ -726,10 +854,7 @@ namespace SceneTransitionSystem
 
             EditorGUI.EndProperty();
         }
-        //-------------------------------------------------------------------------------------------------------------
     }
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 }
-//=====================================================================================================================
 
 #endif

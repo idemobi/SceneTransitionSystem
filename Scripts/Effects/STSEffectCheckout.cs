@@ -1,48 +1,50 @@
-﻿//=====================================================================================================================
-//
-//  ideMobi 2019©
-//
-//  Author		Kortex (Jean-François CONTART) 
-//  Email		jfcontart@idemobi.com
-//  Project 	SceneTransitionSystem for Unity3D
-//
-//  All rights reserved by ideMobi
-//
-//=====================================================================================================================
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
-//=====================================================================================================================
+
 namespace SceneTransitionSystem
 {
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    /// <summary>
+    /// Represents a "Checkout" scene transition effect in the Scene Transition System.
+    /// </summary>
     [STSEffectNameAttribute("Checkout")]
-    // *** Remove some parameters in inspector
-    // No remove
-    // ***
     public class STSEffectCheckout : STSEffect
     {
-        //-------------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Prepares any necessary data for the transition effect using the given rectangular area.
+        /// </summary>
+        /// <param name="sRect">The rectangular area used to prepare the transition effect.</param>
         public void Prepare(Rect sRect)
         {
         }
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Prepares the effect for entering transition by setting up the necessary data for rendering.
+        /// </summary>
+        /// <param name="sRect">The rectangular area where the effect will be drawn.</param>
         public override void PrepareEffectEnter(Rect sRect)
         {
             // Prepare your datas to draw
             Prepare(sRect);
         }
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// Prepares the effect for exiting by preparing the necessary data for drawing.
+        /// <param name="sRect">The rectangle area where the effect will be prepared and drawn.</param>
+        /// /
         public override void PrepareEffectExit(Rect sRect)
         {
             // Prepare your datas to draw
             Prepare(sRect);
         }
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Draws the current effect within the specified rectangle.
+        /// </summary>
+        /// <param name="sRect">The rectangle in which to draw the effect.</param>
         public override void Draw(Rect sRect)
         {
             // Do drawing with purcent
@@ -53,8 +55,5 @@ namespace SceneTransitionSystem
             //float tY = sRect.position.y + (sRect.height - tHeight) / 2.0F;
             STSDrawing.DrawCircle(sRect.center, tRadius, TintPrimary, tWidth, ParameterOne);
         }
-        //-------------------------------------------------------------------------------------------------------------
     }
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 }
-//=====================================================================================================================

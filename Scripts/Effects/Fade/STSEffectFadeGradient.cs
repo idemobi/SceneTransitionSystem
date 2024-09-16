@@ -1,29 +1,19 @@
-﻿//=====================================================================================================================
-//
-//  ideMobi 2019©
-//
-//  Author		Kortex (Jean-François CONTART) 
-//  Email		jfcontart@idemobi.com
-//  Project 	SceneTransitionSystem for Unity3D
-//
-//  All rights reserved by ideMobi
-//
-//=====================================================================================================================
+﻿using UnityEngine;
 
-using UnityEngine;
-
-//=====================================================================================================================
 namespace SceneTransitionSystem
 {
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    /// <summary>
+    /// Represents a scene transition effect that applies a fade gradient.
+    /// </summary>
     [STSEffectName("Fade/Fade gradient")]
-    // *** Active some parameters in inspector
     [STSTintPrimary()]
     [STSTintSecondary()]
-    // ***
     public class STSEffectFadeGradient : STSEffect
     {
-        //-------------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Draws a fading gradient effect within a specified rectangle.
+        /// </summary>
+        /// <param name="sRect">The rectangle within which the gradient will be drawn.</param>
         public override void Draw(Rect sRect)
         {
             if (Purcent > 0)
@@ -34,8 +24,5 @@ namespace SceneTransitionSystem
                 STSDrawQuad.DrawRect(sRect, tFadeColorAlpha);
             }
         }
-        //-------------------------------------------------------------------------------------------------------------
     }
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 }
-//=====================================================================================================================

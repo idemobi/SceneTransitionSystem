@@ -1,16 +1,4 @@
-﻿//=====================================================================================================================
-//
-//  ideMobi 2019©
-//
-//  Author		Kortex (Jean-François CONTART) 
-//  Email		jfcontart@idemobi.com
-//  Project 	SceneTransitionSystem for Unity3D
-//
-//  All rights reserved by ideMobi
-//
-//=====================================================================================================================
-
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -21,64 +9,60 @@ using UnityEngine;
 using System;
 using System.Threading.Tasks;
 
-//=====================================================================================================================
 namespace SceneTransitionSystem
 {
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    /// <summary>
+    /// The STSAddressableAssets class is responsible for managing the transition between scenes,
+    /// allowing for addition, removal, and replacement of scenes.
+    /// </summary>
     public partial class STSAddressableAssets : STSSingletonUnity<STSAddressableAssets>, STSTransitionInterface, STSIntermissionInterface
     {
-        //-------------------------------------------------------------------------------------------------------------
-        // ADD Additive Scene
-        //-------------------------------------------------------------------------------------------------------------
-        /*public static void AddSubScene(SceneInstance sAdditionalSceneName, SceneInstance sIntermissionSceneName, STSTransitionData sTransitionData = null, bool sAllowCyclic = false)
-        {
-            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene(), new List<SceneInstance> { sAdditionalSceneName }, null, sIntermissionSceneName, sTransitionData, true, sAllowCyclic);
-        }
-        //-------------------------------------------------------------------------------------------------------------
-        public static void AddSubScenes(List<SceneInstance> sAdditionalScenes, SceneInstance sIntermissionScene, STSTransitionData sTransitionData = null, bool sAllowCyclic = false)
-        {
-            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene(), sAdditionalScenes, null, sIntermissionScene, sTransitionData, true, sAllowCyclic);
-        }*/
-        //-------------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Adds a new scene to the current active scene while also specifying an intermission scene and transition data.
+        /// </summary>
+        /// <param name="sActiveScene">Name of the currently active scene.</param>
+        /// <param name="sNextActiveScene">Name of the scene to be activated next.</param>
+        /// <param name="sIntermissionScene">Name of the scene to be used as an intermission.</param>
+        /// <param name="sTransitionData">Data related to the transition between scenes. Optional.</param>
+        /// <param name="sAllowCyclic">Flag to allow cyclic transitions. Optional.</param>
         public static void AddScene(string sActiveScene, string sNextActiveScene, string sIntermissionScene, STSTransitionData sTransitionData = null, bool sAllowCyclic = false)
         {
             Singleton().INTERNAL_ChangeScenes(sActiveScene, sNextActiveScene, null, null, sIntermissionScene, sTransitionData, true, sAllowCyclic);
         }
-        //-------------------------------------------------------------------------------------------------------------
-        /*public static void AddScenes(string sActiveScene, string sNextActiveScene, List<string> sScenesToAdd, string sIntermissionScene, STSTransitionData sTransitionData = null, bool sAllowCyclic = false)
-        {
-            Singleton().INTERNAL_ChangeScenes(sActiveScene, sNextActiveScene, sScenesToAdd, null, sIntermissionScene, sTransitionData, true, sAllowCyclic);
-        }*/
-        //-------------------------------------------------------------------------------------------------------------
-        // REMOVE Additive Scene
-        //-------------------------------------------------------------------------------------------------------------
-        /*public static void RemoveSubScene(SceneInstance sSceneToRemove, SceneInstance sIntermissionScene, STSTransitionData sTransitionData = null, bool sAllowCyclic = false)
-        {
-            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene(), null, new List<SceneInstance> { sSceneToRemove }, sIntermissionScene, sTransitionData, true, sAllowCyclic);
-        }
-        //-------------------------------------------------------------------------------------------------------------
-        public static void RemoveSubScenes(List<SceneInstance> sScenesToRemove, SceneInstance sIntermissionScene, STSTransitionData sTransitionData = null, bool sAllowCyclic = false)
-        {
-            Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene(), null, sScenesToRemove, sIntermissionScene, sTransitionData, true, sAllowCyclic);
-        }*/
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Removes a specified scene from the current set of active scenes and transitions to the next active scene with optional intermission and transition data.
+        /// </summary>
+        /// <param name="sActiveScene">The name of the currently active scene.</param>
+        /// <param name="sNextActiveScene">The name of the next scene to become active after removal.</param>
+        /// <param name="sSceneToRemove">The name of the scene to be removed.</param>
+        /// <param name="sIntermissionScene">The name of the intermission scene to be displayed during the transition, if any.</param>
+        /// <param name="sTransitionData">Optional transition data to be used during the scene transition.</param>
+        /// <param name="sAllowCyclic">Flag indicating if cyclic transitions are allowed.</param>
         public static void RemoveScene(string sActiveScene, string sNextActiveScene, string sSceneToRemove, string sIntermissionScene, STSTransitionData sTransitionData = null, bool sAllowCyclic = false)
         {
             Singleton().INTERNAL_ChangeScenes(sActiveScene, sNextActiveScene, null, new List<string> { sSceneToRemove }, sIntermissionScene, sTransitionData, true, sAllowCyclic);
         }
-        //-------------------------------------------------------------------------------------------------------------
-        /*public static void RemoveScenes(string sActiveScene, string sNextActiveScene, List<string> sScenesToRemove, string sIntermissionScene, STSTransitionData sTransitionData = null, bool sAllowCyclic = false)
-        {
-            Singleton().INTERNAL_ChangeScenes(sActiveScene, sNextActiveScene, null, sScenesToRemove, sIntermissionScene, sTransitionData, true, sAllowCyclic);
-        }*/
-        //-------------------------------------------------------------------------------------------------------------
-        // ADD a new Scene
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Replaces all currently active scenes with a new scene, optionally using an intermission scene during the transition.
+        /// </summary>
+        /// <param name="sNextActiveScene">The name of the scene to activate.</param>
+        /// <param name="sIntermissionScene">The name of the intermission scene. Optional parameter, defaults to null.</param>
+        /// <param name="sTransitionData">Data related to the scene transition. Optional parameter, defaults to null.</param>
+        /// <param name="sAllowCyclic">Indicates whether cyclic transitions are allowed. Optional parameter, defaults to false.</param>
         public static void ReplaceAllByScene(string sNextActiveScene, string sIntermissionScene = null, STSTransitionData sTransitionData = null, bool sAllowCyclic = false)
         {
             ReplaceAllByScenes(sNextActiveScene, null, sIntermissionScene, sTransitionData, sAllowCyclic);
         }
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// Replaces all scenes in the transition system with the provided next active scene and additional scenes.
+        /// @param sNextActiveScene The next active scene to set.
+        /// @param sScenesToAdd An array of scenes to add.
+        /// @param sIntermissionScene The intermission scene to set, if any.
+        /// @param sTransitionData Additional transition data.
+        /// @param sAllowCyclic Specifies whether to allow cyclic transitions.
+        /// /
         public static void ReplaceAllByScenes(STSScene sNextActiveScene, STSScene[] sScenesToAdd, STSScene sIntermissionScene, STSTransitionData sTransitionData = null, bool sAllowCyclic = false)
         {
             List<string> tScenesToAdd = new List<string>();
@@ -89,19 +73,30 @@ namespace SceneTransitionSystem
                     tScenesToAdd.Add(tScene.GetSceneShortName());
                 }
             }
+
             string tNextActiveScene = string.Empty;
             if (sNextActiveScene != null)
             {
                 tNextActiveScene = sNextActiveScene.GetSceneShortName();
             }
+
             string tIntermissionScene = string.Empty;
             if (sIntermissionScene != null)
             {
                 tIntermissionScene = sIntermissionScene.GetSceneShortName();
             }
+
             ReplaceAllByScenes(tNextActiveScene, tScenesToAdd, tIntermissionScene, sTransitionData, sAllowCyclic);
         }
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Replaces all current scenes with new scenes.
+        /// </summary>
+        /// <param name="sNextActiveScene">The name of the next active scene.</param>
+        /// <param name="sScenesToAdd">A list of names of scenes to add. Can be null if no additional scenes are to be added.</param>
+        /// <param name="sIntermissionScene">The name of the intermission scene. Can be null if no intermission is needed.</param>
+        /// <param name="sTransitionData">Transition data to use during the scene transition. Can be null if no specific transition data is required.</param>
+        /// <param name="sAllowCyclic">Boolean flag indicating if cyclic transitions are allowed.</param>
         public static void ReplaceAllByScenes(string sNextActiveScene, List<string> sScenesToAdd, string sIntermissionScene = null, STSTransitionData sTransitionData = null, bool sAllowCyclic = false)
         {
             List<string> tScenesToRemove = new List<string>();
@@ -110,11 +105,22 @@ namespace SceneTransitionSystem
                 Scene tScene = SceneManager.GetSceneAt(tSceneIndex);
                 tScenesToRemove.Add(tScene.name);
             }
+
             Singleton().INTERNAL_ChangeScenes(SceneManager.GetActiveScene().name, sNextActiveScene, sScenesToAdd, tScenesToRemove, sIntermissionScene, sTransitionData, true, sAllowCyclic);
         }
-        //=============================================================================================================
-        // PRIVATE METHOD
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Handles the transition between different scenes, including addition, removal,
+        /// and replacement of scenes within the application.
+        /// </summary>
+        /// <param name="sActiveScene">The name of the currently active scene.</param>
+        /// <param name="sNextActiveScene">The name of the next scene to be set as active.</param>
+        /// <param name="sScenesToAdd">A list of scene names to be added during the transition.</param>
+        /// <param name="sScenesToRemove">A list of scene names to be removed during the transition.</param>
+        /// <param name="sIntermissionScene">The name of the intermission scene, if any.</param>
+        /// <param name="sTransitionData">Optional data relevant to the transition.</param>
+        /// <param name="sHistorical">Flag indicating if the transition should be remembered in history.</param>
+        /// <param name="sAllowCyclic">Flag indicating if cyclic transitions are allowed.</param>
         private void INTERNAL_ChangeScenes(
             string sActiveScene,
             string sNextActiveScene,
@@ -217,7 +223,13 @@ namespace SceneTransitionSystem
                 Debug.LogWarning(K_TRANSITION_IN_PROGRESS);
             }
         }
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// Changes scenes without an intermission.
+        /// <param name="sActiveScene">The name of the currently active scene.</param>
+        /// <param name="sNextActiveScene">The name of the next scene to be activated.</param>
+        /// <param name="sScenesToAdd">A list of scene names to be added.</param>
+        /// <param name="sScenesToRemove">A list of scene names to be removed.</param>
+        /// <param name="sTransitionData">Transition data containing additional information required for the scene transition.</param>
         private async void ChangeScenesWithoutIntermission(
             string sActiveScene,
             string sNextActiveScene,
@@ -258,6 +270,7 @@ namespace SceneTransitionSystem
                 {
                     await UnloadSceneAsync(tSceneToDelete.name);
                 }
+
                 tSceneCounter++;
             }
 
@@ -274,9 +287,11 @@ namespace SceneTransitionSystem
                     Task<SceneInstance> k = LoadSceneAsync(tSceneToAdd, LoadSceneMode.Additive, false);
                     tTasks[tTaskCounter] = k;
                 }
+
                 tSceneCounter++;
                 tTaskCounter++;
             }
+
             await Task.WhenAll(tTasks);
             await Task.Yield();
             //STSPerformance.EndTimer();
@@ -300,7 +315,7 @@ namespace SceneTransitionSystem
 
                 await UnloadSceneAsync(sActiveScene);
             }
-            
+
             //-------------------------------
             // NEXT SCENE ENABLE
             //-------------------------------
@@ -310,7 +325,14 @@ namespace SceneTransitionSystem
             TransitionInProgress = false;
             await Task.Yield();
         }
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// Changes the current scene to the next scene with an intermission scene in between.
+        /// <param name="sIntermissionScene">The name of the intermission scene to be shown between current and next scenes.</param>
+        /// <param name="sActiveScene">The name of the currently active scene.</param>
+        /// <param name="sNextActiveScene">The name of the scene to be activated next.</param>
+        /// <param name="sScenesToAdd">A list of scene names to be added during the transition.</param>
+        /// <param name="sScenesToRemove">A list of scene names to be removed during the transition.</param>
+        /// <param name="sTransitionData">Additional transition data to handle custom behaviors during the scene change.</param>
         private async void ChangeScenesWithIntermission(
             string sIntermissionScene,
             string sActiveScene,
@@ -356,7 +378,7 @@ namespace SceneTransitionSystem
                 Scene tSceneToDelete = SceneManager.GetSceneByName(tSceneToRemove);
                 STSTransition tSceneToDeleteParams = GetTransitionsParams(tSceneToDelete);
                 STSTransitionInterface[] tSceneToDeleteInterfaced = GetTransitionInterface(tSceneToDelete);
-                
+
                 OnTransitionSceneWillUnloaded(tSceneToDeleteInterfaced, sTransitionData);
 
                 if (tSceneToDelete.isLoaded)
@@ -368,6 +390,7 @@ namespace SceneTransitionSystem
                 {
                     tInterfaced.OnUnloadScene(sTransitionData, tSceneToRemove, tSceneCounter, (tSceneCounter + 1.0F) / tSceneCount);
                 }
+
                 tSceneCounter++;
             }
 
@@ -394,6 +417,7 @@ namespace SceneTransitionSystem
             {
                 tInterfaced.OnStandByStart(tIntermissionSceneStandBy);
             }
+
             StandBy();
 
             //-------------------------------
@@ -411,6 +435,7 @@ namespace SceneTransitionSystem
                     {
                         tInterfaced.OnSceneAllReadyLoaded(sTransitionData, tSceneToLoad, tSceneCounter, (tSceneCounter + 1.0F) / tSceneCount);
                     }
+
                     AudioListenerEnable(tSceneToAdd, false);
                     CameraPreventEnable(tSceneToAdd, false);
                     EventSystemEnable(tSceneToAdd, false);
@@ -423,7 +448,7 @@ namespace SceneTransitionSystem
                         tInterfaced.OnLoadingSceneStart(sTransitionData, tSceneToLoad, tSceneCounter, 0.0F, 0.0F);
                     }
 
-                    Task<SceneInstance> k = LoadSceneAsync(tSceneToLoad, LoadSceneMode.Additive, false,  bProgressCallBack: (p) =>
+                    Task<SceneInstance> k = LoadSceneAsync(tSceneToLoad, LoadSceneMode.Additive, false, bProgressCallBack: (p) =>
                     {
                         //Debug.LogWarning("OnLoadingScenePercent: (" + tSceneCounter + ", " + p + ", " + (tSceneCounter + p) / tSceneCount + ")");
                         foreach (STSIntermissionInterface tInterfaced in tIntermissionInterfaced)
@@ -432,16 +457,18 @@ namespace SceneTransitionSystem
                         }
                     });
                     tTasks[tTaskCounter] = k;
-                    
+
                     //Debug.LogWarning("OnLoadingSceneFinish: (" + tSceneCounter + ", 1.0F, " + (tSceneCounter + 1.0F) / tSceneCount + ")");
                     foreach (STSIntermissionInterface tInterfaced in tIntermissionInterfaced)
                     {
                         tInterfaced.OnLoadingSceneFinish(sTransitionData, tSceneToLoad, tSceneCounter, 1.0F, (tSceneCounter + 1.0F) / tSceneCount);
                     }
                 }
+
                 tSceneCounter++;
                 tTaskCounter++;
             }
+
             await Task.WhenAll(tTasks);
             await Task.Yield();
             tIntermissionSceneStandBy.IsLoaded = true;
@@ -495,8 +522,8 @@ namespace SceneTransitionSystem
             //-------------------------------
             // NEXT SCENE PROCESS
             //-------------------------------
-            Scene tNextActiveScene = await ActivateNextScene (sNextActiveScene);
-            
+            Scene tNextActiveScene = await ActivateNextScene(sNextActiveScene);
+
             //-------------------------------
             // Intermission UNLOAD
             //-------------------------------
@@ -506,12 +533,19 @@ namespace SceneTransitionSystem
             // NEXT SCENE ENABLE
             //-------------------------------
             await NextSceneEnable(tNextActiveScene, sTransitionData);
-            
+
             // My transition is finish. I can do an another transition
             TransitionInProgress = false;
             await Task.Yield();
         }
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Disables the currently active scene based on the provided transition data. This involves handling various
+        /// transition interfaces and animations before marking the scene as disabled.
+        /// </summary>
+        /// <param name="sActiveScene">The name of the currently active scene that needs to be disabled.</param>
+        /// <param name="sTransitionData">Data containing details about the transition used to handle the scene disable process.</param>
+        /// <returns>A Task representing the asynchronous operation.</returns>
         private async Task ActualSceneDisable(string sActiveScene, STSTransitionData sTransitionData)
         {
             //-------------------------------
@@ -521,7 +555,7 @@ namespace SceneTransitionSystem
             STSTransition tActualSceneParams = GetTransitionsParams(tActualScene);
             STSTransitionInterface[] tActualSceneInterfaced = GetTransitionInterface(tActualScene);
             STSTransitionInterface[] tOtherSceneInterfaced = GetOtherTransitionInterface(tActualScene);
-            
+
             EventSystemPrevent(false);
             OnTransitionSceneDisable(tActualSceneInterfaced, sTransitionData);
             AnimationTransitionOut(tActualSceneParams, sTransitionData);
@@ -532,11 +566,16 @@ namespace SceneTransitionSystem
             {
                 await Task.Yield();
             }
-            
+
             OnTransitionExitFinish(tActualSceneInterfaced, sTransitionData);
             OnTransitionExitFinish(tOtherSceneInterfaced, sTransitionData, false);
         }
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Activates the specified next scene by setting it as the active scene in the SceneManager.
+        /// </summary>
+        /// <param name="sNextActiveScene">The name of the scene to be activated next.</param>
+        /// <returns>A Task representing the asynchronous operation, with a Scene as the result once the scene is activated.</returns>
         public async Task<Scene> ActivateNextScene(string sNextActiveScene)
         {
             Scene tNextActiveScene = SceneManager.GetSceneByName(sNextActiveScene);
@@ -552,12 +591,19 @@ namespace SceneTransitionSystem
                     await Task.Yield();
                 }
             }
+
             CameraPrevent(true);
             AudioListenerPrevent(true);
             EventSystemEnable(tNextActiveScene, false);
             return tNextActiveScene;
         }
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Enables the next scene during the transition process.
+        /// </summary>
+        /// <param name="sNextActiveScene">The scene that will be the next active scene.</param>
+        /// <param name="sTransitionData">Data related to the transition process.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
         private async Task NextSceneEnable(Scene sNextActiveScene, STSTransitionData sTransitionData)
         {
             //-------------------------------
@@ -566,7 +612,7 @@ namespace SceneTransitionSystem
             STSTransition tNextSceneParams = GetTransitionsParams(sNextActiveScene);
             STSTransitionInterface[] tNextSceneInterfaced = GetTransitionInterface(sNextActiveScene);
             STSTransitionInterface[] tOtherNextSceneInterfaced = GetOtherTransitionInterface(sNextActiveScene);
-            
+
             AnimationTransitionIn(tNextSceneParams, sTransitionData);
             OnTransitionEnterStart(tNextSceneInterfaced, sTransitionData, tNextSceneParams);
             OnTransitionEnterStart(tOtherNextSceneInterfaced, sTransitionData, tNextSceneParams, false);
@@ -575,23 +621,29 @@ namespace SceneTransitionSystem
             {
                 await Task.Yield();
             }
-            
+
             OnTransitionEnterFinish(tNextSceneInterfaced, sTransitionData);
             OnTransitionEnterFinish(tOtherNextSceneInterfaced, sTransitionData, false);
             EventSystemPrevent(true);
             OnTransitionSceneEnable(tNextSceneInterfaced, sTransitionData);
         }
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Activates the scenes that have been added during the scene transition process.
+        /// </summary>
+        /// <param name="sTasks">An array of tasks representing the scenes to be activated.</param>
+        /// <param name="sTransitionData">Data containing information relevant to the transition process.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
         private async Task ActiveAddedScenes(Task[] sTasks, STSTransitionData sTransitionData)
         {
             //-------------------------------
             // ACTIVE ADDED SCENES
             //-------------------------------
-            foreach(Task<SceneInstance> j in sTasks)
+            foreach (Task<SceneInstance> j in sTasks)
             {
                 SceneInstance tInstance = j.Result;
                 AsyncOperation tAsyncOperation = tInstance.ActivateAsync();
-                
+
                 while (!tAsyncOperation.isDone)
                 {
                     await Task.Yield();
@@ -606,7 +658,15 @@ namespace SceneTransitionSystem
                 OnTransitionSceneLoaded(GetTransitionInterface(tInstance.Scene), sTransitionData);
             }
         }
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Loads a scene asynchronously with the specified parameters.
+        /// </summary>
+        /// <param name="sReference">The reference of the scene to load.</param>
+        /// <param name="sMode">The load mode for the scene (Single or Additive), default is Single.</param>
+        /// <param name="sActivatedOnLoad">If true, the scene will be activated once loaded, default is true.</param>
+        /// <param name="bProgressCallBack">An optional callback that receives progress updates.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the loaded SceneInstance.</returns>
         private async Task<SceneInstance> LoadSceneAsync(string sReference, LoadSceneMode sMode = LoadSceneMode.Single, bool sActivatedOnLoad = true, Action<float> bProgressCallBack = null)
         {
             SceneInstance rScene = new SceneInstance();
@@ -617,8 +677,9 @@ namespace SceneTransitionSystem
                 bProgressCallBack?.Invoke(tHandle.PercentComplete);
                 await Task.Yield();
             }
+
             await tHandle.Task;
-            if(tHandle.Status == AsyncOperationStatus.Succeeded)
+            if (tHandle.Status == AsyncOperationStatus.Succeeded)
             {
                 rScene = tHandle.Result;
             }
@@ -626,9 +687,17 @@ namespace SceneTransitionSystem
             {
                 Debug.LogWarning("Addressable " + tHandle.DebugName + " load error");
             }
+
             return rScene;
         }
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Unloads a scene asynchronously.
+        /// </summary>
+        /// <param name="sScene">The scene instance to be unloaded.</param>
+        /// <param name="bProgressCallBack">Optional callback for progress updates.</param>
+        /// <returns>A task that represents the asynchronous unload operation.
+        /// The task result contains a boolean indicating if the unload operation completed successfully.</returns>
         private async Task<bool> UnloadSceneAsync(SceneInstance sScene, Action<float> bProgressCallBack = null)
         {
             AsyncOperationHandle<SceneInstance> tHandle = Addressables.UnloadSceneAsync(sScene);
@@ -637,13 +706,19 @@ namespace SceneTransitionSystem
                 bProgressCallBack?.Invoke(tHandle.PercentComplete);
                 await Task.Yield();
             }
+
             await tHandle.Task;
 
             SceneInstanceLoaded.Remove(sScene.Scene.name);
 
             return tHandle.IsDone;
         }
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Asynchronously unloads a scene by its name.
+        /// </summary>
+        /// <param name="sSceneName">The name of the scene to unload.</param>
+        /// <returns>A Task representing the asynchronous operation.</returns>
         private async Task UnloadSceneAsync(string sSceneName)
         {
             AsyncOperation tAsyncOperation = SceneManager.UnloadSceneAsync(sSceneName);
@@ -659,11 +734,16 @@ namespace SceneTransitionSystem
                 await Task.Yield();
             }
         }
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Unloads the specified scene instance asynchronously.
+        /// </summary>
+        /// <param name="sSceneName">The name of the scene to unload.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
         private async Task UnloadSceneInstance(string sSceneName)
         {
             SceneInstance tInstance = GetInstance(sSceneName);
-            if(string.IsNullOrEmpty(tInstance.Scene.name))
+            if (string.IsNullOrEmpty(tInstance.Scene.name))
             {
                 await UnloadSceneAsync(sSceneName);
             }
@@ -676,18 +756,28 @@ namespace SceneTransitionSystem
                 });*/
             }
         }
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Retrieves the transition interfaces for a given scene name.
+        /// </summary>
+        /// <param name="sSceneName">The name of the scene for which to retrieve the transition interfaces.</param>
+        /// <returns>An array of transition interfaces associated with the specified scene.</returns>
         private STSTransitionInterface[] GetInterface(string sSceneName)
         {
             Scene tActualScene = SceneManager.GetSceneByName(sSceneName);
             STSTransition tActualSceneParams = GetTransitionsParams(tActualScene);
             return GetTransitionInterface(tActualScene);
         }
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Retrieves the instance of a scene by its name from the loaded scene instances.
+        /// </summary>
+        /// <param name="sSceneName">The name of the scene to retrieve the instance for.</param>
+        /// <returns>The <c>SceneInstance</c> corresponding to the given scene name. If the scene is not found, returns a new <c>SceneInstance</c>.</returns>
         private SceneInstance GetInstance(string sSceneName)
         {
             SceneInstance rInstance = new SceneInstance();
-            foreach(KeyValuePair<string, SceneInstance> k in SceneInstanceLoaded)
+            foreach (KeyValuePair<string, SceneInstance> k in SceneInstanceLoaded)
             {
                 if (k.Key.Equals(sSceneName))
                 {
@@ -698,10 +788,14 @@ namespace SceneTransitionSystem
 
             return rInstance;
         }
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Adds a loaded scene to the SceneInstanceLoaded dictionary if it does not already exist.
+        /// </summary>
+        /// <param name="sInstance">The SceneInstance object representing the loaded scene.</param>
         private void AddLoadedScene(SceneInstance sInstance)
         {
-            if(!SceneInstanceLoaded.ContainsKey(sInstance.Scene.name))
+            if (!SceneInstanceLoaded.ContainsKey(sInstance.Scene.name))
             {
                 SceneInstanceLoaded.Add(sInstance.Scene.name, sInstance);
             }
@@ -710,9 +804,14 @@ namespace SceneTransitionSystem
                 Debug.LogWarning(sInstance.Scene.name + " already be added in SceneInstanceLoaded!");
             }
         }
-        //-------------------------------------------------------------------------------------------------------------
-        // Transition Status
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Handles the start of a transition into a new scene, utilizing the provided transition interfaces and data.
+        /// </summary>
+        /// <param name="sInterface">An array of interfaces that implement the STSTransitionInterface, which define actions to perform upon scene transition start.</param>
+        /// <param name="sData">An object containing the data relevant to the transition.</param>
+        /// <param name="sParams">An object defining the parameters for the transition effect.</param>
+        /// <param name="sActiveScene">Optional boolean indicating whether the current scene is the active scene. Defaults to true.</param>
         private void OnTransitionEnterStart(STSTransitionInterface[] sInterface, STSTransitionData sData, STSTransition sParams, bool sActiveScene = true)
         {
             foreach (STSTransitionInterface k in sInterface)
@@ -720,7 +819,14 @@ namespace SceneTransitionSystem
                 k.OnTransitionEnterStart(sData, sParams.EffectOnEnter, sParams.InterEffectDuration, sActiveScene);
             }
         }
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Invoked at the completion of the transition enter phase.
+        /// Notifies all provided transition interfaces of the completion.
+        /// </summary>
+        /// <param name="sInterface">An array of transition interfaces to be notified.</param>
+        /// <param name="sData">Transition data relevant to the transition process.</param>
+        /// <param name="sActiveScene">Indicates whether the scene is currently active. Default is true.</param>
         private void OnTransitionEnterFinish(STSTransitionInterface[] sInterface, STSTransitionData sData, bool sActiveScene = true)
         {
             foreach (STSTransitionInterface k in sInterface)
@@ -728,7 +834,12 @@ namespace SceneTransitionSystem
                 k.OnTransitionEnterFinish(sData, sActiveScene);
             }
         }
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// Handles the initial phase of the scene transition exit process.
+        /// <param name="sInterface">An array of interfaces that implement the STSTransitionInterface.</param>
+        /// <param name="sData">Data related to the transition.</param>
+        /// <param name="sSceneParams">Parameters specific to the scene transition.</param>
+        /// <param name="sActiveScene">Optional boolean parameter indicating if the current scene is active. Default is true.</param>
         private void OnTransitionExitStart(STSTransitionInterface[] sInterface, STSTransitionData sData, STSTransition sSceneParams, bool sActiveScene = true)
         {
             foreach (STSTransitionInterface k in sInterface)
@@ -736,7 +847,14 @@ namespace SceneTransitionSystem
                 k.OnTransitionExitStart(sData, sSceneParams.EffectOnExit, sActiveScene);
             }
         }
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Method to signal the completion of a transition exit.
+        /// Calls the OnTransitionExitFinish method on each provided transition interface.
+        /// </summary>
+        /// <param name="sInterface">An array of transition interfaces to notify about the transition exit completion.</param>
+        /// <param name="sData">Data associated with the transition.</param>
+        /// <param name="sActiveScene">Indicates whether the active scene should be affected by the transition. Default is true.</param>
         private void OnTransitionExitFinish(STSTransitionInterface[] sInterface, STSTransitionData sData, bool sActiveScene = true)
         {
             foreach (STSTransitionInterface k in sInterface)
@@ -744,7 +862,12 @@ namespace SceneTransitionSystem
                 k.OnTransitionExitFinish(sData, sActiveScene);
             }
         }
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Enables the transition scene with specified transition interfaces and associated transition data.
+        /// </summary>
+        /// <param name="sInterface">An array of transition interfaces to enable the transition scene.</param>
+        /// <param name="sData">The data associated with the transition to be used by the interfaces.</param>
         private void OnTransitionSceneEnable(STSTransitionInterface[] sInterface, STSTransitionData sData)
         {
             foreach (STSTransitionInterface k in sInterface)
@@ -752,7 +875,12 @@ namespace SceneTransitionSystem
                 k.OnTransitionSceneEnable(sData);
             }
         }
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Disables the transition scenes for the specified transition interfaces.
+        /// </summary>
+        /// <param name="sInterface">An array of transition interfaces that will have their transition scenes disabled.</param>
+        /// <param name="sData">Data associated with the transition process.</param>
         private void OnTransitionSceneDisable(STSTransitionInterface[] sInterface, STSTransitionData sData)
         {
             foreach (STSTransitionInterface k in sInterface)
@@ -760,7 +888,13 @@ namespace SceneTransitionSystem
                 k.OnTransitionSceneDisable(sData);
             }
         }
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Invokes the OnTransitionSceneWillUnloaded method on all provided transition interfaces
+        /// with the given transition data. This method is called when a scene is about to be unloaded.
+        /// </summary>
+        /// <param name="sInterface">An array of STSTransitionInterface instances that will have their OnTransitionSceneWillUnloaded method called.</param>
+        /// <param name="sData">The STSTransitionData object containing data relevant to the scene transition.</param>
         private void OnTransitionSceneWillUnloaded(STSTransitionInterface[] sInterface, STSTransitionData sData)
         {
             foreach (STSTransitionInterface k in sInterface)
@@ -768,7 +902,12 @@ namespace SceneTransitionSystem
                 k.OnTransitionSceneWillUnloaded(sData);
             }
         }
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Called when the transition scene has been loaded.
+        /// </summary>
+        /// <param name="sInterface">An array of interfaces that implement the STSTransitionInterface.</param>
+        /// <param name="sData">An instance of STSTransitionData containing data related to the transition.</param>
         private void OnTransitionSceneLoaded(STSTransitionInterface[] sInterface, STSTransitionData sData)
         {
             foreach (STSTransitionInterface k in sInterface)
@@ -776,8 +915,5 @@ namespace SceneTransitionSystem
                 k.OnTransitionSceneLoaded(sData);
             }
         }
-        //-------------------------------------------------------------------------------------------------------------
     }
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 }
-//=====================================================================================================================

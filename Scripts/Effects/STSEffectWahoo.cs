@@ -1,51 +1,51 @@
-﻿//=====================================================================================================================
-//
-//  ideMobi 2019©
-//
-//  Author		Kortex (Jean-François CONTART) 
-//  Email		jfcontart@idemobi.com
-//  Project 	SceneTransitionSystem for Unity3D
-//
-//  All rights reserved by ideMobi
-//
-//=====================================================================================================================
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
-//=====================================================================================================================
+
 namespace SceneTransitionSystem
 {
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    /// <summary>
+    /// Represents a special effect with the name "Whaoo" for scene transitions.
+    /// </summary>
     [STSEffectNameAttribute("Whaoo")]
-    // *** Remove some parameters in inspector
-    // *** Active some parameters in inspector
-    //[STSTintPrimary()]
-    //[STSTintSecondary()]
-    //[STSNineCross("From side")]
-    // ***
     public class STSEffectWhaoo : STSEffect
     {
-        //-------------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Prepares the given rectangle for rendering effects.
+        /// </summary>
+        /// <param name="sRect">The source rectangle to prepare.</param>
         public void Prepare(Rect sRect)
         {
         }
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Prepares the effect for entering the scene transition by setting up necessary data for drawing.
+        /// </summary>
+        /// <param name="sRect">The rectangle area in which the effect will be prepared and drawn.</param>
         public override void PrepareEffectEnter(Rect sRect)
         {
             // Prepare your datas to draw
             Prepare(sRect);
         }
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Prepares the necessary data for the exit effect transition.
+        /// </summary>
+        /// <param name="sRect">The rectangle representing the screen area where the effect will be rendered.</param>
         public override void PrepareEffectExit(Rect sRect)
         {
             // Prepare your datas to draw
             Prepare(sRect);
         }
-        //-------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Draws the transition effect on the given rectangle.
+        /// </summary>
+        /// <param name="sRect">The rectangle where the effect will be drawn.</param>
         public override void Draw(Rect sRect)
         {
             // Do drawing with purcent
@@ -60,8 +60,5 @@ namespace SceneTransitionSystem
             }
             //STSBenchmark.Finish();
         }
-        //-------------------------------------------------------------------------------------------------------------
     }
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 }
-//=====================================================================================================================

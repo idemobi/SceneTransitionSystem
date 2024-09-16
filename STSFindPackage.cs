@@ -1,4 +1,4 @@
-﻿//=====================================================================================================================
+﻿
 //
 //  ideMobi 2019©
 //
@@ -8,20 +8,20 @@
 //
 //  All rights reserved by ideMobi
 //
-//=====================================================================================================================
+
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
-//=====================================================================================================================
+
 namespace SceneTransitionSystem
 {
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    
     public class STSFindPackage : ScriptableObject
     {
-        //-------------------------------------------------------------------------------------------------------------
+        
         /// <summary>
         /// The script file path.
         /// </summary>
@@ -38,7 +38,7 @@ namespace SceneTransitionSystem
         /// The shared instance.
         /// </summary>
         private static STSFindPackage kSharedInstance;
-        //-------------------------------------------------------------------------------------------------------------
+        
         /// <summary>
         /// Ascencor to shared instance.
         /// </summary>
@@ -52,7 +52,7 @@ namespace SceneTransitionSystem
             }
             return kSharedInstance;
         }
-        //-------------------------------------------------------------------------------------------------------------
+        
         /// <summary>
         /// Reads the paths.
         /// </summary>
@@ -65,7 +65,7 @@ namespace SceneTransitionSystem
             ScriptFolder = ScriptFolder.Replace("\\", "/");
             ScriptFolderFromAssets = "Assets" + ScriptFolder.Replace(Application.dataPath, "");
         }
-        //-------------------------------------------------------------------------------------------------------------
+        
         /// <summary>
         /// Packages the path.
         /// </summary>
@@ -75,9 +75,9 @@ namespace SceneTransitionSystem
         {
             return SharedInstance().ScriptFolderFromAssets + sAddPath;
         }
-        //-------------------------------------------------------------------------------------------------------------
+        
     }
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    
 }
-//=====================================================================================================================
+
 #endif
